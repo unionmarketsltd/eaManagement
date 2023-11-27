@@ -47,4 +47,6 @@ public interface FundClientService {
 	int loginverification(String email, String password);
 
 	List<FundClient_loginhistory> getloginhistory(String email);
+
+	int loginverification2(String email, String password);
 }

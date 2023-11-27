@@ -66,6 +66,11 @@ public interface FundClientMapper {
 	public int loginverification(@Param("email")String email,@Param("password")String password);
 	
 	
+	
+	@Select("SELECT count(*) FROM testdb.t_user where email = #{email} and password = #{password}")
+	public int loginverification2(@Param("email")String email,@Param("password")String password);
+	
+	
 	@Select("SELECT *FROM testdb.t_user_login_history where email = #{email} ")
 	public List<FundClient_loginhistory> getloginhistory(@Param("email")String email);
 	

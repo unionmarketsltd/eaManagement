@@ -125,6 +125,7 @@ public class FundClientController {
 		String responsestr = "";
 
 		int issuccess = fundclientservice.loginverification(email, password);
+		
 
 		if (issuccess > 0) {
 

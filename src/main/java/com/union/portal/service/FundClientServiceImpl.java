@@ -116,7 +116,11 @@ public class FundClientServiceImpl implements FundClientService {
 		return mapper.getloginhistory(email );
 	}
 	
-	
+	@Override
+	public int loginverification2(String email ,String password) {
+		// TODO Auto-generated method stub
+		return mapper.loginverification2(email , password);
+	}
 
 	
 }
