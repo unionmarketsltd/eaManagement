@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.union.portal.mapper.MemberMapper">
+	<resultMap id="memberMap" type="com.union.portal.domain.Member">
+	    <id property="userseq" column="userseq"/>
+	    <result property="userid" column="userid"/>
+	    <result property="userpw" column="userpw"/>
+	    <result property="username" column="username"/>
+	    <result property="enabled" column="enabled"/>
+	    <result property="dbsts" column="dbsts"/>
+	    <result property="credate" column="credate"/>
+	    <result property="upddate" column="upddate"/>
+	    <collection property="authList" javaType="java.util.ArrayList" resultMap="authMap" />
+	</resultMap>
+	<resultMap id="authMap" type="com.union.portal.domain.Auth">
+	    <id property="userseq" column="userseq"/>
+	    <result property="userid" column="userid"/>
+	    <result property="auth" column="auth"/>
+	</resultMap>	
+  <select id="read" resultMap="memberMap">
+  <!-- <select id="read" resultType="com.union.portal.domain.Member"> -->
+    <![CDATA[
+    select mem.userseq, mem.userid, mem.userpw, mem.username, '1' enabled, mem.dbsts, auth.auth, mem.credate, mem.upddate
+      from tbl_member mem
+           left outer join
+           tbl_member_auth auth
+        on mem.userseq = auth.userseq
+     where mem.userid = #{userid}
+       and mem.dbsts = 'A'    
+    ]]>
+  </select>
+  
+  <select id="readByUserseq" resultMap="memberMap">
+    <![CDATA[
+    select mem.userseq, mem.userid, mem.userpw, mem.username, '1' enabled, mem.dbsts, auth.auth, mem.credate, mem.upddate
+      from tbl_member mem
+           left outer join
+           tbl_member_auth auth
+        on mem.userseq = auth.userseq
+     where mem.userseq = #{userseq}
+       and mem.dbsts = 'A'    
+    ]]>
+  </select>  
+  <select id="readAuth" resultType="com.union.portal.domain.Auth">
+    <![CDATA[
+    select auth.userid, auth.userseq, auth.auth, auth.credate, auth.upddate
+      from tbl_member_auth auth
+     where mem.userseq = #{userseq}
+    ]]>
+  </select>   
+  
+  <select id="getList" resultMap="memberMap">
+    <![CDATA[
+    select mem.userseq, mem.userid, mem.userpw, mem.username, '1' enabled, mem.dbsts, auth.auth, mem.credate, mem.upddate
+      from tbl_member mem
+           left outer join
+           tbl_member_auth auth
+        on mem.userseq = auth.userseq
+     where mem.dbsts = 'A'    
+    ]]>
+  </select>
+  
+  <insert id="insert">
+  insert into tbl_member(userid, userpw, username, enabled, dbsts )
+  values (#{userid}, #{userpw}, #{username}, #{enabled}, #{dbsts} )
+  </insert>
+  
+  <insert id="insertAuth">
+  insert into tbl_member_auth(userseq, userid, auth)
+  values (#{userseq}, #{userid}, #{auth})
+  </insert>  
+  
+  <delete id="delete">
+  delete from tbl_member where userseq = #{userseq}
+  </delete>
+  
+  <delete id="deleteAuth">
+  delete from tbl_member_auth where userseq = #{userseq}
+  </delete>
+  
+  <update id="update">
+  update tbl_member
+     set userid = #{userid}
+        ,userpw = #{userpw}
+        ,username = #{username} 
+        ,enabled = #{enabled} 
+        ,dbsts = #{dbsts} 
+        ,upddate = now()
+   where userseq = #{userseq}
+  </update>  
+  
+  <update id="updateAuth">
+  update tbl_member_auth
+     set userid = #{userid}
+        ,auth = #{auth}
+        ,upddate = now()
+   where userseq = #{userseq}
+  </update>   
+  
+</mapper>

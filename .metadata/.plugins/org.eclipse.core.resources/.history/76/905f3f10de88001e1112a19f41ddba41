@@ -1,0 +1,4793 @@
+package com.union.portal.controller;
+
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
+import java.math.BigInteger;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.attribute.FileTime;
+import java.sql.*;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.text.DecimalFormat;
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Properties;
+import java.util.Random;
+import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.Calendar;
+import java.util.Date;
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
+import javax.print.DocFlavor.URL;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.http.HttpServletRequest;
+
+import org.json.JSONObject;
+import org.mariadb.jdbc.MariaDbConnection;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.i18n.SessionLocaleResolver;
+
+import com.union.portal.common.HttpUtils;
+import com.union.portal.common.MTWebAPI;
+import com.union.portal.common.MailTemplate;
+import com.union.portal.service.FundClientService;
+import com.union.portal.service.MailService;
+import com.union.portal.service.UserService;
+import com.union.portal.common.MariaDBProcedureHandler;
+import com.union.portal.common.PasswordGenerator;
+import com.union.portal.domain.Account;
+import com.union.portal.domain.FundClient_client;
+import com.union.portal.domain.LastTransinfo;
+import com.union.portal.domain.M2PayDepositRequest;
+
+import lombok.AllArgsConstructor;
+import javax.servlet.http.HttpSession;
+
+import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.io.IOUtils;
+import org.apache.ibatis.annotations.Param;
+import org.json.JSONArray;
+
+import com.union.portal.common.AES;
+import com.union.portal.common.APIProtectionHandler;
+import com.union.portal.common.CustomerServices;
+
+import java.io.File;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
+
+/**
+ * Handles requests for the application home page.
+ */
+@Controller
+@RequestMapping("/fundclient")
+@AllArgsConstructor
+public class FundClientController {
+
+	private static final boolean ISONESERVER = true;
+
+	private static final Pattern GET_NUMBER = Pattern.compile("[0-9]+");
+
+	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
+
+	private static String defaultpath = "/fundclient";
+
+	// private static String serverinfo = "MT5Genie";
+
+	private static String serverinfo = "MT5B";
+
+	private FileSystemResource uploadFilePath;
+
+	private UserService service;
+
+	private MailService mailService;
+
+	private static final String PIZZA_IMAGES = "STPImage";
+	private static final String TOMCAT_HOME_PROPERTY = "catalina.home";
+	private static final String TOMCAT_HOME_PATH = System.getProperty(TOMCAT_HOME_PROPERTY);
+	private static final String PIZZA_IMAGES_PATH = TOMCAT_HOME_PATH + File.separator + PIZZA_IMAGES;
+
+	private static final File PIZZA_IMAGES_DIR = new File(PIZZA_IMAGES_PATH);
+	private static final String PIZZA_IMAGES_DIR_ABSOLUTE_PATH = PIZZA_IMAGES_DIR.getAbsolutePath() + File.separator;
+
+	private static final String FAILED_UPLOAD_MESSAGE = "You failed to upload [%s] because the file because %s";
+	private static final String SUCCESS_UPLOAD_MESSAGE = "You successfully uploaded file = [%s]";
+
+	@Autowired
+	SessionLocaleResolver localeResolver;
+
+	@Autowired
+	MessageSource messageSource;
+
+	@Autowired
+	FundClientService fundclientservice;
+
+	@RequestMapping(value = "/i18n", method = RequestMethod.GET)
+	public String i18n(Locale locale, HttpServletRequest request, Model model) {
+		logger.info("i18n....");
+		logger.info("Welcome i18n! The client locale is {}.", locale);
+		logger.info("Session locale is {}.", localeResolver.resolveLocale(request));
+		logger.info("site.title : {}", messageSource.getMessage("site.title", null, "default text", locale));
+		logger.info("site.count : {}",
+				messageSource.getMessage("site.count", new String[] { "筌ｃ꺂苡뀐쭪占�" }, "default text", locale));
+		logger.info("not.exist : {}", messageSource.getMessage("not.exist", null, "default text", locale));
+		model.addAttribute("siteCount", messageSource.getMessage("msg.first", null, locale));
+		logger.info("Session locale is {}.", LocaleContextHolder.getLocale());
+		return defaultpath + "/i18n";
+	}
+
+	@RequestMapping(value = "/", method = RequestMethod.GET)
+	public String slash(Model model) {
+		logger.info("Welcome home! slash.");
+//test test test test
+		String vLocal = LocaleContextHolder.getLocale().getLanguage();
+		model.addAttribute("lang", vLocal);
+		String returnURL = "";
+
+		returnURL = "/login";
+
+		return defaultpath + returnURL;
+	}
+
+	@RequestMapping(value = "", method = RequestMethod.GET)
+	public String slash1(Model model) {
+		logger.info("Welcome home! slash1.");
+//test test test test
+		String vLocal = LocaleContextHolder.getLocale().getLanguage();
+		model.addAttribute("lang", vLocal);
+		String returnURL = "";
+
+		returnURL = "/login";
+
+		return defaultpath + returnURL;
+	}
+
+	@RequestMapping(value = "/portal/fundclient", method = RequestMethod.GET)
+	public String empty(Model model) {
+		logger.info("Welcome home! slash.");
+//test test test test
+		String vLocal = LocaleContextHolder.getLocale().getLanguage();
+		model.addAttribute("lang", vLocal);
+		String returnURL = "";
+
+		returnURL = "/login";
+
+		return defaultpath + returnURL;
+	}
+
+	@RequestMapping(value = "/index", method = RequestMethod.GET)
+	public String index(Model model) {
+		logger.info("Welcome home! Index.");
+//test test test test
+		String vLocal = LocaleContextHolder.getLocale().getLanguage();
+		model.addAttribute("lang", vLocal);
+		String returnURL = "";
+
+		returnURL = "/index";
+
+		String encryption = AES.encrypt("test");
+		String decryption = AES.decrypt(encryption);
+
+		logger.info("Encryption:" + encryption);
+		logger.info("Encryption:" + decryption);
+
+		return defaultpath + returnURL;
+	}
+
+	@RequestMapping(value = "/testpluginapi", method = RequestMethod.GET)
+	public String testpluginapi(Model model) {
+		logger.info("Welcome testpluginapi! Index.");
+//test test test test
+		String vLocal = LocaleContextHolder.getLocale().getLanguage();
+		model.addAttribute("lang", vLocal);
+		String returnURL = "";
+
+		returnURL = "/testpluginapi";
+
+		return defaultpath + returnURL;
+	}
+
+	@RequestMapping(value = "/IndexGetInfo", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	public ModelAndView IndexGetInfo(HttpServletRequest request, Model model) {
+
+		logger.info("Get IndexGetInfo ........" + serverinfo);
+
+		ModelAndView mav = new ModelAndView("jsonView");
+		String responsestr = "";
+		String responsestr1 = "";
+		HttpUtils httpUtils = new HttpUtils(serverinfo);
+		HttpSession session = request.getSession();
+		if (httpUtils.sendAuth(serverinfo)) {
+
+			// logger.info(responsestr);
+			String path = "/api/user/get?login=" + (String) session.getAttribute("s_Login");
+			try {
+				responsestr = httpUtils.sendGet(serverinfo, path);
+				if (responsestr.indexOf("0 Done") > 0) {
+					JSONObject jobj = new JSONObject(responsestr);
+					JSONObject answer = jobj.getJSONObject("answer");
+					String Company = answer.getString("Company");
+					JSONObject manageridobj = new JSONObject(Company);
+					String managerid = manageridobj.getString("manager_id");
+
+					if (httpUtils.sendAuth(serverinfo)) {
+
+						// logger.info(responsestr);
+						path = "/api/user/get?login=" + managerid;
+						try {
+							responsestr1 = httpUtils.sendGet(serverinfo, path);
+							if (responsestr1.indexOf("0 Done") > 0) {
+
+								JSONObject newjobj = new JSONObject(responsestr1);
+								JSONObject newanswer = newjobj.getJSONObject("answer");
+								String managername = newanswer.getString("Name");
+								jobj.put("ManagerName", managername);
+								responsestr = jobj.toString();
+								logger.info(responsestr.toString());
+
+							}
+						} catch (Exception e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+
+					}
+				}
+
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+		mav.addObject("result", APIProtectionHandler.ApiProtection(request, responsestr, Boolean.valueOf(false)));
+		// mav.addObject("result", APIProtectionHandler.ApiProtection(request,
+		// responsestr, Boolean.valueOf(false)));
+		return mav;
+	}
+
+	@RequestMapping(value = "/IndexGetMargin", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	public ModelAndView IndexGetMargin(HttpServletRequest request, Model model) {
+
+		logger.info("Get IndexGetMargin ........" + serverinfo);
+
+		ModelAndView mav = new ModelAndView("jsonView");
+		String responsestr = "";
+		String responsestr1 = "";
+		HttpUtils httpUtils = new HttpUtils(serverinfo);
+		HttpSession session = request.getSession();
+		if (httpUtils.sendAuth(serverinfo)) {
+
+			// logger.info(responsestr);
+			String path = "/api/trade/check_margin?login=" + (String) session.getAttribute("s_Login")
+					+ "&symbol=EURUSD&type=1&volume=100000&price=1.27780";
+			try {
+				responsestr = httpUtils.sendGet(serverinfo, path);
+				if (responsestr.indexOf("0 Done") > 0) {
+					logger.info(responsestr);
+				}
+
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+		mav.addObject("result", APIProtectionHandler.ApiProtection(request, responsestr, Boolean.valueOf(false)));
+		// mav.addObject("result", APIProtectionHandler.ApiProtection(request,
+		// responsestr, Boolean.valueOf(false)));
+		return mav;
+	}
+
+	@RequestMapping(value = "/404", method = RequestMethod.GET)
+	public String Error404(Model model) {
+		logger.info("Welcome Error404! Index.");
+
+		String vLocal = LocaleContextHolder.getLocale().getLanguage();
+		model.addAttribute("lang", vLocal);
+		String returnURL = "";
+
+		returnURL = "/404";
+
+		return defaultpath + returnURL;
+	}
+
+	@RequestMapping(value = "/allMaster", method = RequestMethod.GET)
+	public String allMaster(Model model) {
+		logger.info("Welcome allMaster! Index.");
+
+		String vLocal = LocaleContextHolder.getLocale().getLanguage();
+		model.addAttribute("lang", vLocal);
+		String returnURL = "";
+
+		returnURL = "/allmaster";
+
+		return defaultpath + returnURL;
+	}
+
+	@RequestMapping(value = "/viewProfile", method = RequestMethod.GET)
+	public String viewProfile(HttpServletRequest request, Model model) throws SQLException {
+		logger.info("Welcome viewProfile! Index.");
+		String id = request.getParameter("id");
+		if (id == null || id == "") {
+			return defaultpath + "/index";
+		}
+		logger.info("Get para ........" + id);
+		String vLocal = LocaleContextHolder.getLocale().getLanguage();
+		model.addAttribute("lang", vLocal);
+		model.addAttribute("profileid", id);
+
+		ModelAndView mav = new ModelAndView("jsonView");
+		JSONObject inputjson = new JSONObject();
+		inputjson.put("p_name", "p_master_check_isexist");
+		inputjson.put("masterid", id);
+		String result = MariaDBProcedureHandler.ProcedureCall(inputjson.toString());
+		if (MariaDBProcedureHandler.isJSONValid(result)) {
+			JSONObject JOBJ = new JSONObject(result);
+			String retcode = JOBJ.getString("retcode");
+			if (retcode.indexOf("0 Done") >= 0) {
+				JSONObject answer = JOBJ.getJSONObject("answer");
+				if (answer != null) {
+					String ismaster = answer.getString("isexists");
+					// String url = answer.getString("url");
+					// logger.info(description +", " + url);
+					logger.info("ismaster : " + ismaster);
+
+					if (ismaster.equalsIgnoreCase("1")) {
+						logger.info("in here");
+						String responsestr = "";
+						HttpUtils httpUtils = new HttpUtils(serverinfo);
+
+						if (httpUtils.sendAuth(serverinfo)) {
+
+							String path = "/api/user/get?login=" + id;
+							try {
+								responsestr = httpUtils.sendGet(serverinfo, path);
+								if (responsestr.indexOf("0 Done") > 0) {
+									logger.info(responsestr);
+									JSONObject logindetails = new JSONObject(responsestr);
+									model.addAttribute("Name",
+											StringUtils.isEmpty(logindetails.getJSONObject("answer").getString("Name"))
+													? "Not Set"
+													: String.valueOf(
+															logindetails.getJSONObject("answer").getString("Name")));
+									model.addAttribute("Country", StringUtils.isEmpty(
+											logindetails.getJSONObject("answer").getString("Country")) ? "Not Set"
+													: String.valueOf(
+															logindetails.getJSONObject("answer").getString("Country")));
+									model.addAttribute("Email",
+											StringUtils.isEmpty(logindetails.getJSONObject("answer").getString("Email"))
+													? "Not Set"
+													: String.valueOf(
+															logindetails.getJSONObject("answer").getString("Email")));
+									model.addAttribute("Phone",
+											StringUtils.isEmpty(logindetails.getJSONObject("answer").getString("Phone"))
+													? "Not Set"
+													: String.valueOf(
+															logindetails.getJSONObject("answer").getString("Phone")));
+									model.addAttribute("Address", StringUtils.isEmpty(
+											logindetails.getJSONObject("answer").getString("Address")) ? "Not Set"
+													: String.valueOf(
+															logindetails.getJSONObject("answer").getString("Address")));
+
+								}
+
+							} catch (Exception e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+						}
+					} else {
+						logger.info("not a master");
+						// not a master
+
+						String returnURL = "/404";
+
+						return defaultpath + returnURL;
+					}
+
+					logger.info(result);
+				}
+
+			}
+		} else {
+
+			logger.info(result);
+		}
+
+		String returnURL = "";
+
+		returnURL = "/viewprofile";
+
+		return defaultpath + returnURL;
+	}
+
+	@RequestMapping(value = "/copyMaster", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	public ModelAndView copyMaster(HttpServletRequest request, Model model) throws SQLException {
+		String responsestr = "";
+
+		String masterid = request.getParameter("mid");
+		String ratio = request.getParameter("r");
+		String type = request.getParameter("t");
+		logger.info("typer: " + type);
+		String apiType = "";
+		if (type.equalsIgnoreCase("2")) {
+			apiType = "L";
+
+		}
+		if (type.equalsIgnoreCase("1")) {
+			apiType = "E";
+		}
+
+		logger.info("Welcome copyMaster: ");
+		ModelAndView mav = new ModelAndView("jsonView");
+		HttpSession session = request.getSession();
+
+		if (APIProtectionHandler.IsLogin(request)) {
+
+			JSONObject inputjson1 = new JSONObject();
+			inputjson1.put("a", "API_ADD_CLIENT");
+			inputjson1.put("mid", masterid);
+			inputjson1.put("cid", (String) session.getAttribute("s_Login"));
+			inputjson1.put("r", ratio);
+			inputjson1.put("t", apiType);
+
+			String encryptionjs = AES.encrypt(inputjson1.toString());
+
+			byte[] encodedBytes = Base64.encodeBase64(encryptionjs.getBytes());
+			String encodedencryptedjs = new String(encodedBytes);
+			logger.info("encrypt : " + encryptionjs);
+			HttpUtils httpUtils = new HttpUtils(serverinfo);
+
+			String path = httpUtils.DOTNETAPIURL + "?json=" + encodedencryptedjs;
+			try {
+				String rresponsestr = httpUtils.sendGetExternalURL(path);
+				logger.info("test api call : " + rresponsestr);
+
+				byte[] decoded = Base64.decodeBase64(rresponsestr);
+				String decodedstring = new String(decoded);
+				String decryptedjs = AES.decrypt(decodedstring);
+				logger.info("return str : " + rresponsestr);
+				logger.info("return decoded : " + decodedstring);
+				logger.info("return decrypted : " + decryptedjs);
+
+				if (decryptedjs.indexOf("0 Done") >= 0 || decryptedjs.indexOf(" Done") >= 0) {
+					JSONObject inputjson = new JSONObject();
+					inputjson.put("p_name", "p_insert_copy_record");
+					inputjson.put("copierid", (String) session.getAttribute("s_Login"));
+					inputjson.put("ratio", ratio);
+					inputjson.put("copytype", type);
+					inputjson.put("masterid", masterid);
+
+					logger.info(inputjson.toString());
+					responsestr = MariaDBProcedureHandler.ProcedureCall(inputjson.toString());
+					if (MariaDBProcedureHandler.isJSONValid(responsestr)) {
+						logger.info(responsestr);
+						JSONObject JOBJ = new JSONObject(responsestr);
+						String retcode = JOBJ.getString("retcode");
+						if (retcode.indexOf("0 Done") >= 0) {
+							JSONObject answer = JOBJ.getJSONObject("answer");
+							if (answer != null) {
+								// String description = answer.getString("desc");
+								// String url = answer.getString("url");
+								// logger.info(description +", " + url);
+
+								logger.info(responsestr);
+							}
+
+						}
+					} else {
+
+						logger.info(responsestr);
+					}
+				} else {
+					responsestr = decryptedjs;
+				}
+
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+		}
+
+		mav.addObject("result", APIProtectionHandler.ApiProtection(request, responsestr, Boolean.valueOf(false)));
+		return mav;
+
+	}
+
+	@RequestMapping(value = "/getMasterFromPlugin", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	public ModelAndView getMasterFromPlugin(HttpServletRequest request, Model model) throws SQLException {
+		String responsestr = "";
+
+		String masterid = request.getParameter("mid");
+		String ratio = request.getParameter("r");
+		String type = request.getParameter("t");
+
+		logger.info("Welcome getMasterFromPlugin: ");
+		ModelAndView mav = new ModelAndView("jsonView");
+		HttpSession session = request.getSession();
+
+		if (APIProtectionHandler.IsLogin(request)) {
+
+			JSONObject inputjson1 = new JSONObject();
+			inputjson1.put("a", "API_GET_MASTER_LIST");
+			/*
+			 * inputjson1.put("mid", masterid); inputjson1.put("cid", (String)
+			 * session.getAttribute("s_Login")); inputjson1.put("r", ratio);
+			 * inputjson1.put("t", type);
+			 */
+
+			String encryptionjs = AES.encrypt(inputjson1.toString());
+
+			byte[] encodedBytes = Base64.encodeBase64(encryptionjs.getBytes());
+			String encodedencryptedjs = new String(encodedBytes);
+			logger.info("encrypt : " + encryptionjs);
+			HttpUtils httpUtils = new HttpUtils(serverinfo);
+
+			String path = httpUtils.DOTNETAPIURL + "?json=" + encodedencryptedjs;
+			try {
+				String rresponsestr = httpUtils.sendGetExternalURL(path);
+				logger.info("test api call : " + rresponsestr);
+
+				byte[] decoded = Base64.decodeBase64(rresponsestr);
+				String decodedstring = new String(decoded);
+				String decryptedjs = AES.decrypt(decodedstring);
+				logger.info("return str : " + rresponsestr);
+				logger.info("return decoded : " + decodedstring);
+				logger.info("return decrypted : " + decryptedjs);
+				responsestr = decryptedjs;
+				if (decryptedjs.indexOf("0 Done") >= 0 || decryptedjs.indexOf(" Done") >= 0) {
+
+					logger.info(responsestr);
+
+				} else {
+
+					logger.info(responsestr);
+
+					responsestr = decryptedjs;
+
+				}
+			}
+
+			catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+		}
+
+		mav.addObject("result", APIProtectionHandler.ApiProtection(request, responsestr, Boolean.valueOf(false)));
+		return mav;
+
+	}
+
+	@RequestMapping(value = "/unCopyMaster", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	public ModelAndView unCopyMaster(HttpServletRequest request, Model model) throws SQLException {
+		String responsestr = "";
+
+		String masterid = request.getParameter("mid");
+
+		logger.info("Welcome unCopyMaster: ");
+		ModelAndView mav = new ModelAndView("jsonView");
+		HttpSession session = request.getSession();
+
+		if (APIProtectionHandler.IsLogin(request)) {
+
+			JSONObject inputjson1 = new JSONObject();
+			inputjson1.put("a", "API_DEL_CLIENT");
+			inputjson1.put("mid", masterid);
+			inputjson1.put("cid", (String) session.getAttribute("s_Login"));
+
+			String encryptionjs = AES.encrypt(inputjson1.toString());
+
+			byte[] encodedBytes = Base64.encodeBase64(encryptionjs.getBytes());
+			String encodedencryptedjs = new String(encodedBytes);
+			logger.info("encrypt : " + encryptionjs);
+			HttpUtils httpUtils = new HttpUtils(serverinfo);
+
+			String path = httpUtils.DOTNETAPIURL + "?json=" + encodedencryptedjs;
+			try {
+				String rresponsestr = httpUtils.sendGetExternalURL(path);
+				logger.info("test api call : " + rresponsestr);
+
+				byte[] decoded = Base64.decodeBase64(rresponsestr);
+				String decodedstring = new String(decoded);
+				String decryptedjs = AES.decrypt(decodedstring);
+				logger.info("return str : " + rresponsestr);
+				logger.info("return decoded : " + decodedstring);
+				logger.info("return decrypted : " + decryptedjs);
+
+				if (decryptedjs.indexOf("0 Done") >= 0 || decryptedjs.indexOf(" Done") >= 0) {
+					JSONObject inputjson = new JSONObject();
+					inputjson.put("p_name", "p_copy_deactivated_record");
+					inputjson.put("copierid", (String) session.getAttribute("s_Login"));
+					inputjson.put("masterid", masterid);
+
+					logger.info(inputjson.toString());
+					responsestr = MariaDBProcedureHandler.ProcedureCall(inputjson.toString());
+					if (MariaDBProcedureHandler.isJSONValid(responsestr)) {
+						logger.info(responsestr);
+						JSONObject JOBJ = new JSONObject(responsestr);
+						String retcode = JOBJ.getString("retcode");
+						if (retcode.indexOf("0 Done") >= 0) {
+							JSONObject answer = JOBJ.getJSONObject("answer");
+							if (answer != null) {
+								// String description = answer.getString("desc");
+								// String url = answer.getString("url");
+								// logger.info(description +", " + url);
+
+								logger.info(responsestr);
+							}
+
+						}
+					} else {
+
+						logger.info(responsestr);
+					}
+				} else {
+					responsestr = decryptedjs;
+				}
+
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+		}
+
+		mav.addObject("result", APIProtectionHandler.ApiProtection(request, responsestr, Boolean.valueOf(false)));
+		return mav;
+
+	}
+
+	@RequestMapping(value = "/isCopier", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	public ModelAndView isCopier(HttpServletRequest request, Model model) throws SQLException {
+		String responsestr = "";
+
+		String masterid = request.getParameter("mid");
+		logger.info("Welcome copyMaster: ");
+		ModelAndView mav = new ModelAndView("jsonView");
+		HttpSession session = request.getSession();
+
+		if (APIProtectionHandler.IsLogin(request)) {
+			JSONObject inputjson = new JSONObject();
+			inputjson.put("p_name", "p_copy_check_isexist_record");
+			inputjson.put("copierid", (String) session.getAttribute("s_Login"));
+			inputjson.put("masterid", masterid);
+			logger.info(inputjson.toString());
+			responsestr = MariaDBProcedureHandler.ProcedureCall(inputjson.toString());
+			if (MariaDBProcedureHandler.isJSONValid(responsestr)) {
+				logger.info(responsestr);
+				JSONObject JOBJ = new JSONObject(responsestr);
+				String retcode = JOBJ.getString("retcode");
+				if (retcode.indexOf("0 Done") >= 0) {
+					JSONObject answer = JOBJ.getJSONObject("answer");
+					if (answer != null) {
+						// String description = answer.getString("desc");
+						// String url = answer.getString("url");
+						// logger.info(description +", " + url);
+
+						logger.info(responsestr);
+					}
+
+				}
+			} else {
+
+				logger.info(responsestr);
+			}
+		}
+
+		mav.addObject("result", APIProtectionHandler.ApiProtection(request, responsestr, Boolean.valueOf(false)));
+		return mav;
+
+	}
+
+	@RequestMapping(value = "/checkCopyStatus", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	public ModelAndView checkCopyStatus(HttpServletRequest request, Model model) throws SQLException {
+		String responsestr = "";
+
+		String masterid = request.getParameter("mid");
+		logger.info("Welcome checkCopyStatus: ");
+		ModelAndView mav = new ModelAndView("jsonView");
+		HttpSession session = request.getSession();
+
+		if (APIProtectionHandler.IsLogin(request)) {
+			JSONObject inputjson = new JSONObject();
+			inputjson.put("p_name", "p_client_check_master_copy_condition");
+			inputjson.put("copierid", (String) session.getAttribute("s_Login"));
+			inputjson.put("masterid", masterid);
+			logger.info(inputjson.toString());
+			responsestr = MariaDBProcedureHandler.ProcedureCall(inputjson.toString());
+			if (MariaDBProcedureHandler.isJSONValid(responsestr)) {
+				logger.info(responsestr);
+				JSONObject JOBJ = new JSONObject(responsestr);
+				String retcode = JOBJ.getString("retcode");
+				if (retcode.indexOf("0 Done") >= 0) {
+					JSONObject answer = JOBJ.getJSONObject("answer");
+					if (answer != null) {
+						// String description = answer.getString("desc");
+						// String url = answer.getString("url");
+						// logger.info(description +", " + url);
+
+						logger.info(responsestr);
+					}
+
+				}
+			} else {
+
+				logger.info(responsestr);
+			}
+		}
+
+		mav.addObject("result", APIProtectionHandler.ApiProtection(request, responsestr, Boolean.valueOf(false)));
+		return mav;
+
+	}
+
+	@RequestMapping(value = "/notifications", method = RequestMethod.GET)
+	public String notification(Model model) {
+		logger.info("Welcome notifications! Index.");
+
+		String vLocal = LocaleContextHolder.getLocale().getLanguage();
+		model.addAttribute("lang", vLocal);
+		String returnURL = "";
+
+		returnURL = "/notification";
+
+		return defaultpath + returnURL;
+	}
+
+	@RequestMapping(value = "/getNewNotification", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	public ModelAndView getNewNotification(HttpServletRequest request, Model model) throws SQLException {
+		String responsestr = "";
+		String page = request.getParameter("p");
+
+		logger.info("Welcome getNewNotification: ");
+		HttpSession session = request.getSession();
+		ModelAndView mav = new ModelAndView("jsonView");
+		JSONObject inputjson = new JSONObject();
+		inputjson.put("p_name", "p_client_fetch_notification");
+		inputjson.put("client_id", (String) session.getAttribute("s_Login"));
+		inputjson.put("pagenumber", page);
+		logger.info(inputjson.toString());
+		responsestr = MariaDBProcedureHandler.ProcedureCall(inputjson.toString());
+		if (MariaDBProcedureHandler.isJSONValid(responsestr)) {
+			logger.info(responsestr);
+			JSONObject JOBJ = new JSONObject(responsestr);
+			String retcode = JOBJ.getString("retcode");
+			if (retcode.indexOf("0 Done") >= 0) {
+				JSONObject answer = JOBJ.getJSONObject("answer");
+				if (answer != null) {
+					// String description = answer.getString("desc");
+					// String url = answer.getString("url");
+					// logger.info(description +", " + url);
+
+					logger.info(responsestr);
+				}
+
+			}
+		} else {
+
+			logger.info(responsestr);
+		}
+
+		mav.addObject("result", APIProtectionHandler.ApiProtection(request, responsestr, Boolean.valueOf(false)));
+		return mav;
+
+	}
+
+	@RequestMapping(value = "/getNewNotificationCount", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	public ModelAndView getNewNotificationCount(HttpServletRequest request, Model model) throws SQLException {
+		String responsestr = "";
+		logger.info("Welcome getNewNotificationCount: ");
+		HttpSession session = request.getSession();
+		ModelAndView mav = new ModelAndView("jsonView");
+		JSONObject inputjson = new JSONObject();
+		inputjson.put("p_name", "p_client_get_notification_count_total");
+		inputjson.put("client_id", (String) session.getAttribute("s_Login"));
+		inputjson.put("isread", 0);
+		logger.info(inputjson.toString());
+		responsestr = MariaDBProcedureHandler.ProcedureCall(inputjson.toString());
+		if (MariaDBProcedureHandler.isJSONValid(responsestr)) {
+			logger.info(responsestr);
+			JSONObject JOBJ = new JSONObject(responsestr);
+			String retcode = JOBJ.getString("retcode");
+			if (retcode.indexOf("0 Done") >= 0) {
+				JSONObject answer = JOBJ.getJSONObject("answer");
+				if (answer != null) {
+					// String description = answer.getString("desc");
+					// String url = answer.getString("url");
+					// logger.info(description +", " + url);
+
+					logger.info(responsestr);
+				}
+
+			}
+		} else {
+
+			logger.info(responsestr);
+		}
+
+		mav.addObject("result", APIProtectionHandler.ApiProtection(request, responsestr, Boolean.valueOf(false)));
+		return mav;
+
+	}
+
+	@RequestMapping(value = "/viewNotificationDetails", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	public ModelAndView viewNotificationDetails(HttpServletRequest request, Model model) throws SQLException {
+		String responsestr = "";
+		String id = request.getParameter("id");
+		if (id == null || id == "") {
+			id = "1";
+		}
+		logger.info("Get para ........" + id);
+		logger.info("Welcome viewNotificationDetails: ");
+		HttpSession session = request.getSession();
+		ModelAndView mav = new ModelAndView("jsonView");
+		JSONObject inputjson = new JSONObject();
+		inputjson.put("p_name", "p_client_notification_view");
+		inputjson.put("client_id", (String) session.getAttribute("s_Login"));
+		inputjson.put("id", id);
+		logger.info(inputjson.toString());
+		responsestr = MariaDBProcedureHandler.ProcedureCall(inputjson.toString());
+		if (MariaDBProcedureHandler.isJSONValid(responsestr)) {
+			logger.info(responsestr);
+			JSONObject JOBJ = new JSONObject(responsestr);
+			String retcode = JOBJ.getString("retcode");
+			if (retcode.indexOf("0 Done") >= 0) {
+				JSONObject answer = JOBJ.getJSONObject("answer");
+				if (answer != null) {
+					// String description = answer.getString("desc");
+					// String url = answer.getString("url");
+					// logger.info(description +", " + url);
+
+					logger.info(responsestr);
+				}
+
+			}
+		} else {
+
+			logger.info(responsestr);
+		}
+
+		mav.addObject("result", APIProtectionHandler.ApiProtection(request, responsestr, Boolean.valueOf(false)));
+		return mav;
+
+	}
+
+	@RequestMapping(value = "/mymaster", method = RequestMethod.GET)
+	public String mymaster(Model model) {
+		logger.info("Welcome mymaster! Index.");
+
+		String vLocal = LocaleContextHolder.getLocale().getLanguage();
+		model.addAttribute("lang", vLocal);
+		String returnURL = "";
+
+		returnURL = "/mymaster";
+
+		return defaultpath + returnURL;
+	}
+
+	@RequestMapping(value = "/masters", method = RequestMethod.GET)
+	public String master(Model model) {
+		logger.info("Welcome master! Index.");
+
+		String vLocal = LocaleContextHolder.getLocale().getLanguage();
+		model.addAttribute("lang", vLocal);
+		String returnURL = "";
+
+		returnURL = "/master";
+
+		return defaultpath + returnURL;
+	}
+
+	@RequestMapping(value = "/mymasterlist", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	public ModelAndView mymasterlist(HttpServletRequest request, Model model) throws SQLException {
+		String responsestr = "";
+		logger.info("Welcome mymasterlist: ");
+		HttpSession session = request.getSession();
+		ModelAndView mav = new ModelAndView("jsonView");
+		JSONObject inputjson = new JSONObject();
+		inputjson.put("p_name", "p_client_get_copy_list");
+		inputjson.put("client_id", (String) session.getAttribute("s_Login"));
+		inputjson.put("usertype", 2);
+
+		logger.info(inputjson.toString());
+		responsestr = MariaDBProcedureHandler.ProcedureCall(inputjson.toString());
+		if (MariaDBProcedureHandler.isJSONValid(responsestr)) {
+			logger.info(responsestr);
+			JSONObject JOBJ = new JSONObject(responsestr);
+			String retcode = JOBJ.getString("retcode");
+			if (retcode.indexOf("0 Done") >= 0) {
+				JSONObject answer = JOBJ.getJSONObject("answer");
+				if (answer != null) {
+
+					logger.info(responsestr);
+				}
+
+			}
+		} else {
+
+			logger.info(responsestr);
+		}
+
+		mav.addObject("result", APIProtectionHandler.ApiProtection(request, responsestr, Boolean.valueOf(false)));
+		return mav;
+
+	}
+
+	@RequestMapping(value = "/mycopier", method = RequestMethod.GET)
+	public String mycopier(Model model) {
+		logger.info("Welcome mycopier! Index.");
+
+		String vLocal = LocaleContextHolder.getLocale().getLanguage();
+		model.addAttribute("lang", vLocal);
+		String returnURL = "";
+
+		returnURL = "/mycopier";
+
+		return defaultpath + returnURL;
+	}
+
+	@RequestMapping(value = "/mycopierlist", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	public ModelAndView mycopierlist(HttpServletRequest request, Model model) throws SQLException {
+		String responsestr = "";
+		logger.info("Welcome mycopierlist: ");
+		HttpSession session = request.getSession();
+		ModelAndView mav = new ModelAndView("jsonView");
+		JSONObject inputjson = new JSONObject();
+		inputjson.put("p_name", "p_copy_get_client_list");
+		inputjson.put("master_id", (String) session.getAttribute("s_Login"));
+		logger.info(inputjson.toString());
+		responsestr = MariaDBProcedureHandler.ProcedureCall(inputjson.toString());
+		if (MariaDBProcedureHandler.isJSONValid(responsestr)) {
+			logger.info(responsestr);
+			JSONObject JOBJ = new JSONObject(responsestr);
+			String retcode = JOBJ.getString("retcode");
+			if (retcode.indexOf("0 Done") >= 0) {
+				JSONObject answer = JOBJ.getJSONObject("answer");
+				if (answer != null) {
+
+					logger.info(responsestr);
+				}
+
+			}
+		} else {
+
+			logger.info(responsestr);
+		}
+		mav.addObject("result", APIProtectionHandler.ApiProtection(request, responsestr, Boolean.valueOf(false)));
+		return mav;
+
+	}
+
+	@RequestMapping(value = "/myprofile", method = RequestMethod.GET)
+	public String myprofile(Model model) {
+		logger.info("Welcome myprofile! Index.");
+
+		String vLocal = LocaleContextHolder.getLocale().getLanguage();
+		model.addAttribute("lang", vLocal);
+		String returnURL = "";
+
+		returnURL = "/myprofile";
+
+		return defaultpath + returnURL;
+	}
+
+	@RequestMapping(value = "/myprofileGetInfo", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	public ModelAndView myprofileGetInfo(HttpServletRequest request, Model model) {
+
+		logger.info("Get IndexGetInfo ........" + serverinfo);
+
+		ModelAndView mav = new ModelAndView("jsonView");
+		String responsestr = "";
+		HttpUtils httpUtils = new HttpUtils(serverinfo);
+
+		if (httpUtils.sendAuth(serverinfo)) {
+			HttpSession session = request.getSession();
+			String path = "/api/user/get?login=" + (String) session.getAttribute("s_Login");
+			try {
+				responsestr = httpUtils.sendGet(serverinfo, path);
+				if (responsestr.indexOf("0 Done") > 0) {
+					mav.addObject("result",
+							APIProtectionHandler.ApiProtection(request, responsestr, Boolean.valueOf(false)));
+				}
+
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+		return mav;
+	}
+
+	@RequestMapping(value = "/myprofileGetAccountInfo", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	public ModelAndView myprofileGetAccountInfo(HttpServletRequest request, Model model) {
+
+		logger.info("Get myprofileGetAccountInfo ........" + serverinfo);
+
+		ModelAndView mav = new ModelAndView("jsonView");
+		String responsestr = "";
+
+		HttpUtils httpUtils = new HttpUtils(serverinfo);
+
+		if (httpUtils.sendAuth(serverinfo)) {
+			HttpSession session = request.getSession();
+			String path = "/api/user/account/get?login=" + (String) session.getAttribute("s_Login");
+			try {
+				responsestr = httpUtils.sendGet(serverinfo, path);
+				if (responsestr.indexOf("0 Done") > 0) {
+
+					mav.addObject("result",
+							APIProtectionHandler.ApiProtection(request, responsestr, Boolean.valueOf(false)));
+				}
+
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+		return mav;
+	}
+
+	@RequestMapping(value = "/internalTransfer", method = RequestMethod.GET)
+	public String internalTransfer(HttpServletRequest request, Model model) {
+		logger.info("Welcome home! Index.");
+
+		String returnURL = "";
+		HttpSession session = request.getSession();
+		long clientid = 0;
+
+		String s_ClientID = (String) session.getAttribute("s_ClientID");
+
+		List<Account> userAccountList = null;
+		String retcode = "";
+
+		HttpUtils httpUtils = new HttpUtils(serverinfo);
+		if (s_ClientID != null) {
+
+			String responsestr = "";
+			if (httpUtils.sendAuth(serverinfo)) {
+				String path = "/api/client/user/get_logins?client=" + s_ClientID;
+				try {
+					responsestr = httpUtils.sendGet(serverinfo, path);
+					if (responsestr.indexOf("0 Done") > 0) {
+
+						JSONObject jSongetLogin = new JSONObject(responsestr);
+						retcode = jSongetLogin.getString("retcode");
+						JSONObject login_obj = jSongetLogin.getJSONObject("answer");
+						String loginstr = "";
+
+						if (login_obj != null) {
+							JSONArray jsonLogin = login_obj.getJSONArray(s_ClientID);
+
+							if (jsonLogin != null && jsonLogin.length() > 0) {
+								for (int i = 0; i < jsonLogin.length(); i++) {
+									loginstr = loginstr + "," + (StringUtils.isEmpty(jsonLogin.get(i)) ? ""
+											: String.valueOf(jsonLogin.get(i)));
+
+								}
+								logger.info("loginstr=" + loginstr.substring(1, loginstr.length()));
+							}
+
+							loginstr = loginstr.substring(1, loginstr.length());
+
+							userAccountList = MTWebAPI.getUserinfoByLogins(serverinfo, loginstr, false);
+
+						}
+
+						try {
+							path = "/api/user/get_batch?login=" + loginstr;
+							responsestr = httpUtils.sendGet(serverinfo, path);
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+
+					}
+
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+
+		} else {
+			returnURL = "/login";
+
+		}
+
+		String vLocal = LocaleContextHolder.getLocale().getLanguage();
+		model.addAttribute("userAccountList", userAccountList);
+		model.addAttribute("lang", vLocal);
+
+		returnURL = "/internalTransfer";
+
+		return defaultpath + returnURL;
+	}
+
+	@RequestMapping(value = "/ajax/checkMarginWithServerinfo", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	public ModelAndView checkMarginWithServerinfo(@RequestParam("login") Long login, Model model) {
+		logger.info("Welcome checkMarginWithServerinfo! ........" + login + ":" + serverinfo);
+
+		ModelAndView mav = new ModelAndView("jsonView");
+
+		String result = "SUCCESS";
+		String resultmessage = "SUCCESS";
+		String marginfree = "0";
+		String realmarginfree = "0";
+		String balance = "0";
+		String equity = "0";
+
+		// Map<String, String> resultmap = MTWebAPI.checkMargin(serverinfo, login);
+		boolean isAuthIgnore = false;
+		Map<String, String> resultmap = MTWebAPI.getUserTradingStatus(serverinfo, login, isAuthIgnore);
+
+		if (resultmap == null || resultmap.size() <= 0) {
+			result = "ERROR";
+			resultmessage = "ERROR-NODATA";
+		} else {
+			if (resultmap.get("Result") != null && !resultmap.get("Result").equals("SUCCESS")) {
+				result = "ERROR";
+				resultmessage = resultmap.get("Result");
+			} else {
+				result = "SUCCESS";
+				resultmessage = "SUCCESS";
+
+				realmarginfree = resultmap.get("MarginFree");
+				balance = resultmap.get("Balance");
+				equity = resultmap.get("Equity");
+
+				// 2021-09-25 marginfree 값을 balance와 equity가 같으면 equity 그렇지 않으면 equity의 80%로
+				// 처리하도록 수정
+
+				double d_marginfree = 0;
+				double d_balance = 0;
+				double d_equity = 0;
+
+				try {
+					d_balance = Double.parseDouble(balance);
+				} catch (Exception e) {
+				}
+
+				try {
+					d_equity = Double.parseDouble(equity);
+				} catch (Exception e) {
+				}
+
+				if (d_balance == d_equity) {
+					d_marginfree = d_equity;
+				} else {
+					if (d_equity <= 0)
+						d_marginfree = 0;
+					else
+						d_marginfree = d_equity * 0.8;
+				}
+
+				DecimalFormat form = new DecimalFormat("#.##");
+				marginfree = form.format(d_marginfree);
+
+			}
+		}
+
+		logger.info("#### MarginFree result  ........" + marginfree + ":" + realmarginfree);
+		mav.addObject("result", result);
+		mav.addObject("resultmessage", resultmessage);
+		mav.addObject("MarginFree", marginfree);
+		mav.addObject("RealMarginFree", realmarginfree);
+		mav.addObject("Balance", balance);
+		mav.addObject("Equity", equity);
+
+		return mav;
+	}
+
+	@RequestMapping(value = "/Orders", method = RequestMethod.GET)
+	public String Orders(Model model) {
+		logger.info("Welcome home! Index.");
+
+		String vLocal = LocaleContextHolder.getLocale().getLanguage();
+		model.addAttribute("lang", vLocal);
+		String returnURL = "";
+
+		returnURL = "/orders";
+
+		return defaultpath + returnURL;
+	}
+
+	@RequestMapping(value = "/OrderGetTotal", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	public ModelAndView OrderGetTotal(HttpServletRequest request, Model model) {
+
+		logger.info("Get OrderGetTotal ........" + serverinfo);
+
+		ModelAndView mav = new ModelAndView("jsonView");
+		String responsestr = "";
+		HttpUtils httpUtils = new HttpUtils(serverinfo);
+
+		if (httpUtils.sendAuth(serverinfo)) {
+			HttpSession session = request.getSession();
+			String path = "/api/order/get_total?login=" + (String) session.getAttribute("s_Login");
+			try {
+				responsestr = httpUtils.sendGet(serverinfo, path);
+				if (responsestr.indexOf("0 Done") > 0) {
+
+				}
+
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		mav.addObject("result", APIProtectionHandler.ApiProtection(request, responsestr, Boolean.valueOf(false)));
+		return mav;
+	}
+
+	@RequestMapping(value = "/OrderGetList", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	public ModelAndView OrderGetList(HttpServletRequest request, Model model) {
+
+		logger.info("Get OrderGetList ........" + serverinfo);
+		String page = request.getParameter("page");
+		if (page == null || page == "") {
+			page = "1";
+		}
+		logger.info("Get para ........" + page);
+		int rowNumberPerPage = 5;
+		int offset = rowNumberPerPage * (Integer.parseInt(page) - 1);
+
+		ModelAndView mav = new ModelAndView("jsonView");
+		String responsestr = "";
+
+		HttpUtils httpUtils = new HttpUtils(serverinfo);
+
+		if (httpUtils.sendAuth(serverinfo)) {
+			HttpSession session = request.getSession();
+
+			String path = "/api/order/get_page?login=" + (String) session.getAttribute("s_Login") + "&offset="
+					+ String.valueOf(offset) + "&total=" + String.valueOf(rowNumberPerPage);
+
+			try {
+				responsestr = httpUtils.sendGet(serverinfo, path);
+				if (responsestr.indexOf("0 Done") > 0) {
+					logger.info("API RESULT" + responsestr);
+					mav.addObject("result",
+							APIProtectionHandler.ApiProtection(request, responsestr, Boolean.valueOf(false)));
+				}
+
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+		return mav;
+	}
+
+	@RequestMapping(value = "/Positions", method = RequestMethod.GET)
+	public String Positions(Model model) {
+		logger.info("Welcome home! Index.");
+
+		String vLocal = LocaleContextHolder.getLocale().getLanguage();
+		model.addAttribute("lang", vLocal);
+		String returnURL = "";
+
+		returnURL = "/positions";
+
+		return defaultpath + returnURL;
+	}
+
+	@RequestMapping(value = "/PositionGetTotal", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	public ModelAndView PositionGetTotal(HttpServletRequest request, Model model) {
+
+		logger.info("Get PositionGetTotal ........" + serverinfo);
+
+		ModelAndView mav = new ModelAndView("jsonView");
+		String responsestr = "";
+
+		HttpUtils httpUtils = new HttpUtils(serverinfo);
+
+		if (httpUtils.sendAuth(serverinfo)) {
+			HttpSession session = request.getSession();
+			String path = "/api/position/get_total?login=" + (String) session.getAttribute("s_Login");
+			try {
+				responsestr = httpUtils.sendGet(serverinfo, path);
+				if (responsestr.indexOf("0 Done") > 0) {
+				}
+
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		mav.addObject("result", APIProtectionHandler.ApiProtection(request, responsestr, Boolean.valueOf(false)));
+		return mav;
+	}
+
+	@RequestMapping(value = "/PositionGetList", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	public ModelAndView PositionGetList(HttpServletRequest request, Model model) {
+
+		logger.info("Get PositionGetPage ........" + serverinfo);
+		String page = request.getParameter("page");
+		if (page == null || page == "") {
+			page = "1";
+		}
+
+		String all = request.getParameter("all");
+
+		logger.info("Get para ........" + page);
+		int rowNumberPerPage = 5;
+		int offset = rowNumberPerPage * (Integer.parseInt(page) - 1);
+
+		ModelAndView mav = new ModelAndView("jsonView");
+		String responsestr = "";
+
+		HttpUtils httpUtils = new HttpUtils(serverinfo);
+
+		if (httpUtils.sendAuth(serverinfo)) {
+			HttpSession session = request.getSession();
+			String path = "";
+			if (all != null) {
+				path = "/api/position/get_page?login=" + (String) session.getAttribute("s_Login")
+						+ "&offset=0&total=100";
+
+			} else {
+				path = "/api/position/get_page?login=" + (String) session.getAttribute("s_Login") + "&offset="
+						+ String.valueOf(offset) + "&total=" + String.valueOf(rowNumberPerPage);
+			}
+			/**/
+
+			try {
+				responsestr = httpUtils.sendGet(serverinfo, path);
+				if (responsestr.indexOf("0 Done") > 0) {
+					logger.info("API RESULT" + responsestr);
+
+				}
+
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		mav.addObject("result", APIProtectionHandler.ApiProtection(request, responsestr, Boolean.valueOf(false)));
+		return mav;
+	}
+
+	@RequestMapping(value = "/PositionGet100", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	public ModelAndView PositionGet100(HttpServletRequest request, Model model) {
+
+		logger.info("Get PositionGet100Page ........" + serverinfo);
+		String page = request.getParameter("page");
+		if (page == null || page == "") {
+			page = "1";
+		}
+		logger.info("Get para ........" + page);
+		ModelAndView mav = new ModelAndView("jsonView");
+		String responsestr = "";
+
+		HttpUtils httpUtils = new HttpUtils(serverinfo);
+
+		if (httpUtils.sendAuth(serverinfo)) {
+			HttpSession session = request.getSession();
+
+			String path = "/api/position/get_page?login=" + (String) session.getAttribute("s_Login")
+					+ "&offset=0&total=100";// + String.valueOf(rowNumberPerPage);
+
+			try {
+				responsestr = httpUtils.sendGet(serverinfo, path);
+				if (responsestr.indexOf("0 Done") > 0) {
+					logger.info("API RESULT" + responsestr);
+
+					double lot = 0;
+					double profit = 0;
+					double swap = 0;
+
+					JSONObject outputobject = new JSONObject(responsestr); // remove field that do no
+					// need to pass to front end
+
+					for (int i = 0, len = outputobject.getJSONArray("answer").length(); i < len; i++) {
+						JSONObject obj = outputobject.getJSONArray("answer").getJSONObject(i);
+
+						lot = lot + obj.getDouble("Volume");
+						profit = profit + obj.getDouble("Profit");
+						swap = swap + obj.getDouble("Storage");
+
+					}
+
+					lot = lot / 10000;
+					logger.info("output" + lot + profit + swap);
+					JSONObject outputanswer = new JSONObject();
+					outputanswer.put("lot", lot);
+					outputanswer.put("profit", profit);
+					outputanswer.put("swap", swap);
+					JSONObject inputjson = new JSONObject();
+					inputjson.put("retcode", "0 Done");
+					inputjson.put("answer", outputanswer);
+					responsestr = inputjson.toString();
+
+				}
+
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		mav.addObject("result", APIProtectionHandler.ApiProtection(request, responsestr, Boolean.valueOf(false)));
+		return mav;
+	}
+
+	@RequestMapping(value = "/History", method = RequestMethod.GET)
+	public String History(Model model) {
+		logger.info("Welcome History! Index.");
+
+		String vLocal = LocaleContextHolder.getLocale().getLanguage();
+		model.addAttribute("lang", vLocal);
+		String returnURL = "";
+
+		returnURL = "/history";
+
+		return defaultpath + returnURL;
+	}
+
+	@RequestMapping(value = "/Summary", method = RequestMethod.GET)
+	public String Summary(Model model) {
+		logger.info("Welcome Summary! Index.");
+
+		String vLocal = LocaleContextHolder.getLocale().getLanguage();
+		model.addAttribute("lang", vLocal);
+		String returnURL = "";
+
+		returnURL = "/summary";
+
+		return defaultpath + returnURL;
+	}
+
+	/*
+	 * @RequestMapping(value = "/SwapCalculator", method = RequestMethod.GET) public
+	 * String SwapCalculator(Model model) {
+	 * logger.info("Welcome SwapCalculator! Index.");
+	 * 
+	 * String vLocal = LocaleContextHolder.getLocale().getLanguage();
+	 * model.addAttribute("lang", vLocal); String returnURL = "";
+	 * 
+	 * returnURL = "/swapCalculator";
+	 * 
+	 * return defaultpath + returnURL; }
+	 * 
+	 * @RequestMapping(value = "/SwapTrading", method = RequestMethod.GET) public
+	 * String SwapTrading(Model model) { logger.info("Welcome SwapTrading! Index.");
+	 * 
+	 * String vLocal = LocaleContextHolder.getLocale().getLanguage();
+	 * model.addAttribute("lang", vLocal); String returnURL = "";
+	 * 
+	 * returnURL = "/swapTrading";
+	 * 
+	 * return defaultpath + returnURL; }
+	 */
+	/*
+	 * @RequestMapping(value = "/dailyreport", method = RequestMethod.GET) public
+	 * String dailyreport(Model model) { logger.info("Welcome dailyreport! Index.");
+	 * 
+	 * String vLocal = LocaleContextHolder.getLocale().getLanguage();
+	 * model.addAttribute("lang", vLocal); String returnURL = "";
+	 * 
+	 * returnURL = "/dailyreport";
+	 * 
+	 * return defaultpath + returnURL; }
+	 */
+
+	@RequestMapping(value = "/HistoryGetTotal", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	public ModelAndView HistoryGetTotal(HttpServletRequest request, Model model) {
+
+		logger.info("Get HistoryGetTotal ........" + serverinfo);
+
+		ModelAndView mav = new ModelAndView("jsonView");
+		String responsestr = "";
+
+		HttpUtils httpUtils = new HttpUtils(serverinfo);
+
+		if (httpUtils.sendAuth(serverinfo)) {
+
+			long unixtimenow = System.currentTimeMillis() / 1000L;
+			long unixtime1yearbefore = unixtimenow - 31536000; // one year before
+			HttpSession session = request.getSession();
+			String path = "/api/deal/get_total?login=" + (String) session.getAttribute("s_Login") + "&from="
+					+ unixtime1yearbefore + "to=" + unixtimenow;
+			try {
+				responsestr = httpUtils.sendGet(serverinfo, path);
+				if (responsestr.indexOf("0 Done") > 0) {
+
+				}
+
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		mav.addObject("result", APIProtectionHandler.ApiProtection(request, responsestr, Boolean.valueOf(false)));
+		return mav;
+	}
+
+	@RequestMapping(value = "/executebatchorder", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	public ModelAndView executebatchorder(HttpServletRequest request, Model model) {
+
+		logger.info("Get executebatchorder ........" + serverinfo);
+		String body = request.getParameter("body");
+		logger.info("body = " + body);
+		ModelAndView mav = new ModelAndView("jsonView");
+
+		byte[] decoded = Base64.decodeBase64(body);
+		String decodedstring = new String(decoded);
+
+		String responsestr = decodedstring;
+
+		JSONArray jarray = new JSONArray(decodedstring);
+
+		jarray.length();
+		responsestr = jarray.getJSONObject(0).getString("symbol");
+		responsestr = "";
+		HttpSession session = request.getSession();
+		int numberofsuccess = 0;
+		for (int i = 0; i < jarray.length(); i++) {
+			String symbol = jarray.getJSONObject(i).getString("symbol");
+			String type = jarray.getJSONObject(i).getString("type");
+			Double lot = jarray.getJSONObject(i).getDouble("lot");
+
+			lot = lot * 10000;// 100 = 0.01lot , 10000 = 1 lot
+			int inttype = 0;
+			if (type.indexOf("buy") >= 0) {
+				inttype = 0;
+			} else {
+				inttype = 1;
+			}
+			JSONObject outputanswer = new JSONObject();
+			outputanswer.put("Action", 200);
+			outputanswer.put("SourceLogin", 3002);
+			outputanswer.put("Login", session.getAttribute("s_Login"));
+			outputanswer.put("Symbol", symbol);
+			outputanswer.put("Volume", lot);
+			outputanswer.put("PriceOrder", "");
+			outputanswer.put("Type", inttype);
+			outputanswer.put("TypeFill", 0);
+
+			logger.info("send Auth" + outputanswer.toString());
+			HttpUtils httpUtils = new HttpUtils(serverinfo);
+
+			if (httpUtils.sendAuth(serverinfo)) {
+				String path = "/api/dealer/send_request";
+				try {
+					responsestr = httpUtils.sendPost(serverinfo, path, outputanswer.toString());
+
+					if (responsestr.indexOf("0 Done") >= 0) {
+						numberofsuccess++;
+					}
+
+					System.out.println("#### response no: " + i + " = " + responsestr);
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+			}
+
+		}
+		JSONObject outanswer = new JSONObject();
+		if (numberofsuccess == jarray.length()) {
+			outanswer.put("retcode", "0 Done");
+			outanswer.put("NOS", numberofsuccess);
+		} else {
+			outanswer.put("retcode", "1 ERROR");
+			outanswer.put("NOS", numberofsuccess); // error code : 11283473
+		}
+
+		responsestr = outanswer.toString();
+
+		System.out.println("OUT JSON: " + responsestr);
+
+		mav.addObject("result", APIProtectionHandler.ApiProtection(request, responsestr, Boolean.valueOf(false)));
+		return mav;
+	}
+
+	@RequestMapping(value = "/closePosition", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	public ModelAndView closePosition(HttpServletRequest request, Model model) {
+
+		logger.info("Get executebatchorder ........" + serverinfo);
+		int pid = Integer.parseInt(request.getParameter("pid"));
+		String symbol = request.getParameter("symbol");
+		Double lot = Double.parseDouble((String) request.getParameter("lot"));
+		String type = request.getParameter("type");
+		lot = lot * 10000;// 100 = 0.01lot , 10000 = 1 lot
+
+		int inttype = 0;
+		if (type.indexOf("BUY") >= 0) {
+			inttype = 1; // open opposite order
+		} else {
+			inttype = 0; // open opposite order
+		}
+		logger.info("Pid = " + pid);
+		ModelAndView mav = new ModelAndView("jsonView");
+		String responsestr = "";
+		HttpSession session = request.getSession();
+
+		JSONObject outputanswer = new JSONObject();
+		outputanswer.put("Action", 200);
+		outputanswer.put("SourceLogin", 3002);
+		outputanswer.put("Login", 4449);
+		outputanswer.put("Symbol", symbol);
+		outputanswer.put("Volume", lot);
+		outputanswer.put("PriceOrder", "");
+		outputanswer.put("Type", inttype);
+		outputanswer.put("Position", pid);
+		outputanswer.put("TypeFill", 0);
+
+		logger.info("send Auth" + outputanswer.toString());
+		HttpUtils httpUtils = new HttpUtils(serverinfo);
+
+		if (httpUtils.sendAuth(serverinfo)) {
+			String path = "/api/dealer/send_request";
+			try {
+				responsestr = httpUtils.sendPost(serverinfo, path, outputanswer.toString());
+
+				System.out.println("#### response" + responsestr);
+
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+		}
+
+		mav.addObject("result", APIProtectionHandler.ApiProtection(request, responsestr, Boolean.valueOf(false)));
+		return mav;
+	}
+
+	@PostMapping(value = "/signupConfirm", consumes = "application/json", produces = "application/json")
+	public ModelAndView signupConfirm(@RequestBody String body, HttpServletRequest request) throws SQLException {
+
+		JSONObject jsonbodyobj = new JSONObject(body);
+
+		String FirstName = jsonbodyobj.getString("FirstName");
+		String MiddleName = jsonbodyobj.getString("MiddleName");
+		String LastName = jsonbodyobj.getString("LastName");
+		String Password = jsonbodyobj.getString("Password");
+		long PersonBirthDate = jsonbodyobj.getLong("PersonBirthDate");
+		String PersonGender = jsonbodyobj.getString("PersonGender");
+		String ContactEmail = jsonbodyobj.getString("ContactEmail");
+		String ContactPhone = jsonbodyobj.getString("ContactPhone");
+		String AddressCountry = jsonbodyobj.getString("AddressCountry");
+		String AddressPostcode = jsonbodyobj.getString("AddressPostcode");
+		String AddressStreet = jsonbodyobj.getString("AddressStreet");
+		String AddressState = jsonbodyobj.getString("AddressState");
+		String AddressCity = jsonbodyobj.getString("AddressCity");
+		String base64ID = jsonbodyobj.getString("base64ID");
+		String base64POA = jsonbodyobj.getString("base64POA");
+		String base64IDExt = jsonbodyobj.getString("base64IDExt");
+		String base64POAExt = jsonbodyobj.getString("base64POAExt");
+		String userseq = jsonbodyobj.getString("userseq");
+
+		String birthday = jsonbodyobj.getString("birthdaystring");
+
+		logger.info("Get executebatchorder ........" + serverinfo);
+		/*
+		 * int pid = Integer.parseInt(request.getParameter("pid")); String symbol =
+		 * request.getParameter("symbol"); Double lot = Double.parseDouble((String)
+		 * request.getParameter("lot")); String type = request.getParameter("type"); lot
+		 * = lot * 10000;//100 = 0.01lot , 10000 = 1 lot
+		 * 
+		 * int inttype = 0; if (type.indexOf("BUY")>=0) { inttype = 1; // open opposite
+		 * order } else { inttype = 0; // open opposite order } logger.info("Pid = "
+		 * +pid);
+		 */
+		ModelAndView mav = new ModelAndView("jsonView");
+		String responsestr = "";
+		HttpSession session = request.getSession();
+		FileTime fileTime = FileTime.fromMillis(PersonBirthDate);
+		HttpUtils httpUtils = new HttpUtils(serverinfo);
+		JSONObject outputanswer = new JSONObject();
+		outputanswer.put("PersonName", FirstName + " " + MiddleName + " " + LastName);
+		outputanswer.put("PersonBirthDate", fileTime);
+		outputanswer.put("PersonGender", PersonGender);
+		outputanswer.put("ContactEmail", ContactEmail);
+		outputanswer.put("ContactPhone", ContactPhone);
+		outputanswer.put("AddressCountry", AddressCountry);
+		outputanswer.put("AddressPostcode", AddressPostcode);
+		outputanswer.put("AddressStreet", AddressStreet);
+		outputanswer.put("AddressState", AddressState);
+		outputanswer.put("AddressCity", AddressCity);
+		outputanswer.put("ClientStatus", 400);
+		outputanswer.put("TradingGroup", httpUtils.getSwapGroupRegisteration(serverinfo));
+		outputanswer.put("Comment", "Create By Fund Client System");
+
+		JSONArray outarray = new JSONArray();
+		outarray.put(outputanswer);
+
+		logger.info("send Auth" + outputanswer.toString());
+		httpUtils = new HttpUtils(serverinfo);
+
+		if (httpUtils.sendAuth(serverinfo)) {
+			String path = "/api/client/add";
+			try {
+				responsestr = httpUtils.sendPost(serverinfo, path, outarray.toString());
+
+				System.out.println("#### response" + responsestr);
+				String str_clientid = "";
+				long clientid = 0;
+				if (responsestr.indexOf("0 Done") >= 0) {
+					JSONObject json_obj = new JSONObject(responsestr);
+					String retcode = json_obj.getString("retcode");
+					logger.info(retcode);
+
+					if (retcode.equals("0 Done")) {
+						JSONArray ids_obj = json_obj.getJSONArray("answer");
+						if (ids_obj != null && ids_obj.length() > 0) {
+
+							String ids_retcode = ids_obj.getJSONObject(0).getString("retcode");
+
+							if (ids_retcode.equals("0 Done")) {
+								str_clientid = String.valueOf(ids_obj.getJSONObject(0).get("id"));
+								logger.info("send client ID" + str_clientid);
+
+								outputanswer = new JSONObject();
+								outputanswer.put("RelatedClient", str_clientid);
+								outputanswer.put("DocumentType", 1); // 1 is ID,2 is poa
+								outputanswer.put("DocumentSubtype", 1); // 1 is ID,2 is poa
+								outputanswer.put("DocumentName", "ID." + base64IDExt);
+								outputanswer.put("DocumentComment", "Swap Trading register document");
+
+								JSONArray documentfiles = new JSONArray();
+
+								JSONObject fileObject = new JSONObject();
+
+								fileObject.put("CreatedBy", 3002);
+								fileObject.put("Flags", 5);
+								fileObject.put("Name", "ID");
+
+								documentfiles.put(fileObject);
+								outputanswer.put("DocumentFiles", documentfiles);
+
+								outarray = new JSONArray();
+								outarray.put(outputanswer);
+
+								outputanswer = new JSONObject();
+								outputanswer.put("RelatedClient", str_clientid);
+								outputanswer.put("DocumentType", 2); // 1 is ID,2 is poa
+								outputanswer.put("DocumentSubtype", 2); // 1 is ID,2 is poa
+								outputanswer.put("DocumentName", "POA." + base64POAExt);
+								outputanswer.put("DocumentComment", "Swap Trading register document");
+
+								documentfiles = new JSONArray();
+
+								fileObject = new JSONObject();
+
+								fileObject.put("CreatedBy", 3002);
+								fileObject.put("Flags", 5);
+								fileObject.put("Name", "POA");
+
+								documentfiles.put(fileObject);
+								outputanswer.put("DocumentFiles", documentfiles);
+
+								// outarray = new JSONArray();
+								outarray.put(outputanswer);
+
+								logger.info("send Auth" + outputanswer.toString());
+								httpUtils = new HttpUtils(serverinfo);
+
+								if (httpUtils.sendAuth(serverinfo)) {
+									path = "/api/document/add";
+									try {
+										responsestr = httpUtils.sendPost(serverinfo, path, outarray.toString());
+										String str_documentID1 = "";
+										String str_documentID2 = "";
+										System.out.println("#### response" + responsestr);
+										logger.info("### response from document add : " + responsestr);
+										json_obj = new JSONObject(responsestr);
+										ids_obj = json_obj.getJSONArray("answer");
+										if (ids_obj != null && ids_obj.length() > 0) {
+
+											ids_retcode = ids_obj.getJSONObject(0).getString("retcode");
+
+											if (ids_retcode.equals("0 Done")) {
+												str_documentID1 = String.valueOf(ids_obj.getJSONObject(0).get("id"));
+												outputanswer = new JSONObject();
+												outputanswer.put("RecordID", 47);
+												outputanswer.put("RelatedClient", str_clientid); // 1 is ID,2 is poa
+
+												if (base64IDExt.indexOf("jpg") >= 0) {
+													outputanswer.put("FileType", 4); // 1 is ID,2 is poa
+
+												} else if (base64IDExt.indexOf("png") >= 0) {
+													outputanswer.put("FileType", 5); // 1 is ID,2 is poa
+
+												} else if (base64IDExt.indexOf("pdf") >= 0) {
+													outputanswer.put("FileType", 3); // 1 is ID,2 is poa
+
+												}
+												// base64POAExt =
+
+												outputanswer.put("FileName", "ID." + base64IDExt);
+												outputanswer.put("FileContent", base64ID);
+												outarray = new JSONArray();
+												outarray.put(outputanswer);
+
+												str_documentID2 = String.valueOf(ids_obj.getJSONObject(1).get("id"));
+												outputanswer = new JSONObject();
+												outputanswer.put("RecordID", 47);
+												outputanswer.put("RelatedClient", str_clientid); // 1 is ID,2 is poa
+
+												if (base64POAExt.indexOf("jpg") >= 0) {
+													outputanswer.put("FileType", 4); // 1 is ID,2 is poa
+
+												} else if (base64POAExt.indexOf("png") >= 0) {
+													outputanswer.put("FileType", 5); // 1 is ID,2 is poa
+
+												} else if (base64POAExt.indexOf("pdf") >= 0) {
+													outputanswer.put("FileType", 3); // 1 is ID,2 is poa
+
+												}
+
+												outputanswer.put("FileName", "POA." + base64POAExt);
+												outputanswer.put("FileContent", base64POA);
+												outarray.put(outputanswer);
+
+												logger.info("send Auth" + outputanswer.toString());
+												httpUtils = new HttpUtils(serverinfo);
+
+												if (httpUtils.sendAuth(serverinfo)) {
+													path = "/api/attachment/add";
+													try {
+														responsestr = httpUtils.sendPost(serverinfo, path,
+																outarray.toString());
+														logger.info(
+																"### response from attachment add : " + responsestr);
+														System.out.println("#### response" + responsestr);
+
+														String str_attachmentID1 = "";
+														String str_attachmentID2 = "";
+														System.out.println("#### response" + responsestr);
+														json_obj = new JSONObject(responsestr);
+														ids_obj = json_obj.getJSONArray("answer");
+														if (ids_obj != null && ids_obj.length() > 0) {
+
+															ids_retcode = ids_obj.getJSONObject(0).getString("retcode");
+
+															if (ids_retcode.equals("0 Done")) {
+																str_attachmentID1 = String
+																		.valueOf(ids_obj.getJSONObject(0).get("id"));
+																str_attachmentID2 = String
+																		.valueOf(ids_obj.getJSONObject(1).get("id"));
+
+																if (httpUtils.sendAuth(serverinfo)) {
+																	session = request.getSession();
+																	path = "/api/attachment/attach?id="
+																			+ str_attachmentID1
+																			+ "&entity=document&entity_id="
+																			+ str_documentID1 + "&action=attach";
+																	logger.info("### path1 from binding : " + path);
+																	try {
+																		responsestr = httpUtils.sendGet(serverinfo,
+																				path);
+																		logger.info("### response from binding : "
+																				+ responsestr);
+																		if (responsestr.indexOf("0 Done") > 0) {
+																			if (httpUtils.sendAuth(serverinfo)) {
+																				session = request.getSession();
+																				path = "/api/attachment/attach?id="
+																						+ str_attachmentID2
+																						+ "&entity=document&entity_id="
+																						+ str_documentID2
+																						+ "&action=attach";
+																				logger.info(
+																						"### response from binding : "
+																								+ responsestr);
+																				try {
+																					responsestr = httpUtils
+																							.sendGet(serverinfo, path);
+																					logger.info(
+																							"### path2 from binding : "
+																									+ path);
+																					if (responsestr
+																							.indexOf("0 Done") > 0) {
+
+																					}
+
+																				} catch (Exception e) {
+																					// TODO Auto-generated catch block
+																					e.printStackTrace();
+																				}
+																			}
+																		}
+
+																	} catch (Exception e) {
+																		// TODO Auto-generated catch block
+																		e.printStackTrace();
+																	}
+																}
+															}
+														}
+
+													}
+
+													catch (Exception e) {
+														// TODO Auto-generated catch block
+														e.printStackTrace();
+													}
+
+												}
+											}
+										}
+
+									}
+
+									catch (Exception e) {
+										// TODO Auto-generated catch block
+										e.printStackTrace();
+									}
+
+								}
+								/// create new trading account
+
+								/*
+								 * httpUtils = new HttpUtils(serverinfo);
+								 * 
+								 * if (httpUtils.sendAuth(serverinfo)) {
+								 * 
+								 * String passmain = "Test123123"; String passinvestor = "Test123123"; String
+								 * name = "MINGFUNG API TEST"; String group =
+								 * httpUtils.getSwapGroupRegisteration(serverinfo); String leverage = "100";
+								 * 
+								 * path = "/api/user/add?pass_main=" + passmain + "&pass_investor=" +
+								 * passinvestor + "&group=" + group + "&name=" + name + "&leverage=" + leverage;
+								 * try { responsestr = httpUtils.sendGet(serverinfo, path); if
+								 * (responsestr.indexOf("0 Done") > 0) {
+								 * 
+								 * JSONObject jobject = new JSONObject(responsestr);
+								 * 
+								 * JSONObject janswer = jobject.getJSONObject("answer"); String TradingAccLogin
+								 * = janswer.getString("Login");
+								 * 
+								 * // bind client to trading account
+								 * 
+								 * logger.info("CLIENTID AND ACCOUNT LOGIN : " + ids_retcode + ":" +
+								 * TradingAccLogin);
+								 * 
+								 * }
+								 * 
+								 * } catch (Exception e) { // TODO Auto-generated catch block
+								 * e.printStackTrace(); } }
+								 */
+
+							} else {
+								logger.info("### ids_retcode : " + ids_retcode);
+							}
+						}
+					}
+
+					logger.info("### str_clientid : " + str_clientid);
+					// 성공
+					int length = 100;
+					String characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+
+					String randomString = new Random().ints(length, 0, characters.length()).mapToObj(characters::charAt)
+							.map(Object::toString).collect(Collectors.joining());
+
+					fundclientservice.insertRegiserUserDetail(str_clientid, userseq, FirstName, MiddleName, LastName,
+							birthday, ContactPhone, ContactEmail, Password, AddressStreet, AddressCity, AddressState,
+							AddressPostcode, AddressCountry, "ID." + base64IDExt, "ID." + base64IDExt,
+							"POA." + base64POAExt, "POA." + base64POAExt, randomString);
+					logger.info("mailtest1 service rrwr@naver.com.......");
+					try {
+
+						String sendemail = "accounts@unionmks.com";
+						String sendname = "UnionMK Account Registration";
+						String recevieemail = ContactEmail;
+						String sedemailpw = "dbsldhs!23";
+						logger.info("mailtest2................. ");
+
+						JavaMailSenderImpl sender = new JavaMailSenderImpl();
+						sender.setHost("mail.unionmks.com");
+						sender.setPort(369);
+						sender.setUsername(sendemail);
+						sender.setPassword(sedemailpw);
+						logger.info("mailtest3................. ");
+
+						Properties prop = new Properties();
+						prop.setProperty("mail.smtp.auth", "true");
+						prop.setProperty("mail.smtp.starttls.enable", "true");
+						logger.info("mailtest4................. ");
+
+						sender.setJavaMailProperties(prop);
+						MimeMessage message = sender.createMimeMessage();
+						MimeMessageHelper helper = new MimeMessageHelper(message);
+						helper.setTo(recevieemail);
+						helper.setFrom(sendemail, sendname);
+						helper.setSubject("Your Account have been approved");
+
+						String body1 = MailTemplate.getEmailAuth("1",
+								request.getServerName() + "/portal/fundclient/emailconfirm?key=" + randomString);
+						helper.setText(body1, true);
+						// helper.setText(body);
+						sender.send(message);
+						logger.info("mailtest5................. ");
+
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+			}
+
+			catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+		}
+
+		mav.addObject("result", responsestr);
+		return mav;
+	}
+
+	@RequestMapping(value = "/uploaddocument", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	public ModelAndView uploaddocument(HttpServletRequest request, Model model) {
+
+		logger.info("Get executebatchorder ........" + serverinfo);
+		/*
+		 * int pid = Integer.parseInt(request.getParameter("pid")); String symbol =
+		 * request.getParameter("symbol"); Double lot = Double.parseDouble((String)
+		 * request.getParameter("lot")); String type = request.getParameter("type"); lot
+		 * = lot * 10000;//100 = 0.01lot , 10000 = 1 lot
+		 * 
+		 * int inttype = 0; if (type.indexOf("BUY")>=0) { inttype = 1; // open opposite
+		 * order } else { inttype = 0; // open opposite order } logger.info("Pid = "
+		 * +pid);
+		 */
+		ModelAndView mav = new ModelAndView("jsonView");
+		String responsestr = "";
+		HttpSession session = request.getSession();
+		// FileTime fileTime = FileTime.fromMillis(1673504043);
+
+		JSONObject outputanswer = new JSONObject();
+		outputanswer.put("RelatedClient", 1357);
+		outputanswer.put("DocumentType", 1); // 1 is ID,2 is poa
+		outputanswer.put("DocumentSubtype", 1); // 1 is ID,2 is poa
+		outputanswer.put("DocumentName", "ID MINGFUNG");
+		outputanswer.put("DocumentComment", "Swap Trading register document");
+
+		JSONArray documentfiles = new JSONArray();
+
+		JSONObject fileObject = new JSONObject();
+
+		fileObject.put("CreatedBy", 3002);
+		fileObject.put("Flags", 5);
+		fileObject.put("Name", "IDMINGFUNG.PNG");
+
+		documentfiles.put(fileObject);
+		outputanswer.put("DocumentFiles", documentfiles);
+
+		JSONArray outarray = new JSONArray();
+		outarray.put(outputanswer);
+
+		logger.info("send Auth" + outputanswer.toString());
+		HttpUtils httpUtils = new HttpUtils(serverinfo);
+
+		if (httpUtils.sendAuth(serverinfo)) {
+			String path = "/api/document/add";
+			try {
+				responsestr = httpUtils.sendPost(serverinfo, path, outarray.toString());
+
+				System.out.println("#### response" + responsestr);
+
+			}
+
+			catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+		}
+
+		mav.addObject("result", responsestr);
+		return mav;
+	}
+
+	@RequestMapping(value = "/uploadattachment", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	public ModelAndView uploadattachment(HttpServletRequest request, Model model) {
+
+		logger.info("Get uploadattachment ........" + serverinfo);
+		/*
+		 * int pid = Integer.parseInt(request.getParameter("pid")); String symbol =
+		 * request.getParameter("symbol"); Double lot = Double.parseDouble((String)
+		 * request.getParameter("lot")); String type = request.getParameter("type"); lot
+		 * = lot * 10000;//100 = 0.01lot , 10000 = 1 lot
+		 * 
+		 * int inttype = 0; if (type.indexOf("BUY")>=0) { inttype = 1; // open opposite
+		 * order } else { inttype = 0; // open opposite order } logger.info("Pid = "
+		 * +pid);
+		 */
+		ModelAndView mav = new ModelAndView("jsonView");
+		String responsestr = "";
+		HttpSession session = request.getSession();
+		// FileTime fileTime = FileTime.fromMillis(1673504043);
+
+		JSONObject outputanswer = new JSONObject();
+		outputanswer.put("RecordID", 47);
+		outputanswer.put("RelatedClient", 1357); // 1 is ID,2 is poa
+		outputanswer.put("FileType", 5); // 1 is ID,2 is poa
+		outputanswer.put("FileName", "IDMINGFUNG.png");
+		outputanswer.put("FileContent",
+				"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");
+		JSONArray outarray = new JSONArray();
+		outarray.put(outputanswer);
+
+		logger.info("send Auth" + outputanswer.toString());
+		HttpUtils httpUtils = new HttpUtils(serverinfo);
+
+		if (httpUtils.sendAuth(serverinfo)) {
+			String path = "/api/attachment/add";
+			try {
+				responsestr = httpUtils.sendPost(serverinfo, path, outarray.toString());
+
+				System.out.println("#### response" + responsestr);
+
+			}
+
+			catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+		}
+
+		mav.addObject("result", responsestr);
+		return mav;
+	}
+
+	@RequestMapping(value = "/documentbindattachment", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	public ModelAndView documentbindattachment(HttpServletRequest request, Model model) {
+
+		logger.info("Get OrderGetTotal ........" + serverinfo);
+
+		ModelAndView mav = new ModelAndView("jsonView");
+		String responsestr = "";
+		HttpUtils httpUtils = new HttpUtils(serverinfo);
+
+		if (httpUtils.sendAuth(serverinfo)) {
+			HttpSession session = request.getSession();
+			String path = "/api/attachment/attach?id=55&entity=document&entity_id=47&action=attach";
+			try {
+				responsestr = httpUtils.sendGet(serverinfo, path);
+				if (responsestr.indexOf("0 Done") > 0) {
+
+				}
+
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		mav.addObject("result", responsestr);
+		return mav;
+	}
+
+	@RequestMapping(value = "/GetTotalTradebyclient", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	public ModelAndView HistoryGetTotalbyclient(HttpServletRequest request, Model model) {
+
+		int historytotal = 0;
+		int positiontotal = 0;
+		logger.info("Get HistoryGetTotalbyclient ........" + serverinfo);
+		String mid = request.getParameter("mid");
+		ModelAndView mav = new ModelAndView("jsonView");
+		String responsestr = "";
+
+		HttpUtils httpUtils = new HttpUtils(serverinfo);
+
+		if (httpUtils.sendAuth(serverinfo)) {
+
+			long unixtimenow = System.currentTimeMillis() / 1000L;
+			long unixtime1yearbefore = unixtimenow - 31536000; // one year before
+			HttpSession session = request.getSession();
+			String path = "/api/history/get_total?login=" + mid + "&from=" + unixtime1yearbefore + "to=" + unixtimenow;
+			try {
+				responsestr = httpUtils.sendGet(serverinfo, path);
+				if (responsestr.indexOf("0 Done") > 0) {
+
+					JSONObject JOBJ = new JSONObject(responsestr);
+					String retcode = JOBJ.getString("retcode");
+					if (retcode.indexOf("0 Done") >= 0) {
+						JSONObject answer = JOBJ.getJSONObject("answer");
+						if (answer != null) {
+							String total = answer.getString("total");
+
+							historytotal = Integer.parseInt(total);
+
+							logger.info("totalhistory" + ", " + historytotal);
+						}
+
+					}
+
+				}
+
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+		if (httpUtils.sendAuth(serverinfo)) {
+			HttpSession session = request.getSession();
+			String path = "/api/position/get_total?login=" + (String) session.getAttribute("s_Login");
+			try {
+				responsestr = httpUtils.sendGet(serverinfo, path);
+				if (responsestr.indexOf("0 Done") > 0) {
+					logger.info(responsestr);
+
+					JSONObject JOBJ = new JSONObject(responsestr);
+					String retcode = JOBJ.getString("retcode");
+					if (retcode.indexOf("0 Done") >= 0) {
+						JSONObject answer = JOBJ.getJSONObject("answer");
+						if (answer != null) {
+							String total = answer.getString("total");
+
+							positiontotal = Integer.parseInt(total);
+
+							logger.info("positiontotal" + ", " + positiontotal);
+						}
+
+					}
+
+				}
+
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+		JSONObject inputjson = new JSONObject();
+		JSONObject outputanswer = new JSONObject();
+		outputanswer.put("total", positiontotal + historytotal);
+		inputjson.put("retcode", "0 Done");
+		inputjson.put("answer", outputanswer);
+
+		logger.info("total trade" + ", " + inputjson.toString());
+
+		responsestr = inputjson.toString();
+		mav.addObject("result", APIProtectionHandler.ApiProtection(request, responsestr, Boolean.valueOf(false)));
+		return mav;
+	}
+
+	@RequestMapping(value = "/HistoryGetList", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	public ModelAndView HistoryGetList(HttpServletRequest request, Model model) {
+
+		logger.info("Get HistoryGetList ........" + serverinfo);
+		String page = request.getParameter("page");
+		if (page == null || page == "") {
+			page = "1";
+		}
+
+		String all = request.getParameter("all");
+
+		logger.info("Get para ........" + page);
+		int rowNumberPerPage = 5;
+		int offset = rowNumberPerPage * (Integer.parseInt(page) - 1);
+
+		ModelAndView mav = new ModelAndView("jsonView");
+		String responsestr = "";
+
+		HttpUtils httpUtils = new HttpUtils(serverinfo);
+
+		if (httpUtils.sendAuth(serverinfo)) {
+			HttpSession session = request.getSession();
+			long unixtimenow = System.currentTimeMillis() / 1000L;
+			long unixtime1yearbefore = unixtimenow - 31536000; // one year before
+			unixtimenow = unixtimenow + 31536000;
+			String path = "";
+			if (all != null) {
+				path = "/api/deal/get_page?login=" + (String) session.getAttribute("s_Login") + "&from="
+						+ unixtime1yearbefore + "&to=" + unixtimenow + "&offset=0&total=100";
+
+			} else {
+				path = "/api/deal/get_page?login=" + (String) session.getAttribute("s_Login") + "&from="
+						+ unixtime1yearbefore + "&to=" + unixtimenow + "&offset=" + String.valueOf(offset) + "&total="
+						+ String.valueOf(rowNumberPerPage);
+			}
+			/**/
+
+			try {
+				responsestr = httpUtils.sendGet(serverinfo, path);
+				if (responsestr.indexOf("0 Done") > 0) {
+					logger.info("API RESULT" + responsestr);
+
+				}
+
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		mav.addObject("result", APIProtectionHandler.ApiProtection(request, responsestr, Boolean.valueOf(false)));
+		return mav;
+
+	}
+
+	@RequestMapping(value = "/HistorySearch", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	public ModelAndView HistorySearch(HttpServletRequest request, Model model) {
+
+		logger.info("Get HistoryGetList ........" + serverinfo);
+		String start = request.getParameter("start");
+
+		String end = request.getParameter("end");
+
+		ModelAndView mav = new ModelAndView("jsonView");
+		String responsestr = "";
+
+		HttpUtils httpUtils = new HttpUtils(serverinfo);
+
+		if (httpUtils.sendAuth(serverinfo)) {
+			HttpSession session = request.getSession();
+			long unixtimenow = System.currentTimeMillis() / 1000L;
+			long unixtime1yearbefore = unixtimenow - 31536000; // one year before
+			unixtimenow = unixtimenow + 31536000;
+			String path = "";
+
+			path = "/api/deal/get_batch?login=" + (String) session.getAttribute("s_Login") + "&from=" + start + "&to="
+					+ end;
+
+			try {
+				responsestr = httpUtils.sendGet(serverinfo, path);
+				if (responsestr.indexOf("0 Done") > 0) {
+					logger.info("API RESULT" + responsestr);
+
+				}
+
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		mav.addObject("result", APIProtectionHandler.ApiProtection(request, responsestr, Boolean.valueOf(false)));
+		return mav;
+
+	}
+
+	@RequestMapping(value = { "/getgroup" }, method = { RequestMethod.GET }, produces = {
+			"application/json;charset=UTF-8" })
+	@ResponseBody
+	public ModelAndView getdailygetgroupreport(HttpServletRequest request, Model model) {
+		logger.info("Get getgroup ........" + serverinfo);
+		ModelAndView mav = new ModelAndView("jsonView");
+		String responsestr = "";
+		HttpUtils httpUtils = new HttpUtils(serverinfo);
+		HttpSession session = request.getSession();
+		if (httpUtils.sendAuth(serverinfo)) {
+			String path = "/api/manager/get?login=" + (String) session.getAttribute("s_Login");
+			try {
+				responsestr = httpUtils.sendGet(serverinfo, path);
+				if (responsestr.indexOf("0 Done") > 0) {
+					logger.info("API RESULT" + responsestr);
+					JSONObject jstring = new JSONObject(responsestr);
+					String retcode = jstring.getString("retcode");
+					JSONArray answer_array = jstring.getJSONArray("answer");
+					JSONObject managerObj = answer_array.getJSONObject(0);
+					JSONArray managerManagedGroup = managerObj.getJSONArray("Groups");
+					JSONObject outputjson = new JSONObject();
+					outputjson.put("retcode", "0 Done");
+					JSONArray grouparray = new JSONArray();
+					if (managerManagedGroup != null && managerManagedGroup.length() > 0)
+						for (int i = 0; i < managerManagedGroup.length(); i++) {
+							String group = managerManagedGroup.getJSONObject(i).getString("Group");
+							path = "/api/group/get?group=" + group;
+							try {
+								responsestr = httpUtils.sendGet(serverinfo, path);
+								if (responsestr.indexOf("0 Done") > 0) {
+									logger.info("Groupinfo" + responsestr);
+									JSONObject jobj = new JSONObject(responsestr);
+									String groupName = jobj.getJSONObject("answer").getString("Group");
+									String groupDisplayName = jobj.getJSONObject("answer").getString("CompanyCatalog");
+									JSONObject groupobj = new JSONObject();
+									if (groupDisplayName != null && groupDisplayName != "") {
+										groupobj.put("name", groupDisplayName);
+									} else {
+										groupobj.put("name", groupName);
+									}
+									groupobj.put("value", groupName);
+									grouparray.put(groupobj);
+								}
+							} catch (Exception e) {
+								e.printStackTrace();
+							}
+						}
+					outputjson.put("answer", grouparray);
+					responsestr = outputjson.toString();
+					logger.info("finaloutput : " + responsestr);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		mav.addObject("result", APIProtectionHandler.ApiProtection(request, responsestr, Boolean.valueOf(false)));
+		return mav;
+	}
+
+	@RequestMapping(value = "/getSwapGroup", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	public ModelAndView getGroup(HttpServletRequest request, Model model) {
+
+		logger.info("Get getGroup ........" + serverinfo);
+
+		ModelAndView mav = new ModelAndView("jsonView");
+		String responsestr = "";
+
+		HttpUtils httpUtils = new HttpUtils(serverinfo);
+
+		if (httpUtils.sendAuth(serverinfo)) {
+			HttpSession session = request.getSession();
+			String path = "/api/symbol/list ";
+
+			try {
+				responsestr = httpUtils.sendGet(serverinfo, path);
+				if (responsestr.indexOf("0 Done") > 0) {
+					logger.info("API RESULT" + responsestr);
+
+					JSONObject outputobject = new JSONObject(responsestr); // remove field that do no
+
+					JSONObject outputanswer = new JSONObject();
+					outputanswer.put("retcode", "0 Done");
+					JSONArray jarray = new JSONArray();
+
+					// need to pass to front end
+					for (int i = 0, len = outputobject.getJSONArray("answer").length(); i < len; i++) {
+						String SYMBOL = outputobject.getJSONArray("answer").getString(i);// Do your removals
+
+						if (SYMBOL.substring(Math.max(SYMBOL.length() - 2, 0)).indexOf(".g") >= 0
+								|| SYMBOL.substring(Math.max(SYMBOL.length() - 2, 0)).indexOf(".m") >= 0
+								|| SYMBOL.substring(Math.max(SYMBOL.length() - 2, 0)).indexOf(".f") >= 0
+								|| SYMBOL.substring(Math.max(SYMBOL.length() - 2, 0)).indexOf(".a") >= 0) {
+
+							logger.info("LOOP RESULT :" + SYMBOL);
+							// create a new symbol object
+							JSONObject symbolobj = new JSONObject();
+							symbolobj.put("SYMBOL", SYMBOL);
+
+							path = "/api/symbol/get_group?symbol=" + SYMBOL + "&group=wi\\real\\SmartA ";
+
+							try {
+								responsestr = httpUtils.sendGet(serverinfo, path);
+								if (responsestr.indexOf("0 Done") > 0) {
+									logger.info("API RESULT" + responsestr);
+									JSONObject newoutputobject = new JSONObject(responsestr); // remove field that do no
+									double swaplong = newoutputobject.getJSONObject("answer").getDouble("SwapLong");
+									double swapshort = newoutputobject.getJSONObject("answer").getDouble("SwapShort");
+
+									symbolobj.put("SHORT", swapshort);
+									symbolobj.put("LONG", swaplong);
+
+									// jarray.put(symbollongshort);
+									jarray.put(symbolobj);
+
+									// outputanswer.put(SYMBOL,jarray);
+									logger.info("SWAP RESULT:" + swaplong + "," + swapshort);
+								}
+							}
+
+							catch (Exception e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+
+						}
+
+					}
+
+					outputanswer.put("answer", jarray);
+					responsestr = outputanswer.toString();
+				}
+
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		mav.addObject("result", APIProtectionHandler.ApiProtection(request, responsestr, Boolean.valueOf(false)));
+		return mav;
+	}
+
+	@RequestMapping(value = "/getdailyrepor", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	public ModelAndView getdailyreport(HttpServletRequest request, Model model) {
+
+		logger.info("Get getdailyreport ........" + serverinfo);
+		String page = request.getParameter("page");
+		if (page == null || page == "") {
+			page = "1";
+		}
+		logger.info("Get para ........" + page);
+		int rowNumberPerPage = 5;
+		int offset = rowNumberPerPage * (Integer.parseInt(page) - 1);
+
+		ModelAndView mav = new ModelAndView("jsonView");
+		String responsestr = "";
+
+		HttpUtils httpUtils = new HttpUtils(serverinfo);
+
+		if (httpUtils.sendAuth(serverinfo)) {
+			HttpSession session = request.getSession();
+			long unixtimenow = System.currentTimeMillis() / 1000L;
+			long unixtime1yearbefore = unixtimenow - 31536000; // one year before
+			unixtimenow = (unixtimenow + 31536000) * 1000;
+			String path = "/api/daily_get_light?from=0&to=" + unixtimenow + "&login="
+					+ (String) session.getAttribute("s_Login");
+
+			try {
+				responsestr = httpUtils.sendGet(serverinfo, path);
+				if (responsestr.indexOf("0 Done") > 0) {
+					logger.info("API RESULT" + responsestr);
+
+				}
+
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		mav.addObject("result", APIProtectionHandler.ApiProtection(request, responsestr, Boolean.valueOf(false)));
+		return mav;
+	}
+
+	@RequestMapping(value = "/accountList", method = RequestMethod.GET)
+	public String accountList(Model model) {
+		logger.info("Welcome home! Index.");
+
+		String vLocal = LocaleContextHolder.getLocale().getLanguage();
+		model.addAttribute("lang", vLocal);
+		String returnURL = "";
+
+		returnURL = "/accountList";
+
+		return defaultpath + returnURL;
+	}
+
+	@RequestMapping(value = "/getAccountList", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	public ModelAndView getAccountList(@RequestParam("ClientID") String ClientID, HttpServletRequest request,
+			Model model) {
+
+		logger.info("Welcome Trading AccountListByClientID! ........" + serverinfo);
+
+		ModelAndView mav = new ModelAndView("jsonView");
+		String responsestr = "";
+		String responsestr1 = "";
+		String retcode = "";
+		HttpUtils httpUtils = new HttpUtils(serverinfo);
+		HttpSession session = request.getSession();
+		if (httpUtils.sendAuth(serverinfo)) {
+			String path = "/api/client/user/get_logins?client=" + ClientID;
+			try {
+				responsestr = httpUtils.sendGet(serverinfo, path);
+				if (responsestr.indexOf("0 Done") > 0) {
+
+					JSONObject jSongetLogin = new JSONObject(responsestr);
+					retcode = jSongetLogin.getString("retcode");
+					JSONObject login_obj = jSongetLogin.getJSONObject("answer");
+					String loginstr = "";
+
+					if (login_obj != null) {
+						JSONArray jsonLogin = login_obj.getJSONArray(ClientID);
+
+						if (jsonLogin != null && jsonLogin.length() > 0) {
+							for (int i = 0; i < jsonLogin.length(); i++) {
+								loginstr = loginstr + "," + (StringUtils.isEmpty(jsonLogin.get(i)) ? ""
+										: String.valueOf(jsonLogin.get(i)));
+
+							}
+							logger.info("loginstr=" + loginstr.substring(1, loginstr.length()));
+						}
+
+						loginstr = loginstr.substring(1, loginstr.length());
+					}
+
+					try {
+						path = "/api/user/get_batch?login=" + loginstr;
+						responsestr = httpUtils.sendGet(serverinfo, path);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+
+				}
+
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+		mav.addObject("result", APIProtectionHandler.ApiProtection(request, responsestr, Boolean.valueOf(false)));
+		return mav;
+	}
+
+	@RequestMapping(value = "/login", method = RequestMethod.GET)
+	public String login(Model model) throws SQLException {
+		logger.info("Welcome home! Login.");
+
+		String vLocal = LocaleContextHolder.getLocale().getLanguage();
+		model.addAttribute("lang", vLocal);
+		String returnURL = "";
+		returnURL = "/login";
+
+		return defaultpath + returnURL;
+	}
+
+	@RequestMapping(value = "/emailconfirm", method = RequestMethod.GET)
+	public String emailconfirm(Model model, HttpServletRequest request) throws SQLException {
+		logger.info("Welcome emailconfirm! Login.");
+
+		String vLocal = LocaleContextHolder.getLocale().getLanguage();
+		model.addAttribute("lang", vLocal);
+
+		String key = request.getParameter("key");
+		if (key == null || key == "") {
+			return "redirect:" + defaultpath + "/login";
+		} else {
+			String returnURL = "";
+			FundClient_client fcc = null;
+			fcc = fundclientservice.getauthkeydetail(key);
+
+			if (fcc.clientseq >= 0) {
+				fundclientservice.UpdateEmailAuth(fcc.clientseq);
+				model.addAttribute("name", fcc.getFirstname() + " " + fcc.getMiddlename() + " " + fcc.getLastname());
+			} else {
+				return "redirect:" + defaultpath + "/login";
+			}
+
+			returnURL = "/emailconfirm";
+
+			return defaultpath + returnURL;
+		}
+
+	}
+
+	@RequestMapping(value = "/forgotpassword", method = RequestMethod.GET)
+	public String forgotpassword(Model model) throws SQLException {
+		logger.info("Welcome forgotpassword! Login.");
+
+		String vLocal = LocaleContextHolder.getLocale().getLanguage();
+		model.addAttribute("lang", vLocal);
+		String returnURL = "";
+		returnURL = "/forgotpassword";
+
+		return defaultpath + returnURL;
+	}
+
+	@RequestMapping(value = "/resetPassword", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	public ModelAndView resetPassword(HttpServletRequest request, @RequestParam("login") Long login,
+			@RequestParam("email") String email, Model model) {
+
+		logger.info("Welcome mt5 api reset password" + serverinfo);
+
+		HttpUtils httpUtils = new HttpUtils(serverinfo);
+
+		ModelAndView mav = new ModelAndView("jsonView");
+		String responsestr = "";
+
+		if (httpUtils.sendAuth(serverinfo)) {
+
+			try {
+				String path = "/api/user/get?login=" + login;
+				responsestr = httpUtils.sendGet(serverinfo, path);
+
+				if (responsestr.indexOf("0 Done") > 0) {
+
+					JSONObject json_obj = new JSONObject(responsestr);
+					String retcode = json_obj.getString("retcode");
+					if (retcode.indexOf("0 Done") >= 0) {
+
+						JSONObject ids_obj = json_obj.getJSONObject("answer");
+						logger.info("responsestr1---" + responsestr);
+						if (ids_obj != null) {
+							String Email = ids_obj.getString("Email") == null ? "" : ids_obj.getString("Email");
+
+							if (Email.equals(email)) {
+								logger.info("generate new password to user" + login + "," + email);
+								try {
+									String password = PasswordGenerator.generate(10);
+									path = "/api/user/change_password?login=" + login + "&type=main&password="
+											+ password;
+									responsestr = httpUtils.sendGet(serverinfo, path);
+									logger.info(" reset password" + responsestr);
+									if (responsestr.indexOf("0 Done") > 0) {
+
+										logger.info("sending email reset password.......");
+										try {
+
+											String sendemail = "accounts@unionmks.com";
+											String sendname = "UnionMK Account Recover";
+											String recevieemail = Email;
+											String sedemailpw = "dbsldhs!23";
+											logger.info("mailtest2................. ");
+
+											JavaMailSenderImpl sender = new JavaMailSenderImpl();
+											sender.setHost("mail.unionmks.com");
+											sender.setPort(369);
+											sender.setUsername(sendemail);
+											sender.setPassword(sedemailpw);
+											logger.info("mailtest3................. ");
+
+											Properties prop = new Properties();
+											prop.setProperty("mail.smtp.auth", "true");
+											prop.setProperty("mail.smtp.starttls.enable", "true");
+											logger.info("mailtest4................. ");
+
+											sender.setJavaMailProperties(prop);
+											MimeMessage message = sender.createMimeMessage();
+											MimeMessageHelper helper = new MimeMessageHelper(message);
+											helper.setTo(recevieemail);
+											helper.setFrom(sendemail, sendname);
+											helper.setSubject("Your Account Password had been reset");
+
+											String body = MailTemplate.getAccountCreate("1", login, password, "-",
+													"www.googlwe.com", "1");
+											helper.setText(body, true);
+											// helper.setText(body);
+											sender.send(message);
+											logger.info("mailtest5................. ");
+
+										} catch (Exception e) {
+											e.printStackTrace();
+										}
+
+									}
+
+								} catch (Exception e) {
+									responsestr = "Error." + e;
+								}
+
+							}
+						}
+
+					}
+				}
+			} catch (Exception e) {
+				responsestr = "Error." + e;
+			}
+		}
+
+		mav.addObject("result", APIProtectionHandler.ApiProtection(request, responsestr, Boolean.valueOf(false)));
+		return mav;
+	}
+
+	@RequestMapping(value = "/loginConfirm", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	public ModelAndView loginConfirm(HttpServletRequest request, @RequestParam("email") String email,
+			@RequestParam("password") String password, Model model) {
+
+		logger.info("Welcome mt5 api login by account" + serverinfo);
+		String type = "Client";
+		HttpUtils httpUtils = new HttpUtils(serverinfo);
+
+		ModelAndView mav = new ModelAndView("jsonView");
+		String responsestr = "";
+		String responsestr1 = "";
+		
+		
+		String userseq = request.getParameter("userseq");
+		
+				if(userseq=="" | userseq == null)
+				{
+					userseq = "2";
+				}
+		
+		 int validate =  fundclientservice.ValidatePassword( email,password,userseq);
+		 
+		 if(validate >0)
+		 {
+			 
+		
+
+		if (httpUtils.sendAuth(serverinfo)) {
+
+			try {
+				FundClient_client fcc  = fundclientservice.getClientDetails(email, userseq);
+				
+				String path = "/api/user/check_password";
+				JSONObject outputanswer = new JSONObject();
+				outputanswer.put("Login", fcc.getLoginid());
+				outputanswer.put("Type", "main");
+				outputanswer.put("Password", fcc.getPassword());
+		
+				responsestr1 = httpUtils.sendPost(serverinfo, path, outputanswer.toString());
+				logger.info(responsestr1);
+				if (responsestr1.indexOf("0 Done") > 0) {
+
+					
+
+							HttpSession session = request.getSession();
+							session.setAttribute("s_Login", String.valueOf(fcc.getLoginid()));
+							session.setAttribute("s_Email", String.valueOf(fcc.getEmail()));
+							session.setAttribute("s_Userseq", String.valueOf(fcc.getUserseq()));
+							session.setAttribute("s_Name", String.valueOf(fcc.getFirstname()+" "+fcc.getMiddlename()+" "+fcc.getLastname()));
+							/*session.setAttribute("s_Group", Group);
+							session.setAttribute("s_ClientID", ClientID);*/
+							session.setAttribute("s_Type", type);
+
+						
+
+						responsestr = "SUCCESS";
+				}
+					 
+
+				else {
+					logger.info(responsestr1);
+					logger.info("Invalid password from mt5.");
+					responsestr = "Invalid password.";
+				}
+			} catch (Exception e) {
+				responsestr = "Error." + e;
+			}
+
+		}
+		 else
+
+	{
+		logger.info("Invalid password.");
+		responsestr = "Invalid password.";
+	}
+
+	mav.addObject("result",APIProtectionHandler.ApiProtection(request,responsestr,Boolean.valueOf(false)));return mav;
+	}
+
+	@RequestMapping(value = "/newpage", method = RequestMethod.GET)
+	public String newpage(Model model) {
+		logger.info("Welcome home! Index.");
+
+		String vLocal = LocaleContextHolder.getLocale().getLanguage();
+		model.addAttribute("lang", vLocal);
+		String returnURL = "";
+
+		returnURL = "/newpage";
+
+		return defaultpath + returnURL;
+	}
+
+	@RequestMapping(value = "/testimageupload", method = RequestMethod.GET)
+	public String testimageupload(Model model) {
+		logger.info("Welcome home! Index.");
+
+		String vLocal = LocaleContextHolder.getLocale().getLanguage();
+		model.addAttribute("lang", vLocal);
+		String returnURL = "";
+
+		returnURL = "/testimageupload";
+
+		return defaultpath + returnURL;
+	}
+
+	@RequestMapping(value = "/editProfile", method = RequestMethod.GET)
+	public String editProfile(Model model) {
+		logger.info("Welcome editprofile.");
+
+		String vLocal = LocaleContextHolder.getLocale().getLanguage();
+		model.addAttribute("lang", vLocal);
+		String returnURL = "";
+
+		returnURL = "/editProfile";
+
+		return defaultpath + returnURL;
+	}
+
+	@RequestMapping(value = "/legalDocuments", method = RequestMethod.GET)
+	public String legalDocuments(Model model) {
+		logger.info("Welcome legalDocuments.");
+
+		String vLocal = LocaleContextHolder.getLocale().getLanguage();
+		model.addAttribute("lang", vLocal);
+		String returnURL = "";
+
+		returnURL = "/legalDocuments";
+
+		return defaultpath + returnURL;
+	}
+
+	@RequestMapping(value = "/changeLeverage", method = RequestMethod.GET)
+	public String changeLeverage(Model model) {
+		logger.info("Welcome changeLeverage.");
+
+		String vLocal = LocaleContextHolder.getLocale().getLanguage();
+		model.addAttribute("lang", vLocal);
+		String returnURL = "";
+
+		returnURL = "/changeLeverage";
+
+		return defaultpath + returnURL;
+	}
+
+	@RequestMapping(value = "/changePassword", method = RequestMethod.GET)
+	public String changePassword(Model model) {
+		logger.info("Welcome changePassword.");
+
+		String vLocal = LocaleContextHolder.getLocale().getLanguage();
+		model.addAttribute("lang", vLocal);
+		String returnURL = "";
+
+		returnURL = "/changePassword";
+
+		return defaultpath + returnURL;
+	}
+
+	@RequestMapping(value = "/addAccount", method = RequestMethod.GET)
+	public String addAccount(Model model) {
+		logger.info("Welcome addAccount.");
+
+		String vLocal = LocaleContextHolder.getLocale().getLanguage();
+		model.addAttribute("lang", vLocal);
+		String returnURL = "";
+
+		returnURL = "/addAccount";
+
+		return defaultpath + returnURL;
+	}
+
+	@RequestMapping(value = "/tradingAnalytic", method = RequestMethod.GET)
+	public String tradingAnalytic(Model model) {
+		logger.info("Welcome tradingAnalytic.");
+
+		String vLocal = LocaleContextHolder.getLocale().getLanguage();
+		model.addAttribute("lang", vLocal);
+		String returnURL = "";
+
+		returnURL = "/tradingAnalytic";
+
+		return defaultpath + returnURL;
+	}
+
+	@RequestMapping(value = "/fundHistoryAll", method = RequestMethod.GET)
+	public String fundHistoryAll(Model model) {
+		logger.info("Welcome fundHistoryAll.");
+
+		String vLocal = LocaleContextHolder.getLocale().getLanguage();
+		model.addAttribute("lang", vLocal);
+		String returnURL = "";
+
+		returnURL = "/fundHistoryAll";
+
+		return defaultpath + returnURL;
+	}
+
+	@RequestMapping(value = "/DownloadMT5", method = RequestMethod.GET)
+	public String DownloadMT5(Model model) {
+		logger.info("Welcome DownloadMT5.");
+
+		String vLocal = LocaleContextHolder.getLocale().getLanguage();
+		model.addAttribute("lang", vLocal);
+		String returnURL = "";
+
+		returnURL = "/DownloadMT5";
+
+		return defaultpath + returnURL;
+	}
+
+	@RequestMapping(value = "/markets", method = RequestMethod.GET)
+	public String markets(Model model) {
+		logger.info("Welcome home! Help markets.");
+
+		String vLocal = LocaleContextHolder.getLocale().getLanguage();
+		model.addAttribute("lang", vLocal);
+		String returnURL = "";
+		boolean isAuthIgnore = false;
+		List<LastTransinfo> list = MTWebAPI.lastTrans("MT5A", "EURUSD,AUDUSD,USDCAD", "0", isAuthIgnore);
+		model.addAttribute("list", list);
+		logger.info("vLocal==" + vLocal);
+		returnURL = "/markets";
+		return defaultpath + returnURL;
+	}
+
+	@RequestMapping(value = "/symbolTest", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	public ModelAndView symbolTest(@RequestParam("ClientID") String ClientID, Model model) {
+
+		logger.info("Welcome Trading AccountListByClientID! ........" + serverinfo);
+
+		ModelAndView mav = new ModelAndView("jsonView");
+		String responsestr = "";
+		String responsestr1 = "";
+		String retcode = "";
+		HttpUtils httpUtils = new HttpUtils(serverinfo);
+
+		if (httpUtils.sendAuth(serverinfo)) {
+			String path = "/api/tick/last?symbol=EURUSD,AUDUSD,USDCAD&trans_id=0";
+			try {
+				responsestr = httpUtils.sendGet(serverinfo, path);
+
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+		mav.addObject("result", responsestr);
+		return mav;
+	}
+
+	@RequestMapping(value = "/logout", method = RequestMethod.GET)
+	public String logout(HttpServletRequest request, Model model) {
+		logger.info("Welcome logout.");
+
+		String vLocal = LocaleContextHolder.getLocale().getLanguage();
+		model.addAttribute("lang", vLocal);
+		HttpSession session = request.getSession(false);
+		if (session != null)
+			session.invalidate();
+		// request.getRequestDispatcher("/index.jsp").forward(request,response);
+		return defaultpath + "/login";
+	}
+
+	@RequestMapping(value = "/signup", method = RequestMethod.GET)
+	public String signup(HttpServletRequest request, Model model) {
+		logger.info("Welcome signup.");
+
+		String vLocal = LocaleContextHolder.getLocale().getLanguage();
+		model.addAttribute("lang", vLocal);
+		HttpSession session = request.getSession(false);
+		if (session != null)
+			session.invalidate();
+		// request.getRequestDispatcher("/index.jsp").forward(request,response);
+		return defaultpath + "/signup";
+	}
+
+	private String getFileExtension(String filename) {
+		String name = filename;
+		int lastIndexOf = name.lastIndexOf(".");
+		if (lastIndexOf == -1) {
+			return ""; // empty extension
+		}
+		return name.substring(lastIndexOf);
+	}
+
+	@PostMapping("/pimageupload")
+	public ResponseEntity<?> handleFileUpload(@RequestParam("file") MultipartFile file, HttpServletRequest request)
+			throws SQLException {
+
+		boolean retfail = false;
+
+		if (APIProtectionHandler.IsLogin(request)) {
+
+			/*
+			 * String fileLocation = new File(
+			 * "C:\\Users\\unionmk\\eclipse-workspace-newstp\\portal\\src\\main\\webapp\\resources\\images\\Userimg")
+			 * + "\\";
+			 */
+			// logger.info(${pageContext.request.contextPath});
+
+			String fileLocation = new File("portal\\swap\\Userimg") + "\\";
+
+			String fileextension = getFileExtension(file.getOriginalFilename());
+			HttpSession session = request.getSession();
+			String username = (String) session.getAttribute("s_Login");
+			String fileName = fileLocation + "p_" + username + fileextension;
+			String path = fileLocation;
+			File pathAsFile = new File(path);
+
+			if (!Files.exists(Paths.get(path))) {
+				pathAsFile.mkdir();
+			}
+			try {
+				Files.deleteIfExists(Paths.get(fileName));
+
+				file.transferTo(new File(fileName));
+
+			} catch (Exception e) {
+				// return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+				retfail = true;
+			}
+
+			JSONObject inputjson = new JSONObject();
+			inputjson.put("p_name", "p_user_add_profile_photo");
+			inputjson.put("user_id", (String) session.getAttribute("s_Login"));
+			inputjson.put("photo_name", "p_" + username + fileextension);
+			logger.info(inputjson.toString());
+			String responsestr = MariaDBProcedureHandler.ProcedureCall(inputjson.toString());
+			if (MariaDBProcedureHandler.isJSONValid(responsestr)) {
+				logger.info(responsestr);
+				JSONObject JOBJ = new JSONObject(responsestr);
+				String retcode = JOBJ.getString("retcode");
+				if (retcode.indexOf("0 Done") >= 0) {
+
+				} else {
+					retfail = true;
+				}
+			} else {
+
+				retfail = true; // return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+			}
+		}
+
+		if (retfail) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+		} else {
+			return ResponseEntity.ok("File uploaded successfully.");
+		}
+
+	}
+
+	@RequestMapping(value = "/getProfileImgUrl", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	public ModelAndView getProfileImgUrl(HttpServletRequest request, Model model) throws SQLException {
+		String responsestr = "";
+
+		logger.info("Welcome getProfileImgUrl: ");
+		ModelAndView mav = new ModelAndView("jsonView");
+		HttpSession session = request.getSession();
+
+		if (APIProtectionHandler.IsLogin(request)) {
+			JSONObject inputjson = new JSONObject();
+			inputjson.put("p_name", "p_user_get_profile_photo");
+			inputjson.put("user_id", (String) session.getAttribute("s_Login"));
+
+			logger.info(inputjson.toString());
+			responsestr = MariaDBProcedureHandler.ProcedureCall(inputjson.toString());
+			if (MariaDBProcedureHandler.isJSONValid(responsestr)) {
+				logger.info(responsestr);
+				JSONObject JOBJ = new JSONObject(responsestr);
+				String retcode = JOBJ.getString("retcode");
+				if (retcode.indexOf("0 Done") >= 0) {
+					JSONObject answer = JOBJ.getJSONObject("answer");
+					if (answer != null) {
+						// String description = answer.getString("desc");
+						// String url = answer.getString("url");
+						// logger.info(description +", " + url)
+						logger.info(responsestr);
+					}
+
+				}
+			} else {
+
+				logger.info(responsestr);
+			}
+		}
+		mav.addObject("result", APIProtectionHandler.ApiProtection(request, responsestr, Boolean.valueOf(false)));
+		return mav;
+
+	}
+
+	@RequestMapping(value = "/getViewProfileImgUrl", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	public ModelAndView getViewProfileImgUrl(HttpServletRequest request, Model model) throws SQLException {
+		String responsestr = "";
+		String id = request.getParameter("id");
+		logger.info("Welcome getViewProfileImgUrl: ");
+		ModelAndView mav = new ModelAndView("jsonView");
+		HttpSession session = request.getSession();
+
+		if (APIProtectionHandler.IsLogin(request)) {
+			JSONObject inputjson = new JSONObject();
+			inputjson.put("p_name", "p_user_get_profile_photo");
+			inputjson.put("user_id", id);
+
+			logger.info(inputjson.toString());
+			responsestr = MariaDBProcedureHandler.ProcedureCall(inputjson.toString());
+			if (MariaDBProcedureHandler.isJSONValid(responsestr)) {
+				logger.info(responsestr);
+				JSONObject JOBJ = new JSONObject(responsestr);
+				String retcode = JOBJ.getString("retcode");
+				if (retcode.indexOf("0 Done") >= 0) {
+					JSONObject answer = JOBJ.getJSONObject("answer");
+					if (answer != null) {
+						// String description = answer.getString("desc");
+						// String url = answer.getString("url");
+						// logger.info(description +", " + url)
+						logger.info(responsestr);
+					}
+
+				}
+			} else {
+
+				logger.info(responsestr);
+			}
+		}
+		mav.addObject("result", APIProtectionHandler.ApiProtection(request, responsestr, Boolean.valueOf(false)));
+		return mav;
+
+	}
+
+	@RequestMapping(value = "/deleteProfileImg", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	public ModelAndView deleteProfileImg(HttpServletRequest request, Model model) throws SQLException {
+		String responsestr = "";
+
+		logger.info("Welcome getProfileImgUrl: ");
+		ModelAndView mav = new ModelAndView("jsonView");
+		HttpSession session = request.getSession();
+
+		if (APIProtectionHandler.IsLogin(request)) {
+			JSONObject inputjson = new JSONObject();
+			inputjson.put("p_name", "p_user_add_profile_photo");
+			inputjson.put("user_id", (String) session.getAttribute("s_Login"));
+			inputjson.put("photo_name", "p_default.jpg");
+
+			logger.info(inputjson.toString());
+			responsestr = MariaDBProcedureHandler.ProcedureCall(inputjson.toString());
+			if (MariaDBProcedureHandler.isJSONValid(responsestr)) {
+				logger.info(responsestr);
+				JSONObject JOBJ = new JSONObject(responsestr);
+				String retcode = JOBJ.getString("retcode");
+				if (retcode.indexOf("0 Done") >= 0) {
+					JSONObject answer = JOBJ.getJSONObject("answer");
+					if (answer != null) {
+						// String description = answer.getString("desc");
+						// String url = answer.getString("url");
+						// logger.info(description +", " + url)
+						logger.info(responsestr);
+					}
+
+				}
+			} else {
+
+				logger.info(responsestr);
+			}
+		}
+		mav.addObject("result", APIProtectionHandler.ApiProtection(request, responsestr, Boolean.valueOf(false)));
+		return mav;
+
+	}
+
+	@RequestMapping(value = "/positionGetByComment", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	public ModelAndView positionGetByComment(HttpServletRequest request, Model model) {
+
+		logger.info("Get PositionGetPage ........" + serverinfo);
+		String mid = request.getParameter("mid");
+		logger.info("Get para ........" + mid);
+		// int rowNumberPerPage = 5;
+		// int offset = rowNumberPerPage * (Integer.parseInt(page) - 1);
+
+		ModelAndView mav = new ModelAndView("jsonView");
+		String responsestr = "";
+
+		HttpUtils httpUtils = new HttpUtils(serverinfo);
+
+		if (httpUtils.sendAuth(serverinfo)) {
+			HttpSession session = request.getSession();
+
+			String path = "/api/position/get_page?login=" + (String) session.getAttribute("s_Login")
+					+ "&offset=0&total=100";
+
+			try {
+				responsestr = httpUtils.sendGet(serverinfo, path);
+				if (responsestr.indexOf("0 Done") > 0) {
+					logger.info("API RESULT" + responsestr);
+
+					JSONObject outputobject = new JSONObject(responsestr); // remove field that do no
+					// need to pass to front end
+					for (int i = 0, len = outputobject.getJSONArray("answer").length(); i < len; i++) {
+						JSONObject obj = outputobject.getJSONArray("answer").getJSONObject(i);
+// Do your removals
+						String comment = obj.getString("Comment");
+						String indexofstring = "MAM:" + mid.toString() + ":";
+						logger.info("comment" + obj.getString("Comment") + "index:" + i);
+
+						obj.remove("ApiData");
+						obj.remove("Action");
+						obj.remove("ActivationTime");
+						obj.remove("ExternalID");
+						obj.remove("Digits");
+						obj.remove("ActivationPrice");
+						obj.remove("RateMargin");
+						obj.remove("Reason");
+						obj.remove("VolumeExt");
+						obj.remove("TimeUpdate");
+
+						obj.remove("ActivationFlags");
+						obj.remove("ActivationMode");
+						obj.remove("TimeCreate");
+						obj.remove("TimeCreateMsc");
+						obj.remove("ExpertID");
+
+						obj.remove("ContractSize");
+						obj.remove("Login");
+						obj.remove("ExpertPositionID");
+						obj.remove("DigitsCurrency");
+						obj.remove("Storage");
+
+						obj.remove("RateProfit");
+						obj.remove("ModifyFlags");
+						obj.remove("PriceCurrent");
+						obj.remove("Dealer");
+						obj.remove("TimeUpdateMsc");
+
+						if (comment.indexOf(indexofstring) < 0) {
+							obj.remove("Symbol");
+							obj.remove("PriceTP");
+							obj.remove("Profit");
+							obj.remove("Comment");
+							obj.remove("Position");
+
+							obj.remove("PriceOpen");
+							obj.remove("PriceSL");
+							obj.remove("Volume");
+						}
+
+// etc.
+					}
+
+					responsestr = outputobject.toString();
+					logger.info("API RESULT AFTER PROCESS" + responsestr);
+				}
+
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		mav.addObject("result", APIProtectionHandler.ApiProtection(request, responsestr, Boolean.valueOf(false)));
+		return mav;
+	}
+
+	/*
+	 * @RequestMapping(value = "/getDailyReport", method = RequestMethod.GET,
+	 * produces = "application/json;charset=UTF-8")
+	 * 
+	 * @ResponseBody public ModelAndView getDailyReport(HttpServletRequest request,
+	 * Model model) {
+	 * 
+	 * logger.info("Get getDailyReport ........" + serverinfo);
+	 * 
+	 * ModelAndView mav = new ModelAndView("jsonView"); String responsestr = "";
+	 * HttpUtils httpUtils = new HttpUtils(serverinfo); HttpSession session =
+	 * request.getSession(); if (httpUtils.sendAuth(serverinfo)) { long epochTime =
+	 * 0; Date today = Calendar.getInstance().getTime(); SimpleDateFormat
+	 * crunchifyFormat = new SimpleDateFormat("MMM dd yyyy HH:mm:ss.SSS zzz");
+	 * String currentTime = crunchifyFormat.format(today); try { // parse() parses
+	 * text from the beginning of the given string to produce a date. Date date =
+	 * crunchifyFormat.parse(currentTime); // getTime() returns the number of
+	 * milliseconds since January 1, 1970, 00:00:00 // GMT represented by this Date
+	 * object. epochTime = date.getTime()/1000;
+	 * 
+	 * } catch (ParseException e) { e.printStackTrace(); }
+	 * 
+	 * String path = "/api/daily_get?from=0&to=" + epochTime + "&login=1034"; // +
+	 * (String) session.getAttribute("s_Login"); try { responsestr =
+	 * httpUtils.sendGet(serverinfo, path); if (responsestr.indexOf("0 Done") > 0) {
+	 * }
+	 * 
+	 * } catch (Exception e) { // TODO Auto-generated catch block
+	 * e.printStackTrace(); } }
+	 * 
+	 * mav.addObject("result", APIProtectionHandler.ApiProtection(request,
+	 * responsestr)); return mav; }
+	 */
+	@RequestMapping(value = "/getRating", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	public ModelAndView getRating(HttpServletRequest request, Model model) throws SQLException {
+		String responsestr = "";
+
+		String masterid = request.getParameter("mid");
+		logger.info("Welcome getRating: ");
+		ModelAndView mav = new ModelAndView("jsonView");
+		HttpSession session = request.getSession();
+
+		if (APIProtectionHandler.IsLogin(request)) {
+			JSONObject inputjson = new JSONObject();
+			inputjson.put("p_name", "p_master_get_rating");
+			inputjson.put("masterid", masterid);
+			logger.info(inputjson.toString());
+			responsestr = MariaDBProcedureHandler.ProcedureCall(inputjson.toString());
+			if (MariaDBProcedureHandler.isJSONValid(responsestr)) {
+				logger.info(responsestr);
+				JSONObject JOBJ = new JSONObject(responsestr);
+				String retcode = JOBJ.getString("retcode");
+				if (retcode.indexOf("0 Done") >= 0) {
+					JSONObject answer = JOBJ.getJSONObject("answer");
+					if (answer != null) {
+						// String description = answer.getString("desc");
+						// String url = answer.getString("url");
+						// logger.info(description +", " + url);
+
+						logger.info(responsestr);
+					}
+
+				}
+			} else {
+
+				logger.info(responsestr);
+			}
+		}
+
+		mav.addObject("result", APIProtectionHandler.ApiProtection(request, responsestr, Boolean.valueOf(false)));
+		return mav;
+
+	}
+
+	@RequestMapping(value = "/uploadFile", method = RequestMethod.POST)
+	public ModelAndView uploadFileHandler(@RequestParam("name") String name, @RequestParam("file") MultipartFile file,
+			HttpServletRequest request) {
+		ModelAndView modelAndView = new ModelAndView(defaultpath + "/myprofile");
+
+		if (file.isEmpty()) {
+			modelAndView.addObject("message", String.format(FAILED_UPLOAD_MESSAGE, name, "file is empty"));
+		} else {
+			createPizzaImagesDirIfNeeded();
+			modelAndView.addObject("message", createImage(name, file, request));
+		}
+
+		return modelAndView;
+	}
+
+	private void createPizzaImagesDirIfNeeded() {
+		if (!PIZZA_IMAGES_DIR.exists()) {
+			PIZZA_IMAGES_DIR.mkdirs();
+		}
+	}
+
+	private String createImage(String name, MultipartFile file, HttpServletRequest request) {
+		try {
+			HttpSession session = request.getSession();
+			String fileextension = getFileExtension(name);
+			File image = new File(
+					PIZZA_IMAGES_DIR_ABSOLUTE_PATH + "p_" + (String) session.getAttribute("s_Login") + fileextension);
+			BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(image));
+			stream.write(file.getBytes());
+			stream.close();
+
+			JSONObject inputjson = new JSONObject();
+			inputjson.put("p_name", "p_user_add_profile_photo");
+			inputjson.put("user_id", (String) session.getAttribute("s_Login"));
+			inputjson.put("photo_name", "p_" + (String) session.getAttribute("s_Login") + fileextension);
+			logger.info(inputjson.toString());
+			String responsestr = MariaDBProcedureHandler.ProcedureCall(inputjson.toString());
+			if (MariaDBProcedureHandler.isJSONValid(responsestr)) {
+				logger.info(responsestr);
+				JSONObject JOBJ = new JSONObject(responsestr);
+				String retcode = JOBJ.getString("retcode");
+				if (retcode.indexOf("0 Done") >= 0) {
+
+				} else {
+
+				}
+			}
+			return String.format(SUCCESS_UPLOAD_MESSAGE, name);
+		} catch (Exception e) {
+			return String.format(FAILED_UPLOAD_MESSAGE, name, e.getMessage());
+		}
+	}
+
+	@RequestMapping(value = "/image/{imageName}.{extension}")
+	@ResponseBody
+	public byte[] getImage(@PathVariable(value = "imageName") String imageName,
+			@PathVariable(value = "extension") String ext) throws IOException {
+		createPizzaImagesDirIfNeeded();
+
+		File serverFile = new File(PIZZA_IMAGES_DIR_ABSOLUTE_PATH + imageName + "." + ext);
+		return Files.readAllBytes(serverFile.toPath());
+
+	}
+
+	@RequestMapping(value = "/testuploadimage", method = RequestMethod.GET)
+	public String testuploadimage(Model model) {
+		logger.info("Welcome testuploadimage.");
+
+		String vLocal = LocaleContextHolder.getLocale().getLanguage();
+		model.addAttribute("lang", vLocal);
+		String returnURL = "";
+
+		returnURL = "/testuploadfile";
+
+		return defaultpath + returnURL;
+	}
+
+	@PostMapping(value = "/posttest", consumes = "application/json", produces = "application/json")
+	public ModelAndView updatePerson(@RequestBody String body, HttpServletRequest request) throws SQLException {
+		String responsestr = body;
+
+		// String masterid = request.getParameter("mid");
+		logger.info("Welcome getRating: ");
+		ModelAndView mav = new ModelAndView("jsonView");
+		// HttpSession session = request.getSession();
+
+		/*
+		 * if (APIProtectionHandler.IsLogin(request)) { JSONObject inputjson = new
+		 * JSONObject(); inputjson.put("p_name", "p_master_get_rating");
+		 * inputjson.put("masterid", masterid); logger.info(inputjson.toString());
+		 * responsestr = MariaDBProcedureHandler.ProcedureCall(inputjson.toString()); if
+		 * (MariaDBProcedureHandler.isJSONValid(responsestr)) {
+		 * logger.info(responsestr); JSONObject JOBJ = new JSONObject(responsestr);
+		 * String retcode = JOBJ.getString("retcode"); if (retcode.indexOf("0 Done") >=
+		 * 0) { JSONObject answer = JOBJ.getJSONObject("answer"); if (answer != null) {
+		 * // String description = answer.getString("desc"); // String url =
+		 * answer.getString("url"); // logger.info(description +", " + url);
+		 * 
+		 * logger.info(responsestr); }
+		 * 
+		 * } } else {
+		 * 
+		 * logger.info(responsestr); } }
+		 */
+
+		mav.addObject("result", responsestr);
+		return mav;
+	}
+
+	@RequestMapping(value = "/apicaller", method = RequestMethod.GET)
+	public String apicaller(Model model) {
+		logger.info("Welcome home! apicaller.");
+//test test test test
+		String vLocal = LocaleContextHolder.getLocale().getLanguage();
+		model.addAttribute("lang", vLocal);
+		String returnURL = "";
+
+		returnURL = "/apicaller";
+
+		return defaultpath + returnURL;
+	}
+
+	@RequestMapping(value = "/getrate", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	public ModelAndView get(HttpServletRequest request, Model model) {
+		String id = request.getParameter("id");
+		logger.info("Get get ........" + serverinfo);
+		String url = request.getParameter("url");
+
+		ModelAndView mav = new ModelAndView("jsonView");
+		String responsestr = "";
+
+		HttpUtils httpUtils = new HttpUtils(serverinfo);
+
+		if (httpUtils.sendAuth(serverinfo)) {
+			HttpSession session = request.getSession();
+			long unixTime = Instant.now().getEpochSecond() + 3600000;
+			String path = "/api/deal/get_batch?login=" + id + "&from=0&to=" + String.valueOf(unixTime);
+
+			try {
+				responsestr = httpUtils.sendGet(serverinfo, path);
+				if (responsestr.indexOf("0 Done") > 0) {
+					logger.info("API RESULT" + responsestr);
+
+					JSONObject jobj = new JSONObject(responsestr);
+					JSONArray jarray = jobj.getJSONArray("answer");
+					int length = jarray.length();
+					double totalprofit = 0;
+					double totaldeposit = 0;
+					for (int i = 0; i < length; i++) {
+						String action = jarray.getJSONObject(i).getString("Action");
+						if (action.indexOf("0") >= 0 || action.indexOf("1") >= 0) {
+							String profit = jarray.getJSONObject(i).getString("Profit");
+							logger.info(profit);
+							totalprofit = totalprofit + Double.valueOf(profit);
+						}
+
+						if (action != "0" && action != "1") {
+							String profit = jarray.getJSONObject(i).getString("Profit");
+							logger.info(profit);
+							totaldeposit = totaldeposit + Double.valueOf(profit);
+						}
+					}
+
+					double profitrate = totalprofit / totaldeposit * 100;
+					logger.info("total: " + totalprofit + " " + totaldeposit + ",rate :"
+							+ String.format("%.2f", profitrate));
+					JSONObject output = new JSONObject();
+					output.put("retcode", "0 Done");
+					if (profitrate > 0) {
+						output.put("rate", "+" + String.format("%.2f", profitrate) + "%");
+					} else {
+						output.put("rate", String.format("%.2f", profitrate) + "%");
+					}
+
+					output.put("profit", String.format("%.2f", totalprofit));
+					responsestr = output.toString();
+
+					mav.addObject("result",
+							APIProtectionHandler.ApiProtection(request, responsestr, Boolean.valueOf(false)));
+				}
+
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+		return mav;
+	}
+
+	@RequestMapping(value = "/clientgetmasterlist", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	public ModelAndView clientgetmasterlist(HttpServletRequest request, Model model) {
+
+		logger.info("Get clientgetmasterlist ........" + serverinfo);
+
+		ModelAndView mav = new ModelAndView("jsonView");
+		String responsestr = "";
+		HttpUtils httpUtils = new HttpUtils(serverinfo);
+
+		if (httpUtils.sendAuth(serverinfo)) {
+			HttpSession session = request.getSession();
+			String path = "/api/user/get?login=" + (String) session.getAttribute("s_Login");
+			try {
+				responsestr = httpUtils.sendGet(serverinfo, path);
+				if (responsestr.indexOf("0 Done") > 0) {
+
+					JSONObject jSongetLogin = new JSONObject(responsestr);
+					JSONObject answer = jSongetLogin.getJSONObject("answer");
+					String Company = answer.getString("Company");
+					JSONObject manager_idobj = new JSONObject(Company);
+					String managerID = manager_idobj.getString("manager_id");
+
+					path = "/api/user/get?login=" + managerID;
+
+					try {
+
+						responsestr = httpUtils.sendGet(serverinfo, path);
+						if (responsestr.indexOf("0 Done") > 0) {
+
+							JSONObject json = new JSONObject(responsestr);
+							answer = json.getJSONObject("answer");
+							// String Company = answer.getString("Company");
+							String str = answer.getString("Address");
+
+							logger.info("string here..." + str);
+
+							String[] strArray = str.split(",");
+
+							String[] login = new String[strArray.length];
+							String[] name = new String[strArray.length];
+							String[] startdate = new String[strArray.length];
+							String[] profit = new String[strArray.length];
+							String[] rate = new String[strArray.length];
+							String[] group = new String[strArray.length];
+							String[] follower = new String[strArray.length];
+
+							for (int i = 0; i < strArray.length; i++) {
+								String s = strArray[i];
+
+								// Extract the number before the comma
+								int commaIndex = s.indexOf("(");
+								String number = s.substring(0, commaIndex);
+
+								// Extract the string inside the parentheses
+								int openParenIndex = s.indexOf("(");
+								int closeParenIndex = s.indexOf(")");
+								String stringInsideParen = s.substring(openParenIndex + 1, closeParenIndex);
+								login[i] = number;
+								group[i] = stringInsideParen;
+
+							}
+
+							String logins = "";
+
+							for (int i = 0; i < login.length; i++) {
+								logins = logins + login[i] + ",";
+							}
+
+							String constructedurl = "/api/user/get_batch?login=" + logins;
+							logger.info(constructedurl);
+
+							try {
+
+								responsestr = httpUtils.sendGet(serverinfo, constructedurl);
+								if (responsestr.indexOf("0 Done") > 0) {
+
+									JSONObject batch = new JSONObject(responsestr);
+									JSONArray answerarray = batch.getJSONArray("answer");
+									for (int i = 0; i < answerarray.length(); i++) {
+										name[i] = answerarray.getJSONObject(i).getString("Name");
+										startdate[i] = answerarray.getJSONObject(i).getString("Registration");
+										profit[i] = answerarray.getJSONObject(i).getString("Balance");
+										rate[i] = answerarray.getJSONObject(i).getString("Balance");
+										rate[i] = answerarray.getJSONObject(i).getString("Balance");
+										path = "/api/user/logins?group=" + group[i];
+										try {
+											responsestr = httpUtils.sendGet(serverinfo, path);
+											logger.info(responsestr);
+											if (responsestr.indexOf("0 Done") > 0) {
+
+												JSONObject groupcountjobj = new JSONObject(responsestr);
+												JSONArray answerarray1 = groupcountjobj.getJSONArray("answer");
+												int arraylength = answerarray1.length();
+
+												follower[i] = String.valueOf(arraylength);
+
+											}
+										} catch (Exception e) {
+											// TODO Auto-generated catch block
+											e.printStackTrace();
+										}
+
+									}
+
+									JSONArray elementanswerarray = new JSONArray();
+
+									for (int i = 0; i < login.length; i++) {
+										JSONObject element = new JSONObject();
+										element.put("login", login[i]);
+										element.put("name", name[i]);
+										element.put("startdate", startdate[i]);
+										element.put("profit", profit[i]);
+										element.put("rate", rate[i]);
+										element.put("group", group[i]);
+										element.put("follower", follower[i]);
+
+										elementanswerarray.put(element);
+
+									}
+
+									JSONObject outputobj = new JSONObject();
+									outputobj.put("retcode", "0 Done");
+									outputobj.put("answer", elementanswerarray);
+									responsestr = outputobj.toString();
+
+								}
+							} catch (Exception e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+
+						}
+
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+
+				}
+
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		mav.addObject("result", APIProtectionHandler.ApiProtection(request, responsestr, Boolean.valueOf(false)));
+		return mav;
+	}
+
+	@PostMapping(value = { "/ConfirmChangeGroup" }, consumes = { "application/json" }, produces = {
+			"application/json" })
+	public ModelAndView ConfirmChangeGroup(@RequestBody String body, HttpServletRequest request) throws SQLException {
+		logger.info("Get ConfirmChangeGroup ........" + serverinfo);
+		HttpSession session = request.getSession();
+		logger.info(body);
+
+		JSONObject jsonbodyobj = new JSONObject(body);
+		String group = jsonbodyobj.getString("group");
+		String id = (String) session.getAttribute("s_Login");
+		ModelAndView mav = new ModelAndView("jsonView");
+		String responsestr = "";
+		HttpUtils httpUtils = new HttpUtils(serverinfo);
+		if (APIProtectionHandler.IsLogin(request)) {
+			if (id != null && id != "" && group != null && group != "") {
+				if (httpUtils.sendAuth(serverinfo)) {
+
+					String path = "/api/user/update?login=" + id + "&group=" + group;
+
+					try {
+						responsestr = httpUtils.sendGet(serverinfo, path);
+						if (responsestr.indexOf("0 Done") > 0) {
+							logger.info(responsestr);
+						}
+
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+
+			} else {
+				JSONObject erroroutput = new JSONObject();
+				erroroutput.put("retcode", "1 Error");
+				erroroutput.put("answer", "invalid input data");
+				responsestr = erroroutput.toString();
+				logger.info(erroroutput.toString());
+
+			}
+
+		}
+
+		mav.addObject("result", APIProtectionHandler.ApiProtection(request, responsestr, Boolean.valueOf(false)));
+		return mav;
+	}
+
+	@RequestMapping(value = "/getmygroup", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	public ModelAndView getmygroup(HttpServletRequest request, Model model) {
+
+		logger.info("Get getmygroup ........" + serverinfo);
+
+		ModelAndView mav = new ModelAndView("jsonView");
+		String responsestr = "";
+
+		HttpUtils httpUtils = new HttpUtils(serverinfo);
+
+		if (httpUtils.sendAuth(serverinfo)) {
+			HttpSession session = request.getSession();
+
+			String path = "/api/user/get?login=" + (String) session.getAttribute("s_Login");
+			;
+
+			try {
+				responsestr = httpUtils.sendGet(serverinfo, path);
+				if (responsestr.indexOf("0 Done") > 0) {
+					JSONObject jobj = new JSONObject(responsestr);
+					JSONObject answerobj = jobj.getJSONObject("answer");
+					String Group = answerobj.getString("Group");
+					JSONObject output = new JSONObject();
+					output.put("retcode", "0 Done");
+					output.put("answer", Group);
+					responsestr = output.toString();
+
+				}
+
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		mav.addObject("result", APIProtectionHandler.ApiProtection(request, responsestr, Boolean.valueOf(false)));
+		return mav;
+	}
+
+	@PostMapping(value = { "/ConfirmUncopyGroup" }, consumes = { "application/json" }, produces = {
+			"application/json" })
+	public ModelAndView ConfirmUncopyGroup(@RequestBody String body, HttpServletRequest request) throws SQLException {
+		logger.info("Get ConfirmUncopyGroup ........" + serverinfo);
+		HttpSession session = request.getSession();
+		logger.info(body);
+
+		// JSONObject jsonbodyobj = new JSONObject(body);
+		String group = "plan\\Basic\\Basic1";
+		String id = (String) session.getAttribute("s_Login");
+		ModelAndView mav = new ModelAndView("jsonView");
+		String responsestr = "";
+		HttpUtils httpUtils = new HttpUtils(serverinfo);
+		if (APIProtectionHandler.IsLogin(request)) {
+			if (httpUtils.sendAuth(serverinfo)) {
+				String path = "/api/user/get?login=" + (String) session.getAttribute("s_Login");
+				try {
+					responsestr = httpUtils.sendGet(serverinfo, path);
+					logger.info(responsestr);
+					if (responsestr.indexOf("0 Done") > 0) {
+
+						JSONObject obj = new JSONObject(responsestr);
+						JSONObject answer = obj.getJSONObject("answer");
+						String Group = answer.getString("Group").substring(0,
+								answer.getString("Group").lastIndexOf("\\") + 1);
+						String BasicGroup = Group + "Basic";
+						logger.info(Group);
+						logger.info(BasicGroup);
+
+						if (id != null && id != "" && BasicGroup != null && BasicGroup != "") {
+							if (httpUtils.sendAuth(serverinfo)) {
+
+								path = "/api/user/update?login=" + id + "&group=" + BasicGroup;
+
+								try {
+									responsestr = httpUtils.sendGet(serverinfo, path);
+									if (responsestr.indexOf("0 Done") > 0) {
+										logger.info(responsestr);
+									}
+
+								} catch (Exception e) { // TODO Auto-generated catch block
+									e.printStackTrace();
+								}
+							}
+
+						} else {
+							JSONObject erroroutput = new JSONObject();
+							erroroutput.put("retcode", "1 Error");
+							erroroutput.put("answer", "invalid input data");
+							responsestr = erroroutput.toString();
+							logger.info(erroroutput.toString());
+
+						}
+					}
+
+				} catch (Exception e) {
+
+					e.printStackTrace();
+				}
+			}
+
+		}
+
+		mav.addObject("result", APIProtectionHandler.ApiProtection(request, responsestr, Boolean.valueOf(false)));
+		return mav;
+	}
+
+	@RequestMapping(value = { "/fundHistory" }, method = { RequestMethod.GET })
+	public String fundHistory(Model model) {
+		logger.info("Welcome History! Index.");
+		String vLocal = LocaleContextHolder.getLocale().getLanguage();
+		model.addAttribute("lang", vLocal);
+		String returnURL = "";
+		returnURL = "/fundhistory";
+		return String.valueOf(defaultpath) + returnURL;
+	}
+
+	@RequestMapping(value = { "/FundDeposit" }, method = { RequestMethod.GET })
+	public String FundDeposit(Model model) {
+		logger.info("Welcome FundDeposit! Index.");
+		String vLocal = LocaleContextHolder.getLocale().getLanguage();
+		model.addAttribute("lang", vLocal);
+		String returnURL = "";
+		returnURL = "/funddeposit";
+		return String.valueOf(defaultpath) + returnURL;
+	}
+
+	@RequestMapping(value = { "/FundWithdrawal" }, method = { RequestMethod.GET })
+	public String FundWithdrawal(Model model) {
+		logger.info("Welcome FundWithdrawal! Index.");
+		String vLocal = LocaleContextHolder.getLocale().getLanguage();
+		model.addAttribute("lang", vLocal);
+		String returnURL = "";
+		returnURL = "/fundwithdrawal";
+		return String.valueOf(defaultpath) + returnURL;
+	}
+
+	@RequestMapping(value = { "/ajax/m2payDepositRequest" }, method = { RequestMethod.POST }, produces = {
+			"application/json;charset=UTF-8" })
+	@ResponseBody
+	public ModelAndView m2payDepositRequest(M2PayDepositRequest depositRequest, Model model,
+			HttpServletRequest request) {
+		logger.info("/ajax/m2payDepositRequestThe M2PayDepositRequest info : " + depositRequest);
+		String result = "SUCCESS";
+		String resultmessage = "SUCCESS";
+		String resulturl = "";
+		ModelAndView mav = new ModelAndView("jsonView");
+		int inscnt = -1;
+		HttpSession session = request.getSession();
+		String clientid = (String) session.getAttribute("s_Login");
+		long unixTime = Instant.now().getEpochSecond();
+		String callbackUrl = "https://www.greymanager.com" + request.getContextPath() + "/m2papi/depositcollback/"
+				+ clientid + "/C";
+		logger.info("callbackurl: " + callbackUrl);
+		depositRequest.setUserinfoseq(Long.valueOf(Long.parseLong(clientid)));
+		depositRequest.setClientid(Long.valueOf(Long.parseLong(clientid)));
+		depositRequest.setTimestamp(String.valueOf(unixTime));
+		depositRequest.setCallbackurl(callbackUrl);
+		depositRequest.setCreuser(clientid);
+		depositRequest.setUpduser(clientid);
+		try {
+			depositRequest = HttpUtils.getM2PayDepositRequest(depositRequest);
+			if (depositRequest != null && depositRequest.getResult() != null
+					&& !depositRequest.getResult().equals("ERROR") && depositRequest.getAddress() != null
+					&& depositRequest.getAddress().trim().length() > 0 && depositRequest.getPaymentid() != null
+					&& depositRequest.getPaymentid().trim().length() > 0) {
+				JSONObject inputjson = new JSONObject();
+				inputjson.put("p_name", "p_insert_M2PayDepositRequest");
+				inputjson.put("userinfoseq", depositRequest.getUserinfoseq());
+				inputjson.put("amount", depositRequest.getAmount());
+				inputjson.put("currency", depositRequest.getCurrency());
+				inputjson.put("paymentcurrency", depositRequest.getPaymentcurrency());
+				inputjson.put("callbackurl", depositRequest.getCallbackurl());
+				inputjson.put("paymentid", depositRequest.getPaymentid());
+				inputjson.put("statuss", depositRequest.getStatus());
+				inputjson.put("transactionamount", depositRequest.getTransactionamount());
+				inputjson.put("netamount", 2);
+				inputjson.put("transactioncurrency", depositRequest.getTransactioncurrency());
+				inputjson.put("finalcurrency", depositRequest.getFinalcurrency());
+				inputjson.put("processingfee", depositRequest.getProcessingfee());
+				inputjson.put("checkouturl", depositRequest.getCheckouturl());
+				inputjson.put("address", depositRequest.getAddress());
+				inputjson.put("creuser", depositRequest.getCreuser());
+				logger.info(inputjson.toString());
+				String DbReturnresult = MariaDBProcedureHandler.ProcedureCall(inputjson.toString());
+				if (MariaDBProcedureHandler.isJSONValid(DbReturnresult)) {
+					JSONObject returnobj = new JSONObject(DbReturnresult);
+					String retcode = returnobj.getString("retcode");
+					if (retcode.indexOf("0 Done") >= 0)
+						inscnt = 1;
+				}
+				if (inscnt > 0) {
+					resulturl = (depositRequest.getCheckouturl() == null) ? "" : depositRequest.getCheckouturl();
+					result = "SUCCESS";
+					resultmessage = "SUCCESS";
+				} else {
+					result = "ERROR";
+					resultmessage = "ERROR-DBNOTINSERT";
+				}
+			} else {
+				result = "ERROR";
+				resultmessage = (depositRequest.getResultmessage() != null
+						&& depositRequest.getResultmessage().trim().length() > 1) ? depositRequest.getResultmessage()
+								: "ERROR-Match2Pay";
+			}
+		} catch (Exception e) {
+			result = "ERROR";
+			resultmessage = "ERROR-" + e.toString();
+			e.printStackTrace();
+		}
+		mav.addObject("result", result);
+		mav.addObject("resultmessage", resultmessage);
+		mav.addObject("resulturl", resulturl);
+		logger.info("[" + result + "] " + resultmessage);
+		logger.info("return cnt" + inscnt);
+		return mav;
+	}
+
+	@RequestMapping(value = { "/GetFundAccountBalance" }, method = { RequestMethod.GET }, produces = {
+			"application/json;charset=UTF-8" })
+	@ResponseBody
+	public ModelAndView GetFundAccountBalance(HttpServletRequest request, Model model) {
+		String FundAccountNo = "";
+		logger.info("Get GetFundAccountBalance ........" + serverinfo);
+		ModelAndView mav = new ModelAndView("jsonView");
+		String responsestr = "";
+		HttpUtils httpUtils = new HttpUtils(serverinfo);
+		HttpSession session = request.getSession();
+		if (httpUtils.sendAuth(serverinfo)) {
+
+			String path = "/api/user/get?login=" + (String) session.getAttribute("s_Login");
+			try {
+				responsestr = httpUtils.sendGet(serverinfo, path);
+				if (responsestr.indexOf("0 Done") > 0) {
+					JSONObject jobj = new JSONObject(responsestr);
+					String Balance = jobj.getJSONObject("answer").getString("Balance");
+					// console = new console(this);
+					// console.log(Balance);
+					JSONObject output = new JSONObject();
+					output.put("retcode", "0 Done");
+					JSONObject answer = new JSONObject();
+					answer.put("Balance", Balance);
+					answer.put("FundAccountNo", (String) session.getAttribute("s_Login"));
+					output.put("answer", answer);
+					responsestr = output.toString();
+					// console.log(output.toString());
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		mav.addObject("result", APIProtectionHandler.ApiProtection(request, responsestr, Boolean.valueOf(false)));
+		return mav;
+	}
+
+	@PostMapping(value = { "/getFundHistory" }, consumes = { "application/json" }, produces = { "application/json" })
+	public ModelAndView getFundHistory(@RequestBody String body, HttpServletRequest request) throws SQLException {
+		ModelAndView mav = new ModelAndView("jsonView");
+		JSONObject jsonbodyobj = new JSONObject(body);
+		logger.info("Welcome getFundHistory: ");
+		String responsestr = "";
+		HttpSession session = request.getSession();
+		HttpUtils httpUtils = new HttpUtils(serverinfo);
+		long unixtimenow = System.currentTimeMillis() / 1000L;
+		long unixtime1yearbefore = unixtimenow - 31536000L;
+		unixtimenow += 31536000L;
+		if (httpUtils.sendAuth(this.serverinfo)) {
+			String path = "/api/deal/get_batch?login=" + (String) session.getAttribute("s_Login") + "&from="
+					+ unixtime1yearbefore + "&to=" + unixtimenow + "&type=2";
+			try {
+				responsestr = httpUtils.sendGet(this.serverinfo, path);
+				if (responsestr.indexOf("0 Done") > 0) {
+					logger.info("API RESULT" + responsestr);
+					logger.info("finaloutput : " + responsestr);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		mav.addObject("result", APIProtectionHandler.ApiProtection(request, responsestr, Boolean.valueOf(false)));
+		return mav;
+	}
+
+	@RequestMapping(value = { "/InitialFundConfugurationComment" }, method = { RequestMethod.GET }, produces = {
+			"application/json;charset=UTF-8" })
+	@ResponseBody
+	public ModelAndView AddFundConfugurationComment(HttpServletRequest request, Model model) {
+		logger.info("Get AddFundConfugurationComment ........" + this.serverinfo);
+		ModelAndView mav = new ModelAndView("jsonView");
+		String responsestr = "";
+		HttpSession session = request.getSession();
+		HttpUtils httpUtils = new HttpUtils(serverinfo);
+		if (httpUtils.sendAuth(serverinfo)) {
+			String path = "/api/user/get?login=" + (String) session.getAttribute("s_Login");
+			try {
+				responsestr = httpUtils.sendGet(this.serverinfo, path);
+				if (responsestr.indexOf("0 Done") >= 0) {
+					JSONObject job = new JSONObject(responsestr);
+					String ClientID = job.getJSONObject("answer").getString("ClientID");
+					String FundAccountNo = (String) session.getAttribute("s_Login");
+					if (!checkifConfugurationCommentisSet(request, FundAccountNo)) {
+						JSONObject outputanswer = new JSONObject();
+						outputanswer.put("RelatedClient", ClientID);
+						outputanswer.put("Flags", 0);
+						outputanswer.put("Extra", "test");
+						outputanswer.put("CommentType", 0);
+						JSONObject commentconfiguration = new JSONObject();
+						JSONArray configurationarray = new JSONArray();
+						commentconfiguration.put("ClientID", ClientID);
+						commentconfiguration.put("Platform", "Fund Manager");
+						commentconfiguration.put("CommentConfiguration", configurationarray);
+						outputanswer.put("Text", commentconfiguration.toString());
+						logger.info("send Auth" + outputanswer.toString());
+						httpUtils = new HttpUtils(serverinfo);
+						if (httpUtils.sendAuth(serverinfo)) {
+							path = "/api/comment/add";
+							try {
+								responsestr = httpUtils.sendPost(serverinfo, path, outputanswer.toString());
+								System.out.println("#### response" + responsestr);
+								if (responsestr.indexOf("0 Done") >= 0) {
+									JSONObject jobb = new JSONObject(responsestr);
+									int configurationcmdID = jobb.getJSONArray("answer").getJSONObject(0).getInt("id");
+									logger.info("configurationcmdID: " + configurationcmdID);
+									responsestr = AddCommentIDtoClientCommentField(request, ClientID,
+											String.valueOf(configurationcmdID));
+								}
+							} catch (Exception e) {
+								e.printStackTrace();
+								JSONObject output = new JSONObject();
+								output.put("retcode", "1 Error");
+								output.put("answer", "Server Error, Please Try again later");
+								responsestr = output.toString();
+							}
+						}
+					}
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+				JSONObject output = new JSONObject();
+				output.put("retcode", "1 Error");
+				output.put("answer", "Server Error, Please Try again later");
+				responsestr = output.toString();
+			}
+		}
+
+		mav.addObject("result", APIProtectionHandler.ApiProtection(request, responsestr, Boolean.valueOf(false)));
+		return mav;
+	}
+
+	public String AddCommentIDtoClientCommentField(HttpServletRequest request, String ClientID,
+			String CommentConfigurationID) {
+		logger.info("Get AddFundConfugurationComment ........" + this.serverinfo);
+		String responsestr = "";
+		HttpSession session = request.getSession();
+		JSONObject outputanswer = new JSONObject();
+		JSONArray array = new JSONArray();
+		outputanswer.put("RecordID", ClientID);
+		JSONObject cidobj = new JSONObject();
+		cidobj.put("cid", CommentConfigurationID);
+		outputanswer.put("Comment", cidobj.toString());
+		array.put(outputanswer);
+		logger.info("send Auth" + array.toString());
+		HttpUtils httpUtils = new HttpUtils(this.serverinfo);
+		if (httpUtils.sendAuth(this.serverinfo)) {
+			String path = "/api/client/update";
+			try {
+				responsestr = httpUtils.sendPost(this.serverinfo, path, array.toString());
+				System.out.println("#### response" + responsestr);
+			} catch (Exception e) {
+				e.printStackTrace();
+				JSONObject output = new JSONObject();
+				output.put("retcode", "1 Error");
+				output.put("answer", "Server Error, Please Try again later");
+				responsestr = output.toString();
+			}
+		}
+		return responsestr;
+	}
+
+	@RequestMapping(value = { "/GetFundConfugurationComment" }, method = { RequestMethod.GET }, produces = {
+			"application/json;charset=UTF-8" })
+	@ResponseBody
+	public ModelAndView GetFundConfugurationComment(HttpServletRequest request, Model model) {
+		logger.info("Get GetFundConfugurationComment ........" + this.serverinfo);
+		ModelAndView mav = new ModelAndView("jsonView");
+		String responsestr = "";
+		HttpSession session = request.getSession();
+		responsestr = FundConfugurationCommentJSON(request);
+		if (responsestr.indexOf("0 Done") >= 0) {
+			JSONObject job = new JSONObject(responsestr);
+			String answer = job.getString("answer");
+			logger.info("answer" + answer);
+		}
+		mav.addObject("result", APIProtectionHandler.ApiProtection(request, responsestr, Boolean.valueOf(false)));
+		return mav;
+	}
+
+	public String FundConfugurationCommentJSON(HttpServletRequest request) {
+		String responsestr = GetFundAccountClientID(request);
+		if (responsestr.indexOf("0 Done") >= 0) {
+			JSONObject job = new JSONObject(responsestr);
+			String ClientID = job.getJSONObject("answer").getString("ClientID");
+			String configurationcmdID = job.getJSONObject("answer").getString("CommentConfigurationID");
+			HttpUtils httpUtils = new HttpUtils(this.serverinfo);
+			if (httpUtils.sendAuth(this.serverinfo)) {
+				String path = "/api/comment/get?id=" + configurationcmdID;
+				logger.info("API path" + path);
+				try {
+					responsestr = httpUtils.sendGet(this.serverinfo, path);
+					if (responsestr.indexOf("0 Done") > 0) {
+						job = new JSONObject(responsestr);
+						String commandconfiguration = job.getJSONArray("answer").getJSONObject(0).getString("Text");
+						job = new JSONObject();
+						job.put("retcode", "0 Done");
+						job.put("answer", commandconfiguration);
+						job.put("commentID", configurationcmdID);
+						// console console = new console(this);
+						// console.log(responsestr);
+						// console.log(commandconfiguration);
+						// console.log(job.toString());
+						responsestr = job.toString();
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+					JSONObject output = new JSONObject();
+					output.put("retcode", "1 Error");
+					output.put("answer", "Server Error, Please Try again later");
+					responsestr = output.toString();
+				}
+			}
+		}
+		return responsestr;
+	}
+
+	public String GetFundAccountClientID(HttpServletRequest request) {
+		String FundAccountNo = "";
+		logger.info("Get GetFundAccountBalance ........" + this.serverinfo);
+		ModelAndView mav = new ModelAndView("jsonView");
+		String responsestr = "";
+		HttpUtils httpUtils = new HttpUtils(this.serverinfo);
+		HttpSession session = request.getSession();
+		if (httpUtils.sendAuth(this.serverinfo)) {
+			String path = "/api/user/get?login=" + (String) session.getAttribute("s_Login");
+			try {
+				responsestr = httpUtils.sendGet(this.serverinfo, path);
+				if (responsestr.indexOf("0 Done") > 0) {
+					JSONObject jobj = new JSONObject(responsestr);
+					FundAccountNo = (String) session.getAttribute("s_Login");
+					// console console = new console(this);
+					// console.log(FundAccountNo);
+					if (FundAccountNo == "" || FundAccountNo == null) {
+						JSONObject output = new JSONObject();
+						output.put("retcode", "1 Error");
+						output.put("answer", "Fund Account Not Found, Please Contact Administrator.");
+						responsestr = output.toString();
+					} else if (httpUtils.sendAuth(this.serverinfo)) {
+						path = "/api/user/get?login=" + FundAccountNo;
+						try {
+							responsestr = httpUtils.sendGet(this.serverinfo, path);
+							if (responsestr.indexOf("0 Done") > 0) {
+								logger.info("Get GetFundAccountBalance ..ewar" + responsestr);
+								jobj = new JSONObject(responsestr);
+								String ClientID = jobj.getJSONObject("answer").getString("ClientID");
+								path = "/api/client/get?id=" + ClientID;
+								try {
+									responsestr = httpUtils.sendGet(this.serverinfo, path);
+									logger.info("Get GetFundAccountBalance ..11" + responsestr);
+									if (responsestr.indexOf("0 Done") > 0) {
+										// console = new console(this);
+										// console.log(ClientID);
+										jobj = new JSONObject(responsestr);
+										JSONArray answer1 = new JSONArray(jobj.getJSONArray("answer"));
+										String Comment = answer1.getJSONObject(0).getString("Comment");
+										String CommentConfigurationID = "";
+										if (Comment.indexOf("cid") >= 0)
+											CommentConfigurationID = (new JSONObject(Comment)).getString("cid");
+										JSONObject output = new JSONObject();
+										output.put("retcode", "0 Done");
+										JSONObject answer = new JSONObject();
+										answer.put("ClientID", ClientID);
+										answer.put("FundAccountNo", FundAccountNo);
+										answer.put("CommentConfigurationID", CommentConfigurationID);
+										output.put("answer", answer);
+										responsestr = output.toString();
+										// console.log(output.toString());
+									}
+								} catch (Exception e) {
+									e.printStackTrace();
+									JSONObject output = new JSONObject();
+									output.put("retcode", "1 Error");
+									output.put("answer", "Server Error, Please Try again later");
+									responsestr = output.toString();
+								}
+							}
+						} catch (Exception e) {
+							e.printStackTrace();
+							JSONObject output = new JSONObject();
+							output.put("retcode", "1 Error");
+							output.put("answer", "Server Error, Please Try again later");
+							responsestr = output.toString();
+						}
+					}
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+				JSONObject output = new JSONObject();
+				output.put("retcode", "1 Error");
+				output.put("answer", "Server Error, Please Try again later");
+				responsestr = output.toString();
+			}
+		}
+		return responsestr;
+	}
+
+	@RequestMapping(value = { "/newWithdrawalRequest" }, method = { RequestMethod.GET })
+	public String newWithdrawalRequest(Model model) {
+		logger.info("Welcome newWithdrawalRequest! Index.");
+		String vLocal = LocaleContextHolder.getLocale().getLanguage();
+		model.addAttribute("lang", vLocal);
+		String returnURL = "";
+		returnURL = "/newwithdrawalrequest";
+		return String.valueOf(defaultpath) + returnURL;
+	}
+
+	@PostMapping(value = { "/insertNewWithdrawalRequest" }, consumes = { "application/json" }, produces = {
+			"application/json" })
+	public ModelAndView insertNewWithdrawalRequest(@RequestBody String body, HttpServletRequest request)
+			throws SQLException {
+		logger.info("Get insertNewWithdrawalRequest ........" + this.serverinfo);
+		JSONObject jsonbodyobj = new JSONObject(body);
+		long unixtimenow = System.currentTimeMillis() / 1000L;
+		String money = jsonbodyobj.getString("money");
+		String wallet = jsonbodyobj.getString("wallet");
+		String Crypto = jsonbodyobj.getString("Crypto");
+		String Code = jsonbodyobj.getString("Code");
+		String FundAccount = jsonbodyobj.getString("FundAccount");
+		String title = "New Withdrawal Request on :" + unixtimenow;
+		String section = "Withdrawal";
+		String content = "Fund Account : " + FundAccount + " , Withdrawal Amount : " + money
+				+ "USD , Withdrawal Currency Type: " + Crypto + " (" + Code + "), Wallet Address: " + wallet;
+		logger.info("Get insertNewWithdrawalRequest ........" + this.serverinfo);
+		ModelAndView mav = new ModelAndView("jsonView");
+		String responsestr = "";
+		HttpSession session = request.getSession();
+		HttpUtils httpUtils = new HttpUtils(this.serverinfo);
+		responsestr = FundConfugurationCommentJSON(request);
+		if (responsestr.indexOf("0 Done") >= 0) {
+			JSONObject job = new JSONObject(responsestr);
+			String answer = job.getString("answer");
+			JSONObject answerobj = new JSONObject(answer);
+			JSONArray CommentConfigurationArray = answerobj.getJSONArray("CommentConfiguration");
+			String ClientID = answerobj.getString("ClientID");
+			String commentID = job.getString("commentID");
+			JSONObject newtopic = new JSONObject();
+			JSONObject outputanswer = new JSONObject();
+			outputanswer.put("RelatedClient", ClientID);
+			outputanswer.put("Flags", 0);
+			outputanswer.put("Extra", "test");
+			outputanswer.put("CommentType", 0);
+			JSONObject commentconfiguration = new JSONObject();
+			outputanswer.put("Text", String.valueOf(unixtimenow) + "#CR#" + content);
+			if (httpUtils.sendAuth(this.serverinfo)) {
+				String path = "/api/comment/add";
+				try {
+					responsestr = httpUtils.sendPost(this.serverinfo, path, outputanswer.toString());
+					System.out.println("#### response" + responsestr);
+					if (responsestr.indexOf("0 Done") >= 0) {
+						JSONObject jobb = new JSONObject(responsestr);
+						int configurationcmdID = jobb.getJSONArray("answer").getJSONObject(0).getInt("id");
+						logger.info("configurationcmdID: " + configurationcmdID);
+						JSONArray commentlist = new JSONArray();
+						commentlist.put(configurationcmdID);
+						newtopic.put("Title", title);
+						newtopic.put("index", CommentConfigurationArray.length());
+						newtopic.put("Section", section);
+						newtopic.put("CommentList", commentlist);
+						newtopic.put("Status", "pending");
+						newtopic.put("CreateDate", unixtimenow);
+						newtopic.put("Isreply", 0);
+						CommentConfigurationArray.put(newtopic);
+						answerobj.remove("CommentConfiguration");
+						answerobj.put("CommentConfiguration", CommentConfigurationArray);
+						logger.info("answerobj" + answerobj.toString());
+						outputanswer = new JSONObject();
+						outputanswer.put("Text", answerobj.toString());
+						outputanswer.put("RecordID", commentID);
+						outputanswer.put("RelatedClient", ClientID);
+						if (httpUtils.sendAuth(this.serverinfo)) {
+							path = "/api/comment/update";
+							try {
+								responsestr = httpUtils.sendPost(this.serverinfo, path, outputanswer.toString());
+								System.out.println("#### response" + responsestr);
+								logger.info("resp: " + responsestr);
+								if (responsestr.indexOf("0 Done") >= 0) {
+									jobb = new JSONObject(responsestr);
+									configurationcmdID = jobb.getJSONArray("answer").getJSONObject(0).getInt("id");
+									logger.info("configurationcmdID: " + configurationcmdID);
+									responsestr = getCommentByID(request, GetCustomerServicesAdminCommentID(request));
+									if (responsestr.indexOf("New") >= 0 && responsestr.indexOf("All") >= 0) {
+										JSONObject CommentObj = new JSONObject(responsestr);
+										String textfield = CommentObj.getJSONArray("answer").getJSONObject(0)
+												.getString("Text");
+										JSONObject CSconfigurationobj = new JSONObject(textfield);
+										JSONArray All = CSconfigurationobj.getJSONArray("All");
+										JSONArray New = CSconfigurationobj.getJSONArray("New");
+										int i = 0;
+										while (i < All.length()) {
+											if (All.getJSONObject(i).getString("FM")
+													.indexOf((String) session.getAttribute("s_Login")) >= 0) {
+												All.remove(i);
+												logger.info("removing old element in all");
+												i = 0;
+												continue;
+											}
+											i++;
+										}
+										i = 0;
+										while (i < New.length()) {
+											if (New.getJSONObject(i).getString("FM")
+													.indexOf((String) session.getAttribute("s_Login")) >= 0) {
+												New.remove(i);
+												logger.info("removing old element in new");
+												i = 0;
+												continue;
+											}
+											i++;
+										}
+										JSONObject infoobj = new JSONObject();
+										infoobj.put("C", ClientID);
+										infoobj.put("FM", session.getAttribute("s_Login"));
+										infoobj.put("D", System.currentTimeMillis() / 1000L);
+										All.put(infoobj);
+										New.put(infoobj);
+										CSconfigurationobj.remove("All");
+										CSconfigurationobj.remove("New");
+										CSconfigurationobj.put("All", All);
+										CSconfigurationobj.put("New", New);
+										responsestr = updateCommentTextField(
+												String.valueOf(CustomerServices.getcustomerServicesClientID()),
+												GetCustomerServicesAdminCommentID(request),
+												CSconfigurationobj.toString());
+									}
+								}
+							} catch (Exception e) {
+								e.printStackTrace();
+								JSONObject output = new JSONObject();
+								output.put("retcode", "1 Error");
+								output.put("answer", "Server Error, Please Try again later");
+								responsestr = output.toString();
+							}
+						}
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+					JSONObject output = new JSONObject();
+					output.put("retcode", "1 Error");
+					output.put("answer", "Server Error, Please Try again later");
+					responsestr = output.toString();
+				}
+			}
+		}
+		mav.addObject("result", APIProtectionHandler.ApiProtection(request, responsestr, Boolean.valueOf(false)));
+		return mav;
+	}
+
+	public String GetCustomerServicesAdminCommentID(HttpServletRequest request) {
+		String responsestr = "-1";
+		HttpUtils httpUtils = new HttpUtils(this.serverinfo);
+		if (httpUtils.sendAuth(this.serverinfo)) {
+			String path = "/api/client/get?id=" + CustomerServices.getcustomerServicesClientID();
+			try {
+				responsestr = httpUtils.sendGet(this.serverinfo, path);
+				logger.info("Get checkifCustomerServicesAdminCommentIsSet ..11" + responsestr);
+				if (responsestr.indexOf("0 Done") > 0) {
+					JSONObject jobj = new JSONObject(responsestr);
+					String CommentConfigurationID = jobj.getJSONArray("answer").getJSONObject(0).getString("Comment");
+					if (CommentConfigurationID.indexOf("cid") >= 0) {
+						JSONObject commentobj = new JSONObject(CommentConfigurationID);
+						String cid = commentobj.getString("cid");
+						responsestr = cid;
+					} else {
+						responsestr = "-1";
+					}
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+				responsestr = "-1";
+			}
+		}
+		logger.info("GetCustomerServicesAdminCommentID: " + responsestr);
+		return responsestr;
+	}
+
+	public String updateCommentTextField(String ClientID, String commentID, String Text) {
+		String responsestr = "";
+		JSONObject outputanswer = new JSONObject();
+		outputanswer.put("Text", Text);
+		outputanswer.put("RecordID", commentID);
+		outputanswer.put("RelatedClient", ClientID);
+		HttpUtils httpUtils = new HttpUtils(this.serverinfo);
+		if (httpUtils.sendAuth(this.serverinfo)) {
+			String path = "/api/comment/update";
+			try {
+				responsestr = httpUtils.sendPost(this.serverinfo, path, outputanswer.toString());
+				System.out.println("#### response" + responsestr);
+				logger.info("resp: " + responsestr);
+				if (responsestr.indexOf("0 Done") >= 0) {
+					JSONObject jobb = new JSONObject(responsestr);
+					int configurationcmdID = jobb.getJSONArray("answer").getJSONObject(0).getInt("id");
+					logger.info("configurationcmdID: " + configurationcmdID);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+				JSONObject output = new JSONObject();
+				output.put("retcode", "1 Error");
+				output.put("answer", "Server Error, Please Try again later");
+				responsestr = output.toString();
+			}
+		}
+		return responsestr;
+	}
+
+	public String getCommentByID(HttpServletRequest request, String ID) {
+		String responsestr = "";
+		HttpUtils httpUtils = new HttpUtils(this.serverinfo);
+		if (httpUtils.sendAuth(this.serverinfo)) {
+			String path = "/api/comment/get?id=" + ID;
+			logger.info("API path" + path);
+			try {
+				responsestr = httpUtils.sendGet(this.serverinfo, path);
+			} catch (Exception e) {
+				e.printStackTrace();
+				JSONObject output = new JSONObject();
+				output.put("retcode", "1 Error");
+				output.put("answer", "Server Error, Please Try again later");
+				responsestr = output.toString();
+			}
+		}
+		return responsestr;
+	}
+
+	public boolean checkifConfugurationCommentisSet(HttpServletRequest request, String FundAccountNo) {
+		boolean output = false;
+		String responsestr = "";
+		HttpUtils httpUtils = new HttpUtils(this.serverinfo);
+		String path = "/api/user/get?login=" + FundAccountNo;
+		if (httpUtils.sendAuth(this.serverinfo))
+			try {
+				responsestr = httpUtils.sendGet(this.serverinfo, path);
+				if (responsestr.indexOf("0 Done") > 0) {
+					logger.info("Get GetFundAccountBalance ..ewar" + responsestr);
+					JSONObject jobj = new JSONObject(responsestr);
+					String ClientID = jobj.getJSONObject("answer").getString("ClientID");
+					path = "/api/client/get?id=" + ClientID;
+					try {
+						responsestr = httpUtils.sendGet(this.serverinfo, path);
+						logger.info("Get GetFundAccountBalance ..11" + responsestr);
+						if (responsestr.indexOf("0 Done") > 0) {
+							// console console = new console(this);
+							// console.log(ClientID);
+							jobj = new JSONObject(responsestr);
+							String CommentConfigurationID = jobj.getJSONArray("answer").getJSONObject(0)
+									.getString("Comment");
+							if (CommentConfigurationID.indexOf("cid") >= 0)
+								output = true;
+						}
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		logger.info("isinitiateComment: " + output);
+		return output;
+	}
+
+	@RequestMapping(value = { "/viewWithdrawalRequest" }, method = { RequestMethod.GET })
+	public String viewWithdrawalRequest(Model model) {
+		logger.info("Welcome viewWithdrawalRequest! Index.");
+		String vLocal = LocaleContextHolder.getLocale().getLanguage();
+		model.addAttribute("lang", vLocal);
+		String returnURL = "";
+		returnURL = "/viewwithdrawalrequest";
+		return String.valueOf(defaultpath) + returnURL;
+	}
+
+	@RequestMapping(value = { "/GetAllTopicComment" }, method = { RequestMethod.GET }, produces = {
+			"application/json;charset=UTF-8" })
+	@ResponseBody
+	public ModelAndView getClientCommentlist(HttpServletRequest request, Model model) {
+		logger.info("Get getClientCommentlist ........" + this.serverinfo);
+		String index = request.getParameter("index");
+		ModelAndView mav = new ModelAndView("jsonView");
+		String responsestr = "";
+		HttpUtils httpUtils = new HttpUtils(this.serverinfo);
+		HttpSession session = request.getSession();
+		responsestr = FundConfugurationCommentJSON(request);
+		if (responsestr.indexOf("0 Done") >= 0) {
+			JSONObject job = new JSONObject(responsestr);
+			logger.info("API path" + responsestr);
+			String CommentConfiguration = job.getString("answer");
+			JSONObject CommentConfigurationobj = new JSONObject(CommentConfiguration);
+			JSONArray commentlist = CommentConfigurationobj.getJSONArray("CommentConfiguration")
+					.getJSONObject(Integer.parseInt(index)).getJSONArray("CommentList");
+			String cmdArray = "";
+			for (int i = 0; i < commentlist.length(); i++) {
+				cmdArray = String.valueOf(cmdArray) + commentlist.getInt(i);
+				if (i != commentlist.length())
+					cmdArray = String.valueOf(cmdArray) + ",";
+			}
+			logger.info("Get cmdArray ........" + cmdArray);
+			logger.info("Get CommentConfiguration ........" + CommentConfigurationobj.toString());
+			if (httpUtils.sendAuth(this.serverinfo)) {
+				String path = "/api/comment/get?id=" + cmdArray;
+				logger.info("API path" + path);
+				try {
+					responsestr = httpUtils.sendGet(this.serverinfo, path);
+					if (responsestr.indexOf("0 Done") > 0) {
+						// console console = new console();
+						// console.log(responsestr);
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+					JSONObject output = new JSONObject();
+					output.put("retcode", "1 Error");
+					output.put("answer", "Server Error, Please Try again later");
+					responsestr = output.toString();
+				}
+			}
+		}
+		mav.addObject("result", APIProtectionHandler.ApiProtection(request, responsestr, Boolean.valueOf(false)));
+		return mav;
+	}
+
+	/*
+	 * @RequestMapping(value = "/ratecalculator", method = RequestMethod.GET,
+	 * produces = "application/json;charset=UTF-8")
+	 * 
+	 * @ResponseBody public ModelAndView ratecalculator(HttpServletRequest request,
+	 * Model model) { String key = request.getParameter("key"); String passcode =
+	 * "nsaIQ5LmwlS6vOhrVL4Or420kGF6PJUJnhVavQ8bxlE"; String responsestr = "";
+	 * ModelAndView mav = new ModelAndView("jsonView");
+	 * logger.info("Get ratecalculator ........" + serverinfo);
+	 * 
+	 * if (key != null && key != "" && key.equals(passcode)) { HttpUtils httpUtils =
+	 * new HttpUtils(serverinfo);
+	 * 
+	 * if (httpUtils.sendAuth(serverinfo)) { HttpSession session =
+	 * request.getSession(); long unixTime = Instant.now().getEpochSecond() +
+	 * 3600000; String path = "/api/deal/get_batch?login=" + id + "&from=0&to=" +
+	 * String.valueOf(unixTime);
+	 * 
+	 * try { responsestr = httpUtils.sendGet(serverinfo, path); if
+	 * (responsestr.indexOf("0 Done") > 0) { logger.info("API RESULT" +
+	 * responsestr);
+	 * 
+	 * JSONObject jobj = new JSONObject(responsestr); JSONArray jarray =
+	 * jobj.getJSONArray("answer"); int length = jarray.length(); double totalprofit
+	 * = 0; double totaldeposit = 0; for (int i = 0; i < length; i++) { String
+	 * action = jarray.getJSONObject(i).getString("Action"); if (action.indexOf("0")
+	 * >= 0 || action.indexOf("1") >= 0) { String profit =
+	 * jarray.getJSONObject(i).getString("Profit"); logger.info(profit); totalprofit
+	 * = totalprofit + Double.valueOf(profit); }
+	 * 
+	 * if (action != "0" && action != "1") { String profit =
+	 * jarray.getJSONObject(i).getString("Profit"); logger.info(profit);
+	 * totaldeposit = totaldeposit + Double.valueOf(profit); } }
+	 * 
+	 * double profitrate = totalprofit / totaldeposit * 100; logger.info("total: " +
+	 * totalprofit + " " + totaldeposit + ",rate :" + String.format("%.2f",
+	 * profitrate)); JSONObject output = new JSONObject(); output.put("retcode",
+	 * "0 Done"); if (profitrate > 0) { output.put("rate", "+" +
+	 * String.format("%.2f", profitrate) + "%"); } else { output.put("rate",
+	 * String.format("%.2f", profitrate) + "%"); }
+	 * 
+	 * output.put("profit", String.format("%.2f", totalprofit)); // responsestr =
+	 * output.toString();
+	 * 
+	 * JSONObject ajobj = new JSONObject(); ajobj.put("retcode", "0 Done");
+	 * responsestr = ajobj.toString();
+	 * 
+	 * }
+	 * 
+	 * } catch (Exception e) { // TODO Auto-generated catch block
+	 * e.printStackTrace();
+	 * 
+	 * JSONObject errorjobj = new JSONObject(); errorjobj.put("retcode", "1 Error");
+	 * errorjobj.put("answer", "system error"); responsestr = errorjobj.toString();
+	 * } } } { JSONObject errorjobj = new JSONObject(); errorjobj.put("retcode",
+	 * "1 Error"); errorjobj.put("answer", "unautorized"); responsestr =
+	 * errorjobj.toString(); }
+	 * 
+	 * mav.addObject("result", APIProtectionHandler.ApiProtection(request,
+	 * responsestr, Boolean.valueOf(false)));
+	 * 
+	 * return mav; }
+	 */
+
+	@RequestMapping(value = "/getrate1", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	public ModelAndView getrate1(HttpServletRequest request, Model model) {
+		String id = request.getParameter("id");
+		logger.info("Get getrate1 ........" + serverinfo);
+		ModelAndView mav = new ModelAndView("jsonView");
+		String responsestr = "";
+		HttpUtils httpUtils = new HttpUtils(serverinfo);
+		HttpSession session = request.getSession();
+
+		if (httpUtils.sendAuth(serverinfo)) {
+
+			String path = "/api/user/get?login=" + id;
+			try {
+				responsestr = httpUtils.sendGet(serverinfo, path);
+				if (responsestr.indexOf("0 Done") > 0) {
+					JSONObject jobj = new JSONObject(responsestr);
+					JSONObject answer = jobj.getJSONObject("answer");
+					String Company = answer.getString("Company");
+					JSONObject manageridobj = new JSONObject(Company);
+					String managerid = manageridobj.getString("manager_id");
+					String rate = manageridobj.getString("rate");
+					String profit = manageridobj.getString("profit");
+					JSONObject output = new JSONObject();
+					output.put("retcode", "0 Done");
+					output.put("rate", rate);
+					output.put("profit", profit);
+					responsestr = output.toString();
+
+				}
+
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		mav.addObject("result", APIProtectionHandler.ApiProtection(request, responsestr, Boolean.valueOf(false)));
+		return mav;
+	}
+
+}

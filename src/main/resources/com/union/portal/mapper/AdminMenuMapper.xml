@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.union.portal.mapper.AdminMenuMapper">
+	<resultMap id="boardResult" type="com.union.portal.domain.AdminMenu">
+	    <collection property="attachfilelist" column="bno" javaType="java.util.ArrayList" ofType="com.union.portal.domain.AttachFile" select="readAttachfile"/>
+	</resultMap>
+
+<!-- <select id="getList" resultType="com.union.portal.domain.AdminMenu">
+    <![CDATA[
+    select * from menugrp a, menudetail b, adminmenudetaillst c where c.dbsts='A' and a.dbsts='A' and b.dbsts='A' and c.adminseq = #{adminseq} and b.menuid = c.menuid and a.menugrpid = b.menugrpid order by a.grpsort asc, b.menusort asc
+    ]]>
+  </select> -->
+
+  <select id="getListByCondition" parameterType="com.union.portal.domain.BoardSearchCondition" resultType="com.union.portal.domain.Board">
+    <![CDATA[
+    select * from tbl_board 
+    where bno > 0
+    ]]>
+    <choose>
+	<when test="searchtype != null and searchtype.equals('title')">
+	and title like concat('%',#{keyword},'%')
+	</when>
+	<when test="searchtype != null and searchtype.equals('writer')">
+	and writer like concat('%',#{keyword},'%')
+	</when>
+	</choose>
+  </select>
+  
+  <insert id="change">
+  insert into adminmenudetaillst(adminseq, menuid, dbsts, credate,creuser) values(#{adminseq},#{menuid},'A',now(),#{adminseq})
+  </insert>
+  
+</mapper>

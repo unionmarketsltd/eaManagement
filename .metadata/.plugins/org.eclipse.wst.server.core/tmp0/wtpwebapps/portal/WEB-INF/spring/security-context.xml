@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:security="http://www.springframework.org/schema/security"
+	xsi:schemaLocation="http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-5.2.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	
+	<bean id="bcryptPasswordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"></bean>
+	<bean id="customUserDetailService" class="com.union.portal.security.CustomUserDetailService"></bean>
+	<bean id="loginSuccessHandler" class="com.union.portal.security.LoginSuccessHandler" ></bean>
+	<bean id="loginFailureHandler" class="com.union.portal.security.CustomAuthenticationFailureHandler" ></bean>
+	<bean id="logoutSuccessHandler" class="com.union.portal.security.CustomLogoutSuccessHandler" ></bean>
+	<bean id="defaultHttpFirewall" class="org.springframework.security.web.firewall.DefaultHttpFirewall"/>	
+	<security:http use-expressions="true">
+		<!-- <security:intercept-url pattern="/sample/member" access="hasRole('ROLE_MEMBER')" />
+		<security:intercept-url pattern="/member/**" access="hasRole('ROLE_MEMBER')" />
+		<security:intercept-url pattern="/sample/admin" access="hasRole('ROLE_ADMIN')" /> -->
+		<!-- <security:intercept-url pattern="/trader/**" access="hasRole('ROLE_TRADER')" />
+		<security:intercept-url pattern="/grey/**" access="hasRole('ROLE_TRADER')" /> -->
+		<!-- <security:intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMIN')" /> -->
+		<security:form-login 
+			login-page="/home/login"
+    		authentication-success-handler-ref="loginSuccessHandler"
+    		authentication-failure-handler-ref="loginFailureHandler"
+		/>
+    	<!-- authentication-failure-handler-ref="loginFailureHandler" -->
+
+		<!-- success-handler-ref 사용시 logout-success-url 을 같이 사용할 수 없음.   -->
+		<!-- logout-success-url="/home/" -->
+		<security:logout 
+			logout-url="/home/logout" 
+			success-handler-ref="logoutSuccessHandler"
+			invalidate-session="true"  />
+		<security:access-denied-handler error-page="/home/accessError" />
+		<security:csrf disabled="true"/>
+	</security:http>
+	<security:authentication-manager>
+		<security:authentication-provider user-service-ref="customUserDetailService">
+			<!-- <security:user-service>
+				<security:user name="member" password="{noop}member" authorities="ROLE_MEMBER"/>
+				<security:user name="admin" password="{noop}admin" authorities="ROLE_ADMIN"/>
+			</security:user-service>
+			<security:jdbc-user-service data-source-ref="dataSource"/> -->
+			<security:password-encoder ref="bcryptPasswordEncoder"/>
+		</security:authentication-provider>
+	</security:authentication-manager>
+	<security:http-firewall ref="defaultHttpFirewall"/>
+</beans>

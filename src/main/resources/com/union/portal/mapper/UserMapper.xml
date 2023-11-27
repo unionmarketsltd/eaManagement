@@ -1,0 +1,358 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.union.portal.mapper.UserMapper">
+
+  <select id="getUserhistoryList" parameterType="com.union.portal.domain.SearchCondition"  resultType="com.union.portal.domain.UserpayHistory">
+    <![CDATA[
+    select *
+      from userpayhistory
+     where dbsts = 'A'
+    ]]>
+	<if test="accountnumber != null and accountnumber > 0 ">
+	and accountnumber = #{accountnumber}
+	</if>
+	<if test="userinfoseq > 0 ">
+	and userinfoseq = #{userinfoseq}
+	</if>
+	<if test='paytype != null and paytype != "" and !paytype.equals("all")'>
+	and paytype = #{paytype}
+	</if>
+	<if test='paymethod != null and paymethod != ""'>
+	and paymethod = #{paymethod}
+	</if>
+	<if test='paystatus != null and paystatus != ""'>
+	and paystatus = #{paystatus}
+	</if>
+	<if test='bgndate != null and bgndate != "" and enddate != null and enddate != "" '>
+	and credate between #{bgndate} and DATE_ADD(#{enddate} , interval 1 DAY) 
+	</if>
+	 order by userpayhistoryseq desc limit 
+	 #{startno}, #{endno}
+	 <!-- order by #{ordercolname} #{ordertype} limit #{startno}, #{endno} -->
+  </select>
+  
+  
+    <select id="getUserpayhistoryTotcnt" parameterType="com.union.portal.domain.SearchCondition"  resultType="_int">
+    <![CDATA[
+    select count(userpayhistoryseq) totcnt
+      from userpayhistory
+     where dbsts = 'A'
+    ]]>
+	<if test="accountnumber != null and accountnumber > 0 ">
+	and accountnumber = #{accountnumber}
+	</if>
+	<if test="userinfoseq > 0 ">
+	and userinfoseq = #{userinfoseq}
+	</if>
+	<if test='paytype != null and paytype != "" and !paytype.equals("all")'>
+	and paytype = #{paytype}
+	</if>
+	<if test='paymethod != null and paymethod != ""'>
+	and paymethod = #{paymethod}
+	</if>
+	<if test='paystatus != null and paystatus != ""'>
+	and paystatus = #{paystatus}
+	</if>
+	<if test='bgndate != null and bgndate != "" and enddate != null and enddate != "" '>
+	and credate between #{bgndate} and DATE_ADD(#{enddate} , interval 1 DAY) 
+	</if>
+  </select>
+  
+<!--   <select id="getAccoutDealhistoryList" parameterType="com.union.portal.domain.SearchCondition"  resultType="com.union.portal.domain.AccoutDealHistory">
+	 <if test="groupnm != null and (groupnm.equals('ALL') or groupnm.equals('MT5A'))">
+	 SELECT c.* 
+	  FROM UNION.userinfo a
+	       INNER join
+	       mt5a.mt5_users b
+	    ON a.clientid = b.ClientID
+		    INNER JOIN
+	       mt5a.mt5_deals c
+	    ON b.Login = c.Login
+	       inner join
+	       mt5a.mt5_groups d
+	    on b.`Group` = d.`Group`
+	   and d.CompanyWithdrawalURL = 'Y'   
+	 WHERE c.Action = 2  
+	   <if test="login != null and login gt 0">
+	   and c.Login = #{login}
+	   </if>
+	   and c.comment like (case when #{paytype} = 'all' then c.comment when #{paytype} = 'Transfer' then CONCAT('%',#{paytype},'%') ELSE CONCAT(#{paytype},'%') end)
+	   and c.time BETWEEN #{bgndate} and DATE_ADD(#{enddate} , interval 1 DAY) 
+	   AND a.userinfoseq = #{userinfoseq}
+	 </if>
+	 <if test="groupnm != null and groupnm.equals('ALL')">
+	 UNION all
+	 </if>
+	 <if test="groupnm != null and (groupnm.equals('ALL') or groupnm.equals('MT5B'))">
+	SELECT c.* 
+	  FROM UNION.userinfo a
+	       INNER join
+	       mt5b.mt5_users b
+	    ON a.bclientid = b.ClientID
+		    INNER JOIN
+	       mt5b.mt5_deals c
+	    ON b.Login = c.Login
+	       inner join
+	       mt5b.mt5_groups d
+	    on b.`Group` = d.`Group`
+	   and d.CompanyWithdrawalURL = 'Y'   
+	 WHERE c.Action = 2  
+	   <if test="login != null and login gt 0">
+	   and c.Login = #{login}
+	   </if>
+	   and c.comment like (case when #{paytype} = 'all' then c.comment when #{paytype} = 'Transfer' then CONCAT('%',#{paytype},'%') ELSE CONCAT(#{paytype},'%') end)
+	   and c.time BETWEEN #{bgndate} and DATE_ADD(#{enddate} , interval 1 DAY) 
+	   AND a.userinfoseq = #{userinfoseq}
+	 </if>
+   	   order by #{ordercolname} #{ordertype} limit #{startno}, #{endno}
+  </select> -->
+  
+  <select id="getAccoutDealhistoryList" parameterType="com.union.portal.domain.SearchCondition"  resultType="com.union.portal.domain.AccoutDealHistory">
+	 SELECT c.* 
+	  FROM UNION.userinfo a
+	       INNER join
+	       mt5a.mt5_users b
+	    ON a.clientid = b.ClientID
+		    INNER JOIN
+	       mt5a.mt5_deals c
+	    ON b.Login = c.Login
+	       inner join
+	       mt5a.mt5_groups d
+	    on b.`Group` = d.`Group`
+	   and d.CompanyWithdrawalURL = 'Y'   
+	 WHERE c.Action = 2  
+	   <choose>
+	   <when test="groupnm != null and groupnm.equals('MT5A') ">
+	   AND b.`Group` like 'real%'
+	   </when>
+	   <when test="groupnm != null and groupnm.equals('MT5B') ">
+	   AND b.`Group` like 'plan%'
+	   </when>
+	   </choose>	
+	   <if test="login != null and login gt 0">
+	   and c.Login = #{login}
+	   </if>
+	   and c.comment like (case when #{paytype} = 'all' then c.comment when #{paytype} = 'Transfer' then CONCAT('%',#{paytype},'%') ELSE CONCAT(#{paytype},'%') end)
+	   and c.time BETWEEN #{bgndate} and DATE_ADD(#{enddate} , interval 1 DAY) 
+	   AND a.userinfoseq = #{userinfoseq}
+   	   order by c.Deal desc 
+   	   limit #{startno}, #{endno}
+   	   <!-- order by #{ordercolname} #{ordertype} limit #{startno}, #{endno} -->
+  </select>
+
+<!--   <select id="getAccoutDealhistoryTotcnt" parameterType="com.union.portal.domain.SearchCondition"  resultType="_int">
+	 select count(tab.Deal) from (
+	 <if test="groupnm != null and (groupnm.equals('ALL') or groupnm.equals('MT5A'))">
+	 SELECT c.Deal
+	  FROM UNION.userinfo a
+	       INNER join
+	       mt5a.mt5_users b
+	    ON a.clientid = b.ClientID
+		    INNER JOIN
+	       mt5a.mt5_deals c
+	    ON b.Login = c.Login
+	       inner join
+	       mt5a.mt5_groups d
+	    on b.`Group` = d.`Group`
+	   and d.CompanyWithdrawalURL = 'Y'   
+	 WHERE c.Action = 2  
+	   <if test="login != null and login gt 0">
+	   and c.Login = #{login}
+	   </if>
+	   and c.comment like (case when #{paytype} = 'all' then c.comment when #{paytype} = 'Transfer' then CONCAT('%',#{paytype},'%') ELSE CONCAT(#{paytype},'%') end)
+	   and c.time BETWEEN #{bgndate} and DATE_ADD(#{enddate} , interval 1 DAY) 
+	   AND a.userinfoseq = #{userinfoseq}
+	 </if>
+	 <if test="groupnm != null and groupnm.equals('ALL')">
+	 UNION all
+	 </if>
+	 <if test="groupnm != null and (groupnm.equals('ALL') or groupnm.equals('MT5B'))">
+	SELECT c.Deal 
+	  FROM UNION.userinfo a
+	       INNER join
+	       mt5b.mt5_users b
+	    ON a.bclientid = b.ClientID
+		    INNER JOIN
+	       mt5b.mt5_deals c
+	    ON b.Login = c.Login
+	       inner join
+	       mt5b.mt5_groups d
+	    on b.`Group` = d.`Group`
+	   and d.CompanyWithdrawalURL = 'Y'   
+	 WHERE c.Action = 2  
+	   <if test="login != null and login gt 0">
+	   and c.Login = #{login}
+	   </if>
+	   and c.comment like (case when #{paytype} = 'all' then c.comment when #{paytype} = 'Transfer' then CONCAT('%',#{paytype},'%') ELSE CONCAT(#{paytype},'%') end)
+	   and c.time BETWEEN #{bgndate} and DATE_ADD(#{enddate} , interval 1 DAY) 
+	   AND a.userinfoseq = #{userinfoseq}
+	 </if>
+	) tab
+  </select>
+ -->
+
+  <select id="getAccoutDealhistoryTotcnt" parameterType="com.union.portal.domain.SearchCondition"  resultType="_int">
+	 SELECT count(c.Deal)
+	  FROM UNION.userinfo a
+	       INNER join
+	       mt5a.mt5_users b
+	    ON a.clientid = b.ClientID
+		    INNER JOIN
+	       mt5a.mt5_deals c
+	    ON b.Login = c.Login
+	       inner join
+	       mt5a.mt5_groups d
+	    on b.`Group` = d.`Group`
+	   and d.CompanyWithdrawalURL = 'Y'   
+	 WHERE c.Action = 2  
+	   <choose>
+	   <when test="groupnm != null and groupnm.equals('MT5A') ">
+	   AND b.`Group` like 'real%'
+	   </when>
+	   <when test="groupnm != null and groupnm.equals('MT5B') ">
+	   AND b.`Group` like 'plan%'
+	   </when>
+	   </choose>	
+	   <if test="login != null and login gt 0">
+	   and c.Login = #{login}
+	   </if>
+	   and c.comment like (case when #{paytype} = 'all' then c.comment when #{paytype} = 'Transfer' then CONCAT('%',#{paytype},'%') ELSE CONCAT(#{paytype},'%') end)
+	   and c.time BETWEEN #{bgndate} and DATE_ADD(#{enddate} , interval 1 DAY) 
+	   AND a.userinfoseq = #{userinfoseq}
+  </select>
+
+  
+  <select id="getMessageList" parameterType="com.union.portal.domain.SearchCondition"  resultType="com.union.portal.domain.Messageinfo">
+	 SELECT *
+	  FROM UNION.messageinfo
+	 WHERE dbsts = 'A'
+	   <if test='searchtype != null and searchtype.equals("title") and keyword != null and keyword != ""'>
+	   AND title like CONCAT('%',#{keyword},'%')
+	   </if>
+	   <if test='searchtype != null and searchtype.equals("contents") and keyword != null and keyword != ""'>
+	   AND contents like CONCAT('%',#{keyword},'%')
+	   </if>
+	   <if test='searchtype != null and searchtype.equals("sendername") and keyword != null and keyword != ""'>
+	   AND sendername like CONCAT('%',#{keyword},'%')
+	   </if>
+	   <if test='viewflag != null and (viewflag.equals("Y") or viewflag.equals("N"))'>
+	   AND viewflag = #{viewflag}
+	   </if>
+       <if test='bgndate != null and bgndate != "" and enddate != null and enddate != "" '>
+	   and credate BETWEEN #{bgndate} and DATE_ADD(#{enddate} , interval 1 DAY) 
+       </if>
+	   AND userinfoseq = #{userinfoseq}
+	 order by messageseq desc 
+	 limit #{startno}, #{endno}
+  </select>
+
+  <select id="getMessageListTotcnt" parameterType="com.union.portal.domain.SearchCondition"  resultType="_int">
+	 SELECT count(messageseq)
+	  FROM UNION.messageinfo
+	 WHERE dbsts = 'A'
+	   <if test='searchtype != null and searchtype.equals("title") and keyword != null and keyword != ""'>
+	   AND title like CONCAT('%',#{keyword},'%')
+	   </if>
+	   <if test='searchtype != null and searchtype.equals("contents") and keyword != null and keyword != ""'>
+	   AND contents like CONCAT('%',#{keyword},'%')
+	   </if>
+	   <if test='searchtype != null and searchtype.equals("sendername") and keyword != null and keyword != ""'>
+	   AND sendername like  CONCAT('%',#{keyword},'%')
+	   </if>
+	   <if test='viewflag != null and (viewflag.equals("Y") or viewflag.equals("N"))'>
+	   AND viewflag = #{viewflag}
+	   </if>
+       <if test='bgndate != null and bgndate != "" and enddate != null and enddate != "" '>
+	   and credate BETWEEN #{bgndate} and DATE_ADD(#{enddate} , interval 1 DAY) 
+       </if>
+	   AND userinfoseq = #{userinfoseq}
+  </select>  
+  
+    
+ <select id="getUserpayRequestList" parameterType="com.union.portal.domain.SearchCondition"  resultType="com.union.portal.domain.UserpayRequest">
+    <![CDATA[
+    select a.*, b.admname, concat(c.firstname, ' ', c.lastname) reqname, c.country
+      from userpayrequest a
+           inner join userinfo c
+        on a.userinfoseq = c.userinfoseq    
+           left join admininfo b
+        on a.adminseq = b.adminseq    
+       and b.dbsts = 'A'
+     where a.dbsts = 'A'
+       and a.userinfoseq = #{userinfoseq}
+    ]]>
+	<if test='paystatus != null and !paystatus.equals("") and !paystatus.equals("all")'>
+	and a.paystatus = #{paystatus}
+	</if>
+	<if test='paytype != null and !paytype.equals("") and !paytype.equals("all")'>
+	and a.paytype = #{paytype}
+	</if>
+	<if test='paymethod != null and !paymethod.equals("") and !paymethod.equals("all")'>
+	and paymethod = #{paymethod}
+	</if>	
+	<if test='accountnumber != null and accountnumber != ""'>
+		<choose>
+		<when test='paymethod != null and !paymethod.equals("") and paymethod.equals("Deposit")'>
+			and a.sndaccountnumber like concat('%',#{keyword},'%')
+		</when>
+		<when test='paymethod != null and !paymethod.equals("") and paymethod.equals("Withdrawal")'>
+			and a.accountnumber like concat('%',#{keyword},'%')
+		</when>
+		<otherwise>
+			and (a.sndaccountnumber like concat('%',#{keyword},'%')
+			or a.accountnumber like concat('%',#{keyword},'%'))
+		</otherwise>
+		</choose>
+	</if>
+	<if test='bgndate != null and bgndate != "" and enddate != null and enddate != "" '>
+	and a.credate between #{bgndate} and DATE_ADD(#{enddate} , interval 1 DAY)
+	</if>
+	order by a.requestseq desc
+	limit #{startno}, #{endno}
+  </select>
+
+  <select id="getUserpayRequestTotcnt" parameterType="com.union.portal.domain.SearchCondition"  resultType="_int">
+     <![CDATA[
+    select count(a.requestseq) totcnt
+      from userpayrequest a
+           inner join userinfo c
+        on a.userinfoseq = c.userinfoseq    
+           left join admininfo b
+        on a.adminseq = b.adminseq   
+       and b.dbsts = 'A' 
+     where a.dbsts = 'A'
+       and a.userinfoseq = #{userinfoseq}
+    ]]>
+	<if test='paystatus != null and !paystatus.equals("") and !paystatus.equals("all")'>
+	and a.paystatus = #{paystatus}
+	</if>
+	<if test='paytype != null and !paytype.equals("") and !paytype.equals("all")'>
+	and a.paytype = #{paytype}
+	</if>
+	<if test='paymethod != null and !paymethod.equals("") and !paymethod.equals("all")'>
+	and paymethod = #{paymethod}
+	</if>	
+	<if test='accountnumber != null and accountnumber != ""'>
+		<choose>
+		<when test='paymethod != null and !paymethod.equals("") and paymethod.equals("Deposit")'>
+			and a.sndaccountnumber like concat('%',#{keyword},'%')
+		</when>
+		<when test='paymethod != null and !paymethod.equals("") and paymethod.equals("Withdrawal")'>
+			and a.accountnumber like concat('%',#{keyword},'%')
+		</when>
+		<otherwise>
+			and (a.sndaccountnumber like concat('%',#{keyword},'%')
+			or a.accountnumber like concat('%',#{keyword},'%'))
+		</otherwise>
+		</choose>
+	</if>
+	<if test='bgndate != null and bgndate != "" and enddate != null and enddate != "" '>
+	and a.credate between #{bgndate} and DATE_ADD(#{enddate} , interval 1 DAY)
+	</if>
+  </select> 
+  
+  
+</mapper>

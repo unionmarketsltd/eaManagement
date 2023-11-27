@@ -1,0 +1,66 @@
+package com.union.portal.service;
+
+import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Service;
+
+import com.union.portal.domain.FundClient_client;
+import com.union.portal.domain.Fundmanager_group;
+import com.union.portal.domain.Fundmanager_user;
+import com.union.portal.mapper.FundAdminMapper;
+import com.union.portal.mapper.FundClientMapper;
+import com.union.portal.mapper.FundManagerMapper;
+
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+@Service
+@AllArgsConstructor
+public class FundAdminServiceImpl implements FundAdminService {
+	
+	private FundAdminMapper mapper;
+	/*@Override
+	public String getloginID(String email ,String password) {
+		return mapper.getloginID(email, password);
+	}
+	@Override
+	public Fundmanager_user getUserInfoByUserseq(String userseq) {
+		return mapper.getUserInfoByUserseq(userseq);
+	}
+
+
+	@Override
+	public List<Fundmanager_group> getUserGroupsByUserseq(String userseq){
+		return mapper.getUserGroupsByUserseq(userseq);
+		
+	}
+	
+	@Override
+	public String getFundAccountNoByUserseq(String userseq) {
+		return mapper.getFundAccountNoByUserseq(userseq);
+	};
+	
+	@Override
+	public String getAgentAccountNoByUserseq(String userseq) {
+		
+		return mapper.getAgentAccountNoByUserseq(userseq);
+		
+	};*/
+	@Override
+	public String getpwd(String clientid){
+		
+		return mapper.getpwd(clientid);
+	}
+	
+	@Override
+	public Fundmanager_user getUserInfoBymanagerlogin(String mid) {
+		return mapper.getUserInfoBymanagerlogin(mid);
+	}
+	
+	@Override
+	public void UpdateTradingAccountLoginId(@Param("loginid")int loginid, @Param("clientseq")int clientseq) {
+		mapper.UpdateTradingAccountLoginId(loginid, clientseq);
+	}
+}

@@ -1,0 +1,27 @@
+package com.union.portal.domain;
+
+import java.util.Date;
+import java.util.List;
+
+import lombok.Data;
+
+@Data
+public class FundClient_client{
+	public int userseq;
+	public String dbsts;
+	public String email;
+	public String password;
+	public String companyname;
+	public String companyno;
+	public String url;
+	public String directorname;
+	public String tel;
+	public String contactname;
+	public String logourl;
+	public int managerlogin;
+	public int fundaccount;
+	public int agentaccount;
+	public int leverage;
+	public Date credate;
+	public Date upddate;
+}

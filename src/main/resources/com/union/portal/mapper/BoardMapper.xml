@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.union.portal.mapper.BoardMapper">
+	<resultMap id="boardResult" type="com.union.portal.domain.Board">
+	    <collection property="attachfilelist" column="bno" javaType="java.util.ArrayList" ofType="com.union.portal.domain.AttachFile" select="readAttachfile"/>
+	</resultMap>
+
+  <select id="getList" resultType="com.union.portal.domain.Board">
+    <![CDATA[
+    select * from tbl_board where bno > 0
+    ]]>
+  </select>
+
+  <select id="getListByCondition" parameterType="com.union.portal.domain.BoardSearchCondition" resultType="com.union.portal.domain.Board">
+    <![CDATA[
+    select * from tbl_board 
+    where bno > 0
+    ]]>
+    <choose>
+	<when test="searchtype != null and searchtype.equals('title')">
+	and title like concat('%',#{keyword},'%')
+	</when>
+	<when test="searchtype != null and searchtype.equals('writer')">
+	and writer like concat('%',#{keyword},'%')
+	</when>
+	</choose>
+  </select>
+  
+  <!-- <select id="read" resultType="com.union.portal.domain.Board">
+    select * from tbl_board where bno = #{bno}
+  </select> -->
+  <select id="read" resultMap="boardResult">
+    select * from tbl_board where bno = #{bno}
+  </select>
+
+  <select id="readAttachfile" resultType="com.union.portal.domain.AttachFile">
+    select * from tbl_attachfile where bno = #{bno}
+  </select>
+  
+  <select id="readAttachfileinfo" resultType="com.union.portal.domain.AttachFile">
+    select * from tbl_attachfile where uuid = #{uuid}
+  </select>
+    
+  <insert id="insert">
+  insert into tbl_board(title, content, writer)
+  values (#{title}, #{content}, #{writer})
+  </insert>
+  
+  <insert id="insertFile">
+  insert into tbl_attachfile(uuid, bno, originfilename, realfilename, fileext, filesize, savepath)
+  values (#{uuid}, #{bno}, #{originfilename}, #{realfilename}, #{fileext}, #{filesize}, #{savepath})
+  </insert>
+  
+  <update id="update">
+  update tbl_board
+     set title = #{title}
+        ,content = #{content}
+        ,writer = #{writer} 
+        ,upddate = now()
+   where bno = #{bno}
+  </update>
+  
+  <delete id="delete">
+  delete from tbl_board where bno = #{bno}
+  </delete>
+  
+  <delete id="deleteFile">
+  delete from tbl_attachfile where uuid = #{uuid}
+  </delete>
+</mapper>

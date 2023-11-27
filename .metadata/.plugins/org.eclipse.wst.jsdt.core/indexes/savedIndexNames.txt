@@ -1,0 +1,8 @@
+INDEX VERSION 1.4+C:\Users\unionmk\FundManagerSeirenHoldings\.metadata\.plugins\org.eclipse.wst.jsdt.core\indexes
+3279253230.index
+3642941214.index
+1168475544.index
+1970085164.index
+2072909916.index
+505066998.index
+1286255442.index
