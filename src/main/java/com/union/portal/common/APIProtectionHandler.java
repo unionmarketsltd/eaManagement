@@ -4,18 +4,18 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 public class APIProtectionHandler {
-  public static String ApiProtection(HttpServletRequest request, String inputString, Boolean isadmin) {
+  public static String ApiProtection(HttpServletRequest request, String inputString) {
     HttpSession session = request.getSession(false);
-    if (session == null || session.getAttribute("s_Login") == null)
+    if (session == null || session.getAttribute("s_GEmail") == null)
+    {
       return "Unauthorized"; 
- 
-    return inputString;
+    }
+    else
+    {
+    	return inputString;	
+    }
+    
   }
   
-  public static Boolean IsLogin(HttpServletRequest request) {
-    HttpSession session = request.getSession(false);
-    if (session == null || session.getAttribute("s_Login") == null)
-      return Boolean.valueOf(false); 
-    return Boolean.valueOf(true);
-  }
+
 }

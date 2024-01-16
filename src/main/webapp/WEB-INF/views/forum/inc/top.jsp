@@ -1761,7 +1761,7 @@
         <!-- BUTTON -->
         
         
-       <a href="#" class="button tiny red log-button">
+       <a href="${pageContext.request.contextPath}/forum/logout" class="button tiny red log-button">
             Logout
             <!-- BUTTON ORNAMENT -->
             <div class="button-ornament">

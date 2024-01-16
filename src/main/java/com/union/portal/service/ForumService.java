@@ -4,6 +4,9 @@ import java.util.List;
 
 import com.union.portal.domain.FundClient_client;
 import com.union.portal.domain.FundClient_loginhistory;
+import com.union.portal.domain.t_forum;
+import com.union.portal.domain.t_forum_category;
+import com.union.portal.domain.t_forum_topiccount;
 
 public interface ForumService {
 	
@@ -44,9 +47,15 @@ public interface ForumService {
 	public String getmanagerloginbyuserseq(String userseq);
 	public int checkisemailisregistered(String email ,String userseq) ;
 */
-	int loginverification(String email, String password);
-
+	boolean isnewuser(String email);
+	public void insertnewuser(String email,String google_id,String name,String google_image_url,int isadmin);
 	List<FundClient_loginhistory> getloginhistory(String email);
 
 	int loginverification2(String email, String password);
+	 List<t_forum> getforumlist();;
+	 
+	 List<t_forum_category> getforumcategorylist();
+	 
+	 List<t_forum_topiccount> getforumtopiccountlist();
+	 
 }

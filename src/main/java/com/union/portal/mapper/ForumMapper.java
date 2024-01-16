@@ -9,6 +9,9 @@ import org.apache.ibatis.annotations.Update;
 
 import com.union.portal.domain.FundClient_client;
 import com.union.portal.domain.FundClient_loginhistory;
+import com.union.portal.domain.t_forum;
+import com.union.portal.domain.t_forum_category;
+import com.union.portal.domain.t_forum_topiccount;
 
 public interface ForumMapper {
 
@@ -62,10 +65,25 @@ public interface ForumMapper {
 	public String getmanagerloginbyuserseq(@Param("userseq")String userseq);
 	
 	*/
-	@Select("SELECT count(*) FROM testdb.t_user where email = #{email} and password = #{password}")
-	public int loginverification(@Param("email")String email,@Param("password")String password);
+	@Select("SELECT count(*) FROM forum.t_user where email = #{email}")
+	public int isnewuser(@Param("email")String email);
 	
 	
+	@Insert("INSERT INTO `forum`.`t_user`(`email`,`google_id`,`name`,`google_image_url`,`create_date`,`last_login_date`,`isadmin`)"
+			+ "VALUES(#{email},#{google_id},#{name},#{google_image_url},now(),now(),#{isadmin})")
+	public void insertnewuser(@Param("email")String email,@Param("google_id")String google_id,@Param("name")String name,@Param("google_image_url")String google_image_url,@Param("isadmin")int isadmin);
+	
+	
+	
+	
+	@Select("SELECT * FROM forum.t_forum")
+	public List<t_forum> getforumlist();
+	
+	@Select("SELECT * FROM forum.t_forum_category")
+	public List<t_forum_category> getforumcategorylist();
+	
+	@Select("SELECT t_forum.id , count(*) as topic FROM forum.t_forum inner join forum.t_forum_category on t_forum.id = t_forum_category.forum_id join forum.t_forum_topic on t_forum_category.id = t_forum_topic.category_id group by t_forum.id")
+public List<t_forum_topiccount> getforumtopiccountlist();
 	
 	@Select("SELECT count(*) FROM testdb.t_user where email = #{email} and password = #{password}")
 	public int loginverification2(@Param("email")String email,@Param("password")String password);

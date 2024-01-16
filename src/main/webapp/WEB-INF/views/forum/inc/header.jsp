@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <!-- style -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/forum/css/style.min.css">
-    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     
     
   <!-- favicon -->

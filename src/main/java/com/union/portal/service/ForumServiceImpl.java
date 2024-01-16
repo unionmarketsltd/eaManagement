@@ -7,6 +7,9 @@ import org.springframework.stereotype.Service;
 
 import com.union.portal.domain.FundClient_client;
 import com.union.portal.domain.FundClient_loginhistory;
+import com.union.portal.domain.t_forum;
+import com.union.portal.domain.t_forum_category;
+import com.union.portal.domain.t_forum_topiccount;
 import com.union.portal.mapper.ForumMapper;
 
 
@@ -105,10 +108,30 @@ public class ForumServiceImpl implements ForumService {
 		return mapper.getmanagerloginbyuserseq(userseq);
 	}*/
 	@Override
-	public int loginverification(String email ,String password) {
+	public boolean isnewuser(String email) {
 		// TODO Auto-generated method stub
-		return mapper.loginverification(email , password);
+		int row = mapper.isnewuser(email);
+		if(row ==0)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+		
 	}
+	
+	@Override
+	public void insertnewuser(String email,String google_id,String name,String google_image_url,int isadmin)
+	{
+		
+		mapper.insertnewuser(email, google_id, name, google_image_url, isadmin);
+		
+		
+		
+	}
+	
 	
 	
 	@Override
@@ -121,6 +144,24 @@ public class ForumServiceImpl implements ForumService {
 	public int loginverification2(String email ,String password) {
 		// TODO Auto-generated method stub
 		return mapper.loginverification2(email , password);
+	}
+
+	@Override
+	public List<t_forum> getforumlist() {
+		// TODO Auto-generated method stub
+		return mapper.getforumlist();
+	}
+
+	@Override
+	public List<t_forum_category> getforumcategorylist() {
+		// TODO Auto-generated method stub
+		return mapper.getforumcategorylist();
+	}
+
+	@Override
+	public List<t_forum_topiccount> getforumtopiccountlist() {
+		// TODO Auto-generated method stub
+		return mapper.getforumtopiccountlist();
 	}
 
 	

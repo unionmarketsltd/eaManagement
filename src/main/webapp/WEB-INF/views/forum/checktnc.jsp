@@ -9,7 +9,7 @@
 <html lang="en">
 <head>
 <%@include file="inc/header.jsp"%>
-<title>Pixel Diamond | Login &amp; Register</title>
+<title>Pixel Diamond | Terms &amp; Conditions</title>
 
 <meta name="google-signin-client_id"
 	content="945983721111-1v3fr2s7cn3j18ihreqrjpkk2381miir.apps.googleusercontent.com">
@@ -20,9 +20,8 @@
 <script src="https://accounts.google.com/gsi/client" async></script>
 <style>
 iframe {
-
-margin-left:auto !important;
-margin-right:auto !important
+	margin-left: auto !important;
+	margin-right: auto !important
 }
 </style>
 
@@ -36,7 +35,7 @@ margin-right:auto !important
 	<div class="banner-wrap forum-banner">
 		<!-- BANNER -->
 		<div class="banner grid-limit">
-			<h2 class="banner-title">Login </h2>
+			<h2 class="banner-title">Terms and Conditions</h2>
 			<p class="banner-sections">
 				<span class="banner-section">Home</span>
 				<!-- ARROW ICON -->
@@ -44,7 +43,7 @@ margin-right:auto !important
           <use xlink:href="#svg-arrow"></use>
         </svg>
 				<!-- /ARROW ICON -->
-				<span class="banner-section">Login </span>
+				<span class="banner-section">Terms and Conditions </span>
 			</p>
 		</div>
 		<!-- /BANNER -->
@@ -100,70 +99,52 @@ margin-right:auto !important
 	</div>
 	<!-- /LIVE NEWS WIDGET WRAP -->
 
-	<!-- LAYOUT CONTENT FULL -->
-	
-			
-
-				<!-- TAB BODY -->
-				<div class="tab-body">
-					<!-- TAB ITEM -->
-					<div class="tab-item">
-						<!-- FORM BOX -->
-						<div class="form-box">
-							<!-- SECTION TITLE WRAP -->
-							<div class="section-title-wrap blue">
-								<h2 class="section-title medium">Login to your account With
-									Google</h2>
-								<div class="section-title-separator"></div>
-							</div>
-							<!-- /SECTION TITLE WRAP -->
-
-							<!-- FORM WRAP -->
-							<form class="form-wrap">
-								<!-- FORM ROW -->
-								<div class="form-row">
-									<!-- FORM ITEM -->
-									<div class="form-item blue">
-										<div id="signinwithgoogle" style="text-align: center">
-
-
-											<div id="g_id_onload"
-												data-client_id="945983721111-1v3fr2s7cn3j18ihreqrjpkk2381miir.apps.googleusercontent.com"
-												data-context="signin" data-ux_mode="popup"
-												data-callback="handleCredentialResponse" data-nonce=""
-												data-auto_prompt="false"></div>
-
-											<div class="g_id_signin" data-type="standard"
-												data-shape="pill" data-theme="filled_blue"
-												data-text="signin_with" data-size="large"
-												data-logo_alignment="left"></div>
-										</div>
-									</div>
-									<!-- /FORM ITEM -->
-								</div>
-								<!-- /FORM ROW -->
-
-								<!-- FORM ROW -->
-
-								<!-- /FORM ACTIONS -->
-							</form>
-							<!-- /FORM WRAP -->
-						</div>
-						<!-- /FORM BOX -->
-					</div>
-					<!-- /TAB ITEM -->
-				</div>
-				<!-- /TAB BODY -->
+	<div class="layout-content-full">
+		<!-- ERROR DISPLAY -->
+		<div class="error-display grid-limit" style="padding-top:10px !important">
+		
+			<p class="error-title">Welcome ,<%=request.getAttribute("name")%>!</p>
 		
 
-	<script src="${pageContext.request.contextPath}/resources/forum/js/googleoauth/googleoauth.js"></script>
-	
-	
+			
+			<p class="error-subtitle">Before continue, please read and accept the terms and conditions below.</p>
+		
+			
+			<p class="error-text">
+				terms and conditions here ==>"Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?"
+			</p>
+			
+		</div>
+		
+		<div class="section-actions">
+		
+			<button  type="button" class="button violet" onclick=" agreedtnc()"> I agreed  <!-- BUTTON ORNAMENT -->
+				<div class="button-ornament">
+					<!-- ARROW ICON -->
+					<svg class="arrow-icon medium">
+            <use xlink:href="#svg-arrow-medium"></use>
+          </svg>
+					<!-- /ARROW ICON -->
+
+					<!-- CROSS ICON -->
+					<svg class="cross-icon small">
+            <use xlink:href="#svg-cross-small"></use>
+          </svg>
+					<!-- /CROSS ICON -->
+				</div> <!-- /BUTTON ORNAMENT -->
+			</button>
+			<!-- /BUTTON -->
+		</div>
+		<!-- /SECTION ACTIONS -->
+	</div>
+
+
+
 	<script>
-	function logincheck(token) {
+	function agreedtnc() {
 		$
 				.ajax({
-					url : '${pageContext.request.contextPath}/forum/loginByGoogle?token='+token,
+					url : '${pageContext.request.contextPath}/forum/agreedtnc',
 					type : 'get',
 					async : true,
 					data : '',
@@ -172,7 +153,7 @@ margin-right:auto !important
 						
 					},
 					error : function(xhr, status) {
-						document.getElementById("signinbtn").innerHTML = 'Sign In';
+						
 						alert("ERROR : " + data.result + xhr + " : " + status);
 						return;
 					}

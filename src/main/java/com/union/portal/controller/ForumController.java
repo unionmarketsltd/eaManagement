@@ -1,12 +1,14 @@
 package com.union.portal.controller;
 
 import java.sql.SQLException;
+import java.util.Base64;
 import java.util.List;
 import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +26,9 @@ import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 import com.union.portal.common.APIProtectionHandler;
 import com.union.portal.common.HttpUtils;
 import com.union.portal.domain.FundClient_loginhistory;
+import com.union.portal.domain.t_forum;
+import com.union.portal.domain.t_forum_category;
+import com.union.portal.domain.t_forum_topiccount;
 import com.union.portal.service.ForumService;
 import lombok.AllArgsConstructor;
 
@@ -53,7 +58,7 @@ public class ForumController {
 	SessionLocaleResolver localeResolver;
 
 	@Autowired
-	ForumService fundclientservice;
+	ForumService forumservices;
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String slash(Model model) {
@@ -85,18 +90,23 @@ public class ForumController {
 	public String index(Model model, HttpServletRequest request) {
 		HttpSession session = request.getSession();
 
-		String userseq = (String) session.getAttribute("s_Seq");
 
-		logger.info("Welcome index " + userseq);
+		logger.info("Welcome index ");
 		String vLocal = LocaleContextHolder.getLocale().getLanguage();
 		model.addAttribute("lang", vLocal);
 		String returnURL = "";
-
-		List<FundClient_loginhistory> fcl = null;
-		fcl = fundclientservice.getloginhistory((String) session.getAttribute("s_Login"));
-		model.addAttribute("loginhistorylist", fcl);
-		model.addAttribute("email", (String) session.getAttribute("s_Login"));
-
+		
+		
+		 List<t_forum> listforum = null;
+		 List<t_forum_category> listforumcat = null;
+		 List<t_forum_topiccount> listforumtopiccount = null;
+		 
+		 listforum = forumservices.getforumlist();
+		 listforumcat = forumservices.getforumcategorylist();
+		 listforumtopiccount = forumservices.getforumtopiccountlist();
+		 model.addAttribute("forumlist", listforum);
+		 model.addAttribute("forumcatlist", listforumcat);
+		 model.addAttribute("listforumtopiccount", listforumtopiccount);
 		returnURL = "/index";
 
 		return defaultpath + returnURL;
@@ -113,33 +123,152 @@ public class ForumController {
 
 		return defaultpath + returnURL;
 	}
+	
+	
+	@RequestMapping(value = "/checktnc", method = RequestMethod.GET)
+	public String checktnc(Model model, HttpServletRequest request) throws SQLException {
+		logger.info("Welcome checktnc.");
 
-	@RequestMapping(value = "/loginConfirm", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+		String vLocal = LocaleContextHolder.getLocale().getLanguage();
+		model.addAttribute("lang", vLocal);
+		String returnURL = "";
+		returnURL = "/checktnc";
+		 HttpSession session = request.getSession();
+		logger.info((String)session.getAttribute("s_GName"));
+		
+		model.addAttribute("name",(String)session.getAttribute("s_GName") );
+		return defaultpath + returnURL;
+	}
+
+	
+	
+	
+	public static String decodeJwtResponse(String token) {
+        String base64Url = token.split("\\.")[1];
+        String base64 = base64Url.replace("-", "+").replace("_", "/");
+        String jsonPayload = new String(Base64.getDecoder().decode(base64));
+        jsonPayload = Pattern.compile("\\p{C}").matcher(jsonPayload).replaceAll("");
+        System.out.println(jsonPayload);
+        return jsonPayload;
+    }
+	
+
+	@RequestMapping(value = "/loginByGoogle", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
 	@ResponseBody
-	public ModelAndView loginConfirm(HttpServletRequest request, @RequestParam("email") String email,
-			@RequestParam("password") String password, Model model) {
-
-		logger.info("welcome login db" + serverinfo);
+	public ModelAndView loginConfirm(HttpServletRequest request,  Model model) {
+		 HttpSession session = request.getSession();
+		logger.info("welcome login by google" + serverinfo);
 		ModelAndView mav = new ModelAndView("jsonView");
 		String responsestr = "";
-
-		int issuccess = fundclientservice.loginverification(email, password);
+		String token = request.getParameter("token");
+		JSONObject UserGoogleLoginCredential = new JSONObject(decodeJwtResponse(token));
 		
-
-		if (issuccess > 0) {
-
-			HttpSession session = request.getSession();
-			session.setAttribute("s_Login", String.valueOf(email));
-			session.setAttribute("s_Name", String.valueOf(email));
-			responsestr = "SUCCESS";
-
-		} else {
-			responsestr = "Invalid password.";
-		}
-
+		String email = UserGoogleLoginCredential.getString("email");
+		String fullname = UserGoogleLoginCredential.getString("name");
+		String imageurl = UserGoogleLoginCredential.getString("picture");
+		String googleid  =UserGoogleLoginCredential.getString("sub");
+		
+		 boolean isnewuser = forumservices.isnewuser(email);
+		 
+		 if(!isnewuser)
+		 {
+			 
+			
+				session.setAttribute("s_GEmail", String.valueOf(email));
+				session.setAttribute("s_GName", String.valueOf(fullname));
+				session.setAttribute("s_GImgUrl", String.valueOf(imageurl));
+				session.setAttribute("s_GID", String.valueOf(googleid));
+				session.setAttribute("s_isLogin", String.valueOf("1"));
+				responsestr = defaultpath + "index";
+				logger.info((String)session.getAttribute("s_GName"));
+		 }
+		 else
+		 {
+			 session.setAttribute("s_GEmail", String.valueOf(email));
+				session.setAttribute("s_GName", String.valueOf(fullname));
+				session.setAttribute("s_GImgUrl", String.valueOf(imageurl));
+				session.setAttribute("s_GID", String.valueOf(googleid));
+				session.setAttribute("s_isLogin", String.valueOf("0"));
+				logger.info((String)session.getAttribute("s_GName"));
+			 responsestr = defaultpath +"checktnc";
+		 }
+		 
+		 
+		 
+		
 		logger.info(responsestr);
-		mav.addObject("result", APIProtectionHandler.ApiProtection(request, responsestr, Boolean.valueOf(false)));
+		mav.addObject("result",  responsestr);
 		return mav;
 	}
+	
+	
+	
+	@RequestMapping(value = "/agreedtnc", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	public ModelAndView agreedtnc(HttpServletRequest request,  Model model) {
+		 HttpSession session = request.getSession();
+		logger.info("welcome agreedtnc" + serverinfo);
+		ModelAndView mav = new ModelAndView("jsonView");
+		String responsestr = "";
+		String email = (String)session.getAttribute("s_GEmail");
+		String name = (String)session.getAttribute("s_GName");
+		String imgurl = (String)session.getAttribute("s_GImgUrl");
+		String gid = (String)session.getAttribute("s_GID");
+		String islogin = (String)session.getAttribute("s_isLogin");
+if(email != null)
+{
+	
+
+		 boolean isnewuser = forumservices.isnewuser(email);
+		 
+		 if(isnewuser)
+		 {
+			 
+			forumservices.insertnewuser(email,gid,name,imgurl,0);
+				session.setAttribute("s_GEmail", String.valueOf(email));
+				session.setAttribute("s_GName", String.valueOf(name));
+				session.setAttribute("s_GImgUrl", String.valueOf(imgurl));
+				session.setAttribute("s_GID", String.valueOf(gid));
+				session.setAttribute("s_isLogin", String.valueOf("1"));
+				responsestr = defaultpath + "index";
+				logger.info((String)session.getAttribute("s_GName"));
+		 }
+		 else
+		 {
+			
+				session.setAttribute("s_isLogin", String.valueOf("1"));
+				
+			 responsestr = defaultpath +"index";
+		 }
+		 
+}
+else
+{
+	responsestr = defaultpath +"login";
+}
+		 
+		
+		logger.info(responsestr);
+		mav.addObject("result",  responsestr);
+		return mav;
+	}
+	
+	
+	
+	
+	@RequestMapping(value = "/logout", method = RequestMethod.GET)
+	public String logout(HttpServletRequest request, Model model) {
+		logger.info("Welcome logout.");
+
+		String vLocal = LocaleContextHolder.getLocale().getLanguage();
+		model.addAttribute("lang", vLocal);
+		HttpSession session = request.getSession(false);
+		if (session != null)
+			session.invalidate();
+		// request.getRequestDispatcher("/index.jsp").forward(request,response);
+		return "redirect:" + defaultpath + "login";
+	}
+	
+	
 
 }
