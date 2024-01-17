@@ -7,9 +7,12 @@ import org.springframework.stereotype.Service;
 
 import com.union.portal.domain.FundClient_client;
 import com.union.portal.domain.FundClient_loginhistory;
+import com.union.portal.domain.forum_and_cat_name;
 import com.union.portal.domain.t_forum;
 import com.union.portal.domain.t_forum_category;
+import com.union.portal.domain.t_forum_topic;
 import com.union.portal.domain.t_forum_topiccount;
+import com.union.portal.domain.topic_comment_list;
 import com.union.portal.mapper.ForumMapper;
 
 
@@ -22,91 +25,7 @@ import lombok.extern.slf4j.Slf4j;
 public class ForumServiceImpl implements ForumService {
 	
 	private ForumMapper mapper;
-	/*@Override
-	public String getloginID(String email ,String password) {
-		return mapper.getloginID(email, password);
-	}
-	@Override
-	public Fundmanager_user getUserInfoByUserseq(String userseq) {
-		return mapper.getUserInfoByUserseq(userseq);
-	}
-
-
-	@Override
-	public List<Fundmanager_group> getUserGroupsByUserseq(String userseq){
-		return mapper.getUserGroupsByUserseq(userseq);
-		
-	}
 	
-	@Override
-	public String getFundAccountNoByUserseq(String userseq) {
-		return mapper.getFundAccountNoByUserseq(userseq);
-	};
-	
-	@Override
-	public String getAgentAccountNoByUserseq(String userseq) {
-		
-		return mapper.getAgentAccountNoByUserseq(userseq);
-		
-	};*/
-	/*@Override
-	public FundClient_client getClientDetails(String email,String userseq){
-		
-		return mapper.getClientDetails(email,userseq);
-	}
-	
-	
-	public void insertRegiserUserDetail(String clientid,
-			String userseq,
-			String firstname,
-			String middlename,
-			String lastname,
-			String birthday,
-			String phone,
-			String email,
-			String password,
-			String address,
-			String city,
-			String state,
-			String postcode,
-			String country,
-			String idfilename,
-			String idrealfilename,
-			String porfilename,
-			String porrealfilename,String emailauthkey) {
-		mapper.insertRegiserUserDetail(clientid, userseq, firstname, middlename, lastname, birthday, phone, email, password, address, city, state, postcode, country, idfilename, idrealfilename, porfilename, porrealfilename,emailauthkey);
-	}
-	public FundClient_client getauthkeydetail(String emailauthkey) {
-		return mapper.getauthkeydetail(emailauthkey);
-				
-	}
-	
-	
-	
-	public void UpdateEmailAuth(int clientseq) {
-		
-		mapper.UpdateEmailAuth(clientseq);
-	}
-
-
-	@Override
-	public String getloginPasswordByEmail(String email) {
-		return mapper.getloginPasswordByEmail(email);
-	}
-
-
-	@Override
-	public int ValidatePassword(String email, String password, String userseq) {
-		// TODO Auto-generated method stub
-		return mapper.ValidatePassword(email, password ,userseq);
-	}
-
-
-	@Override
-	public String getmanagerloginbyuserseq(String userseq) {
-		// TODO Auto-generated method stub
-		return mapper.getmanagerloginbyuserseq(userseq);
-	}*/
 	@Override
 	public boolean isnewuser(String email) {
 		// TODO Auto-generated method stub
@@ -162,6 +81,36 @@ public class ForumServiceImpl implements ForumService {
 	public List<t_forum_topiccount> getforumtopiccountlist() {
 		// TODO Auto-generated method stub
 		return mapper.getforumtopiccountlist();
+	}
+
+	@Override
+	public forum_and_cat_name getcategorynameandforumname(String categoryid) {
+		// TODO Auto-generated method stub
+		return mapper.getcategorynameandforumname(categoryid);
+	}
+
+	@Override
+	public t_forum_category getforumcategoryinfo(String categoryid) {
+		// TODO Auto-generated method stub
+		return mapper.getforumcategoryinfo( categoryid);
+	}
+
+	@Override
+	public List<t_forum_topic> getforumcategorytopiclist(String categoryid) {
+		// TODO Auto-generated method stub
+		return mapper.getforumcategorytopiclist(categoryid);
+	}
+
+	@Override
+	public t_forum_topic getforumtopicinfo(String topicid) {
+		// TODO Auto-generated method stub
+		return mapper.getforumtopicinfo(topicid);
+	}
+
+	@Override
+	public List<topic_comment_list> getforumtopiccommentlist(String topicid) {
+		// TODO Auto-generated method stub
+		return mapper.getforumtopiccommentlist(topicid);
 	}
 
 	

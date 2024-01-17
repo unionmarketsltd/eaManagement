@@ -9,9 +9,12 @@ import org.apache.ibatis.annotations.Update;
 
 import com.union.portal.domain.FundClient_client;
 import com.union.portal.domain.FundClient_loginhistory;
+import com.union.portal.domain.forum_and_cat_name;
 import com.union.portal.domain.t_forum;
 import com.union.portal.domain.t_forum_category;
+import com.union.portal.domain.t_forum_topic;
 import com.union.portal.domain.t_forum_topiccount;
+import com.union.portal.domain.topic_comment_list;
 
 public interface ForumMapper {
 
@@ -94,6 +97,34 @@ public List<t_forum_topiccount> getforumtopiccountlist();
 	
 	
 	
+	@Select("select t_forum.id as forumid, t_forum_category.id as catid, t_forum.name as forumname, t_forum_category.name as categoryname from t_forum_category inner join t_forum on t_forum_category.forum_id = t_forum.id where t_forum_category.id = #{categoryid} ")
+	public forum_and_cat_name getcategorynameandforumname(@Param("categoryid")String categoryid);
 	
 	
+	
+	
+	@Select("SELECT t_forum_category.*, count(distinct t_forum_topic.id) as post_number, count(distinct t_forum_comment.id) as comment_number, max(distinct t_forum_comment.create_date) as last_update  FROM forum.t_forum_category join t_forum_topic on t_forum_category.id = t_forum_topic.category_id left join t_forum_comment on t_forum_comment.topic_id = t_forum_topic.id where t_forum_category.id =#{categoryid}")
+	public t_forum_category getforumcategoryinfo(@Param("categoryid")String categoryid);
+	
+	
+	
+	
+	@Select("SELECT distinct forum.t_forum_topic.* ,  count(forum.t_forum_comment.id) as reply , (select name from t_user where email = forum.t_forum_topic.create_by ) as create_by_name , (select id from t_user where email = forum.t_forum_topic.create_by ) as create_by_id  FROM forum.t_forum_topic left join forum.t_forum_comment on forum.t_forum_topic.id=forum.t_forum_comment.topic_id where category_id =#{categoryid} group by forum.t_forum_comment.topic_id order by pin_post desc, last_comment_date desc ,last_comment_date desc")
+	public List<t_forum_topic> getforumcategorytopiclist(@Param("categoryid")String categoryid);
+	
+	@Select("SELECT * \r\n"
+			+ ",(SELECT \r\n"
+			+ "    CASE\r\n"
+			+ "        WHEN DATEDIFF(now(), create_date) < 1 THEN CONCAT(TIMESTAMPDIFF(HOUR, now(), create_date), ' hours ago')\r\n"
+			+ "        ELSE CONCAT(DATEDIFF(now(), create_date), ' days ago')\r\n"
+			+ "    END \r\n"
+			+ "FROM t_forum_topic where id = 1) as dayago\r\n"
+			+ "\r\n"
+			+ ",(select count(*) from t_forum_comment where create_by = forum.t_forum_topic.create_by) as author_post, (select name from t_forum_category where id = forum.t_forum_topic.category_id) as category_name,(select name from t_user where email = forum.t_forum_topic.create_by) as create_by_name,(select id from t_user where email = forum.t_forum_topic.create_by) as create_by_id, (select count(*) from t_forum_comment where topic_id = forum.t_forum_topic.id) as reply from forum.t_forum_topic where id =#{topicid}")
+	public t_forum_topic getforumtopicinfo(@Param("topicid")String topicid);
+	
+	
+	
+	@Select("SELECT *,(SELECT CASE WHEN DATEDIFF(now(), create_date) < 1 THEN CONCAT(TIMESTAMPDIFF(HOUR, now(), create_date), ' hours ago') ELSE CONCAT(DATEDIFF(now(), create_date), ' days ago') END ) as dayago, (select count(*) from t_forum_comment where  forum.t_forum_comment.create_by =create_by ) as userpost,(select name from t_user where email = forum.t_forum_comment.create_by) as postownername FROM forum.t_forum_comment where topic_id =#{topicid} order by id asc;")
+	public List<topic_comment_list> getforumtopiccommentlist(@Param("topicid")String topicid);
 }

@@ -19,15 +19,19 @@
 	<div class="banner-wrap forum-banner">
 		<!-- BANNER -->
 		<div class="banner grid-limit">
-			<h2 class="banner-title">Main Forums</h2>
+			<h2 class="banner-title"><%=request.getAttribute("categoryname")%></h2>
 			<p class="banner-sections">
-				<span class="banner-section">Home</span>
+				<a style="color: white"
+					href="${pageContext.request.contextPath}/forum/forum?id=<%=request.getAttribute("forumid")%>"
+					class="banner-section"><%=request.getAttribute("forumname")%></a>
 				<!-- ARROW ICON -->
 				<svg class="arrow-icon">
           <use xlink:href="#svg-arrow"></use>
         </svg>
 				<!-- /ARROW ICON -->
-				<span class="banner-section">Main Forums</span>
+				<a style="color: white"
+					href="${pageContext.request.contextPath}/forum/category?id=<%=request.getAttribute("categoryid")%>"
+					class="banner-section"><%=request.getAttribute("categoryname")%></a>
 			</p>
 		</div>
 		<!-- /BANNER -->
@@ -84,7 +88,8 @@
 
 	<div class="layout-content-full grid-limit">
 		<!-- FILTERS ROW -->
-		<div class="filters-row">
+		<div class="filters-row"
+			style="border-bottom: 1px solid white !important">
 
 
 			<!-- FORUM ACTIONS -->
@@ -331,119 +336,201 @@
 			</div>
 			<!-- /FORUM ACTIONS -->
 		</div>
-		<!-- /FILTERS ROW -->
-
-		<!-- TABLE -->
 		<div class="table forum-categories">
+
+			<div class="table-rows no-color">
+				<!-- TABLE ROW -->
+				<div class="table-row large">
+					<!-- TABLE ROW ITEM -->
+					<div class="table-row-item">
+						<!-- FORUM CATEGORY WRAP -->
+						<div class="forum-category-wrap">
+							<!-- FORUM CATEGORY IMG -->
+							<a href="forum-categories.html"> <img
+								class="forum-category-img"
+								src="${pageContext.request.contextPath}/resources/forum/img/forum/category-10.png"
+								alt="category-08">
+							</a>
+							<!-- /FORUM CATEGORY IMG -->
+
+							<!-- FORUM CATEGORY TITLE -->
+							<a href="forum-categories.html" class="forum-category-title"><%=request.getAttribute("name")%></a>
+							<!-- /FORUM CATEGORY TITLE -->
+
+							<!-- FORUM CATEGORY DESCRIPTION -->
+							<p class="forum-category-description"><%=request.getAttribute("desc")%></p>
+							<!-- /FORUM CATEGORY DESCRIPTION -->
+						</div>
+						<!-- /FORUM CATEGORY WRAP -->
+					</div>
+					<!-- /TABLE ROW ITEM -->
+
+					<!-- TABLE ROW ITEM -->
+					<div class="table-row-item padded-large">
+						<p class="table-text bold light"><%=request.getAttribute("post")%>
+							Topics
+						</p>
+					</div>
+					<!-- /TABLE ROW ITEM -->
+
+					<!-- TABLE ROW ITEM -->
+					<div class="table-row-item padded-large">
+						<p class="table-text bold light"><%=request.getAttribute("comment")%>
+							Comments
+						</p>
+					</div>
+					<!-- /TABLE ROW ITEM -->
+
+					<!-- TABLE ROW ITEM -->
+					<div class="table-row-item">
+						<!-- FORUM POST LINKS -->
+						<div class="forum-post-links">
+							<!-- FORUM POST LINK WRAP -->
+							<div class="forum-post-link-wrap">
+								<!-- FORUM POST LINK -->
+								<a href="topic.html" class="forum-post-link">Create By : <%=request.getAttribute("createby")%>
+								</a>
+								<!-- /FORUM POST LINK -->
+
+								<!-- FORUM POST TIMESTAMP -->
+								<p class="forum-post-timestamp">*</p>
+								<!-- /FORUM POST TIMESTAMP -->
+							</div>
+							<!-- /FORUM POST LINK WRAP -->
+
+							<!-- FORUM POST LINK WRAP -->
+							<div class="forum-post-link-wrap">
+								<!-- FORUM POST LINK -->
+								<a href="topic.html" class="forum-post-link">Create Date : <%=request.getAttribute("createdate")%>
+								</a>
+								<!-- /FORUM POST LINK -->
+
+								<!-- FORUM POST TIMESTAMP -->
+								<p class="forum-post-timestamp">*</p>
+								<!-- /FORUM POST TIMESTAMP -->
+							</div>
+							<!-- /FORUM POST LINK WRAP -->
+
+							<!-- FORUM POST LINK WRAP -->
+							<div class="forum-post-link-wrap">
+								<!-- FORUM POST LINK -->
+								<a href="topic.html" class="forum-post-link">Latest Activity
+									: <%=request.getAttribute("createdate")%></a>
+								<!-- /FORUM POST LINK -->
+
+								<!-- FORUM POST TIMESTAMP -->
+								<p class="forum-post-timestamp">*</p>
+								<!-- /FORUM POST TIMESTAMP -->
+							</div>
+							<!-- /FORUM POST LINK WRAP -->
+						</div>
+						<!-- /FORUM POST LINKS -->
+					</div>
+					<!-- /TABLE ROW ITEM -->
+				</div>
+				<!-- /TABLE ROW -->
+
+				<!-- TABLE ROW -->
+
+				<!-- /TABLE ROW -->
+			</div>
+			<!-- /TABLE ROWS -->
+		</div>
+
+		<div class="table forum-topics">
 			<!-- TABLE ROW HEADER -->
 			<div class="table-row-header">
 				<!-- TABLE ROW HEADER ITEM -->
 				<div class="table-row-header-item left">
-					<p class="table-row-header-title">Forum</p>
+					<p class="table-row-header-title">Topic</p>
+				</div>
+				<div class="table-row-header-item left ">
+					<p class="table-row-header-title">Author</p>
+				</div>
+				<!-- /TABLE ROW HEADER ITEM -->
+
+
+
+				<!-- TABLE ROW HEADER ITEM -->
+				<div class="table-row-header-item padded-big">
+					<p class="table-row-header-title">Views</p>
 				</div>
 				<!-- /TABLE ROW HEADER ITEM -->
 
 				<!-- TABLE ROW HEADER ITEM -->
-				<div class="table-row-header-item padded-large">
-					<p class="table-row-header-title">Topics</p>
+				<div class="table-row-header-item padded-big">
+					<p class="table-row-header-title">Likes</p>
 				</div>
 				<!-- /TABLE ROW HEADER ITEM -->
-
-				<!-- TABLE ROW HEADER ITEM -->
-				<div class="table-row-header-item padded-large">
-					<p class="table-row-header-title">Posts</p>
+<div class="table-row-header-item padded-big">
+					<p class="table-row-header-title">replied</p>
 				</div>
-				<!-- /TABLE ROW HEADER ITEM -->
+
 
 				<!-- TABLE ROW HEADER ITEM -->
-				<div class="table-row-header-item left">
-					<p class="table-row-header-title">Category</p>
+				<div class="table-row-header-item padded-big">
+					<p class="table-row-header-title">Last Activity</p>
 				</div>
 				<!-- /TABLE ROW HEADER ITEM -->
 			</div>
 			<!-- /TABLE ROW HEADER -->
 
 			<!-- TABLE ROWS -->
-			<div class="table-rows no-color">
+			<div class="table-rows">
 				<!-- TABLE ROW -->
 
-				<c:forEach items="${ forumlist }" var="listinfo" varStatus="status">
+
+				<c:forEach items="${ topiclist }" var="listcatinfo"
+					varStatus="status1">
 
 
 					<div class="table-row large">
 						<!-- TABLE ROW ITEM -->
 						<div class="table-row-item">
-							<!-- FORUM CATEGORY WRAP -->
-							<div class="forum-category-wrap">
-								<!-- FORUM CATEGORY IMG -->
-								<a href="forum-categories.html"> <img
-									class="forum-category-img"
-									src="${pageContext.request.contextPath}/resources/forum/img/forum/${listinfo.logo }"
-									alt="category-02">
-								</a>
-								<!-- /FORUM CATEGORY IMG -->
-
-								<!-- FORUM CATEGORY TITLE -->
-								<a href="${pageContext.request.contextPath}/forum/forum?id=${listinfo.id }" class="forum-category-title">${listinfo.name }</a>
-								<!-- /FORUM CATEGORY TITLE -->
-
-								<!-- FORUM CATEGORY DESCRIPTION -->
-								<p class="forum-category-description">${listinfo.description }</p>
-								<!-- /FORUM CATEGORY DESCRIPTION -->
-							</div>
-							<!-- /FORUM CATEGORY WRAP -->
-						</div>
-						<!-- /TABLE ROW ITEM -->
-
-						<!-- TABLE ROW ITEM -->
-						<div class="table-row-item padded-large">
-							<p class="table-text bold light">
-
-								<c:forEach items="${ listforumtopiccount }"
-									var="listtopiccountinfo" varStatus="status2">
-
-									<c:choose>
-										<c:when test="${listinfo.id == listtopiccountinfo.id}">
-											${listtopiccountinfo.topic}
+							<!-- FORUM POST LINK -->
+							<a href="${pageContext.request.contextPath}/forum/topic?id=${listcatinfo.id}"
+								class="forum-post-link <c:choose>
+										<c:when test="${listcatinfo.pin_post == 1}">pin-tag
 										</c:when>
+										<c:otherwise>spoiler-tag</c:otherwise>
 									</c:choose>
-								</c:forEach>
+									
+									">${listcatinfo.title }</a>
+							<!-- /FORUM POST LINK -->
 
-
-							</p>
-						</div>
-						<!-- /TABLE ROW ITEM -->
-
-						<!-- TABLE ROW ITEM -->
-						<div class="table-row-item padded-large">
-							<p class="table-text bold light">1987</p>
+							<!-- FORUM POST DESCRIPTION PREVIEW -->
+							<p class="forum-post-description-preview forum-post-link-update">${listcatinfo.description}</p>
+							<!-- /FORUM POST DESCRIPTION PREVIEW -->
 						</div>
 						<!-- /TABLE ROW ITEM -->
 
 						<!-- TABLE ROW ITEM -->
 						<div class="table-row-item">
-							<!-- FORUM POST LINKS -->
-							<div class="forum-post-links">
+							<!-- FORUM CATEGORY TEXT -->
+							<a href="${pageContext.request.contextPath}/forum/user?id=${listcatinfo.create_by_id}" class="forum-category-text blue">
+								${listcatinfo.create_by_name}</a>
+							<!-- /FORUM CATEGORY TEXT -->
+						</div>
+						<!-- /TABLE ROW ITEM -->
 
 
-								<c:forEach items="${ forumcatlist }" var="listcatinfo"
-									varStatus="status1">
+						<!-- TABLE ROW ITEM -->
+						<div class="table-row-item">
+							<p class="table-text bold">${listcatinfo.views}</p>
+						</div>
+						<!-- /TABLE ROW ITEM -->
 
-									<c:choose>
-										<c:when test="${listcatinfo.forum_id == listinfo.id}">
-											<div class="forum-post-link-wrap">
-
-												<a href="${pageContext.request.contextPath}/forum/category?id=${listcatinfo.id }" class="forum-post-link">${listcatinfo.name}
-													- ${listcatinfo.description}</a>
-
-												<p class="forum-post-timestamp">5m</p>
-
-											</div>
-										</c:when>
-									</c:choose>
-								</c:forEach>
-							</div>
-							<!-- /FORUM POST LINKS -->
+						<!-- TABLE ROW ITEM -->
+						<div class="table-row-item">
+							<p class="table-text bold light">${listcatinfo.likes}</p>
+						</div>
+						<!-- /TABLE ROW ITEM -->
+<div class="table-row-item">
+							<p class="table-text bold light">${listcatinfo.reply}</p>
+						</div>
+						<!-- TABLE ROW ITEM -->
+						<div class="table-row-item">
+							<p class="table-text bold light">${listcatinfo.last_update_date}</p>
 						</div>
 						<!-- /TABLE ROW ITEM -->
 					</div>
@@ -451,16 +538,16 @@
 
 
 
-
 				</c:forEach>
+				
 
 
-				<!-- /TABLE ROW -->
 			</div>
-			<!-- /TABLE ROWS -->
 		</div>
-		<!-- /TABLE -->
 	</div>
+
+
+
 
 	<%@include file="inc/footer.jsp"%>
 </body>

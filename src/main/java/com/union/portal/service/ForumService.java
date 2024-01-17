@@ -2,11 +2,16 @@ package com.union.portal.service;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.union.portal.domain.FundClient_client;
 import com.union.portal.domain.FundClient_loginhistory;
+import com.union.portal.domain.forum_and_cat_name;
 import com.union.portal.domain.t_forum;
 import com.union.portal.domain.t_forum_category;
+import com.union.portal.domain.t_forum_topic;
 import com.union.portal.domain.t_forum_topiccount;
+import com.union.portal.domain.topic_comment_list;
 
 public interface ForumService {
 	
@@ -57,5 +62,14 @@ public interface ForumService {
 	 List<t_forum_category> getforumcategorylist();
 	 
 	 List<t_forum_topiccount> getforumtopiccountlist();
+	 public forum_and_cat_name getcategorynameandforumname(String categoryid);
+	 public t_forum_category getforumcategoryinfo(String categoryid);
 	 
+		public List<t_forum_topic> getforumcategorytopiclist(String categoryid);
+		
+		public t_forum_topic getforumtopicinfo(String topicid);
+		
+		public List<topic_comment_list> getforumtopiccommentlist(String topicid);
+		
+		
 }
