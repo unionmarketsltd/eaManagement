@@ -13,6 +13,7 @@ import com.union.portal.domain.t_forum_category;
 import com.union.portal.domain.t_forum_topic;
 import com.union.portal.domain.t_forum_topiccount;
 import com.union.portal.domain.topic_comment_list;
+import com.union.portal.domain.topic_subcomment_list;
 import com.union.portal.mapper.ForumMapper;
 
 
@@ -111,6 +112,12 @@ public class ForumServiceImpl implements ForumService {
 	public List<topic_comment_list> getforumtopiccommentlist(String topicid) {
 		// TODO Auto-generated method stub
 		return mapper.getforumtopiccommentlist(topicid);
+	}
+
+	@Override
+	public List<topic_subcomment_list> getforumtopicsubcommentlist(String topicid) {
+		// TODO Auto-generated method stub
+		return mapper.getforumtopicsubcommentlist(topicid);
 	}
 
 	

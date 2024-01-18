@@ -12,6 +12,7 @@ import com.union.portal.domain.t_forum_category;
 import com.union.portal.domain.t_forum_topic;
 import com.union.portal.domain.t_forum_topiccount;
 import com.union.portal.domain.topic_comment_list;
+import com.union.portal.domain.topic_subcomment_list;
 
 public interface ForumService {
 	
@@ -70,6 +71,7 @@ public interface ForumService {
 		public t_forum_topic getforumtopicinfo(String topicid);
 		
 		public List<topic_comment_list> getforumtopiccommentlist(String topicid);
+		public List<topic_subcomment_list> getforumtopicsubcommentlist(String topicid);
 		
 		
 }

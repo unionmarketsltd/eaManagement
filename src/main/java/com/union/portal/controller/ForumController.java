@@ -32,6 +32,7 @@ import com.union.portal.domain.t_forum_category;
 import com.union.portal.domain.t_forum_topic;
 import com.union.portal.domain.t_forum_topiccount;
 import com.union.portal.domain.topic_comment_list;
+import com.union.portal.domain.topic_subcomment_list;
 import com.union.portal.service.ForumService;
 import lombok.AllArgsConstructor;
 
@@ -204,7 +205,8 @@ public class ForumController {
 		
 		List<topic_comment_list> tcl = null;
 		tcl = forumservices.getforumtopiccommentlist(id);
-		
+		List<topic_subcomment_list> tsl = null;
+		tsl = forumservices.getforumtopicsubcommentlist(id);
 		
 		
 		
@@ -214,6 +216,7 @@ public class ForumController {
 		model.addAttribute("topicinfo", tft);
 		
 		model.addAttribute("commentlist", tcl);
+		model.addAttribute("subcommentlist", tsl);
 		
 		model.addAttribute("lang", vLocal);
 		String returnURL = "";

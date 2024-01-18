@@ -15,6 +15,7 @@ import com.union.portal.domain.t_forum_category;
 import com.union.portal.domain.t_forum_topic;
 import com.union.portal.domain.t_forum_topiccount;
 import com.union.portal.domain.topic_comment_list;
+import com.union.portal.domain.topic_subcomment_list;
 
 public interface ForumMapper {
 
@@ -127,4 +128,11 @@ public List<t_forum_topiccount> getforumtopiccountlist();
 	
 	@Select("SELECT *,(SELECT CASE WHEN DATEDIFF(now(), create_date) < 1 THEN CONCAT(TIMESTAMPDIFF(HOUR, now(), create_date), ' hours ago') ELSE CONCAT(DATEDIFF(now(), create_date), ' days ago') END ) as dayago, (select count(*) from t_forum_comment where  forum.t_forum_comment.create_by =create_by ) as userpost,(select name from t_user where email = forum.t_forum_comment.create_by) as postownername FROM forum.t_forum_comment where topic_id =#{topicid} order by id asc;")
 	public List<topic_comment_list> getforumtopiccommentlist(@Param("topicid")String topicid);
+	
+	
+	@Select("SELECT * ,(SELECT CASE WHEN DATEDIFF(now(), create_date) < 1 THEN CONCAT(TIMESTAMPDIFF(HOUR, now(), create_date), ' hours ago') ELSE CONCAT(DATEDIFF(now(), create_date), ' days ago') END ) as dayago, (select count(*) from t_forum_comment where  forum.t_forum_sub_comment.create_by =create_by ) as userpost,(select name from t_user where email = forum.t_forum_sub_comment.create_by) as postownername FROM forum.t_forum_sub_comment where topic_id =#{topicid} order by id asc;")
+	public List<topic_subcomment_list> getforumtopicsubcommentlist(@Param("topicid")String topicid);
+	
+	
+	
 }

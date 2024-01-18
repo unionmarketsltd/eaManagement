@@ -19836,8 +19836,8 @@ input[type="radio"]:disabled + .radio-circle {
 }
 
 .topic-comment .topic-comment-actions {
-    padding: 26px 0 0;
-    border-top: 1px solid #dbdbdb;
+    padding: 5px 0 0;
+    border-top: 1px dotted #dbdbdb;
     display: flex;
     flex-flow: row wrap;
     justify-content: space-between
