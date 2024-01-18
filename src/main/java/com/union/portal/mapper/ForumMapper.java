@@ -110,7 +110,12 @@ public List<t_forum_topiccount> getforumtopiccountlist();
 	
 	
 	
-	@Select("SELECT distinct forum.t_forum_topic.* ,  count(forum.t_forum_comment.id) as reply , (select name from t_user where email = forum.t_forum_topic.create_by ) as create_by_name , (select id from t_user where email = forum.t_forum_topic.create_by ) as create_by_id  FROM forum.t_forum_topic left join forum.t_forum_comment on forum.t_forum_topic.id=forum.t_forum_comment.topic_id where category_id =#{categoryid} group by forum.t_forum_comment.topic_id order by pin_post desc, last_comment_date desc ,last_comment_date desc")
+	@Select("SELECT forum.t_forum_topic.* , \r\n"
+			+ "(select count(*) from t_forum_comment where t_forum_comment.topic_id = forum.t_forum_topic.id  ) as reply,\r\n"
+			+ "(select name from t_user where email = create_by ) as create_by_name , \r\n"
+			+ " (select id from t_user where email = create_by ) as create_by_id  \r\n"
+			+ " FROM forum.t_forum_topic \r\n"
+			+ " where category_id =#{categoryid} order by pin_post desc, last_comment_date desc ,last_comment_date desc")
 	public List<t_forum_topic> getforumcategorytopiclist(@Param("categoryid")String categoryid);
 	
 	@Select("SELECT * \r\n"
@@ -119,20 +124,44 @@ public List<t_forum_topiccount> getforumtopiccountlist();
 			+ "        WHEN DATEDIFF(now(), create_date) < 1 THEN CONCAT(TIMESTAMPDIFF(HOUR, now(), create_date), ' hours ago')\r\n"
 			+ "        ELSE CONCAT(DATEDIFF(now(), create_date), ' days ago')\r\n"
 			+ "    END \r\n"
-			+ "FROM t_forum_topic where id = 1) as dayago\r\n"
+			+ "FROM t_forum_topic\r\n"
+			+ " where id = 1) as dayago\r\n"
 			+ "\r\n"
-			+ ",(select count(*) from t_forum_comment where create_by = forum.t_forum_topic.create_by) as author_post, (select name from t_forum_category where id = forum.t_forum_topic.category_id) as category_name,(select name from t_user where email = forum.t_forum_topic.create_by) as create_by_name,(select id from t_user where email = forum.t_forum_topic.create_by) as create_by_id, (select count(*) from t_forum_comment where topic_id = forum.t_forum_topic.id) as reply from forum.t_forum_topic where id =#{topicid}")
+			+ ",\r\n"
+			+ " (select count(*)\r\n"
+			+ " from t_forum_comment\r\n"
+			+ " where create_by = forum.t_forum_topic.create_by) as author_post, \r\n"
+			+ " (select name\r\n"
+			+ " from t_forum_category\r\n"
+			+ " where id = forum.t_forum_topic.category_id) as category_name,\r\n"
+			+ " \r\n"
+			+ " (select name\r\n"
+			+ " from t_user\r\n"
+			+ " where email = forum.t_forum_topic.create_by) as create_by_name,\r\n"
+			+ " (select google_image_url\r\n"
+			+ " from t_user\r\n"
+			+ " where email = forum.t_forum_topic.create_by) as create_by_img,\r\n"
+			+ " (select id\r\n"
+			+ " from t_user\r\n"
+			+ " where email = forum.t_forum_topic.create_by) as create_by_id, \r\n"
+			+ " (select count(*)\r\n"
+			+ " from t_forum_comment\r\n"
+			+ " where topic_id = forum.t_forum_topic.id) as reply\r\n"
+			+ " from forum.t_forum_topic\r\n"
+			+ " where id =#{topicid}")
 	public t_forum_topic getforumtopicinfo(@Param("topicid")String topicid);
 	
 	
 	
-	@Select("SELECT *,(SELECT CASE WHEN DATEDIFF(now(), create_date) < 1 THEN CONCAT(TIMESTAMPDIFF(HOUR, now(), create_date), ' hours ago') ELSE CONCAT(DATEDIFF(now(), create_date), ' days ago') END ) as dayago, (select count(*) from t_forum_comment where  forum.t_forum_comment.create_by =create_by ) as userpost,(select name from t_user where email = forum.t_forum_comment.create_by) as postownername FROM forum.t_forum_comment where topic_id =#{topicid} order by id asc;")
+	@Select("SELECT *,(SELECT CASE WHEN DATEDIFF(now(), create_date) < 1 THEN CONCAT(TIMESTAMPDIFF(HOUR, now(), create_date), ' hours ago') ELSE CONCAT(DATEDIFF(now(), create_date), ' days ago') END ) as dayago, (select count(*) from t_forum_comment where  forum.t_forum_comment.create_by =create_by ) as userpost,(select name from t_user where email = forum.t_forum_comment.create_by) as postownername ,(select google_image_url from t_user where email = forum.t_forum_comment.create_by) as create_by_img FROM forum.t_forum_comment where topic_id =#{topicid} order by id asc;")
 	public List<topic_comment_list> getforumtopiccommentlist(@Param("topicid")String topicid);
 	
 	
-	@Select("SELECT * ,(SELECT CASE WHEN DATEDIFF(now(), create_date) < 1 THEN CONCAT(TIMESTAMPDIFF(HOUR, now(), create_date), ' hours ago') ELSE CONCAT(DATEDIFF(now(), create_date), ' days ago') END ) as dayago, (select count(*) from t_forum_comment where  forum.t_forum_sub_comment.create_by =create_by ) as userpost,(select name from t_user where email = forum.t_forum_sub_comment.create_by) as postownername FROM forum.t_forum_sub_comment where topic_id =#{topicid} order by id asc;")
+	@Select("SELECT * ,(SELECT CASE WHEN DATEDIFF(now(), create_date) < 1 THEN CONCAT(TIMESTAMPDIFF(HOUR, now(), create_date), ' hours ago') ELSE CONCAT(DATEDIFF(now(), create_date), ' days ago') END ) as dayago, (select count(*) from t_forum_comment where  forum.t_forum_sub_comment.create_by =create_by ) as userpost,(select name from t_user where email = forum.t_forum_sub_comment.create_by) as postownername,(select google_image_url from t_user where email = forum.t_forum_sub_comment.create_by) as create_by_img FROM forum.t_forum_sub_comment where topic_id =#{topicid} order by id asc;")
 	public List<topic_subcomment_list> getforumtopicsubcommentlist(@Param("topicid")String topicid);
 	
-	
+	@Insert("INSERT INTO `forum`.`t_forum_topic`(`category_id`,`title`,`description`,`content`,`views`,`likes`,`create_date`,`create_by`,`last_update_date`,`last_comment_date`,`pin_post`)\r\n"
+			+ "VALUES(#{category_id},#{title},#{description},#{content},0,0,now(),#{create_by},now(),now(),0);")
+	public void insertnewtopic( @Param("category_id")String category_id,@Param("title")String title,@Param("description")String description,@Param("content")String content,@Param("create_by")String create_by);
 	
 }

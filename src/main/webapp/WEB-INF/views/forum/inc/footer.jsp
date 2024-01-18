@@ -1356,4 +1356,22 @@
   <!-- /FOOTER BOTTOM WRAP -->
 
 <!-- app bundle -->
-<script src="${pageContext.request.contextPath}/resources/forum/app.bundle.min.js"></script>
+
+
+<script>
+loadingScripts();
+function loadingScripts() {
+    /* getting url of current page */
+    var url = window.location.pathname.indexOf('createtopic');
+    console.log(url);
+    if (url == -1) { /* checking whether the current page is home page or not */
+        var script = document.createElement('script');
+        script.src = "${pageContext.request.contextPath}/resources/forum/app.bundle.min.js";
+        document.body.appendChild(script);
+    } 
+}
+
+
+
+
+</script>

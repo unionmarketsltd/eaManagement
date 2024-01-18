@@ -1,1784 +1,487 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-  
 
-  <!-- SEARCH POPUP -->
-  <div class="search-popup">
-    <!-- CROSS ICON -->
-    <svg class="cross-icon big close-button search-popup-close">
+
+<!-- SEARCH POPUP -->
+<div class="search-popup">
+	<!-- CROSS ICON -->
+	<svg class="cross-icon big close-button search-popup-close">
       <use xlink:href="#svg-cross-big"></use>
     </svg>
-    <!-- /CROSS ICON -->
+	<!-- /CROSS ICON -->
 
-    <form method="GET" class="search-popup-form">
-      <input type="text" id="search" class="input-line" name="search" placeholder="What are you looking for...?">
-    </form>
-    <p class="search-popup-text">Write what you are looking for and press enter to begin your search!</p>
-  </div>
-  <!-- /SEARCH POPUP -->
+	<form method="GET" class="search-popup-form">
+		<input type="text" id="search" class="input-line" name="search"
+			placeholder="What are you looking for...?">
+	</form>
+	<p class="search-popup-text">Write what you are looking for and
+		press enter to begin your search!</p>
+</div>
+<!-- /SEARCH POPUP -->
 
-  <!-- INVENTORY BAG PREVIEW -->
-  <div class="inventory-bag-preview">
-    <!-- INVENTORY CLOSE BUTTON -->
-    <svg class="inventory-close-button cross-icon big">
+<!-- INVENTORY BAG PREVIEW -->
+<!-- /INVENTORY BAG PREVIEW -->
+
+<!-- MOBILE MENU WRAP -->
+<div class="mobile-menu-wrap">
+	<!-- CROSS ICON -->
+	<svg class="cross-icon big mobile-menu-close">
       <use xlink:href="#svg-cross-big"></use>
     </svg>
-    <!-- /INVENTORY CLOSE BUTTON -->
-    <p class="items-in-inventory"><span class="quantity">8</span> items in inventory</p>
-    <div class="line-separator"></div>
+	<!-- /CROSS ICON -->
 
-    <!-- INVENTORY ITEMS PREVIEW -->
-    <div class="inventory-items-preview">
-      <!-- INVENTORY ITEM PREVIEW -->
-      <div class="inventory-item-preview">
-        <!-- PRODUCT PREVIEW -->
-        <div class="product-preview small">
-          <!-- PRODUCT PREVIEW IMG WRAP -->
-          <div class="product-preview-img-wrap">
-            <!-- PRODUCT PREVIEW IMG -->
-            <a href="product-page.html">
-              <figure class="product-preview-img liquid">
-                <img src="${pageContext.request.contextPath}/resources/forum/img/products/01.jpg" alt="product-01">
-              </figure>
-            </a>
-            <!-- /PRODUCT PREVIEW IMG -->
-          </div>
-          <!-- /PRODUCT PREVIEW IMG WRAP -->
-
-          <!-- REMOVE -->
-          <div class="bubble-ornament small red remove">
-            <!-- CROSS ICON -->
-            <svg class="cross-cb-icon small">
-              <use xlink:href="#svg-cross-cb-small"></use>
-            </svg>
-            <!-- /CROSS ICON -->
-          </div>
-          <!-- /REMOVE -->
-
-          <!-- TAG QUANTITY -->
-          <div class="tag-quantity">
-            <p class="tag-quantity-text">x <span class="value">2</span></p>
-          </div>
-          <!-- TAG QUANTITY -->
-
-          <!-- PRODUCT PREVIEW TITLE -->
-          <a href="product-page.html" class="product-preview-title">New Funtendo 3XSD - black</a>
-          <!-- PRODUCT PREVIEW INFO -->
-          <div class="product-preview-info">
-            <!-- RATING ORNAMENT -->
-            <div class="rating-ornament small void yellow">
-              <!-- RATING ORNAMENT ITEM -->
-              <div class="rating-ornament-item">
-                <!-- RATING ORNAMENT ICON -->
-                <svg class="rating-ornament-icon">
-                  <use xlink:href="#svg-star"></use>
-                </svg>
-              </div>
-              <!-- /RATING ORNAMENT ITEM -->
-            
-              <!-- RATING ORNAMENT ITEM -->
-              <div class="rating-ornament-item">
-                <!-- RATING ORNAMENT ICON -->
-                <svg class="rating-ornament-icon">
-                  <use xlink:href="#svg-star"></use>
-                </svg>
-              </div>
-              <!-- /RATING ORNAMENT ITEM -->
-            
-                <!-- RATING ORNAMENT ITEM -->
-              <div class="rating-ornament-item">
-                <!-- RATING ORNAMENT ICON -->
-                <svg class="rating-ornament-icon">
-                  <use xlink:href="#svg-star"></use>
-                </svg>
-              </div>
-              <!-- /RATING ORNAMENT ITEM -->
-            
-                <!-- RATING ORNAMENT ITEM -->
-              <div class="rating-ornament-item">
-                <!-- RATING ORNAMENT ICON -->
-                <svg class="rating-ornament-icon">
-                  <use xlink:href="#svg-star"></use>
-                </svg>
-              </div>
-              <!-- /RATING ORNAMENT ITEM -->
-            
-                <!-- RATING ORNAMENT ITEM -->
-              <div class="rating-ornament-item">
-                <!-- RATING ORNAMENT ICON -->
-                <svg class="rating-ornament-icon">
-                  <use xlink:href="#svg-star"></use>
-                </svg>
-              </div>
-              <!-- /RATING ORNAMENT ITEM -->
-            </div>
-            <!-- /RATING ORNAMENT -->
-          </div>
-          <!-- /PRODUCT PREVIEW INFO -->
-
-          <!-- PRODUCT PRICE WRAP -->
-          <div class="product-price-wrap">
-            <p class="product-preview-price current"><span class="currency">$</span>199.00</p>
-          </div>
-          <!-- /PRODUCT PRICE WRAP -->
-        </div>
-        <!-- /PRODUCT PREVIEW -->
-      </div>
-      <!-- /INVENTORY ITEM PREVIEW -->
-
-      <!-- INVENTORY ITEM PREVIEW -->
-      <div class="inventory-item-preview">
-        <!-- PRODUCT PREVIEW -->
-        <div class="product-preview small">
-          <!-- PRODUCT PREVIEW IMG WRAP -->
-          <div class="product-preview-img-wrap">
-            <!-- PRODUCT PREVIEW IMG -->
-            <a href="product-page.html">
-              <figure class="product-preview-img liquid">
-              <img src="${pageContext.request.contextPath}/resources/forum/img/products/06.jpg" alt="product-06">
-              </figure>
-            </a>
-            <!-- /PRODUCT PREVIEW IMG -->
-          </div>
-          <!-- /PRODUCT PREVIEW IMG WRAP -->
-
-          <!-- REMOVE -->
-          <div class="bubble-ornament small red remove">
-            <!-- CROSS ICON -->
-            <svg class="cross-cb-icon small">
-              <use xlink:href="#svg-cross-cb-small"></use>
-            </svg>
-            <!-- /CROSS ICON -->
-          </div>
-          <!-- /REMOVE -->
-
-          <!-- TAG QUANTITY -->
-          <div class="tag-quantity">
-            <p class="tag-quantity-text">x <span class="value">1</span></p>
-          </div>
-          <!-- TAG QUANTITY -->
-
-          <!-- PRODUCT PREVIEW TITLE -->
-          <a href="product-page.html" class="product-preview-title">Crimson red joystick</a>
-          <!-- PRODUCT PREVIEW INFO -->
-          <div class="product-preview-info">
-            <!-- RATING ORNAMENT -->
-            <div class="rating-ornament small void yellow">
-              <!-- RATING ORNAMENT ITEM -->
-              <div class="rating-ornament-item">
-                <!-- RATING ORNAMENT ICON -->
-                <svg class="rating-ornament-icon">
-                  <use xlink:href="#svg-star"></use>
-                </svg>
-              </div>
-              <!-- /RATING ORNAMENT ITEM -->
-            
-              <!-- RATING ORNAMENT ITEM -->
-              <div class="rating-ornament-item">
-                <!-- RATING ORNAMENT ICON -->
-                <svg class="rating-ornament-icon">
-                  <use xlink:href="#svg-star"></use>
-                </svg>
-              </div>
-              <!-- /RATING ORNAMENT ITEM -->
-            
-                <!-- RATING ORNAMENT ITEM -->
-              <div class="rating-ornament-item">
-                <!-- RATING ORNAMENT ICON -->
-                <svg class="rating-ornament-icon">
-                  <use xlink:href="#svg-star"></use>
-                </svg>
-              </div>
-              <!-- /RATING ORNAMENT ITEM -->
-            
-                <!-- RATING ORNAMENT ITEM -->
-              <div class="rating-ornament-item">
-                <!-- RATING ORNAMENT ICON -->
-                <svg class="rating-ornament-icon empty">
-                  <use xlink:href="#svg-star"></use>
-                </svg>
-              </div>
-              <!-- /RATING ORNAMENT ITEM -->
-            
-                <!-- RATING ORNAMENT ITEM -->
-              <div class="rating-ornament-item">
-                <!-- RATING ORNAMENT ICON -->
-                <svg class="rating-ornament-icon empty">
-                  <use xlink:href="#svg-star"></use>
-                </svg>
-              </div>
-              <!-- /RATING ORNAMENT ITEM -->
-            </div>
-            <!-- /RATING ORNAMENT -->
-          </div>
-          <!-- /PRODUCT PREVIEW INFO -->
-
-          <!-- PRODUCT PRICE WRAP -->
-          <div class="product-price-wrap">
-            <p class="product-preview-price current"><span class="currency">$</span>32.50</p>
-          </div>
-          <!-- /PRODUCT PRICE WRAP -->
-        </div>
-        <!-- /PRODUCT PREVIEW -->
-      </div>
-      <!-- /INVENTORY ITEM PREVIEW -->
-
-      <!-- INVENTORY ITEM PREVIEW -->
-      <div class="inventory-item-preview">
-        <!-- PRODUCT PREVIEW -->
-        <div class="product-preview small">
-          <!-- PRODUCT PREVIEW IMG WRAP -->
-          <div class="product-preview-img-wrap">
-            <!-- PRODUCT PREVIEW IMG -->
-            <a href="product-page.html">
-              <figure class="product-preview-img liquid">
-              <img src="${pageContext.request.contextPath}/resources/forum/img/products/05.jpg" alt="product-05">
-              </figure>
-            </a>
-            <!-- /PRODUCT PREVIEW IMG -->
-          </div>
-          <!-- /PRODUCT PREVIEW IMG WRAP -->
-
-          <!-- REMOVE -->
-          <div class="bubble-ornament small red remove">
-            <!-- CROSS ICON -->
-            <svg class="cross-cb-icon small">
-              <use xlink:href="#svg-cross-cb-small"></use>
-            </svg>
-            <!-- /CROSS ICON -->
-          </div>
-          <!-- /REMOVE -->
-
-          <!-- TAG QUANTITY -->
-          <div class="tag-quantity">
-            <p class="tag-quantity-text">x <span class="value">4</span></p>
-          </div>
-          <!-- TAG QUANTITY -->
-
-          <!-- PRODUCT PREVIEW TITLE -->
-          <a href="product-page.html" class="product-preview-title">Carbon black joystick</a>
-          <!-- PRODUCT PREVIEW INFO -->
-          <div class="product-preview-info">
-            <!-- RATING ORNAMENT -->
-            <div class="rating-ornament small void yellow">
-              <!-- RATING ORNAMENT ITEM -->
-              <div class="rating-ornament-item">
-                <!-- RATING ORNAMENT ICON -->
-                <svg class="rating-ornament-icon">
-                  <use xlink:href="#svg-star"></use>
-                </svg>
-              </div>
-              <!-- /RATING ORNAMENT ITEM -->
-            
-              <!-- RATING ORNAMENT ITEM -->
-              <div class="rating-ornament-item">
-                <!-- RATING ORNAMENT ICON -->
-                <svg class="rating-ornament-icon">
-                  <use xlink:href="#svg-star"></use>
-                </svg>
-              </div>
-              <!-- /RATING ORNAMENT ITEM -->
-            
-                <!-- RATING ORNAMENT ITEM -->
-              <div class="rating-ornament-item">
-                <!-- RATING ORNAMENT ICON -->
-                <svg class="rating-ornament-icon">
-                  <use xlink:href="#svg-star"></use>
-                </svg>
-              </div>
-              <!-- /RATING ORNAMENT ITEM -->
-            
-                <!-- RATING ORNAMENT ITEM -->
-              <div class="rating-ornament-item">
-                <!-- RATING ORNAMENT ICON -->
-                <svg class="rating-ornament-icon">
-                  <use xlink:href="#svg-star"></use>
-                </svg>
-              </div>
-              <!-- /RATING ORNAMENT ITEM -->
-            
-                <!-- RATING ORNAMENT ITEM -->
-              <div class="rating-ornament-item">
-                <!-- RATING ORNAMENT ICON -->
-                <svg class="rating-ornament-icon empty">
-                  <use xlink:href="#svg-star"></use>
-                </svg>
-              </div>
-              <!-- /RATING ORNAMENT ITEM -->
-            </div>
-            <!-- /RATING ORNAMENT -->
-          </div>
-          <!-- /PRODUCT PREVIEW INFO -->
-
-          <!-- PRODUCT PRICE WRAP -->
-          <div class="product-price-wrap">
-            <p class="product-preview-price current"><span class="currency">$</span>55.00</p>
-          </div>
-          <!-- /PRODUCT PRICE WRAP -->
-        </div>
-        <!-- /PRODUCT PREVIEW -->
-      </div>
-      <!-- /INVENTORY ITEM PREVIEW -->
-
-      <!-- INVENTORY ITEM PREVIEW -->
-      <div class="inventory-item-preview">
-        <!-- PRODUCT PREVIEW -->
-        <div class="product-preview small">
-          <!-- PRODUCT PREVIEW IMG WRAP -->
-          <div class="product-preview-img-wrap">
-            <!-- PRODUCT PREVIEW IMG -->
-            <a href="product-page.html">
-              <figure class="product-preview-img liquid">
-              <img src="${pageContext.request.contextPath}/resources/forum/img/products/14.jpg" alt="product-14">
-              </figure>
-            </a>
-            <!-- /PRODUCT PREVIEW IMG -->
-          </div>
-          <!-- /PRODUCT PREVIEW IMG WRAP -->
-
-          <!-- REMOVE -->
-          <div class="bubble-ornament small red remove">
-            <!-- CROSS ICON -->
-            <svg class="cross-cb-icon small">
-              <use xlink:href="#svg-cross-cb-small"></use>
-            </svg>
-            <!-- /CROSS ICON -->
-          </div>
-          <!-- /REMOVE -->
-
-          <!-- TAG QUANTITY -->
-          <div class="tag-quantity">
-            <p class="tag-quantity-text">x <span class="value">1</span></p>
-          </div>
-          <!-- TAG QUANTITY -->
-
-          <!-- PRODUCT PREVIEW TITLE -->
-          <a href="product-page.html" class="product-preview-title">Magimons black framed print</a>
-          <!-- PRODUCT PREVIEW INFO -->
-          <div class="product-preview-info">
-            <!-- RATING ORNAMENT -->
-            <div class="rating-ornament small void yellow">
-              <!-- RATING ORNAMENT ITEM -->
-              <div class="rating-ornament-item">
-                <!-- RATING ORNAMENT ICON -->
-                <svg class="rating-ornament-icon">
-                  <use xlink:href="#svg-star"></use>
-                </svg>
-              </div>
-              <!-- /RATING ORNAMENT ITEM -->
-            
-              <!-- RATING ORNAMENT ITEM -->
-              <div class="rating-ornament-item">
-                <!-- RATING ORNAMENT ICON -->
-                <svg class="rating-ornament-icon">
-                  <use xlink:href="#svg-star"></use>
-                </svg>
-              </div>
-              <!-- /RATING ORNAMENT ITEM -->
-            
-                <!-- RATING ORNAMENT ITEM -->
-              <div class="rating-ornament-item">
-                <!-- RATING ORNAMENT ICON -->
-                <svg class="rating-ornament-icon">
-                  <use xlink:href="#svg-star"></use>
-                </svg>
-              </div>
-              <!-- /RATING ORNAMENT ITEM -->
-            
-                <!-- RATING ORNAMENT ITEM -->
-              <div class="rating-ornament-item">
-                <!-- RATING ORNAMENT ICON -->
-                <svg class="rating-ornament-icon">
-                  <use xlink:href="#svg-star"></use>
-                </svg>
-              </div>
-              <!-- /RATING ORNAMENT ITEM -->
-            
-                <!-- RATING ORNAMENT ITEM -->
-              <div class="rating-ornament-item">
-                <!-- RATING ORNAMENT ICON -->
-                <svg class="rating-ornament-icon">
-                  <use xlink:href="#svg-star"></use>
-                </svg>
-              </div>
-              <!-- /RATING ORNAMENT ITEM -->
-            </div>
-            <!-- /RATING ORNAMENT -->
-          </div>
-          <!-- /PRODUCT PREVIEW INFO -->
-
-          <!-- PRODUCT PRICE WRAP -->
-          <div class="product-price-wrap">
-            <p class="product-preview-price current"><span class="currency">$</span>20.00</p>
-          </div>
-          <!-- /PRODUCT PRICE WRAP -->
-        </div>
-        <!-- /PRODUCT PREVIEW -->
-      </div>
-      <!-- /INVENTORY ITEM PREVIEW -->
-
-      <!-- INVENTORY ITEM PREVIEW -->
-      <div class="inventory-item-preview empty">
-        <!-- INVENTORY ICON -->
-        <svg class="inventory-icon">
-          <use xlink:href="#svg-inventory-light"></use>
-        </svg>
-        <!-- /INVENTORY ICON -->
-      </div>
-      <!-- /INVENTORY ITEM PREVIEW -->
-
-      <!-- INVENTORY ITEM PREVIEW -->
-      <div class="inventory-item-preview empty">
-        <!-- INVENTORY ICON -->
-        <svg class="inventory-icon">
-          <use xlink:href="#svg-inventory-light"></use>
-        </svg>
-        <!-- /INVENTORY ICON -->
-      </div>
-      <!-- /INVENTORY ITEM PREVIEW -->
-
-      <!-- INVENTORY ITEM PREVIEW -->
-      <div class="inventory-item-preview empty">
-        <!-- INVENTORY ICON -->
-        <svg class="inventory-icon">
-          <use xlink:href="#svg-inventory-light"></use>
-        </svg>
-        <!-- /INVENTORY ICON -->
-      </div>
-      <!-- /INVENTORY ITEM PREVIEW -->
-
-      <!-- INVENTORY ITEM PREVIEW -->
-      <div class="inventory-item-preview empty">
-        <!-- INVENTORY ICON -->
-        <svg class="inventory-icon">
-          <use xlink:href="#svg-inventory-light"></use>
-        </svg>
-        <!-- /INVENTORY ICON -->
-      </div>
-      <!-- /INVENTORY ITEM PREVIEW -->
-
-      <!-- INVENTORY ITEM PREVIEW -->
-      <div class="inventory-item-preview empty">
-        <!-- INVENTORY ICON -->
-        <svg class="inventory-icon">
-          <use xlink:href="#svg-inventory-light"></use>
-        </svg>
-        <!-- /INVENTORY ICON -->
-      </div>
-      <!-- /INVENTORY ITEM PREVIEW -->
-
-      <!-- INVENTORY ITEM PREVIEW -->
-      <div class="inventory-item-preview empty">
-        <!-- INVENTORY ICON -->
-        <svg class="inventory-icon">
-          <use xlink:href="#svg-inventory-light"></use>
-        </svg>
-        <!-- /INVENTORY ICON -->
-      </div>
-      <!-- /INVENTORY ITEM PREVIEW -->
-
-      <!-- INVENTORY ITEM PREVIEW -->
-      <div class="inventory-item-preview empty">
-        <!-- INVENTORY ICON -->
-        <svg class="inventory-icon">
-          <use xlink:href="#svg-inventory-light"></use>
-        </svg>
-        <!-- /INVENTORY ICON -->
-      </div>
-      <!-- /INVENTORY ITEM PREVIEW -->
-
-      <!-- INVENTORY ITEM PREVIEW -->
-      <div class="inventory-item-preview empty">
-        <!-- INVENTORY ICON -->
-        <svg class="inventory-icon">
-          <use xlink:href="#svg-inventory-light"></use>
-        </svg>
-        <!-- /INVENTORY ICON -->
-      </div>
-      <!-- /INVENTORY ITEM PREVIEW -->
-    </div>
-    <!-- /INVENTORY ITEMS PREVIEW -->
-
-    <div class="line-separator"></div>
-    <p class="inventory-subtotal"><span class="subtotal-text">Inventory subtotal:</span> <span class="subtotal-value"><span class="currency">$</span><span class="value">670.50</span></span></p>
-    <div class="line-separator"></div>
-    <!-- INVENTORY ACTIONS -->
-    <div class="inventory-actions">
-      <a href="inventory-bag.html" class="button full blue">Go to the inventory bag</a>
-      <a href="checkout.html" class="button full violet">Proceed to checkout</a>
-    </div>
-    <!-- /INVENTORY ACTIONS -->
-  </div>
-  <!-- /INVENTORY BAG PREVIEW -->
-
-  <!-- MOBILE MENU WRAP -->
-  <div class="mobile-menu-wrap">
-    <!-- CROSS ICON -->
-    <svg class="cross-icon big mobile-menu-close">
-      <use xlink:href="#svg-cross-big"></use>
-    </svg>
-    <!-- /CROSS ICON -->
-
-    <!-- SEARCH POPUP OPEN -->
-    <svg class="search-popup-open search-icon">
+	<!-- SEARCH POPUP OPEN -->
+	<svg class="search-popup-open search-icon">
       <use xlink:href="#svg-search"></use>
     </svg>
-    <!-- /SEARCH POPUP OPEN -->
-
-    <!-- LOGO IMG -->
-    <figure class="logo-img">
-    <img src="${pageContext.request.contextPath}/resources/forum/img/brand/logo.png" alt="Logo">
-    </figure>
-    <!-- /LOGO IMG -->
-
-    <!-- MOBILE MENU -->
-    <ul class="mobile-menu">
-      <!-- MOBILE MENU ITEM -->
-      <li class="mobile-menu-item">
-        <a href="index.html" class="mobile-menu-item-link">Home</a>
-      </li>
-      <!-- /MOBILE MENU ITEM -->
-
-      <!-- MOBILE MENU ITEM -->
-      <li class="mobile-menu-item">
-        <p class="mobile-menu-item-link pd-dropdown-handler">eSports</p>
-        <!-- ARROW ICON -->
-        <svg class="arrow-icon medium">
-          <use xlink:href="#svg-arrow-medium"></use>
-        </svg>
-        <!-- /ARROW ICON -->
-
-        <!-- MOBILE DROPDOWN -->
-        <ul class="mobile-dropdown pd-dropdown">
-          <!-- MOBILE DROPDOWN ITEM -->
-          <li class="mobile-dropdown-item">
-            <p class="mobile-dropdown-item-link pd-dropdown-handler">Main Pages</p>
-            <!-- ARROW ICON -->
-            <svg class="arrow-icon medium">
-              <use xlink:href="#svg-arrow-medium"></use>
-            </svg>
-            <!-- /ARROW ICON -->
-
-            <!-- MOBILE DROPDOWN -->
-            <ul class="mobile-dropdown pd-dropdown">
-              <!-- MOBILE DROPDOWN ITEM -->
-              <li class="mobile-dropdown-item">
-                <a href="esports-home.html" class="mobile-dropdown-item-link">eSports Home</a>
-              </li>
-              <!-- /MOBILE DROPDOWN ITEM -->
-
-              <!-- MOBILE DROPDOWN ITEM -->
-              <li class="mobile-dropdown-item">
-                <a href="esports-news.html" class="mobile-dropdown-item-link">eSports News</a>
-              </li>
-              <!-- /MOBILE DROPDOWN ITEM -->
-
-              <!-- MOBILE DROPDOWN ITEM -->
-              <li class="mobile-dropdown-item">
-                <a href="esports-post.html" class="mobile-dropdown-item-link">eSports Post Page</a>
-              </li>
-              <!-- /MOBILE DROPDOWN ITEM -->
-
-              <!-- MOBILE DROPDOWN ITEM -->
-              <li class="mobile-dropdown-item">
-                <a href="esports-tournament.html" class="mobile-dropdown-item-link">Tournament Page</a>
-              </li>
-              <!-- /MOBILE DROPDOWN ITEM -->
-            </ul>
-            <!-- /MOBILE DROPDOWN -->
-          </li>
-          <!-- /MOBILE DROPDOWN ITEM -->
-
-          <!-- MOBILE DROPDOWN ITEM -->
-          <li class="mobile-dropdown-item">
-            <p class="mobile-dropdown-item-link pd-dropdown-handler">Match Overviews</p>
-            <!-- ARROW ICON -->
-            <svg class="arrow-icon medium">
-              <use xlink:href="#svg-arrow-medium"></use>
-            </svg>
-            <!-- /ARROW ICON -->
-
-            <!-- MOBILE DROPDOWN -->
-            <ul class="mobile-dropdown pd-dropdown">
-              <!-- MOBILE DROPDOWN ITEM -->
-              <li class="mobile-dropdown-item">
-                <a href="esports-match-overview-v1.html" class="mobile-dropdown-item-link">Match Overview V1</a>
-              </li>
-              <!-- /MOBILE DROPDOWN ITEM -->
-
-              <!-- MOBILE DROPDOWN ITEM -->
-              <li class="mobile-dropdown-item">
-                <a href="esports-match-overview-v2.html" class="mobile-dropdown-item-link">Match Overview V2</a>
-              </li>
-              <!-- /MOBILE DROPDOWN ITEM -->
-
-              <!-- MOBILE DROPDOWN ITEM -->
-              <li class="mobile-dropdown-item">
-                <a href="esports-match-overview-v3.html" class="mobile-dropdown-item-link">Match Overview V3</a>
-              </li>
-              <!-- /MOBILE DROPDOWN ITEM -->
-
-              <!-- MOBILE DROPDOWN ITEM -->
-              <li class="mobile-dropdown-item">
-                <a href="esports-match-overview-v4.html" class="mobile-dropdown-item-link">Match Overview V4</a>
-              </li>
-              <!-- /MOBILE DROPDOWN ITEM -->
-            </ul>
-            <!-- /MOBILE DROPDOWN -->
-          </li>
-          <!-- /MOBILE DROPDOWN ITEM -->
-
-          <!-- MOBILE DROPDOWN ITEM -->
-          <li class="mobile-dropdown-item">
-            <p class="mobile-dropdown-item-link pd-dropdown-handler">Teams &amp; Players</p>
-            <!-- ARROW ICON -->
-            <svg class="arrow-icon medium">
-              <use xlink:href="#svg-arrow-medium"></use>
-            </svg>
-            <!-- /ARROW ICON -->
-
-            <!-- MOBILE DROPDOWN -->
-            <ul class="mobile-dropdown pd-dropdown">
-              <!-- MOBILE DROPDOWN ITEM -->
-              <li class="mobile-dropdown-item">
-                <a href="esports-team.html" class="mobile-dropdown-item-link">eSports Team Page</a>
-              </li>
-              <!-- /MOBILE DROPDOWN ITEM -->
-
-              <!-- MOBILE DROPDOWN ITEM -->
-              <li class="mobile-dropdown-item">
-                <a href="esports-player.html" class="mobile-dropdown-item-link">eSports Player Page</a>
-              </li>
-              <!-- /MOBILE DROPDOWN ITEM -->
-
-              <!-- MOBILE DROPDOWN ITEM -->
-              <li class="mobile-dropdown-item">
-                <a href="esports-streamers.html" class="mobile-dropdown-item-link">Streamers Page</a>
-              </li>
-              <!-- /MOBILE DROPDOWN ITEM -->
-
-              <!-- MOBILE DROPDOWN ITEM -->
-              <li class="mobile-dropdown-item">
-                <a href="esports-calendar.html" class="mobile-dropdown-item-link">Scores with Calendar</a>
-              </li>
-              <!-- /MOBILE DROPDOWN ITEM -->
-            </ul>
-            <!-- /MOBILE DROPDOWN -->
-          </li>
-          <!-- /MOBILE DROPDOWN ITEM -->
-
-          <!-- MOBILE DROPDOWN ITEM -->
-          <li class="mobile-dropdown-item">
-            <p class="mobile-dropdown-item-link pd-dropdown-handler">eSports Widgets</p>
-            <!-- ARROW ICON -->
-            <svg class="arrow-icon medium">
-              <use xlink:href="#svg-arrow-medium"></use>
-            </svg>
-            <!-- /ARROW ICON -->
-
-            <!-- MOBILE DROPDOWN -->
-            <ul class="mobile-dropdown pd-dropdown">
-              <!-- MOBILE DROPDOWN ITEM -->
-              <li class="mobile-dropdown-item">
-                <a href="esports-widgets-v1.html" class="mobile-dropdown-item-link">Widgets Page 01</a>
-              </li>
-              <!-- /MOBILE DROPDOWN ITEM -->
-
-              <!-- MOBILE DROPDOWN ITEM -->
-              <li class="mobile-dropdown-item">
-                <a href="esports-widgets-v2.html" class="mobile-dropdown-item-link">Widgets Page 02</a>
-              </li>
-              <!-- /MOBILE DROPDOWN ITEM -->
-
-              <!-- MOBILE DROPDOWN ITEM -->
-              <li class="mobile-dropdown-item">
-                <a href="esports-widgets-v3.html" class="mobile-dropdown-item-link">Widgets Page 03</a>
-              </li>
-              <!-- /MOBILE DROPDOWN ITEM -->
-            </ul>
-            <!-- /MOBILE DROPDOWN -->
-          </li>
-          <!-- /MOBILE DROPDOWN ITEM -->
-        </ul>
-        <!-- /MOBILE DROPDOWN -->
-      </li>
-      <!-- /MOBILE MENU ITEM -->
-
-      <!-- MOBILE MENU ITEM -->
-      <li class="mobile-menu-item">
-        <a href="news-v1.html" class="mobile-menu-item-link">News</a>
-      </li>
-      <!-- /MOBILE MENU ITEM -->
-
-      <!-- MOBILE MENU ITEM -->
-      <li class="mobile-menu-item">
-        <a href="news-v2.html" class="mobile-menu-item-link">Reviews</a>
-      </li>
-      <!-- /MOBILE MENU ITEM -->
-
-      <!-- MOBILE MENU ITEM -->
-      <li class="mobile-menu-item">
-        <p class="mobile-menu-item-link pd-dropdown-handler">Features</p>
-        <!-- ARROW ICON -->
-        <svg class="arrow-icon medium">
-          <use xlink:href="#svg-arrow-medium"></use>
-        </svg>
-        <!-- /ARROW ICON -->
-
-        <!-- MOBILE DROPDOWN -->
-        <ul class="mobile-dropdown pd-dropdown">
-          <!-- MOBILE DROPDOWN ITEM -->
-          <li class="mobile-dropdown-item">
-            <p class="mobile-dropdown-item-link pd-dropdown-handler">Pixel Main Features</p>
-            <!-- ARROW ICON -->
-            <svg class="arrow-icon medium">
-              <use xlink:href="#svg-arrow-medium"></use>
-            </svg>
-            <!-- /ARROW ICON -->
-
-            <!-- MOBILE DROPDOWN -->
-            <ul class="mobile-dropdown pd-dropdown">
-              <!-- MOBILE DROPDOWN ITEM -->
-              <li class="mobile-dropdown-item">
-                <a href="index.html" class="mobile-dropdown-item-link">Main Homepage</a>
-              </li>
-              <!-- /MOBILE DROPDOWN ITEM -->
-
-              <!-- MOBILE DROPDOWN ITEM -->
-              <li class="mobile-dropdown-item">
-                <a href="home-v2.html" class="mobile-dropdown-item-link">Homepage V2</a>
-              </li>
-              <!-- /MOBILE DROPDOWN ITEM -->
-
-              <!-- MOBILE DROPDOWN ITEM -->
-              <li class="mobile-dropdown-item">
-                <a href="home-v3.html" class="mobile-dropdown-item-link">Homepage V3</a>
-              </li>
-              <!-- /MOBILE DROPDOWN ITEM -->
-
-              <!-- MOBILE DROPDOWN ITEM -->
-              <li class="mobile-dropdown-item">
-                <a href="news-v1.html" class="mobile-dropdown-item-link">News Page V1</a>
-              </li>
-              <!-- /MOBILE DROPDOWN ITEM -->
-
-              <!-- MOBILE DROPDOWN ITEM -->
-              <li class="mobile-dropdown-item">
-                <a href="news-v2.html" class="mobile-dropdown-item-link">News Page V2</a>
-              </li>
-              <!-- /MOBILE DROPDOWN ITEM -->
-
-              <!-- MOBILE DROPDOWN ITEM -->
-              <li class="mobile-dropdown-item">
-                <a href="news-v3.html" class="mobile-dropdown-item-link">News Page V3</a>
-              </li>
-              <!-- /MOBILE DROPDOWN ITEM -->
-
-              <!-- MOBILE DROPDOWN ITEM -->
-              <li class="mobile-dropdown-item">
-                <a href="news-v4.html" class="mobile-dropdown-item-link">News Page V4</a>
-              </li>
-              <!-- /MOBILE DROPDOWN ITEM -->
-
-              <!-- MOBILE DROPDOWN ITEM -->
-              <li class="mobile-dropdown-item">
-                <a href="post-v1.html" class="mobile-dropdown-item-link">Post Page V1</a>
-              </li>
-              <!-- /MOBILE DROPDOWN ITEM -->
-
-              <!-- MOBILE DROPDOWN ITEM -->
-              <li class="mobile-dropdown-item">
-                <a href="post-v2.html" class="mobile-dropdown-item-link">Post Page V2</a>
-              </li>
-              <!-- /MOBILE DROPDOWN ITEM -->
-
-              <!-- MOBILE DROPDOWN ITEM -->
-              <li class="mobile-dropdown-item">
-                <a href="post-v3.html" class="mobile-dropdown-item-link">Post Page V3</a>
-              </li>
-              <!-- /MOBILE DROPDOWN ITEM -->
-
-              <!-- MOBILE DROPDOWN ITEM -->
-              <li class="mobile-dropdown-item">
-                <a href="post-v4.html" class="mobile-dropdown-item-link">Post Page V4</a>
-              </li>
-              <!-- /MOBILE DROPDOWN ITEM -->
-
-              <!-- MOBILE DROPDOWN ITEM -->
-              <li class="mobile-dropdown-item">
-                <a href="browse-videos.html" class="mobile-dropdown-item-link">Browse Videos</a>
-              </li>
-              <!-- /MOBILE DROPDOWN ITEM -->
-
-              <!-- MOBILE DROPDOWN ITEM -->
-              <li class="mobile-dropdown-item">
-                <a href="post-video.html" class="mobile-dropdown-item-link">Video Post Page</a>
-              </li>
-              <!-- /MOBILE DROPDOWN ITEM -->
-
-              <!-- MOBILE DROPDOWN ITEM -->
-              <li class="mobile-dropdown-item">
-                <a href="search-results.html" class="mobile-dropdown-item-link">Search Results</a>
-              </li>
-              <!-- /MOBILE DROPDOWN ITEM -->
-
-              <!-- MOBILE DROPDOWN ITEM -->
-              <li class="mobile-dropdown-item">
-                <a href="calendar.html" class="mobile-dropdown-item-link">Events Calendar</a>
-              </li>
-              <!-- /MOBILE DROPDOWN ITEM -->
-
-              <!-- MOBILE DROPDOWN ITEM -->
-              <li class="mobile-dropdown-item">
-                <a href="event.html" class="mobile-dropdown-item-link">Open Event</a>
-              </li>
-              <!-- /MOBILE DROPDOWN ITEM -->
-
-              <!-- MOBILE DROPDOWN ITEM -->
-              <li class="mobile-dropdown-item">
-                <a href="404.html" class="mobile-dropdown-item-link">404 Error Page</a>
-              </li>
-              <!-- /MOBILE DROPDOWN ITEM -->
-
-              <!-- MOBILE DROPDOWN ITEM -->
-              <li class="mobile-dropdown-item">
-                <a href="shortcodes.html" class="mobile-dropdown-item-link">Shortcodes</a>
-              </li>
-              <!-- /MOBILE DROPDOWN ITEM -->
-
-              <!-- MOBILE DROPDOWN ITEM -->
-              <li class="mobile-dropdown-item">
-                <a href="menu-dropdowns.html" class="mobile-dropdown-item-link">Menu &amp; Dropdowns</a>
-              </li>
-              <!-- /MOBILE DROPDOWN ITEM -->
-
-              <!-- MOBILE DROPDOWN ITEM -->
-              <li class="mobile-dropdown-item">
-                <a href="headers-dividers.html" class="mobile-dropdown-item-link">Headers &amp; Dividers</a>
-              </li>
-              <!-- /MOBILE DROPDOWN ITEM -->
-
-              <!-- MOBILE DROPDOWN ITEM -->
-              <li class="mobile-dropdown-item">
-                <a href="pixel-popups.html" class="mobile-dropdown-item-link">Pixel Popups</a>
-              </li>
-              <!-- /MOBILE DROPDOWN ITEM -->
-            </ul>
-            <!-- /MOBILE DROPDOWN -->
-          </li>
-          <!-- /MOBILE DROPDOWN ITEM -->
-
-          <!-- MOBILE DROPDOWN ITEM -->
-          <li class="mobile-dropdown-item">
-            <p class="mobile-dropdown-item-link pd-dropdown-handler">Account &amp; Company</p>
-            <!-- ARROW ICON -->
-            <svg class="arrow-icon medium">
-              <use xlink:href="#svg-arrow-medium"></use>
-            </svg>
-            <!-- /ARROW ICON -->
-
-            <!-- MOBILE DROPDOWN -->
-            <ul class="mobile-dropdown pd-dropdown">
-              <!-- MOBILE DROPDOWN ITEM -->
-              <li class="mobile-dropdown-item">
-                <a href="login-register.html" class="mobile-dropdown-item-link">Login &amp; Register</a>
-              </li>
-              <!-- /MOBILE DROPDOWN ITEM -->
-
-              <!-- MOBILE DROPDOWN ITEM -->
-              <li class="mobile-dropdown-item">
-                <a href="login-register-popups.html" class="mobile-dropdown-item-link">Login &amp; Register Popups</a>
-              </li>
-              <!-- /MOBILE DROPDOWN ITEM -->
-
-              <!-- MOBILE DROPDOWN ITEM -->
-              <li class="mobile-dropdown-item">
-                <a href="account-settings.html" class="mobile-dropdown-item-link">Account Settings</a>
-              </li>
-              <!-- /MOBILE DROPDOWN ITEM -->
-
-              <!-- MOBILE DROPDOWN ITEM -->
-              <li class="mobile-dropdown-item">
-                <a href="orders-history.html" class="mobile-dropdown-item-link">Account Orders</a>
-              </li>
-              <!-- /MOBILE DROPDOWN ITEM -->
-
-              <!-- MOBILE DROPDOWN ITEM -->
-              <li class="mobile-dropdown-item">
-                <a href="faq.html" class="mobile-dropdown-item-link">FAQs Page</a>
-              </li>
-              <!-- /MOBILE DROPDOWN ITEM -->
-
-              <!-- MOBILE DROPDOWN ITEM -->
-              <li class="mobile-dropdown-item">
-                <a href="contact.html" class="mobile-dropdown-item-link">Contact Page</a>
-              </li>
-              <!-- /MOBILE DROPDOWN ITEM -->
-
-              <!-- MOBILE DROPDOWN ITEM -->
-              <li class="mobile-dropdown-item">
-                <a href="sponsors.html" class="mobile-dropdown-item-link">Sponsors Page</a>
-              </li>
-              <!-- /MOBILE DROPDOWN ITEM -->
-            </ul>
-            <!-- /MOBILE DROPDOWN -->
-          </li>
-          <!-- /MOBILE DROPDOWN ITEM -->
-
-          <!-- MOBILE DROPDOWN ITEM -->
-          <li class="mobile-dropdown-item">
-            <p class="mobile-dropdown-item-link pd-dropdown-handler">Pixel Forums</p>
-            <!-- ARROW ICON -->
-            <svg class="arrow-icon medium">
-              <use xlink:href="#svg-arrow-medium"></use>
-            </svg>
-            <!-- /ARROW ICON -->
-
-            <!-- MOBILE DROPDOWN -->
-            <ul class="mobile-dropdown pd-dropdown">
-              <!-- MOBILE DROPDOWN ITEM -->
-              <li class="mobile-dropdown-item">
-                <a href="forum.html" class="mobile-dropdown-item-link">Main Page</a>
-              </li>
-              <!-- /MOBILE DROPDOWN ITEM -->
-
-              <!-- MOBILE DROPDOWN ITEM -->
-              <li class="mobile-dropdown-item">
-                <a href="forum-categories.html" class="mobile-dropdown-item-link">Category Page</a>
-              </li>
-              <!-- /MOBILE DROPDOWN ITEM -->
-
-              <!-- MOBILE DROPDOWN ITEM -->
-              <li class="mobile-dropdown-item">
-                <a href="topic.html" class="mobile-dropdown-item-link">Main Topic</a>
-              </li>
-              <!-- /MOBILE DROPDOWN ITEM -->
-
-              <!-- MOBILE DROPDOWN ITEM -->
-              <li class="mobile-dropdown-item">
-                <a href="forum-badges.html" class="mobile-dropdown-item-link">Badges Big &amp; Small</a>
-              </li>
-              <!-- /MOBILE DROPDOWN ITEM -->
-
-              <!-- MOBILE DROPDOWN ITEM -->
-              <li class="mobile-dropdown-item">
-                <a href="profile-summary.html" class="mobile-dropdown-item-link">Profile Summary</a>
-              </li>
-              <!-- /MOBILE DROPDOWN ITEM -->
-
-              <!-- MOBILE DROPDOWN ITEM -->
-              <li class="mobile-dropdown-item">
-                <a href="profile-activity.html" class="mobile-dropdown-item-link">Profile Activity</a>
-              </li>
-              <!-- /MOBILE DROPDOWN ITEM -->
-
-              <!-- MOBILE DROPDOWN ITEM -->
-              <li class="mobile-dropdown-item">
-                <a href="profile-notifications.html" class="mobile-dropdown-item-link">Profile Notifications</a>
-              </li>
-              <!-- /MOBILE DROPDOWN ITEM -->
-
-              <!-- MOBILE DROPDOWN ITEM -->
-              <li class="mobile-dropdown-item">
-                <a href="profile-messages.html" class="mobile-dropdown-item-link">Profile Messages</a>
-              </li>
-              <!-- /MOBILE DROPDOWN ITEM -->
-
-              <!-- MOBILE DROPDOWN ITEM -->
-              <li class="mobile-dropdown-item">
-                <a href="profile-badges.html" class="mobile-dropdown-item-link">Profile Badges</a>
-              </li>
-              <!-- /MOBILE DROPDOWN ITEM -->
-
-              <!-- MOBILE DROPDOWN ITEM -->
-              <li class="mobile-dropdown-item">
-                <a href="profile-settings.html" class="mobile-dropdown-item-link">Profile Settings</a>
-              </li>
-              <!-- /MOBILE DROPDOWN ITEM -->
-
-              <!-- MOBILE DROPDOWN ITEM -->
-              <li class="mobile-dropdown-item">
-                <a href="forum-search-results.html" class="mobile-dropdown-item-link">Forum Results</a>
-              </li>
-              <!-- /MOBILE DROPDOWN ITEM -->
-            </ul>
-            <!-- /MOBILE DROPDOWN -->
-          </li>
-          <!-- /MOBILE DROPDOWN ITEM -->
-        </ul>
-        <!-- /MOBILE DROPDOWN -->
-      </li>
-      <!-- /MOBILE MENU ITEM -->
-
-      <!-- MOBILE MENU ITEM -->
-      <li class="mobile-menu-item">
-        <p class="mobile-menu-item-link pd-dropdown-handler">Shop</p>
-        <!-- ARROW ICON -->
-        <svg class="arrow-icon medium">
-          <use xlink:href="#svg-arrow-medium"></use>
-        </svg>
-        <!-- /ARROW ICON -->
-
-        <!-- MOBILE DROPDOWN -->
-        <ul class="mobile-dropdown pd-dropdown">
-          <!-- MOBILE DROPDOWN ITEM -->
-          <li class="mobile-dropdown-item">
-            <p class="mobile-dropdown-item-link pd-dropdown-handler">New Releases</p>
-            <!-- ARROW ICON -->
-            <svg class="arrow-icon medium">
-              <use xlink:href="#svg-arrow-medium"></use>
-            </svg>
-            <!-- /ARROW ICON -->
-
-            <!-- MOBILE DROPDOWN -->
-            <ul class="mobile-dropdown pd-dropdown">
-              <!-- MOBILE DROPDOWN ITEM -->
-              <li class="mobile-dropdown-item">
-                <a href="shop-v1-grid.html" class="mobile-dropdown-item-link">Shop 3 Columns Grid</a>
-              </li>
-              <!-- /MOBILE DROPDOWN ITEM -->
-
-              <!-- MOBILE DROPDOWN ITEM -->
-              <li class="mobile-dropdown-item">
-                <a href="shop-v1-list.html" class="mobile-dropdown-item-link">Shop 3 Columns List</a>
-              </li>
-              <!-- /MOBILE DROPDOWN ITEM -->
-
-              <!-- MOBILE DROPDOWN ITEM -->
-              <li class="mobile-dropdown-item">
-                <a href="shop-v2.html" class="mobile-dropdown-item-link">Shop 4 Columns</a>
-              </li>
-              <!-- /MOBILE DROPDOWN ITEM -->
-
-              <!-- MOBILE DROPDOWN ITEM -->
-              <li class="mobile-dropdown-item">
-                <a href="product-page.html" class="mobile-dropdown-item-link">Product Description</a>
-              </li>
-              <!-- /MOBILE DROPDOWN ITEM -->
-
-              <!-- MOBILE DROPDOWN ITEM -->
-              <li class="mobile-dropdown-item">
-                <a href="product-page.html" class="mobile-dropdown-item-link">Product Reviews</a>
-              </li>
-              <!-- /MOBILE DROPDOWN ITEM -->
-
-              <!-- MOBILE DROPDOWN ITEM -->
-              <li class="mobile-dropdown-item">
-                <a href="product-page.html" class="mobile-dropdown-item-link">Product Specifications</a>
-              </li>
-              <!-- /MOBILE DROPDOWN ITEM -->
-
-              <!-- MOBILE DROPDOWN ITEM -->
-              <li class="mobile-dropdown-item">
-                <a href="inventory-bag.html" class="mobile-dropdown-item-link">Inventory Bag (Cart)</a>
-              </li>
-              <!-- /MOBILE DROPDOWN ITEM -->
-
-              <!-- MOBILE DROPDOWN ITEM -->
-              <li class="mobile-dropdown-item">
-                <a href="checkout.html" class="mobile-dropdown-item-link">Checkout Page</a>
-              </li>
-              <!-- /MOBILE DROPDOWN ITEM -->
-
-              <!-- MOBILE DROPDOWN ITEM -->
-              <li class="mobile-dropdown-item">
-                <a href="order-confirmation.html" class="mobile-dropdown-item-link">Order Confirmation</a>
-              </li>
-              <!-- /MOBILE DROPDOWN ITEM -->
-
-              <!-- MOBILE DROPDOWN ITEM -->
-              <li class="mobile-dropdown-item">
-                <a href="wishlist.html" class="mobile-dropdown-item-link">Wishlist</a>
-              </li>
-              <!-- /MOBILE DROPDOWN ITEM -->
-
-              <!-- MOBILE DROPDOWN ITEM -->
-              <li class="mobile-dropdown-item">
-                <a href="product-compare.html" class="mobile-dropdown-item-link">Product Compare</a>
-              </li>
-              <!-- /MOBILE DROPDOWN ITEM -->
-            </ul>
-            <!-- /MOBILE DROPDOWN -->
-          </li>
-          <!-- /MOBILE DROPDOWN ITEM -->
-
-          <!-- MOBILE DROPDOWN ITEM -->
-          <li class="mobile-dropdown-item">
-            <p class="mobile-dropdown-item-link pd-dropdown-handler">Shop Features</p>
-            <!-- ARROW ICON -->
-            <svg class="arrow-icon medium">
-              <use xlink:href="#svg-arrow-medium"></use>
-            </svg>
-            <!-- /ARROW ICON -->
-
-            <!-- MOBILE DROPDOWN -->
-            <ul class="mobile-dropdown pd-dropdown">
-              <!-- MOBILE DROPDOWN ITEM -->
-              <li class="mobile-dropdown-item">
-                <a href="shop-v1-grid.html" class="mobile-dropdown-item-link">Shop 3 Columns Grid</a>
-              </li>
-              <!-- /MOBILE DROPDOWN ITEM -->
-
-              <!-- MOBILE DROPDOWN ITEM -->
-              <li class="mobile-dropdown-item">
-                <a href="shop-v1-list.html" class="mobile-dropdown-item-link">Shop 3 Columns List</a>
-              </li>
-              <!-- /MOBILE DROPDOWN ITEM -->
-
-              <!-- MOBILE DROPDOWN ITEM -->
-              <li class="mobile-dropdown-item">
-                <a href="shop-v2.html" class="mobile-dropdown-item-link">Shop 4 Columns</a>
-              </li>
-              <!-- /MOBILE DROPDOWN ITEM -->
-
-              <!-- MOBILE DROPDOWN ITEM -->
-              <li class="mobile-dropdown-item">
-                <a href="product-page.html" class="mobile-dropdown-item-link">Product Description</a>
-              </li>
-              <!-- /MOBILE DROPDOWN ITEM -->
-
-              <!-- MOBILE DROPDOWN ITEM -->
-              <li class="mobile-dropdown-item">
-                <a href="product-page.html" class="mobile-dropdown-item-link">Product Reviews</a>
-              </li>
-              <!-- /MOBILE DROPDOWN ITEM -->
-
-              <!-- MOBILE DROPDOWN ITEM -->
-              <li class="mobile-dropdown-item">
-                <a href="product-page.html" class="mobile-dropdown-item-link">Product Specifications</a>
-              </li>
-              <!-- /MOBILE DROPDOWN ITEM -->
-
-              <!-- MOBILE DROPDOWN ITEM -->
-              <li class="mobile-dropdown-item">
-                <a href="inventory-bag.html" class="mobile-dropdown-item-link">Inventory Bag (Cart)</a>
-              </li>
-              <!-- /MOBILE DROPDOWN ITEM -->
-
-              <!-- MOBILE DROPDOWN ITEM -->
-              <li class="mobile-dropdown-item">
-                <a href="checkout.html" class="mobile-dropdown-item-link">Checkout Page</a>
-              </li>
-              <!-- /MOBILE DROPDOWN ITEM -->
-
-              <!-- MOBILE DROPDOWN ITEM -->
-              <li class="mobile-dropdown-item">
-                <a href="order-confirmation.html" class="mobile-dropdown-item-link">Order Confirmation</a>
-              </li>
-              <!-- /MOBILE DROPDOWN ITEM -->
-
-              <!-- MOBILE DROPDOWN ITEM -->
-              <li class="mobile-dropdown-item">
-                <a href="wishlist.html" class="mobile-dropdown-item-link">Wishlist</a>
-              </li>
-              <!-- /MOBILE DROPDOWN ITEM -->
-
-              <!-- MOBILE DROPDOWN ITEM -->
-              <li class="mobile-dropdown-item">
-                <a href="product-compare.html" class="mobile-dropdown-item-link">Product Compare</a>
-              </li>
-              <!-- /MOBILE DROPDOWN ITEM -->
-            </ul>
-            <!-- /MOBILE DROPDOWN -->
-          </li>
-          <!-- /MOBILE DROPDOWN ITEM -->
-
-          <!-- MOBILE DROPDOWN ITEM -->
-          <li class="mobile-dropdown-item">
-            <p class="mobile-dropdown-item-link pd-dropdown-handler">Powerstation</p>
-            <!-- ARROW ICON -->
-            <svg class="arrow-icon medium">
-              <use xlink:href="#svg-arrow-medium"></use>
-            </svg>
-            <!-- /ARROW ICON -->
-
-            <!-- MOBILE DROPDOWN -->
-            <ul class="mobile-dropdown pd-dropdown">
-              <!-- MOBILE DROPDOWN ITEM -->
-              <li class="mobile-dropdown-item">
-                <a href="shop-v1-grid.html" class="mobile-dropdown-item-link">Shop 3 Columns Grid</a>
-              </li>
-              <!-- /MOBILE DROPDOWN ITEM -->
-
-              <!-- MOBILE DROPDOWN ITEM -->
-              <li class="mobile-dropdown-item">
-                <a href="shop-v1-list.html" class="mobile-dropdown-item-link">Shop 3 Columns List</a>
-              </li>
-              <!-- /MOBILE DROPDOWN ITEM -->
-
-              <!-- MOBILE DROPDOWN ITEM -->
-              <li class="mobile-dropdown-item">
-                <a href="shop-v2.html" class="mobile-dropdown-item-link">Shop 4 Columns</a>
-              </li>
-              <!-- /MOBILE DROPDOWN ITEM -->
-
-              <!-- MOBILE DROPDOWN ITEM -->
-              <li class="mobile-dropdown-item">
-                <a href="product-page.html" class="mobile-dropdown-item-link">Product Description</a>
-              </li>
-              <!-- /MOBILE DROPDOWN ITEM -->
-
-              <!-- MOBILE DROPDOWN ITEM -->
-              <li class="mobile-dropdown-item">
-                <a href="product-page.html" class="mobile-dropdown-item-link">Product Reviews</a>
-              </li>
-              <!-- /MOBILE DROPDOWN ITEM -->
-
-              <!-- MOBILE DROPDOWN ITEM -->
-              <li class="mobile-dropdown-item">
-                <a href="product-page.html" class="mobile-dropdown-item-link">Product Specifications</a>
-              </li>
-              <!-- /MOBILE DROPDOWN ITEM -->
-
-              <!-- MOBILE DROPDOWN ITEM -->
-              <li class="mobile-dropdown-item">
-                <a href="inventory-bag.html" class="mobile-dropdown-item-link">Inventory Bag (Cart)</a>
-              </li>
-              <!-- /MOBILE DROPDOWN ITEM -->
-
-              <!-- MOBILE DROPDOWN ITEM -->
-              <li class="mobile-dropdown-item">
-                <a href="checkout.html" class="mobile-dropdown-item-link">Checkout Page</a>
-              </li>
-              <!-- /MOBILE DROPDOWN ITEM -->
-
-              <!-- MOBILE DROPDOWN ITEM -->
-              <li class="mobile-dropdown-item">
-                <a href="order-confirmation.html" class="mobile-dropdown-item-link">Order Confirmation</a>
-              </li>
-              <!-- /MOBILE DROPDOWN ITEM -->
-
-              <!-- MOBILE DROPDOWN ITEM -->
-              <li class="mobile-dropdown-item">
-                <a href="wishlist.html" class="mobile-dropdown-item-link">Wishlist</a>
-              </li>
-              <!-- /MOBILE DROPDOWN ITEM -->
-
-              <!-- MOBILE DROPDOWN ITEM -->
-              <li class="mobile-dropdown-item">
-                <a href="product-compare.html" class="mobile-dropdown-item-link">Product Compare</a>
-              </li>
-              <!-- /MOBILE DROPDOWN ITEM -->
-            </ul>
-            <!-- /MOBILE DROPDOWN -->
-          </li>
-          <!-- /MOBILE DROPDOWN ITEM -->
-
-          <!-- MOBILE DROPDOWN ITEM -->
-          <li class="mobile-dropdown-item">
-            <p class="mobile-dropdown-item-link pd-dropdown-handler">X-Rock</p>
-            <!-- ARROW ICON -->
-            <svg class="arrow-icon medium">
-              <use xlink:href="#svg-arrow-medium"></use>
-            </svg>
-            <!-- /ARROW ICON -->
-
-            <!-- MOBILE DROPDOWN -->
-            <ul class="mobile-dropdown pd-dropdown">
-              <!-- MOBILE DROPDOWN ITEM -->
-              <li class="mobile-dropdown-item">
-                <a href="shop-v1-grid.html" class="mobile-dropdown-item-link">Shop 3 Columns Grid</a>
-              </li>
-              <!-- /MOBILE DROPDOWN ITEM -->
-
-              <!-- MOBILE DROPDOWN ITEM -->
-              <li class="mobile-dropdown-item">
-                <a href="shop-v1-list.html" class="mobile-dropdown-item-link">Shop 3 Columns List</a>
-              </li>
-              <!-- /MOBILE DROPDOWN ITEM -->
-
-              <!-- MOBILE DROPDOWN ITEM -->
-              <li class="mobile-dropdown-item">
-                <a href="shop-v2.html" class="mobile-dropdown-item-link">Shop 4 Columns</a>
-              </li>
-              <!-- /MOBILE DROPDOWN ITEM -->
-
-              <!-- MOBILE DROPDOWN ITEM -->
-              <li class="mobile-dropdown-item">
-                <a href="product-page.html" class="mobile-dropdown-item-link">Product Description</a>
-              </li>
-              <!-- /MOBILE DROPDOWN ITEM -->
-
-              <!-- MOBILE DROPDOWN ITEM -->
-              <li class="mobile-dropdown-item">
-                <a href="product-page.html" class="mobile-dropdown-item-link">Product Reviews</a>
-              </li>
-              <!-- /MOBILE DROPDOWN ITEM -->
-
-              <!-- MOBILE DROPDOWN ITEM -->
-              <li class="mobile-dropdown-item">
-                <a href="product-page.html" class="mobile-dropdown-item-link">Product Specifications</a>
-              </li>
-              <!-- /MOBILE DROPDOWN ITEM -->
-
-              <!-- MOBILE DROPDOWN ITEM -->
-              <li class="mobile-dropdown-item">
-                <a href="inventory-bag.html" class="mobile-dropdown-item-link">Inventory Bag (Cart)</a>
-              </li>
-              <!-- /MOBILE DROPDOWN ITEM -->
-
-              <!-- MOBILE DROPDOWN ITEM -->
-              <li class="mobile-dropdown-item">
-                <a href="checkout.html" class="mobile-dropdown-item-link">Checkout Page</a>
-              </li>
-              <!-- /MOBILE DROPDOWN ITEM -->
-
-              <!-- MOBILE DROPDOWN ITEM -->
-              <li class="mobile-dropdown-item">
-                <a href="order-confirmation.html" class="mobile-dropdown-item-link">Order Confirmation</a>
-              </li>
-              <!-- /MOBILE DROPDOWN ITEM -->
-
-              <!-- MOBILE DROPDOWN ITEM -->
-              <li class="mobile-dropdown-item">
-                <a href="wishlist.html" class="mobile-dropdown-item-link">Wishlist</a>
-              </li>
-              <!-- /MOBILE DROPDOWN ITEM -->
-
-              <!-- MOBILE DROPDOWN ITEM -->
-              <li class="mobile-dropdown-item">
-                <a href="product-compare.html" class="mobile-dropdown-item-link">Product Compare</a>
-              </li>
-              <!-- /MOBILE DROPDOWN ITEM -->
-            </ul>
-            <!-- /MOBILE DROPDOWN -->
-          </li>
-          <!-- /MOBILE DROPDOWN ITEM -->
-
-          <!-- MOBILE DROPDOWN ITEM -->
-          <li class="mobile-dropdown-item">
-            <p class="mobile-dropdown-item-link pd-dropdown-handler">Funtendo</p>
-            <!-- ARROW ICON -->
-            <svg class="arrow-icon medium">
-              <use xlink:href="#svg-arrow-medium"></use>
-            </svg>
-            <!-- /ARROW ICON -->
-
-            <!-- MOBILE DROPDOWN -->
-            <ul class="mobile-dropdown pd-dropdown">
-              <!-- MOBILE DROPDOWN ITEM -->
-              <li class="mobile-dropdown-item">
-                <a href="shop-v1-grid.html" class="mobile-dropdown-item-link">Shop 3 Columns Grid</a>
-              </li>
-              <!-- /MOBILE DROPDOWN ITEM -->
-
-              <!-- MOBILE DROPDOWN ITEM -->
-              <li class="mobile-dropdown-item">
-                <a href="shop-v1-list.html" class="mobile-dropdown-item-link">Shop 3 Columns List</a>
-              </li>
-              <!-- /MOBILE DROPDOWN ITEM -->
-
-              <!-- MOBILE DROPDOWN ITEM -->
-              <li class="mobile-dropdown-item">
-                <a href="shop-v2.html" class="mobile-dropdown-item-link">Shop 4 Columns</a>
-              </li>
-              <!-- /MOBILE DROPDOWN ITEM -->
-
-              <!-- MOBILE DROPDOWN ITEM -->
-              <li class="mobile-dropdown-item">
-                <a href="product-page.html" class="mobile-dropdown-item-link">Product Description</a>
-              </li>
-              <!-- /MOBILE DROPDOWN ITEM -->
-
-              <!-- MOBILE DROPDOWN ITEM -->
-              <li class="mobile-dropdown-item">
-                <a href="product-page.html" class="mobile-dropdown-item-link">Product Reviews</a>
-              </li>
-              <!-- /MOBILE DROPDOWN ITEM -->
-
-              <!-- MOBILE DROPDOWN ITEM -->
-              <li class="mobile-dropdown-item">
-                <a href="product-page.html" class="mobile-dropdown-item-link">Product Specifications</a>
-              </li>
-              <!-- /MOBILE DROPDOWN ITEM -->
-
-              <!-- MOBILE DROPDOWN ITEM -->
-              <li class="mobile-dropdown-item">
-                <a href="inventory-bag.html" class="mobile-dropdown-item-link">Inventory Bag (Cart)</a>
-              </li>
-              <!-- /MOBILE DROPDOWN ITEM -->
-
-              <!-- MOBILE DROPDOWN ITEM -->
-              <li class="mobile-dropdown-item">
-                <a href="checkout.html" class="mobile-dropdown-item-link">Checkout Page</a>
-              </li>
-              <!-- /MOBILE DROPDOWN ITEM -->
-
-              <!-- MOBILE DROPDOWN ITEM -->
-              <li class="mobile-dropdown-item">
-                <a href="order-confirmation.html" class="mobile-dropdown-item-link">Order Confirmation</a>
-              </li>
-              <!-- /MOBILE DROPDOWN ITEM -->
-
-              <!-- MOBILE DROPDOWN ITEM -->
-              <li class="mobile-dropdown-item">
-                <a href="wishlist.html" class="mobile-dropdown-item-link">Wishlist</a>
-              </li>
-              <!-- /MOBILE DROPDOWN ITEM -->
-
-              <!-- MOBILE DROPDOWN ITEM -->
-              <li class="mobile-dropdown-item">
-                <a href="product-compare.html" class="mobile-dropdown-item-link">Product Compare</a>
-              </li>
-              <!-- /MOBILE DROPDOWN ITEM -->
-            </ul>
-            <!-- /MOBILE DROPDOWN -->
-          </li>
-          <!-- /MOBILE DROPDOWN ITEM -->
-        </ul>
-        <!-- /MOBILE DROPDOWN -->
-      </li>
-      <!-- /MOBILE MENU ITEM -->
-
-      <!-- MOBILE MENU ITEM -->
-      <li class="mobile-menu-item">
-        <p class="mobile-menu-item-link pd-dropdown-handler">
-            <img class="widget-option-img user-avatar micro"src="${pageContext.request.contextPath}/resources/forum/img/users/05.jpg" alt="avatar-01">
-            James_Spiegel
-        </p>
-        <!-- ARROW ICON -->
-        <svg class="arrow-icon medium">
-          <use xlink:href="#svg-arrow-medium"></use>
-        </svg>
-        <!-- /ARROW ICON -->
-
-        <!-- MOBILE DROPDOWN -->
-        <ul class="mobile-dropdown pd-dropdown">
-          <!-- MOBILE DROPDOWN ITEM -->
-          <li class="mobile-dropdown-item">
-            <p class="mobile-dropdown-item-link pd-dropdown-handler">Main Account</p>
-            <!-- ARROW ICON -->
-            <svg class="arrow-icon medium">
-              <use xlink:href="#svg-arrow-medium"></use>
-            </svg>
-            <!-- /ARROW ICON -->
-
-            <!-- MOBILE DROPDOWN -->
-            <ul class="mobile-dropdown pd-dropdown">
-              <!-- MOBILE DROPDOWN ITEM -->
-              <li class="mobile-dropdown-item">
-                <a href="account-settings.html" class="mobile-dropdown-item-link">Account Settings</a>
-              </li>
-              <!-- /MOBILE DROPDOWN ITEM -->
-
-              <!-- MOBILE DROPDOWN ITEM -->
-              <li class="mobile-dropdown-item">
-                <a href="#" class="mobile-dropdown-item-link">Shipping Details</a>
-              </li>
-              <!-- /MOBILE DROPDOWN ITEM -->
-
-              <!-- MOBILE DROPDOWN ITEM -->
-              <li class="mobile-dropdown-item">
-                <a href="#" class="mobile-dropdown-item-link">Billing Details</a>
-              </li>
-              <!-- /MOBILE DROPDOWN ITEM -->
-
-              <!-- MOBILE DROPDOWN ITEM -->
-              <li class="mobile-dropdown-item">
-                <a href="orders-history.html" class="mobile-dropdown-item-link">Orders History</a>
-              </li>
-              <!-- /MOBILE DROPDOWN ITEM -->
-            </ul>
-            <!-- /MOBILE DROPDOWN -->
-          </li>
-          <!-- /MOBILE DROPDOWN ITEM -->
-
-          <!-- MOBILE DROPDOWN ITEM -->
-          <li class="mobile-dropdown-item">
-            <p class="mobile-dropdown-item-link pd-dropdown-handler">Pixel Forums</p>
-            <!-- ARROW ICON -->
-            <svg class="arrow-icon medium">
-              <use xlink:href="#svg-arrow-medium"></use>
-            </svg>
-            <!-- /ARROW ICON -->
-
-            <!-- MOBILE DROPDOWN -->
-            <ul class="mobile-dropdown pd-dropdown">
-              <!-- MOBILE DROPDOWN ITEM -->
-              <li class="mobile-dropdown-item">
-                <a href="profile-summary.html" class="mobile-dropdown-item-link">Summary</a>
-              </li>
-              <!-- /MOBILE DROPDOWN ITEM -->
-
-              <!-- MOBILE DROPDOWN ITEM -->
-              <li class="mobile-dropdown-item">
-                <a href="profile-activity.html" class="mobile-dropdown-item-link">Activity</a>
-              </li>
-              <!-- /MOBILE DROPDOWN ITEM -->
-
-              <!-- MOBILE DROPDOWN ITEM -->
-              <li class="mobile-dropdown-item">
-                <a href="profile-notifications.html" class="mobile-dropdown-item-link">Notifications</a>
-              </li>
-              <!-- /MOBILE DROPDOWN ITEM -->
-
-              <!-- MOBILE DROPDOWN ITEM -->
-              <li class="mobile-dropdown-item">
-                <a href="profile-messages.html" class="mobile-dropdown-item-link">Messages</a>
-              </li>
-              <!-- /MOBILE DROPDOWN ITEM -->
-
-              <!-- MOBILE DROPDOWN ITEM -->
-              <li class="mobile-dropdown-item">
-                <a href="profile-badges.html" class="mobile-dropdown-item-link">Profile Badges</a>
-              </li>
-              <!-- /MOBILE DROPDOWN ITEM -->
-
-              <!-- MOBILE DROPDOWN ITEM -->
-              <li class="mobile-dropdown-item">
-                <a href="profile-settings.html" class="mobile-dropdown-item-link">Settings</a>
-              </li>
-              <!-- /MOBILE DROPDOWN ITEM -->
-            </ul>
-            <!-- /MOBILE DROPDOWN -->
-          </li>
-          <!-- /MOBILE DROPDOWN ITEM -->
-        </ul>
-        <!-- /MOBILE DROPDOWN -->
-      </li>
-      <!-- /MOBILE MENU ITEM -->
-
-      <!-- MOBILE MENU ITEM -->
-      <li class="mobile-menu-item">
-        <a href="wishlist.html" class="mobile-menu-item-link">Wishlist (<span class="quantity">5</span>)</a>
-      </li>
-      <!-- /MOBILE MENU ITEM -->
-
-      <!-- MOBILE MENU ITEM -->
-      <li class="mobile-menu-item">
-        <a href="product-compare.html" class="mobile-menu-item-link">Compare (<span class="quantity">4</span>)</a>
-      </li>
-      <!-- /MOBILE MENU ITEM -->
-    </ul>
-    <!-- /MOBILE MENU -->
-  </div>
-  <!-- /MOBILE MENU WRAP -->
-
-  <!-- HEADER WRAP -->
-  <div class="header-wrap">
-    <!-- HEADER -->
-    <div class="header grid-limit">
-      <!-- WIDGET SELECTABLES -->
-      <div class="widget-selectables">
-        <!-- WIDGET OPTIONS WRAP -->
-        <div class="widget-options-wrap">
-          <!-- CURRENT OPTION -->
-          
-          <div class="current-option">
-            <!-- CURRENT OPTION VALUE -->
-            <div class="current-option-value">
-              <i class="icon-home widget-option-icon"></i>
-              <p class="widget-option-text">Home</p>
-            </div>
-            <!-- /CURRENT OPTION VALUE -->
-          </div>
-
-        </div>
-        <!-- /WIDGET OPTIONS WRAP -->
-
-        <!-- WIDGET OPTIONS WRAP -->
-        <!-- /WIDGET OPTIONS WRAP -->
-      </div>
-      <!-- /WIDGET SELECTABLES -->
-
-      <!-- WIDGET SELECTABLES -->
-      
-        
-        <c:if test="${s_isLogin == 1}">
-        
-        
-        <div class="widget-selectables">
-        <!-- WIDGET OPTIONS WRAP -->
-        <div class="widget-options-wrap">
-          <!-- CURRENT OPTION -->
-          <div id="account-dropdown-trigger" class="current-option">
-            <!-- CURRENT OPTION VALUE -->
-            <div class="current-option-value">
-              <img class="widget-option-img user-avatar micro"src="${pageContext.request.contextPath}/resources/forum/img/users/05.jpg" alt="avatar-01">
-              <p class="widget-option-text">James_Spiegel</p>
-            </div>
-            <!-- /CURRENT OPTION VALUE -->
-
-            <!-- ARROW ICON -->
-            <svg class="arrow-icon">
+	<!-- /SEARCH POPUP OPEN -->
+
+	<!-- LOGO IMG -->
+	<figure class="logo-img">
+		<img
+			src="${pageContext.request.contextPath}/resources/forum/img/brand/logo.png"
+			alt="Logo">
+	</figure>
+	<!-- /LOGO IMG -->
+
+	<!-- MOBILE MENU -->
+	<!-- /MOBILE MENU -->
+</div>
+<!-- /MOBILE MENU WRAP -->
+
+<!-- HEADER WRAP -->
+<div class="header-wrap">
+	<!-- HEADER -->
+	<div class="header grid-limit">
+		<!-- WIDGET SELECTABLES -->
+		<div class="widget-selectables">
+			<!-- WIDGET OPTIONS WRAP -->
+			<div class="widget-options-wrap">
+				<!-- CURRENT OPTION -->
+
+				<div class="current-option">
+					<!-- CURRENT OPTION VALUE -->
+					<div class="current-option-value">
+						<i class="icon-home widget-option-icon"></i>
+						<p class="widget-option-text">Home</p>
+					</div>
+					<!-- /CURRENT OPTION VALUE -->
+				</div>
+
+			</div>
+			<!-- /WIDGET OPTIONS WRAP -->
+
+			<!-- WIDGET OPTIONS WRAP -->
+			<!-- /WIDGET OPTIONS WRAP -->
+		</div>
+		<!-- /WIDGET SELECTABLES -->
+
+		<!-- WIDGET SELECTABLES -->
+
+
+		<c:if test="${s_isLogin == 1}">
+
+
+			<div class="widget-selectables">
+				<!-- WIDGET OPTIONS WRAP -->
+				<div class="widget-options-wrap">
+					<!-- CURRENT OPTION -->
+					<div id="account-dropdown-trigger" class="current-option">
+						<!-- CURRENT OPTION VALUE -->
+						<div class="current-option-value">
+							<img class="widget-option-img user-avatar micro"
+								src="${pageContext.request.contextPath}/resources/forum/img/users/05.jpg"
+								alt="avatar-01">
+							<p class="widget-option-text">James_Spiegel</p>
+						</div>
+						<!-- /CURRENT OPTION VALUE -->
+
+						<!-- ARROW ICON -->
+						<svg class="arrow-icon">
               <use xlink:href="#svg-arrow"></use>
             </svg>
-            <!-- /ARROW ICON -->
-          </div>
-          <!-- /CURRENT OPTION -->
+						<!-- /ARROW ICON -->
+					</div>
+					<!-- /CURRENT OPTION -->
 
-          <!-- WIDGET OPTIONS -->
-          <div id="account-dropdown" class="widget-options short linkable">
-            <!-- WIDGET OPTION HEADING -->
-            <div class="widget-option-heading blue">
-              <p class="widget-option-text">Main Account</p>
-            </div>
-            <!-- /WIDGET OPTION HEADING -->
+					<!-- WIDGET OPTIONS -->
+					<div id="account-dropdown" class="widget-options short linkable">
+						<!-- WIDGET OPTION HEADING -->
+						<div class="widget-option-heading blue">
+							<p class="widget-option-text">Main Account</p>
+						</div>
+						<!-- /WIDGET OPTION HEADING -->
 
-            <!-- WIDGET OPTION -->
-            <a href="account-settings.html" class="widget-option">
-              <p class="widget-option-text">Account Settings</p>
-            </a>
-            <!-- /WIDGET OPTION -->
+						<!-- WIDGET OPTION -->
+						<a href="account-settings.html" class="widget-option">
+							<p class="widget-option-text">Account Settings</p>
+						</a>
+						<!-- /WIDGET OPTION -->
 
-            <!-- WIDGET OPTION -->
-            <a href="#" class="widget-option">
-              <p class="widget-option-text">Shipping Details</p>
-            </a>
-            <!-- /WIDGET OPTION -->
+						<!-- WIDGET OPTION -->
+						<a href="#" class="widget-option">
+							<p class="widget-option-text">Shipping Details</p>
+						</a>
+						<!-- /WIDGET OPTION -->
 
-            <!-- WIDGET OPTION -->
-            <a href="#" class="widget-option">
-              <p class="widget-option-text">Billing Details</p>
-            </a>
-            <!-- /WIDGET OPTION -->
+						<!-- WIDGET OPTION -->
+						<a href="#" class="widget-option">
+							<p class="widget-option-text">Billing Details</p>
+						</a>
+						<!-- /WIDGET OPTION -->
 
-            <!-- WIDGET OPTION -->
-            <a href="orders-history.html" class="widget-option">
-              <p class="widget-option-text">Orders History</p>
-            </a>
-            <!-- /WIDGET OPTION -->
+						<!-- WIDGET OPTION -->
+						<a href="orders-history.html" class="widget-option">
+							<p class="widget-option-text">Orders History</p>
+						</a>
+						<!-- /WIDGET OPTION -->
 
-            <!-- WIDGET OPTION HEADING -->
-            <div class="widget-option-heading red">
-              <p class="widget-option-text">Pixel Forums</p>
-            </div>
-            <!-- /WIDGET OPTION HEADING -->
+						<!-- WIDGET OPTION HEADING -->
+						<div class="widget-option-heading red">
+							<p class="widget-option-text">Pixel Forums</p>
+						</div>
+						<!-- /WIDGET OPTION HEADING -->
 
-            <!-- WIDGET OPTION -->
-            <a href="profile-summary.html" class="widget-option">
-              <p class="widget-option-text">Summary</p>
-            </a>
-            <!-- /WIDGET OPTION -->
+						<!-- WIDGET OPTION -->
+						<a href="profile-summary.html" class="widget-option">
+							<p class="widget-option-text">Summary</p>
+						</a>
+						<!-- /WIDGET OPTION -->
 
-            <!-- WIDGET OPTION -->
-            <a href="profile-activity.html" class="widget-option">
-              <p class="widget-option-text">Activity</p>
-            </a>
-            <!-- /WIDGET OPTION -->
+						<!-- WIDGET OPTION -->
+						<a href="profile-activity.html" class="widget-option">
+							<p class="widget-option-text">Activity</p>
+						</a>
+						<!-- /WIDGET OPTION -->
 
-            <!-- WIDGET OPTION -->
-            <a href="profile-notifications.html" class="widget-option">
-              <p class="widget-option-text">Notifications</p>
-            </a>
-            <!-- /WIDGET OPTION -->
+						<!-- WIDGET OPTION -->
+						<a href="profile-notifications.html" class="widget-option">
+							<p class="widget-option-text">Notifications</p>
+						</a>
+						<!-- /WIDGET OPTION -->
 
-            <!-- WIDGET OPTION -->
-            <a href="profile-messages.html" class="widget-option">
-              <p class="widget-option-text">Messages</p>
-            </a>
-            <!-- /WIDGET OPTION -->
+						<!-- WIDGET OPTION -->
+						<a href="profile-messages.html" class="widget-option">
+							<p class="widget-option-text">Messages</p>
+						</a>
+						<!-- /WIDGET OPTION -->
 
-            <!-- WIDGET OPTION -->
-            <a href="profile-badges.html" class="widget-option">
-              <p class="widget-option-text">Profile Badges</p>
-            </a>
-            <!-- /WIDGET OPTION -->
+						<!-- WIDGET OPTION -->
+						<a href="profile-badges.html" class="widget-option">
+							<p class="widget-option-text">Profile Badges</p>
+						</a>
+						<!-- /WIDGET OPTION -->
 
-            <!-- WIDGET OPTION -->
-            <a href="profile-settings.html" class="widget-option">
-              <p class="widget-option-text">Settings</p>
-            </a>
-            <!-- /WIDGET OPTION -->
-          </div>
-          <!-- /WIDGET OPTIONS -->
-        </div>
-        <!-- /WIDGET OPTIONS WRAP -->
+						<!-- WIDGET OPTION -->
+						<a href="profile-settings.html" class="widget-option">
+							<p class="widget-option-text">Settings</p>
+						</a>
+						<!-- /WIDGET OPTION -->
+					</div>
+					<!-- /WIDGET OPTIONS -->
+				</div>
+				<!-- /WIDGET OPTIONS WRAP -->
 
-        <!-- WIDGET OPTIONS WRAP -->
-        <div class="widget-options-wrap">
-          <!-- CURRENT OPTION -->
-          <a href="wishlist.html">
-          <div class="current-option">
-            <!-- CURRENT OPTION VALUE -->
-            <div class="current-option-value">
-              <i class="icon-heart widget-option-icon"></i>
-              <p class="widget-option-text">Wishlist <span class="quantity">(5)</span></p>
-            </div>
-            <!-- /CURRENT OPTION VALUE -->
-          </div>
-          </a>
-          <!-- /CURRENT OPTION -->
-        </div>
-        <!-- /WIDGET OPTIONS WRAP -->
-        
-        <!-- WIDGET OPTIONS WRAP -->
-        <div class="widget-options-wrap">
-          <!-- CURRENT OPTION -->
-          <a href="product-compare.html">
-          <div class="current-option">
-            <!-- CURRENT OPTION VALUE -->
-            <div class="current-option-value">
-              <i class="icon-tag widget-option-icon"></i>
-              <p class="widget-option-text">Compare <span class="quantity">(2)</span></p>
-            </div>
-            <!-- /CURRENT OPTION VALUE -->
-          </div>
-          </a>
-          <!-- /CURRENT OPTION -->
-        </div>
-        <!-- /WIDGET OPTIONS WRAP -->
+				<!-- WIDGET OPTIONS WRAP -->
+				<div class="widget-options-wrap">
+					<!-- CURRENT OPTION -->
+					<a href="wishlist.html">
+						<div class="current-option">
+							<!-- CURRENT OPTION VALUE -->
+							<div class="current-option-value">
+								<i class="icon-heart widget-option-icon"></i>
+								<p class="widget-option-text">
+									Wishlist <span class="quantity">(5)</span>
+								</p>
+							</div>
+							<!-- /CURRENT OPTION VALUE -->
+						</div>
+					</a>
+					<!-- /CURRENT OPTION -->
+				</div>
+				<!-- /WIDGET OPTIONS WRAP -->
 
-        <!-- BUTTON -->
-        
-        
-       <a href="${pageContext.request.contextPath}/forum/logout" class="button tiny red log-button">
-            Logout
-            <!-- BUTTON ORNAMENT -->
-            <div class="button-ornament">
-              <!-- ARROW ICON -->
-              <svg class="arrow-icon">
+				<!-- WIDGET OPTIONS WRAP -->
+				<div class="widget-options-wrap">
+					<!-- CURRENT OPTION -->
+					<a href="product-compare.html">
+						<div class="current-option">
+							<!-- CURRENT OPTION VALUE -->
+							<div class="current-option-value">
+								<i class="icon-tag widget-option-icon"></i>
+								<p class="widget-option-text">
+									Compare <span class="quantity">(2)</span>
+								</p>
+							</div>
+							<!-- /CURRENT OPTION VALUE -->
+						</div>
+					</a>
+					<!-- /CURRENT OPTION -->
+				</div>
+				<!-- /WIDGET OPTIONS WRAP -->
+
+				<!-- BUTTON -->
+
+
+				<a href="${pageContext.request.contextPath}/forum/logout"
+					class="button tiny red log-button"> Logout <!-- BUTTON ORNAMENT -->
+					<div class="button-ornament">
+						<!-- ARROW ICON -->
+						<svg class="arrow-icon">
                 <use xlink:href="#svg-arrow"></use>
               </svg>
-              <!-- /ARROW ICON -->
-            </div>
-            <!-- /BUTTON ORNAMENT -->
-          </a>
-          </div>
-          
-    </c:if>
-    <c:if test="${s_isLogin != 1}">
-      <div class="widget-selectables">
-        <!-- WIDGET OPTIONS WRAP -->
-        <div class="widget-options-wrap">
-        <a href="${pageContext.request.contextPath}/forum/login" class="button tiny blue log-button">
-            Login
-            <!-- BUTTON ORNAMENT -->
-            <div class="button-ornament">
-              <!-- ARROW ICON -->
-              <svg class="arrow-icon">
+						<!-- /ARROW ICON -->
+					</div> <!-- /BUTTON ORNAMENT -->
+				</a>
+			</div>
+
+		</c:if>
+		<c:if test="${s_isLogin != 1}">
+			<div class="widget-selectables">
+				<!-- WIDGET OPTIONS WRAP -->
+				<div class="widget-options-wrap">
+					<a href="${pageContext.request.contextPath}/forum/login"
+						class="button tiny blue log-button"> Login <!-- BUTTON ORNAMENT -->
+						<div class="button-ornament">
+							<!-- ARROW ICON -->
+							<svg class="arrow-icon">
                 <use xlink:href="#svg-arrow"></use>
               </svg>
-              <!-- /ARROW ICON -->
-            </div>
-            <!-- /BUTTON ORNAMENT -->
-          </a>
-          </div>
-          </div>
-          
-    </c:if>
-    
-    
-        
-          <!-- /BUTTON -->
+							<!-- /ARROW ICON -->
+						</div> <!-- /BUTTON ORNAMENT -->
+					</a>
+				</div>
+			</div>
+
+		</c:if>
+
+
+
+		<!-- /BUTTON -->
+	</div>
+	<!-- /WIDGET SELECTABLES -->
+</div>
+
+<div id="popup-advanced-search" class="popup-wrap mid" style="position: absolute; left: 50%; z-index: 100001; opacity: 1; visibility: hidden; transform: translate(0px, 0px); display: block; transition: transform 0.3s ease-in-out 0s, opacity 0.3s ease-in-out 0s, visibility 0.3s ease-in-out 0s; top: 102px; margin-left: -385px;">
+    <!-- FORM BOX -->
+    <div class="form-box medium">
+      <!-- SECTION TITLE WRAP -->
+      <div class="section-title-wrap red">
+        <h2 class="section-title medium">search forum</h2>
+        <div class="section-title-separator"></div>
       </div>
-      <!-- /WIDGET SELECTABLES -->
+      <!-- /SECTION TITLE WRAP -->
+
+      <!-- FORM WRAP -->
+      <form class="form-wrap">
+        <!-- BUTTON CLOSE -->
+        <div class="button-close red popup-advanced-search-trigger">
+          <!-- CROSS ICON -->
+          <svg class="cross-icon small">
+            <use xlink:href="#svg-cross-small"></use>
+          </svg>
+          <!-- /CROSS ICON -->
+        </div>
+        <!-- /BUTTON CLOSE -->
+
+        <!-- FORM ROW -->
+        <div class="form-row">
+          <!-- FORM ITEM -->
+          <div class="form-item red">
+           
+            <input type="text" id="search_text" name="search_text" placeholder="What are you looking for?...">
+          </div>
+          <!-- /FORM ITEM -->
+        </div>
+
+
+        <!-- FORM ROW -->
+        <div class="form-row">
+          <!-- FORM ITEM -->
+          <div class="form-item">
+            <label class="rl-label">Show Results</label>
+            <!-- CHECK RADIO LIST -->
+            <div class="check-radio-list">
+              <!-- RADIO ITEM -->
+              <div class="radio-item">
+                <input type="radio" id="search_topic_post" name="search_results" value="search_topic_post" checked="">
+                <!-- RADIO CIRCLE -->
+                <div class="radio-circle red"></div>
+                <!-- RADIO CIRCLE -->
+                <label for="search_topic_post" class="rl-label">Topics and Posts</label>
+              </div>
+              <!-- /RADIO ITEM -->
+          
+              <!-- RADIO ITEM -->
+              <div class="radio-item">
+                <input type="radio" id="search_topic" name="search_results" value="search_topic">
+                <!-- RADIO CIRCLE -->
+                <div class="radio-circle red"></div>
+                <!-- RADIO CIRCLE -->
+                <label for="search_topic" class="rl-label">Only Topics</label>
+              </div>
+              <!-- /RADIO ITEM -->
+
+              <!-- RADIO ITEM -->
+              <div class="radio-item">
+                <input type="radio" id="search_post" name="search_results" value="search_post">
+                <!-- RADIO CIRCLE -->
+                <div class="radio-circle red"></div>
+                <!-- RADIO CIRCLE -->
+                <label for="search_post" class="rl-label">Only Posts</label>
+              </div>
+              <!-- /RADIO ITEM -->
+            </div>
+            <!-- /CHECK RADIO LIST -->
+          </div>
+          <!-- /FORM ITEM -->
+        </div>
+        <!-- /FORM ROW -->
+
+        <!-- FORM ACTIONS -->
+        <div class="form-actions right">
+          <!-- BUTTON -->
+          <button class="button red">
+            Search Forums!
+            <!-- BUTTON ORNAMENT -->
+            <span class="button-ornament">
+              <!-- ARROW ICON -->
+              <svg class="arrow-icon medium">
+                <use xlink:href="#svg-arrow-medium"></use>
+              </svg>
+              <!-- /ARROW ICON -->
+      
+              <!-- CROSS ICON -->
+              <svg class="cross-icon small">
+                <use xlink:href="#svg-cross-small"></use>
+              </svg>
+              <!-- /CROSS ICON -->
+            </span>
+            <!-- /BUTTON ORNAMENT -->
+          </button>
+          <!-- /BUTTON -->
+        </div>
+        <!-- /FORM ACTIONS -->
+      </form>
+      <!-- /FORM WRAP -->
     </div>
-    <!-- /HEADER -->
-  
-  <!-- /HEADER WRAP -->
-
-  <!-- NAVIGATION WRAP -->
-  <!-- /NAVIGATION WRAP -->
-
-  <!-- MOBILE MENU PULL -->
-  <div class="mobile-menu-pull mobile-menu-open">
-    <!-- MENU PULL ICON -->
-    <svg class="menu-pull-icon">
-      <use xlink:href="#svg-menu-pull"></use>
-    </svg>
-    <!-- /MENU PULL ICON -->
+    <!-- /FORM BOX -->
   </div>
-  <!-- /MOBILE MENU PULL -->
+  
+  
+<div id="popup-create-topic" class="popup-wrap mid"
+	style="position: absolute; left: 50%; z-index: 100001; opacity: 0; visibility: hidden; transform: translate(0px, 100px); display: block; transition: transform 0.3s ease-in-out 0s, opacity 0.3s ease-in-out 0s, visibility 0.3s ease-in-out 0s; top: 181px; margin-left: -385px;">
+	<!-- FORM BOX -->
+	<div class="form-box medium">
+		<!-- SECTION TITLE WRAP -->
+		<div class="section-title-wrap blue">
+			<h2 class="section-title medium">Create new topic</h2>
+			<div class="section-title-separator"></div>
+		</div>
+		<!-- /SECTION TITLE WRAP -->
+
+		<!-- FORM WRAP -->
+		<form class="form-wrap">
+			<!-- BUTTON CLOSE -->
+			<div class="button-close blue popup-create-topic-trigger">
+				<!-- CROSS ICON -->
+				<svg class="cross-icon small">
+            <use xlink:href="#svg-cross-small"></use>
+          </svg>
+				<!-- /CROSS ICON -->
+			</div>
+			<!-- /BUTTON CLOSE -->
+
+			<!-- FORM ROW -->
+			<div class="form-row">
+				<!-- FORM ITEM -->
+				<div class="form-item half blue">
+					<label for="topic_title" class="rl-label">Topic Title</label> <input
+						type="text" id="topic_title" name="topic_title"
+						placeholder="Enter the title here...">
+				</div>
+				<!-- /FORM ITEM -->
+
+				<!-- FORM ITEM -->
+				<div class="form-item half blue">
+					<label for="topic_category" class="rl-label">Choose
+						Category</label>
+					<!-- SELECT BLOCK -->
+					<div class="select-block">
+						<select id="topic_category" name="topic_category">
+							<option value="" hidden="">Choose the topic category</option>
+							<option value="0">Movies</option>
+							<option value="1">Anime</option>
+							<option value="2">Manga</option>
+							<option value="3">Cosplay</option>
+						</select>
+						<!-- ARROW ICON -->
+						<svg class="arrow-icon medium">
+                <use xlink:href="#svg-arrow-medium"></use>
+              </svg>
+						<!-- /ARROW ICON -->
+					</div>
+					<!-- /SELECT BLOCK -->
+				</div>
+				<!-- /FORM ITEM -->
+			</div>
+			<!-- /FORM ROW -->
+
+			<!-- FORM ROW -->
+			<div class="form-row">
+				<!-- FORM ITEM -->
+				<div class="form-item blue">
+					<label for="topic_description" class="rl-label">Description</label>
+					<textarea name="topic_description" id="topic_description"
+						placeholder="Write any additional details here..."></textarea>
+				</div>
+				<!-- /FORM ITEM -->
+			</div>
+			<!-- /FORM ROW -->
+
+			<!-- FORM ROW -->
+			<div class="form-row">
+				<!-- FORM ITEM -->
+				<div class="form-item blue">
+					<label for="topic_tags" class="rl-label">Topic Tags
+						(Optional)</label> <input type="text" id="topic_tags" name="topic_tags"
+						placeholder="Separate your tags with commas...">
+				</div>
+				<!-- /FORM ITEM -->
+			</div>
+			<!-- /FORM ROW -->
+
+			<!-- FORM ACTIONS -->
+			<div class="form-actions right">
+				<!-- BUTTON -->
+				<p class="button gray no-decoration">Discard all</p>
+				<!-- /BUTTON -->
+
+				<!-- BUTTON -->
+				<button class="button blue">
+					Post your topic
+					<!-- BUTTON ORNAMENT -->
+					<span class="button-ornament"> <!-- ARROW ICON --> <svg
+							class="arrow-icon medium">
+                <use xlink:href="#svg-arrow-medium"></use>
+              </svg> <!-- /ARROW ICON --> <!-- CROSS ICON --> <svg
+							class="cross-icon small">
+                <use xlink:href="#svg-cross-small"></use>
+              </svg> <!-- /CROSS ICON -->
+					</span>
+					<!-- /BUTTON ORNAMENT -->
+				</button>
+				<!-- /BUTTON -->
+			</div>
+			<!-- /FORM ACTIONS -->
+		</form>
+		<!-- /FORM WRAP -->
+	</div>
+	<!-- /FORM BOX -->
+</div>
+
+
+ 

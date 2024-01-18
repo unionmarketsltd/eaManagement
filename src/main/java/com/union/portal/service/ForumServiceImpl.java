@@ -120,5 +120,11 @@ public class ForumServiceImpl implements ForumService {
 		return mapper.getforumtopicsubcommentlist(topicid);
 	}
 
+	@Override
+	public void insertnewtopic(String category_id, String title, String description,String content, String create_by) {
+		mapper.insertnewtopic(category_id, title, description,content, create_by);
+		
+	}
+
 	
 }

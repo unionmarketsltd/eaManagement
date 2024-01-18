@@ -13,6 +13,7 @@ public class t_forum_topic
 	public String category_name;
 	public String title;
 	public String description;
+	public String content;
 	public int views;
 	public int likes;
 	public java.sql.Date create_date;
@@ -22,6 +23,7 @@ public class t_forum_topic
 	public byte pin_post;
 	public int reply;
 	public String create_by_name;
+	public String create_by_img;
 	public int create_by_id;
 	public int author_post;
 	public String dayago;

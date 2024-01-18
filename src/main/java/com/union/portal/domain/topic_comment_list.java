@@ -12,6 +12,7 @@ public class topic_comment_list
 	public int topic_id;
 	public String comment;
 	public String create_by;
+	public String create_by_img;
 	public String create_date;
 	public int like;
 	public int userpost;

@@ -18,4 +18,19 @@ public class APIProtectionHandler {
   }
   
 
+  
+  public static boolean islogin(HttpServletRequest request) {
+	    HttpSession session = request.getSession(false);
+	    if (session == null || session.getAttribute("s_GEmail") == null)
+	    {
+	      return false;
+	    }
+	    else
+	    {
+	    	return true;	
+	    }
+	    
+	  }
+  
+  
 }

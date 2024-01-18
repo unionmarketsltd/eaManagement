@@ -282,7 +282,7 @@
 						<!-- USER AVATAR -->
 						<a href="profile-summary.html"> <img
 							class="user-avatar medium"
-							src="${pageContext.request.contextPath}/resources/forum/img/users/09.jpg"
+							src="${topicinfo.create_by_img}"
 							alt="user-09">
 						</a>
 						<!-- /USER AVATAR -->
@@ -319,7 +319,7 @@
 							<!-- /TOPIC COMMENT CONTENT HEADER -->
 
 							<!-- TOPIC COMMENT TEXT -->
-							<p class="topic-comment-text">${topicinfo.description}</p>
+							<p class="topic-comment-text">${topicinfo.content}</p>
 							<!-- /TOPIC COMMENT TEXT -->
 
 
@@ -388,7 +388,7 @@
 							<!-- USER AVATAR -->
 							<a href="profile-summary.html"> <img
 								class="user-avatar medium"
-								src="${pageContext.request.contextPath}/resources/forum/img/users/09.jpg"
+								src="${ listinfo.create_by_img }"
 								alt="user-17">
 							</a>
 							<!-- /USER AVATAR -->
@@ -487,13 +487,13 @@
 										<!-- USER AVATAR -->
 										<a href="profile-summary.html"> <img
 											class="user-avatar medium"
-											src="/portal/resources/forum/img/users/09.jpg" alt="user-17">
+											src="${subcommentlistinfo.create_by_img}" alt="user-17">
 										</a>
 										<!-- /USER AVATAR -->
 
 										<!-- TOPIC COMMENT USER TEXT -->
 										<a href="profile-activity.html"
-											class="topic-comment-user-text">2 Posts</a>
+											class="topic-comment-user-text">${subcommentlistinfo.userpost} Posts</a>
 										<!-- /TOPIC COMMENT USER TEXT -->
 
 

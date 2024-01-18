@@ -16,6 +16,8 @@ import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -228,6 +230,48 @@ public class ForumController {
 	}
 	
 	
+	
+	
+	
+	@RequestMapping(value = "/createtopic", method = RequestMethod.GET)
+	public String createtopic(Model model, HttpServletRequest request) throws SQLException {
+		logger.info("Welcome createtopic.");
+		String categoryid = request.getParameter("cat");
+		String vLocal = LocaleContextHolder.getLocale().getLanguage();
+		
+		t_forum_category tfc = null;
+		tfc = forumservices.getforumcategoryinfo(categoryid);
+
+		
+		model.addAttribute("name", tfc.name);
+		model.addAttribute("createby", tfc.create_by);
+		model.addAttribute("createdate", tfc.create_date);
+		model.addAttribute("desc", tfc.description);
+		model.addAttribute("post", tfc.post_number);
+		model.addAttribute("comment", tfc.comment_number);
+		
+		
+		model.addAttribute("lang", vLocal);
+		String returnURL = "";
+		
+		
+		forum_and_cat_name fncn = null;
+		fncn = forumservices.getcategorynameandforumname(categoryid);
+		
+		
+		
+		model.addAttribute("forumid", fncn.forumid);
+		model.addAttribute("categoryid", fncn.catid);
+		model.addAttribute("forumname", fncn.forumname);
+		model.addAttribute("categoryname", fncn.categoryname);
+		returnURL = "/createtopic";
+		
+		return defaultpath + returnURL;
+	}
+	
+	
+	
+	
 
 	public static String decodeJwtResponse(String token) {
 		String base64Url = token.split("\\.")[1];
@@ -320,6 +364,52 @@ public class ForumController {
 		mav.addObject("result", responsestr);
 		return mav;
 	}
+	
+	
+	
+	
+	@PostMapping(value = { "/api/createnewtopic" }, consumes = { "application/json" }, produces = { "application/json" })
+	public ModelAndView api_createnewtopic(@RequestBody String body, HttpServletRequest request) throws SQLException {
+		ModelAndView mav = new ModelAndView("jsonView");
+		JSONObject jsonbodyobj = new JSONObject(body);
+		logger.info("Welcome getFundHistory: ");
+		String responsestr = "";
+		HttpSession session = request.getSession();
+		
+		
+		String cat = jsonbodyobj.getString("cat");
+		String topic = jsonbodyobj.getString("topic");
+		String content = jsonbodyobj.getString("content");
+		String desc = jsonbodyobj.getString("desc");
+		
+		logger.info(cat);
+		logger.info(topic);
+		logger.info(content);
+		if(APIProtectionHandler.islogin(request))
+		{
+			forumservices.insertnewtopic(cat,topic,desc,content,(String) session.getAttribute("s_GEmail"));
+			JSONObject jobj = new JSONObject();
+			jobj.put("redirect", "/category?id="+cat);
+			responsestr = jobj.toString();
+		}
+		else
+		{
+			JSONObject jobj = new JSONObject();
+			jobj.put("redirect", "/error");
+			responsestr = jobj.toString();
+			
+			
+		}
+		
+		
+		
+		mav.addObject("result", APIProtectionHandler.ApiProtection(request, responsestr));
+		return mav;
+	}
+	
+	
+	
+	
 
 	@RequestMapping(value = "/logout", method = RequestMethod.GET)
 	public String logout(HttpServletRequest request, Model model) {

@@ -90,79 +90,15 @@
 			<!-- FORUM ACTIONS -->
 			<div class="forum-actions">
 				<!-- DROPDOWN SIMPLE WRAP -->
-				<div class="dropdown-simple-wrap" style="position: relative;">
-					<!-- CURRENT OPTION -->
-					<div id="forums-search-dropdown-trigger" class="current-option">
-						<!-- BUTTON -->
-						<p class="button small red">Search Forums</p>
-						<!-- /BUTTON -->
-					</div>
-					<!-- /CURRENT OPTION -->
-
-					<!-- DP OPTIONS -->
-					<div id="forums-search-dropdown" class="dp-options medium"
-						style="position: absolute; z-index: 9999; top: -14.6667px; right: -6px; visibility: hidden; opacity: 0; transition: all 0.4s ease-in-out 0s;">
-						<!-- FORM WRAP -->
-						<form class="form-wrap">
-							<!-- FORM ROW -->
-							<div class="form-row">
-								<!-- FORM ITEM -->
-								<div class="form-item">
-									<!-- SUBMIT INPUT -->
-									<div class="submit-input red">
-										<input type="text" id="forum_search_input"
-											name="forum_search_input"
-											placeholder="What are you looking for?...">
-										<button class="submit-input-button">
-											<!-- ARROW ICON -->
-											<svg class="arrow-icon medium">
-                        <use xlink:href="#svg-arrow-medium"></use>
-                      </svg>
-											<!-- /ARROW ICON -->
-										</button>
-									</div>
-									<!-- /SUBMIT INPUT -->
-								</div>
-								<!-- /FORM ITEM -->
-							</div>
-							<!-- /FORM ROW -->
-
-							<!-- FORM CONFIRM ROW -->
-							<div class="form-confirm-row">
-								<!-- CHECKBOX ITEM -->
-								<div class="checkbox-item">
-									<input type="checkbox" id="f_search_cat_only"
-										name="f_search_cat_only" value="only" checked="">
-									<!-- CHECKBOX BOX -->
-									<div class="checkbox-box blue">
-										<!-- CROSS ICON -->
-										<svg class="cross-cb-icon small">
-                      <use xlink:href="#svg-cross-cb-small"></use>
-                    </svg>
-										<!-- /CROSS ICON -->
-									</div>
-									<!-- CHECKBOX BOX -->
-									<label for="f_search_cat_only" class="rl-label">Search
-										this category only</label>
-								</div>
-								<!-- /CHECKBOX ITEM -->
-
-								<!-- DECORATED LINK -->
-								<p class="decorated-link red popup-advanced-search-trigger">Advanced
-									Search</p>
-								<!-- /DECORATED LINK -->
-							</div>
-							<!-- /FORM CONFIRM ROW -->
-						</form>
-						<!-- FORM WRAP -->
-					</div>
-					<!-- /DP OPTIONS -->
-				</div>
 				<!-- /DROPDOWN SIMPLE WRAP -->
 
 				<!-- BUTTON -->
-				<p class="button small blue popup-create-topic-trigger">Create
-					Topic</p>
+				
+				
+				<p class="button small red popup-advanced-search-trigger">Search Forum
+					</p>
+				<!-- <p class="button small blue popup-create-topic-trigger">Create
+					Topic</p> -->
 			
 			</div>
 			<!-- /FORUM ACTIONS -->
