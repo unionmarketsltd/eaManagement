@@ -153,7 +153,42 @@ public List<t_forum_topiccount> getforumtopiccountlist();
 	
 	
 	
-	@Select("SELECT *,(SELECT CASE WHEN DATEDIFF(now(), create_date) < 1 THEN CONCAT(TIMESTAMPDIFF(HOUR, now(), create_date), ' hours ago') ELSE CONCAT(DATEDIFF(now(), create_date), ' days ago') END ) as dayago, (select count(*) from t_forum_comment where  forum.t_forum_comment.create_by =create_by ) as userpost,(select name from t_user where email = forum.t_forum_comment.create_by) as postownername ,(select google_image_url from t_user where email = forum.t_forum_comment.create_by) as create_by_img FROM forum.t_forum_comment where topic_id =#{topicid} order by id asc;")
+//	@Select("SELECT *,(SELECT CASE WHEN DATEDIFF(now(), create_date) < 1 THEN CONCAT(TIMESTAMPDIFF(HOUR, now(), create_date), ' hours ago') ELSE CONCAT(DATEDIFF(now(), create_date), ' days ago') END ) as dayago, (select count(*) from t_forum_comment where  forum.t_forum_comment.create_by =create_by ) as userpost,(select name from t_user where email = forum.t_forum_comment.create_by) as postownername ,(select google_image_url from t_user where email = forum.t_forum_comment.create_by) as create_by_img FROM forum.t_forum_comment where topic_id =#{topicid} order by id asc;")
+	//public List<topic_comment_list> getforumtopiccommentlist(@Param("topicid")String topicid);
+	
+	
+	
+	@Select("WITH RECURSIVE CTS AS (\r\n"
+			+ "    SELECT  id ,topic_id,create_by,create_date,likes\r\n"
+			+ "           ,comment\r\n"
+			+ "           ,p_id\r\n"
+			+ "           ,depth\r\n"
+			+ "           ,CAST(id as CHAR(100)) lvl\r\n"
+			+ "    FROM t_forum_comment\r\n"
+			+ "    WHERE p_id IS NULL and dbsts = 'A' and topic_id = #{topicid}\r\n"
+			+ "    UNION ALL\r\n"
+			+ "    SELECT  b.id ,b.topic_id\r\n"
+			+ "			,b.create_by,b.create_date, b.likes\r\n"
+			+ "           ,b.comment\r\n"
+			+ "           ,b.p_id\r\n"
+			+ "           ,b.depth\r\n"
+			+ "           ,CONCAT(c.lvl, \",\", b.id) lvl\r\n"
+			+ "    FROM t_forum_comment b\r\n"
+			+ "    INNER JOIN CTS c\r\n"
+			+ "    ON b.p_id = c.id\r\n"
+			+ ")\r\n"
+			+ "SELECT id,topic_id\r\n"
+			+ ",create_by,create_date, (SELECT CASE WHEN DATEDIFF(now(), create_date) < 1 THEN CONCAT(TIMESTAMPDIFF(HOUR, now(), create_date), ' hours ago') ELSE CONCAT(DATEDIFF(now(), create_date), ' days ago') END ) as dayago,\r\n"
+			+ "(select count(*) from t_forum_comment where  forum.t_forum_comment.create_by =create_by ) as userpost,\r\n"
+			+ "(select name from t_user where email = create_by) as postownername ,\r\n"
+			+ "(select google_image_url from t_user where email = create_by) as create_by_img,\r\n"
+			+ "likes as `like`\r\n"
+			+ "      ,CONCAT(REPEAT(\"          \", depth), \"ㄴ\", comment) as comment\r\n"
+			+ "      ,p_id\r\n"
+			+ "      ,depth\r\n"
+			+ "      ,lvl\r\n"
+			+ "from cts\r\n"
+			+ "ORDER BY lvl")
 	public List<topic_comment_list> getforumtopiccommentlist(@Param("topicid")String topicid);
 	
 	

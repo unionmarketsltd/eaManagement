@@ -64,10 +64,10 @@
 
 				<div class="current-option">
 					<!-- CURRENT OPTION VALUE -->
-					<div class="current-option-value">
+					<a href="${pageContext.request.contextPath}/forum/index"class="current-option-value">
 						<i class="icon-home widget-option-icon"></i>
 						<p class="widget-option-text">Home</p>
-					</div>
+					</a>
 					<!-- /CURRENT OPTION VALUE -->
 				</div>
 

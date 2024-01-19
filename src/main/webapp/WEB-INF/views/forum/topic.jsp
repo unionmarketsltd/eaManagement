@@ -15,576 +15,181 @@
 </head>
 <body>
 	<%@include file="inc/top.jsp"%>
-
-
-
-	<div class="live-news-widget-wrap">
-		<!-- LIVE NEWS WIDGET -->
-		<div class="live-news-widget grid-limit">
-			<!-- LIVE NEWS WIDGET STAIRS -->
-			<div class="live-news-widget-stairs left red">
-				<div class="live-news-widget-stair"></div>
-				<div class="live-news-widget-stair"></div>
-				<div class="live-news-widget-stair"></div>
-				<div class="live-news-widget-stair"></div>
-				<div class="live-news-widget-stair"></div>
-				<div class="live-news-widget-stair"></div>
-				<div class="live-news-widget-stair"></div>
-				<div class="live-news-widget-stair"></div>
-			</div>
-			<!-- /LIVE NEWS WIDGET STAIRS -->
-
-			<!-- LIVE NEWS WIDGET STAIRS -->
-			<div class="live-news-widget-stairs right blue">
-				<div class="live-news-widget-stair"></div>
-				<div class="live-news-widget-stair"></div>
-				<div class="live-news-widget-stair"></div>
-				<div class="live-news-widget-stair"></div>
-				<div class="live-news-widget-stair"></div>
-				<div class="live-news-widget-stair"></div>
-				<div class="live-news-widget-stair"></div>
-				<div class="live-news-widget-stair"></div>
-			</div>
-			<!-- /LIVE NEWS WIDGET STAIRS -->
-
-			<!-- LIVE NEWS WIDGET TITLE WRAP -->
-			<div class="live-news-widget-title-wrap">
-				<img class="live-news-widget-icon"
-					src="/portal/resources/forum/img/icons/live-news-icon.png"
-					alt="live-news-icon">
-				<p class="live-news-widget-title">Live News</p>
-			</div>
-			<!-- /LIVE NEWS WIDGET TITLE WRAP -->
-
-			<!-- LIVE NEWS WIDGET TEXT WRAP -->
-			<div id="lineslide-wrap1" class="live-news-widget-text-wrap"
-				style="position: relative; width: 100%;">
-				<p class="live-news-widget-text"
-					style="position: absolute; right: -6483px;">
-					<span class="xm-line-item" style="white-space: nowrap;"><a
-						href="post-v1.html" class="link">The "Clash of Eternity" new
-							game was just released: </a>The new game from the world famous
-						"Eternity Studios" is back with a new adventure game with a lot of
-						classic and puzzle elements<span class="separator"><span
-							class="separator-bar">/</span><span class="separator-bar">/</span></span></span><span
-						class="xm-line-item" style="white-space: nowrap;"><a
-						href="post-v2.html" class="link">We reviewed the new Magimons
-							game: </a>Magimons is an incredible take on classic RPGs with a new
-						and fresh approach that includes a mindblowing soundtrack<span
-						class="separator"><span class="separator-bar">/</span><span
-							class="separator-bar">/</span></span></span><span class="xm-line-item"
-						style="white-space: nowrap;"><a href="post-v3.html"
-						class="link">We reviewed the "Guardians of the Universe"
-							movie: </a>The latest movie from the franchise has a lot of
-						interesting and fun stuff to look for<span class="separator"><span
-							class="separator-bar">/</span><span class="separator-bar">/</span></span></span><span
-						class="xm-line-item" style="white-space: nowrap;"><a
-						href="post-v4.html" class="link">Check out some Hearte Bunny
-							original design ideas: </a>Also, get a sneak peak of the new season
-						looks<span class="separator"><span class="separator-bar">/</span><span
-							class="separator-bar">/</span></span></span><span class="xm-line-item"
-						style="white-space: nowrap;"><a href="esports-post.html"
-						class="link">Last night the Wolves beat the Rhinos 12-10: </a>In
-						an intense match, the Lone Wolves came out victorious. Read all
-						about the big night here<span class="separator"><span
-							class="separator-bar">/</span><span class="separator-bar">/</span></span></span><span
-						class="xm-line-item" style="white-space: nowrap;"><a
-						href="post-v1.html" class="link">The "Clash of Eternity" new
-							game was just released: </a>The new game from the world famous
-						"Eternity Studios" is back with a new adventure game with a lot of
-						classic and puzzle elements<span class="separator"><span
-							class="separator-bar">/</span><span class="separator-bar">/</span></span></span><span
-						class="xm-line-item" style="white-space: nowrap;"><a
-						href="post-v2.html" class="link">We reviewed the new Magimons
-							game: </a>Magimons is an incredible take on classic RPGs with a new
-						and fresh approach that includes a mindblowing soundtrack<span
-						class="separator"><span class="separator-bar">/</span><span
-							class="separator-bar">/</span></span></span><span class="xm-line-item"
-						style="white-space: nowrap;"><a href="post-v3.html"
-						class="link">We reviewed the "Guardians of the Universe"
-							movie: </a>The latest movie from the franchise has a lot of
-						interesting and fun stuff to look for<span class="separator"><span
-							class="separator-bar">/</span><span class="separator-bar">/</span></span></span><span
-						class="xm-line-item" style="white-space: nowrap;"><a
-						href="post-v4.html" class="link">Check out some Hearte Bunny
-							original design ideas: </a>Also, get a sneak peak of the new season
-						looks<span class="separator"><span class="separator-bar">/</span><span
-							class="separator-bar">/</span></span></span><span class="xm-line-item"
-						style="white-space: nowrap;"><a href="esports-post.html"
-						class="link">Last night the Wolves beat the Rhinos 12-10: </a>In
-						an intense match, the Lone Wolves came out victorious. Read all
-						about the big night here<span class="separator"><span
-							class="separator-bar">/</span><span class="separator-bar">/</span></span></span>
-				</p>
-			</div>
-			<!-- /LIVE NEWS WIDGET TEXT WRAP -->
-		</div>
-		<!-- /LIVE NEWS WIDGET -->
-	</div>
 	<div class="layout-content-full layout-item grid-limit gutter-big">
-		<!-- FILTERS ROW -->
-		<div class="filters-row no-space">
-			<!-- BUTTON -->
-			<a href="forum.html" class="button small blue forum-home-link">Forums
-				Home</a>
-			<!-- /BUTTON -->
+	
+		
+		<div class="post-open geeky-news">
+          <!-- POST OPEN CONTENT -->
+          <div class="post-open-content v5">
+            <!-- POST OPEN BODY  -->
+            <div class="post-open-body">
+              <!-- TAG LIST -->
+              <div class="tag-list">
+                <!-- TAG ORNAMENT -->
+                <a href="news-v4.html" class="tag-ornament">${topicinfo.category_name}</a>
+                <!-- /TAG ORNAMENT -->
+              </div>
+              <!-- /TAG LIST -->
+    
+              <!-- POST OPEN TITLE -->
+              <p class="post-open-title">${topicinfo.title}</p>
+              <!-- /POST OPEN TITLE -->
+    
+              <!-- POST OPEN TEXT -->
+              <p class="post-open-text bold">${topicinfo.description}</p>
+              <!-- /POST OPEN TEXT -->
+    
+              <!-- POST OPEN AUTHOR WRAP -->
+              <div class="post-open-author-wrap">
+                <!-- USER AVATAR -->
+                <a href="search-results.html">
+                  <figure class="user-avatar tiny liquid imgLiquid_bgSize imgLiquid_ready" style="background-image: url(${topicinfo.create_by_img}); background-size: cover; background-position: center center; background-repeat: no-repeat;">
+                    <img src="${topicinfo.create_by_img}" alt="user-04" style="display: none;">
+                  </figure>
+                </a>
+                <!-- /USER AVATAR -->
+    
+                <!-- POST OPEN AUTHOR INFO -->
+                <div class="post-open-author-info">
+                  <!-- POST OPEN AUTHOR -->
+                  <p class="post-open-author">By <a href="search-results.html" class="post-open-author-name">${topicinfo.create_by_name}</a></p>
+                  <!-- /POST OPEN AUTHOR -->
+    
+                  <!-- POST OPEN TIMESTAMP -->
+                  <p class="post-open-timestamp">${topicinfo.create_date}</p>
+                  <!-- /POST OPEN TIMESTAMP -->
+                </div>
+                <!-- /POST OPEN AUTHOR INFO -->
+    
+                <!-- POST OPEN COMMENT INFO -->
+                <div class="post-open-comment-info">
+                  <i class="icon-bubbles post-open-comment-icon"></i>
+                  <!-- POST OPEN COMMENT COUNT -->
+                  <a href="#op-comments" class="post-open-comment-count">${topicinfo.reply}</a>
+                  <!-- /POST OPEN COMMENT COUNT -->
+    
+                  <!-- POST OPEN COMMENT TEXT-->
+                  <p class="post-open-comment-text">Comments</p>
+                  <!-- /POST OPEN COMMENT TEXT-->
+                </div>
+                <!-- /POST OPEN COMMENT INFO -->
+              </div>
+              <div style="margin-left: 5%; margin-right: 5%; color: #777; font-family: 'Roboto', sans-serif;">
+              
+              ${topicinfo.content}
+              
+              </div>
 
-			<!-- FORUM ACTIONS -->
-			<div class="forum-actions">
-				<!-- DROPDOWN SIMPLE WRAP -->
-				<div class="dropdown-simple-wrap" style="position: relative;">
-					<!-- CURRENT OPTION -->
-					<div id="forums-search-dropdown-trigger" class="current-option">
-						<!-- BUTTON -->
-						<p class="button small red">Search Forums</p>
-						<!-- /BUTTON -->
-					</div>
-					<!-- /CURRENT OPTION -->
+            </div>
 
-					<!-- DP OPTIONS -->
-					<div id="forums-search-dropdown" class="dp-options medium"
-						style="position: absolute; z-index: 9999; top: -14.6667px; right: -6px; visibility: hidden; opacity: 0; transition: all 0.4s ease-in-out 0s;">
-						<!-- FORM WRAP -->
-						<form class="form-wrap">
-							<!-- FORM ROW -->
-							<div class="form-row">
-								<!-- FORM ITEM -->
-								<div class="form-item">
-									<!-- SUBMIT INPUT -->
-									<div class="submit-input red">
-										<input type="text" id="forum_search_input"
-											name="forum_search_input"
-											placeholder="What are you looking for?...">
-										<button class="submit-input-button">
-											<!-- ARROW ICON -->
-											<svg class="arrow-icon medium">
-                        <use xlink:href="#svg-arrow-medium"></use>
-                      </svg>
-											<!-- /ARROW ICON -->
-										</button>
-									</div>
-									<!-- /SUBMIT INPUT -->
-								</div>
-								<!-- /FORM ITEM -->
-							</div>
-							<!-- /FORM ROW -->
+          </div>
 
-							<!-- FORM CONFIRM ROW -->
-							<div class="form-confirm-row">
-								<!-- CHECKBOX ITEM -->
-								<div class="checkbox-item">
-									<input type="checkbox" id="f_search_cat_only"
-										name="f_search_cat_only" value="only" checked="">
-									<!-- CHECKBOX BOX -->
-									<div class="checkbox-box blue">
-										<!-- CROSS ICON -->
-										<svg class="cross-cb-icon small">
-                      <use xlink:href="#svg-cross-cb-small"></use>
-                    </svg>
-										<!-- /CROSS ICON -->
-									</div>
-									<!-- CHECKBOX BOX -->
-									<label for="f_search_cat_only" class="rl-label">Search
-										this category only</label>
-								</div>
-								<!-- /CHECKBOX ITEM -->
-
-								<!-- DECORATED LINK -->
-								<p class="decorated-link red popup-advanced-search-trigger">Advanced
-									Search</p>
-								<!-- /DECORATED LINK -->
-							</div>
-							<!-- /FORM CONFIRM ROW -->
-						</form>
-						<!-- FORM WRAP -->
-					</div>
-					<!-- /DP OPTIONS -->
-				</div>
-				<!-- /DROPDOWN SIMPLE WRAP -->
-
-				<!-- BUTTON -->
-				<p class="button small blue popup-create-topic-trigger">Create
-					Topic</p>
-				<!-- /BUTTON -->
-
-
-			</div>
-			<!-- /FORUM ACTIONS -->
-		</div>
-		<!-- /FILTERS ROW -->
+        </div>
 
 		<!-- TOPIC WRAP -->
-		<div class="topic-wrap">
-
-			<!-- TOPIC HEADER -->
-			<div class="topic-header">
-				<!-- TOPIC TITLE -->
-				<p class="topic-title">${topicinfo.title}</p>
-				<!-- /TOPIC TITLE -->
-
-				<!-- FORUM CATEGORY TEXT -->
-				<a
-					href="${pageContext.request.contextPath}/forum/category?id=${topicinfo.category_id }"
-					class="forum-category-text cyan">${topicinfo.category_name}</a>
-				<!-- /FORUM CATEGORY TEXT -->
-
-				<!-- TOPIC INFO -->
-				<div class="topic-info">
-
-					<!-- FEATURED STAT WRAP -->
-					<div class="featured-stat-wrap medium center">
-						<!-- FEATURED STAT TITLE -->
-						<p class="featured-stat-title">${topicinfo.reply}</p>
-						<!-- /FEATURED STAT TITLE -->
-
-						<!-- FEATURED STAT TEXT -->
-						<p class="featured-stat-text">Replies</p>
-						<!-- /FEATURED STAT TEXT -->
-					</div>
-					<!-- /FEATURED STAT WRAP -->
-
-					<!-- FEATURED STAT WRAP -->
-					<div class="featured-stat-wrap medium center">
-						<!-- FEATURED STAT TITLE -->
-						<p class="featured-stat-title">${topicinfo.views}</p>
-						<!-- /FEATURED STAT TITLE -->
-
-						<!-- FEATURED STAT TEXT -->
-						<p class="featured-stat-text">Views</p>
-						<!-- /FEATURED STAT TEXT -->
-					</div>
-					<!-- /FEATURED STAT WRAP -->
-
-					<!-- FEATURED STAT WRAP -->
-					<div class="featured-stat-wrap medium center">
-						<!-- FEATURED STAT TITLE -->
-						<p class="featured-stat-title">${topicinfo.likes}</p>
-						<!-- /FEATURED STAT TITLE -->
-
-						<!-- FEATURED STAT TEXT -->
-						<p class="featured-stat-text">Likes</p>
-						<!-- /FEATURED STAT TEXT -->
-					</div>
-					<!-- /FEATURED STAT WRAP -->
 
 
-				</div>
-				<!-- /TOPIC INFO -->
+
+
+		<div id="op-comments" class="post-comment-thread">
+			<!-- SECTION TITLE WRAP -->
+			<div class="section-title-wrap blue">
+				<h2 class="section-title medium">Comments (${topicinfo.reply})</h2>
+				<div class="section-title-separator"></div>
 			</div>
-			<!-- /TOPIC HEADER -->
-
-			<!-- TOPIC BODY -->
-			<div class="topic-body">
-				<!-- TOPIC COMMENT -->
-				<div class="topic-comment">
-					<!-- TOPIC COMMENT USER -->
-					<div class="topic-comment-user">
-						<!-- USER AVATAR -->
-						<a href="profile-summary.html"> <img
-							class="user-avatar medium"
-							src="${topicinfo.create_by_img}"
-							alt="user-09">
-						</a>
-						<!-- /USER AVATAR -->
-
-						<!-- TOPIC COMMENT USER TEXT -->
-						<a href="profile-activity.html" class="topic-comment-user-text">${topicinfo.author_post}
-							Posts</a>
-						<!-- /TOPIC COMMENT USER TEXT -->
-
-						<!-- BADGE LIST -->
-						<!-- /BADGE LIST -->
-					</div>
-					<!-- /TOPIC COMMENT USER -->
-
-					<!-- TOPIC COMMENT CONTENT WRAP -->
-					<div class="topic-comment-content-wrap">
-						<!-- TOPIC COMMENT CONTENT -->
-						<div class="topic-comment-content">
-							<!-- TOPIC COMMENT CONTENT HEADER -->
-							<div class="topic-comment-content-header">
-								<!-- TOPIC COMMENT USERNAME -->
-								<a href="profile-summary.html"
-									class="topic-comment-username text-tag original-poster">${topicinfo.create_by_name}</a>
-								<!-- /TOPIC COMMENT USERNAME -->
-
-								<!-- TOPIC COMMENT INFO -->
-								<div class="topic-comment-info">
-									<!-- TOPIC COMMENT TIMESTAMP -->
-									<p class="topic-comment-timestamp">${topicinfo.dayago}</p>
-									<!-- /TOPIC COMMENT TIMESTAMP -->
-								</div>
-								<!-- /TOPIC COMMENT INFO -->
-							</div>
-							<!-- /TOPIC COMMENT CONTENT HEADER -->
-
-							<!-- TOPIC COMMENT TEXT -->
-							<p class="topic-comment-text">${topicinfo.content}</p>
-							<!-- /TOPIC COMMENT TEXT -->
-
-
-
-
-						</div>
-						<!-- /TOPIC COMMENT CONTENT -->
-
-						<!-- TOPIC COMMENT ACTIONS -->
-						<div class="topic-comment-actions">
-							<!-- TOPIC ACTIONS -->
-							<div class="topic-actions">
-								<!-- TOPIC ACTION -->
-
-								<!-- /TOPIC ACTION -->
-
-
-							</div>
-							<!-- /TOPIC ACTIONS -->
-
-							<!-- TOPIC ACTIONS -->
-							<div class="topic-actions">
-								<!-- TOPIC ACTION -->
-								<div class="topic-action">
-									<!-- TOPIC ACTION ICON -->
-									<div class="topic-action-icon bubble-ornament cyan">
-										<i class="icon-like like-icon"></i>
-									</div>
-
-								</div>
-								<div class="topic-action ">
-									<!-- TOPIC ACTION ICON -->
-									<div
-										class="topic-action-icon bubble-ornament hoverable blue popup-quick-reply-trigger">
-										<i class="icon-action-undo reply-icon"></i>
-									</div>
-									<!-- /TOPIC ACTION ICON -->
-
-
-								</div>
-
-
-
-								<!-- /TOPIC ACTION -->
-
-
-
-
-								<!-- /TOPIC ACTION -->
-							</div>
-							<!-- /TOPIC ACTIONS -->
-						</div>
-						<!-- /TOPIC COMMENT ACTIONS -->
-					</div>
-					<!-- /TOPIC COMMENT CONTENT WRAP -->
-				</div>
-				<!-- /TOPIC COMMENT -->
-
-				<c:forEach items="${ commentlist }" var="listinfo"
+			<!-- /SECTION TITLE WRAP -->
+			
+				<c:forEach items="${ commentlist }" var="listinfo1"
 					varStatus="status1">
+					
+					
+			<div class="post-comment" 
+			
+			<c:choose><c:when test="${listinfo1.depth > 0}"> style="padding: 9px 0 9px calc(100px *${ listinfo1.depth+1 });
+    border-bottom: 1px dotted #80808000;"</c:when> <c:otherwise>style="border-top: 1px solid #dbdbdb !important;border-bottom:none !important"</c:otherwise></c:choose>
+			
+			
+			>
+				<!-- USER AVATAR -->
+				
+				
+				<figure
+					class="user-avatar  liquid imgLiquid_bgSize imgLiquid_ready"
+					style=" left:calc(110px *${ listinfo1.depth }); background-image: url(${ listinfo1.create_by_img }); background-size: cover; background-position: center center; background-repeat: no-repeat;">
+					
+					<img src="${ listinfo1.create_by_img }" alt="user-07" style="display: none;">
+				</figure>
+				<!-- /USER AVATAR -->
 
-					<!-- TOPIC COMMENT -->
-					<div class="topic-comment">
-						<!-- TOPIC COMMENT USER -->
-						<div class="topic-comment-user">
-							<!-- USER AVATAR -->
-							<a href="profile-summary.html"> <img
-								class="user-avatar medium"
-								src="${ listinfo.create_by_img }"
-								alt="user-17">
-							</a>
-							<!-- /USER AVATAR -->
+				<!-- POST COMMENT USERNAME -->
+				<p class="post-comment-username"> 
+				<c:choose><c:when test="${listinfo1.depth > 0}"> <span style="font-size: 25px;
+    color: #6969694f;">&#11172;</span></c:when></c:choose> ${ listinfo1.postownername }</p>
+				<!-- /POST COMMENT USERNAME -->
 
-							<!-- TOPIC COMMENT USER TEXT -->
-							<a href="profile-activity.html" class="topic-comment-user-text">${ listinfo.userpost }
-								Posts</a>
-							<!-- /TOPIC COMMENT USER TEXT -->
+				<!-- POST COMMENT TIMESTAMP -->
+				<p class="post-comment-timestamp">${ listinfo1.userpost} Posts</p>
+				<!-- /POST COMMENT TIMESTAMP -->
 
+				<!-- REPORT BUTTON -->
+				<a href="#" class="report-button">${ listinfo1.dayago }</a>
+				<!-- /REPORT BUTTON -->
 
-						</div>
-						<!-- /TOPIC COMMENT USER -->
+				<!-- POST COMMENT TEXT -->
+				<p class="post-comment-text">${ listinfo1.comment}</p>
+				<!-- /POST COMMENT TEXT -->
 
-						<!-- TOPIC COMMENT CONTENT WRAP -->
-						<div class="topic-comment-content-wrap">
-							<!-- TOPIC COMMENT CONTENT -->
-							<div class="topic-comment-content">
-								<!-- TOPIC COMMENT CONTENT HEADER -->
-								<div class="topic-comment-content-header">
-									<!-- TOPIC COMMENT USERNAME -->
-									<a href="profile-summary.html" class="topic-comment-username">${ listinfo.postownername }</a>
-									<!-- /TOPIC COMMENT USERNAME -->
-
-									<!-- TOPIC COMMENT INFO -->
-									<div class="topic-comment-info">
-										<!-- TOPIC COMMENT TIMESTAMP -->
-										<p class="topic-comment-timestamp">${ listinfo.dayago }</p>
-										<!-- /TOPIC COMMENT TIMESTAMP -->
-									</div>
-									<!-- /TOPIC COMMENT INFO -->
-								</div>
-								<!-- /TOPIC COMMENT CONTENT HEADER -->
-
-								<!-- TOPIC COMMENT TEXT -->
-								<p class="topic-comment-text">${ listinfo.comment }</p>
-								<!-- /TOPIC COMMENT TEXT -->
-							</div>
-							<!-- /TOPIC COMMENT CONTENT -->
-
-							<div class="topic-comment-actions">
-								<!-- TOPIC ACTIONS -->
-								<div class="topic-actions">
-									<!-- TOPIC ACTION -->
-
-									<!-- /TOPIC ACTION -->
-
-
-								</div>
-								<!-- /TOPIC ACTIONS -->
-
-								<!-- TOPIC ACTIONS -->
-								<div class="topic-actions">
-									<!-- TOPIC ACTION -->
-									<div class="topic-action">
-										<!-- TOPIC ACTION ICON -->
-										<div class="topic-action-icon bubble-ornament cyan">
-											<i class="icon-like like-icon"></i>
-										</div>
-
-									</div>
-									<div class="topic-action ">
-										<!-- TOPIC ACTION ICON -->
-										<div
-											class="topic-action-icon bubble-ornament hoverable blue popup-quick-reply-trigger">
-											<i class="icon-action-undo reply-icon"></i>
-										</div>
-										<!-- /TOPIC ACTION ICON -->
-
-
-									</div>
-
-
-
-									<!-- /TOPIC ACTION -->
-
-
-
-
-									<!-- /TOPIC ACTION -->
-								</div>
-								<!-- /TOPIC ACTIONS -->
-							</div>
-
-
-							<c:forEach items="${ subcommentlist }" var="subcommentlistinfo"
-								varStatus="status2">
-
-
-								<c:choose>
-
-									<c:when test="${subcommentlistinfo.comment_id == listinfo.id}">
-
-										<div class="topic-comment">
-									<!-- TOPIC COMMENT USER -->
-									<div class="topic-comment-user">
-										<!-- USER AVATAR -->
-										<a href="profile-summary.html"> <img
-											class="user-avatar medium"
-											src="${subcommentlistinfo.create_by_img}" alt="user-17">
-										</a>
-										<!-- /USER AVATAR -->
-
-										<!-- TOPIC COMMENT USER TEXT -->
-										<a href="profile-activity.html"
-											class="topic-comment-user-text">${subcommentlistinfo.userpost} Posts</a>
-										<!-- /TOPIC COMMENT USER TEXT -->
-
-
-									</div>
-									<!-- /TOPIC COMMENT USER -->
-
-									<!-- TOPIC COMMENT CONTENT WRAP -->
-									<div class="topic-comment-content-wrap">
-										<!-- TOPIC COMMENT CONTENT -->
-										<div class="topic-comment-content">
-											<!-- TOPIC COMMENT CONTENT HEADER -->
-											<div class="topic-comment-content-header">
-												<!-- TOPIC COMMENT USERNAME -->
-												<a href="profile-summary.html"
-													class="topic-comment-username">${subcommentlistinfo.postownername} replied:</a>
-												<!-- /TOPIC COMMENT USERNAME -->
-
-												<!-- TOPIC COMMENT INFO -->
-												<div class="topic-comment-info">
-													<!-- TOPIC COMMENT TIMESTAMP -->
-													<p class="topic-comment-timestamp">${subcommentlistinfo.dayago}</p>
-													<!-- /TOPIC COMMENT TIMESTAMP -->
-												</div>
-												<!-- /TOPIC COMMENT INFO -->
-											</div>
-											<!-- /TOPIC COMMENT CONTENT HEADER -->
-
-											<!-- TOPIC COMMENT TEXT -->
-											<p class="topic-comment-text">${subcommentlistinfo.comment}</p>
-											<!-- /TOPIC COMMENT TEXT -->
-										</div>
-										<!-- /TOPIC COMMENT CONTENT -->
-
-										<div class="topic-comment-actions">
-											<!-- TOPIC ACTIONS -->
-											<div class="topic-actions">
-												<!-- TOPIC ACTION -->
-
-												<!-- /TOPIC ACTION -->
-
-
-											</div>
-											<!-- /TOPIC ACTIONS -->
-
-											<!-- TOPIC ACTIONS -->
-											<div class="topic-actions">
-												<!-- TOPIC ACTION -->
-												<div class="topic-action">
-													<!-- TOPIC ACTION ICON -->
-													<div class="topic-action-icon bubble-ornament cyan">
-														<i class="icon-like like-icon"></i>
-													</div>
-
-												</div>
-												
-
-
-												<!-- /TOPIC ACTION -->
-
-
-
-
-												<!-- /TOPIC ACTION -->
-											</div>
-											<!-- /TOPIC ACTIONS -->
-										</div>
-
-									</div>
-									<!-- /TOPIC COMMENT CONTENT WRAP -->
-								</div>
-									</c:when>
-
-
-									
-								</c:choose>
-
-
-
-								
-							</c:forEach>
-						</div>
-						<!-- /TOPIC COMMENT CONTENT WRAP -->
+				<!-- POST COMMENT ACTIONS -->
+				<div class="post-comment-actions">
+					<!-- REPLY BUTTON -->
+					<div class="reply-button bubble-ornament blue">
+						<i class="icon-action-undo reply-icon"></i>
 					</div>
-					<!-- /TOPIC COMMENT -->
-				</c:forEach>
+					<!-- /REPLY BUTTON -->
 
+					<!-- LIKE BUTTON -->
+					<div class="like-button bubble-ornament hoverable cyan">
+						<i class="icon-like like-icon"></i>
+					</div>
+					<!-- /LIKE BUTTON -->
 
+					<!-- LIKES COUNT -->
+					<p class="likes-count"> ${ listinfo1.like} Thumbs Up</p>
+					<!-- /LIKES COUNT -->
+				</div>
+				<!-- /POST COMMENT ACTIONS -->
 
+				
+				<!-- /POST COMMENT -->
 			</div>
+			</c:forEach>
+		</div>
+		
+		<div>
+			<a href="#" class="button blue cloner-wrap"  style="position: relative;position: relative;
+    float: right;
+    width: 215px;">
+        Reply to this topic
+        <!-- BUTTON ORNAMENT -->
+        <div class="button-ornament">
+          <!-- ARROW ICON -->
+          <svg class="arrow-icon medium">
+            <use xlink:href="#svg-arrow-medium"></use>
+          </svg>
+          <!-- /ARROW ICON -->
+
+          <!-- CROSS ICON -->
+          <svg class="cross-icon small">
+            <use xlink:href="#svg-cross-small"></use>
+          </svg>
+          <!-- /CROSS ICON -->
+        </div>
+      </a>
 		</div>
 	</div>
+
+
+	
 
 
 	<%@include file="inc/footer.jsp"%>

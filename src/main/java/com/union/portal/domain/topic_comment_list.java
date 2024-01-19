@@ -18,4 +18,7 @@ public class topic_comment_list
 	public int userpost;
 	public String postownername;
 	public String dayago;
+	public int p_id;
+	public int depth;
+	public String lvl;
 }

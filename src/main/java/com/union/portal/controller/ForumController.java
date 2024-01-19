@@ -207,8 +207,7 @@ public class ForumController {
 		
 		List<topic_comment_list> tcl = null;
 		tcl = forumservices.getforumtopiccommentlist(id);
-		List<topic_subcomment_list> tsl = null;
-		tsl = forumservices.getforumtopicsubcommentlist(id);
+		
 		
 		
 		
@@ -218,7 +217,6 @@ public class ForumController {
 		model.addAttribute("topicinfo", tft);
 		
 		model.addAttribute("commentlist", tcl);
-		model.addAttribute("subcommentlist", tsl);
 		
 		model.addAttribute("lang", vLocal);
 		String returnURL = "";
@@ -400,9 +398,6 @@ public class ForumController {
 			
 			
 		}
-		
-		
-		
 		mav.addObject("result", APIProtectionHandler.ApiProtection(request, responsestr));
 		return mav;
 	}
