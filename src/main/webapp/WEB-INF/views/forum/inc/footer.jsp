@@ -1358,6 +1358,7 @@
 <!-- app bundle -->
 
 
+
 <script>
 loadingScripts();
 function loadingScripts() {
@@ -1370,8 +1371,6 @@ function loadingScripts() {
         document.body.appendChild(script);
     } 
 }
-
-
 
 
 </script>

@@ -199,4 +199,22 @@ public List<t_forum_topiccount> getforumtopiccountlist();
 			+ "VALUES(#{category_id},#{title},#{description},#{content},0,0,now(),#{create_by},now(),now(),0);")
 	public void insertnewtopic( @Param("category_id")String category_id,@Param("title")String title,@Param("description")String description,@Param("content")String content,@Param("create_by")String create_by);
 	
+	
+	
+	
+	@Insert("INSERT INTO `forum`.`t_forum_comment`\r\n"
+			+ "(`p_id`,`depth`,`dbsts`,`topic_id`,`comment`,`create_by`,`create_date`,`likes`)\r\n"
+			+ "VALUES(#{pid},#{depth},'A',#{tid},#{comment},#{createby},now(),0)")
+	public void insertnewcomment( @Param("pid")String p_id,@Param("depth")String depth,@Param("tid")String tid,@Param("comment")String comment,@Param("createby")String createby);
+	
+	
+	
+	@Insert("INSERT INTO `forum`.`t_forum_comment`\r\n"
+			+ "(`depth`,`dbsts`,`topic_id`,`comment`,`create_by`,`create_date`,`likes`)\r\n"
+			+ "VALUES(#{depth},'A',#{tid},#{comment},#{createby},now(),0)")
+	public void insertnewcommentfortopic( @Param("depth")String depth,@Param("tid")String tid,@Param("comment")String comment,@Param("createby")String createby);
+	
+	
+	
+	
 }

@@ -126,5 +126,21 @@ public class ForumServiceImpl implements ForumService {
 		
 	}
 
+	@Override
+	public void insertnewcomment(String p_id, String depth, String tid, String comment, String createby) {
+		
+		if(p_id.indexOf("-1")>=0 )
+		{
+			mapper.insertnewcommentfortopic( depth, tid, comment, createby);
+		}
+		else
+		{	
+			mapper.insertnewcomment(p_id, depth, tid, comment, createby);
+			
+		}
+	
+		
+	}
+
 	
 }

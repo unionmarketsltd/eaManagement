@@ -43,5 +43,8 @@ public interface ForumService {
 	public List<topic_subcomment_list> getforumtopicsubcommentlist(String topicid);
 
 	public void insertnewtopic(String category_id, String title, String description,String content, String create_by);
+	
+	
+	public void insertnewcomment( String p_id,String depth,String tid,String comment,String createby);
 
 }

@@ -370,7 +370,7 @@ public class ForumController {
 	public ModelAndView api_createnewtopic(@RequestBody String body, HttpServletRequest request) throws SQLException {
 		ModelAndView mav = new ModelAndView("jsonView");
 		JSONObject jsonbodyobj = new JSONObject(body);
-		logger.info("Welcome getFundHistory: ");
+		logger.info("Welcome createnewtopic: ");
 		String responsestr = "";
 		HttpSession session = request.getSession();
 		
@@ -388,6 +388,50 @@ public class ForumController {
 			forumservices.insertnewtopic(cat,topic,desc,content,(String) session.getAttribute("s_GEmail"));
 			JSONObject jobj = new JSONObject();
 			jobj.put("redirect", "/category?id="+cat);
+			responsestr = jobj.toString();
+		}
+		else
+		{
+			JSONObject jobj = new JSONObject();
+			jobj.put("redirect", "/error");
+			responsestr = jobj.toString();
+			
+			
+		}
+		mav.addObject("result", APIProtectionHandler.ApiProtection(request, responsestr));
+		return mav;
+	}
+	
+	
+	
+	
+	
+	@PostMapping(value = { "/api/createnewreply" }, consumes = { "application/json" }, produces = { "application/json" })
+	public ModelAndView api_createnewreply(@RequestBody String body, HttpServletRequest request) throws SQLException {
+		ModelAndView mav = new ModelAndView("jsonView");
+		JSONObject jsonbodyobj = new JSONObject(body);
+		logger.info("Welcome createnewreply: ");
+		String responsestr = "";
+		HttpSession session = request.getSession();
+		
+		
+		String tid = jsonbodyobj.getString("tid");
+		String pid = jsonbodyobj.getString("pid");
+		String depth = jsonbodyobj.getString("depth");
+		String cmd = jsonbodyobj.getString("cmd");
+		
+		
+		
+		logger.info(tid);
+		logger.info(pid);
+		logger.info(depth);
+		logger.info(cmd);
+		
+		if(APIProtectionHandler.islogin(request))
+		{
+			forumservices.insertnewcomment(pid,depth,tid,cmd,(String) session.getAttribute("s_GEmail"));
+			JSONObject jobj = new JSONObject();
+			jobj.put("redirect", "/topic?id="+tid);
 			responsestr = jobj.toString();
 		}
 		else
