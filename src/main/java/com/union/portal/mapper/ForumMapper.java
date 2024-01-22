@@ -15,6 +15,7 @@ import com.union.portal.domain.t_forum_category;
 import com.union.portal.domain.t_forum_topic;
 import com.union.portal.domain.t_forum_topiccount;
 import com.union.portal.domain.topic_comment_list;
+import com.union.portal.domain.topic_search_result;
 import com.union.portal.domain.topic_subcomment_list;
 
 public interface ForumMapper {
@@ -86,7 +87,15 @@ public interface ForumMapper {
 	@Select("SELECT * FROM forum.t_forum_category")
 	public List<t_forum_category> getforumcategorylist();
 	
-	@Select("SELECT t_forum.id , count(*) as topic FROM forum.t_forum inner join forum.t_forum_category on t_forum.id = t_forum_category.forum_id join forum.t_forum_topic on t_forum_category.id = t_forum_topic.category_id group by t_forum.id")
+	@Select("SELECT \r\n"
+			+ "    t_forum.id,\r\n"
+			+ "    COUNT(DISTINCT t_forum_category.id) AS cat,\r\n"
+			+ "    COALESCE(COUNT(DISTINCT t_forum_topic.id), 0) AS topic\r\n"
+			+ "FROM t_forum\r\n"
+			+ "LEFT JOIN t_forum_category ON t_forum.id = t_forum_category.forum_id\r\n"
+			+ "LEFT JOIN t_forum_topic ON t_forum_category.id = t_forum_topic.category_id\r\n"
+			+ "GROUP BY t_forum.id;\r\n"
+			+ "")
 public List<t_forum_topiccount> getforumtopiccountlist();
 	
 	@Select("SELECT count(*) FROM testdb.t_user where email = #{email} and password = #{password}")
@@ -215,6 +224,18 @@ public List<t_forum_topiccount> getforumtopiccountlist();
 	public void insertnewcommentfortopic( @Param("depth")String depth,@Param("tid")String tid,@Param("comment")String comment,@Param("createby")String createby);
 	
 	
+	@Update("UPDATE `forum`.`t_forum_topic` SET views = views + 1 where id= #{tid}")
+	public void updatetopicview(@Param("tid")String tid);
 	
 	
+	
+	@Select("SELECT id, (select name from t_forum_category where id = category_id) as category_name, title,description,views,likes,create_date, (select name from t_user where email = create_by) as create_by from t_forum_topic where LOWER(title) like LOWER(CONCAT('%', #{keyword}, '%')) or\r\n"
+			+ "LOWER(description) like LOWER(CONCAT('%', #{keyword}, '%')) or \r\n"
+			+ "LOWER(content) like LOWER(CONCAT('%', #{keyword}, '%')) order by last_update_date desc;\r\n"
+			+ "")
+	public List<topic_search_result> getsearchresult(@Param("keyword")String keyword);
+	
+	
+	
+
 }

@@ -13,6 +13,7 @@ import com.union.portal.domain.t_forum_category;
 import com.union.portal.domain.t_forum_topic;
 import com.union.portal.domain.t_forum_topiccount;
 import com.union.portal.domain.topic_comment_list;
+import com.union.portal.domain.topic_search_result;
 import com.union.portal.domain.topic_subcomment_list;
 import com.union.portal.mapper.ForumMapper;
 
@@ -129,18 +130,41 @@ public class ForumServiceImpl implements ForumService {
 	@Override
 	public void insertnewcomment(String p_id, String depth, String tid, String comment, String createby) {
 		
-		if(p_id.indexOf("-1")>=0 )
-		{
-			mapper.insertnewcommentfortopic( depth, tid, comment, createby);
-		}
-		else
-		{	
+		
+		
 			mapper.insertnewcomment(p_id, depth, tid, comment, createby);
 			
-		}
+		
 	
 		
 	}
+	
+	
+	@Override
+	public void insertnewcommentfortopic( String depth, String tid, String comment, String createby) {
+		
+		
+		
+			mapper.insertnewcommentfortopic( depth, tid, comment, createby);
+			
+		
+	
+		
+	}
+
+	@Override
+	public void updatetopicview(String tid) {
+		mapper.updatetopicview(tid);
+		
+	}
+
+	@Override
+	public List<topic_search_result> getsearchresult(String keyword) {
+		// TODO Auto-generated method stub
+		return mapper.getsearchresult(keyword);
+	}
+	
+	
 
 	
 }

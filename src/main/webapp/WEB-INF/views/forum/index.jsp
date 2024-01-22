@@ -123,13 +123,13 @@
 
 				<!-- TABLE ROW HEADER ITEM -->
 				<div class="table-row-header-item padded-large">
-					<p class="table-row-header-title">Posts</p>
+					<p class="table-row-header-title">Category</p>
 				</div>
 				<!-- /TABLE ROW HEADER ITEM -->
 
 				<!-- TABLE ROW HEADER ITEM -->
 				<div class="table-row-header-item left">
-					<p class="table-row-header-title">Category</p>
+					<p class="table-row-header-title"></p>
 				</div>
 				<!-- /TABLE ROW HEADER ITEM -->
 			</div>
@@ -148,15 +148,15 @@
 							<!-- FORUM CATEGORY WRAP -->
 							<div class="forum-category-wrap">
 								<!-- FORUM CATEGORY IMG -->
-								<a href="forum-categories.html"> <img
+								<div> <img
 									class="forum-category-img"
 									src="${pageContext.request.contextPath}/resources/forum/img/forum/${listinfo.logo }"
 									alt="category-02">
-								</a>
+								</div>
 								<!-- /FORUM CATEGORY IMG -->
 
 								<!-- FORUM CATEGORY TITLE -->
-								<a href="${pageContext.request.contextPath}/forum/forum?id=${listinfo.id }" class="forum-category-title">${listinfo.name }</a>
+								<div class="forum-category-title">${listinfo.name }</div>
 								<!-- /FORUM CATEGORY TITLE -->
 
 								<!-- FORUM CATEGORY DESCRIPTION -->
@@ -188,7 +188,15 @@
 
 						<!-- TABLE ROW ITEM -->
 						<div class="table-row-item padded-large">
-							<p class="table-text bold light">1987</p>
+							<p class="table-text bold light">	<c:forEach items="${ listforumtopiccount }"
+									var="listtopiccountinfo2" varStatus="status2">
+
+									<c:choose>
+										<c:when test="${listinfo.id == listtopiccountinfo2.id}">
+											${listtopiccountinfo2.cat}
+										</c:when>
+									</c:choose>
+								</c:forEach></p>
 						</div>
 						<!-- /TABLE ROW ITEM -->
 
@@ -208,7 +216,7 @@
 												<a href="${pageContext.request.contextPath}/forum/category?id=${listcatinfo.id }" class="forum-post-link">${listcatinfo.name}
 													- ${listcatinfo.description}</a>
 
-												<p class="forum-post-timestamp">5m</p>
+												<p class="forum-post-timestamp"></p>
 
 											</div>
 										</c:when>

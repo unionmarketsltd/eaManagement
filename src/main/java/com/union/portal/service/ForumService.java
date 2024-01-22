@@ -12,6 +12,7 @@ import com.union.portal.domain.t_forum_category;
 import com.union.portal.domain.t_forum_topic;
 import com.union.portal.domain.t_forum_topiccount;
 import com.union.portal.domain.topic_comment_list;
+import com.union.portal.domain.topic_search_result;
 import com.union.portal.domain.topic_subcomment_list;
 
 public interface ForumService {
@@ -46,5 +47,9 @@ public interface ForumService {
 	
 	
 	public void insertnewcomment( String p_id,String depth,String tid,String comment,String createby);
-
+	public void insertnewcommentfortopic( String depth, String tid, String comment, String createby);
+	
+	public void updatetopicview(String tid);
+	
+	public List<topic_search_result> getsearchresult(String keyword);
 }

@@ -10,4 +10,5 @@ public class t_forum_topiccount
 {
 	public int id;
 	public int topic;
+	public int cat;
 }

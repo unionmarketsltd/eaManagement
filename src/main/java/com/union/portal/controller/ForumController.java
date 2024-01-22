@@ -34,6 +34,7 @@ import com.union.portal.domain.t_forum_category;
 import com.union.portal.domain.t_forum_topic;
 import com.union.portal.domain.t_forum_topiccount;
 import com.union.portal.domain.topic_comment_list;
+import com.union.portal.domain.topic_search_result;
 import com.union.portal.domain.topic_subcomment_list;
 import com.union.portal.service.ForumService;
 import lombok.AllArgsConstructor;
@@ -191,6 +192,32 @@ public class ForumController {
 	
 	
 	
+	
+	@RequestMapping(value = "/search", method = RequestMethod.GET)
+	public String search(Model model, HttpServletRequest request) throws SQLException {
+		logger.info("Welcome search.");
+		String keyword = request.getParameter("keyword");
+		String vLocal = LocaleContextHolder.getLocale().getLanguage();
+		
+		List<topic_search_result>  tsr = null;
+		tsr = forumservices.getsearchresult(keyword);
+		
+		
+		model.addAttribute("searchfor", "Keyword: "+keyword);
+		
+		model.addAttribute("resultlist", tsr);
+		
+		model.addAttribute("lang", vLocal);
+		String returnURL = "";
+	
+		returnURL = "/search";
+		
+		return defaultpath + returnURL;
+	}
+	
+	
+	
+	
 	@RequestMapping(value = "/topic", method = RequestMethod.GET)
 	public String topic(Model model, HttpServletRequest request) throws SQLException {
 		logger.info("Welcome topic.");
@@ -209,7 +236,7 @@ public class ForumController {
 		tcl = forumservices.getforumtopiccommentlist(id);
 		
 		
-		
+		forumservices.updatetopicview(id);
 		
 		
 		model.addAttribute("topiclist", tft);
@@ -429,7 +456,18 @@ public class ForumController {
 		
 		if(APIProtectionHandler.islogin(request))
 		{
-			forumservices.insertnewcomment(pid,depth,tid,cmd,(String) session.getAttribute("s_GEmail"));
+			
+			if(Integer.parseInt(pid)<0)
+			{
+				forumservices.insertnewcommentfortopic(depth,tid,cmd,(String) session.getAttribute("s_GEmail"));
+			}
+			else
+			{
+				forumservices.insertnewcomment(pid,depth,tid,cmd,(String) session.getAttribute("s_GEmail"));
+			}
+			
+			
+			
 			JSONObject jobj = new JSONObject();
 			jobj.put("redirect", "/topic?id="+tid);
 			responsestr = jobj.toString();

@@ -19,19 +19,9 @@
 	<div class="banner-wrap forum-banner">
 		<!-- BANNER -->
 		<div class="banner grid-limit">
-			<h2 class="banner-title"><%=request.getAttribute("categoryname")%></h2>
+			<h2 class="banner-title">Search Result</h2>
 			<p class="banner-sections">
-				<a style="color: white"
-					href="${pageContext.request.contextPath}/forum/forum?id=<%=request.getAttribute("forumid")%>"
-					class="banner-section"><%=request.getAttribute("forumname")%></a>
-				<!-- ARROW ICON -->
-				<svg class="arrow-icon">
-          <use xlink:href="#svg-arrow"></use>
-        </svg>
-				<!-- /ARROW ICON -->
-				<a style="color: white"
-					href="${pageContext.request.contextPath}/forum/category?id=<%=request.getAttribute("categoryid")%>"
-					class="banner-section"><%=request.getAttribute("categoryname")%></a>
+				<div style="color: white; text-align:center; font-family: 'Exo', sans-serif;" class="banner-section"><%=request.getAttribute("searchfor")%></div>
 			</p>
 		</div>
 		<!-- /BANNER -->
@@ -87,127 +77,8 @@
 
 
 	<div class="layout-content-full grid-limit">
-		<!-- FILTERS ROW -->
-		<div class="filters-row"
-			style="border-bottom: 1px solid white !important">
-
-
-			<!-- FORUM ACTIONS -->
-			<div class="forum-actions">
-				
-
-				<!-- BUTTON -->
-				<a class="button small red popup-advanced-search-trigger">Search Forum
-					</a>
-				<a  href="${pageContext.request.contextPath}/forum/createtopic?cat=<%=request.getAttribute("categoryid")%>" class="button small blue ">Create
-					Topic</a>
-				<!-- /BUTTON -->
-
-	
-				<!-- /DROPDOWN SIMPLE WRAP -->
-			</div>
-			<!-- /FORUM ACTIONS -->
-		</div>
-		<div class="table forum-categories">
-
-			<div class="table-rows no-color">
-				<!-- TABLE ROW -->
-				<div class="table-row large">
-					<!-- TABLE ROW ITEM -->
-					<div class="table-row-item">
-						<!-- FORUM CATEGORY WRAP -->
-						<div class="forum-category-wrap">
-							<!-- FORUM CATEGORY IMG -->
-							<div> <img
-								class="forum-category-img"
-								src="${pageContext.request.contextPath}/resources/forum/img/forum/category-10.png"
-								alt="category-08">
-							</div>
-							<!-- /FORUM CATEGORY IMG -->
-
-							<!-- FORUM CATEGORY TITLE -->
-							<a href="#" class="forum-category-title"><%=request.getAttribute("name")%></a>
-							<!-- /FORUM CATEGORY TITLE -->
-
-							<!-- FORUM CATEGORY DESCRIPTION -->
-							<p class="forum-category-description"><%=request.getAttribute("desc")%></p>
-							<!-- /FORUM CATEGORY DESCRIPTION -->
-						</div>
-						<!-- /FORUM CATEGORY WRAP -->
-					</div>
-					<!-- /TABLE ROW ITEM -->
-
-					<!-- TABLE ROW ITEM -->
-					<div class="table-row-item padded-large">
-						<p class="table-text bold light"><%=request.getAttribute("post")%>
-							Topics
-						</p>
-					</div>
-					<!-- /TABLE ROW ITEM -->
-
-					<!-- TABLE ROW ITEM -->
-					<div class="table-row-item padded-large">
-						<p class="table-text bold light"><%=request.getAttribute("comment")%>
-							Comments
-						</p>
-					</div>
-					<!-- /TABLE ROW ITEM -->
-
-					<!-- TABLE ROW ITEM -->
-					<div class="table-row-item">
-						<!-- FORUM POST LINKS -->
-						<div class="forum-post-links">
-							<!-- FORUM POST LINK WRAP -->
-							<div class="forum-post-link-wrap">
-								<!-- FORUM POST LINK -->
-								<a href="topic.html" class="forum-post-link">Create By : <%=request.getAttribute("createby")%>
-								</a>
-								<!-- /FORUM POST LINK -->
-
-								<!-- FORUM POST TIMESTAMP -->
-								<p class="forum-post-timestamp">*</p>
-								<!-- /FORUM POST TIMESTAMP -->
-							</div>
-							<!-- /FORUM POST LINK WRAP -->
-
-							<!-- FORUM POST LINK WRAP -->
-							<div class="forum-post-link-wrap">
-								<!-- FORUM POST LINK -->
-								<a href="topic.html" class="forum-post-link">Create Date : <%=request.getAttribute("createdate")%>
-								</a>
-								<!-- /FORUM POST LINK -->
-
-								<!-- FORUM POST TIMESTAMP -->
-								<p class="forum-post-timestamp">*</p>
-								<!-- /FORUM POST TIMESTAMP -->
-							</div>
-							<!-- /FORUM POST LINK WRAP -->
-
-							<!-- FORUM POST LINK WRAP -->
-							<div class="forum-post-link-wrap">
-								<!-- FORUM POST LINK -->
-								<a href="topic.html" class="forum-post-link">Latest Activity
-									: <%=request.getAttribute("createdate")%></a>
-								<!-- /FORUM POST LINK -->
-
-								<!-- FORUM POST TIMESTAMP -->
-								<p class="forum-post-timestamp">*</p>
-								<!-- /FORUM POST TIMESTAMP -->
-							</div>
-							<!-- /FORUM POST LINK WRAP -->
-						</div>
-						<!-- /FORUM POST LINKS -->
-					</div>
-					<!-- /TABLE ROW ITEM -->
-				</div>
-				<!-- /TABLE ROW -->
-
-				<!-- TABLE ROW -->
-
-				<!-- /TABLE ROW -->
-			</div>
-			<!-- /TABLE ROWS -->
-		</div>
+		
+		
 
 		<div class="table forum-topics">
 			<!-- TABLE ROW HEADER -->
@@ -252,7 +123,7 @@
 				<!-- TABLE ROW -->
 
 
-				<c:forEach items="${ topiclist }" var="listcatinfo"
+				<c:forEach items="${ resultlist }" var="listcatinfo"
 					varStatus="status1">
 
 
@@ -261,13 +132,7 @@
 						<div class="table-row-item">
 							<!-- FORUM POST LINK -->
 							<a href="${pageContext.request.contextPath}/forum/topic?id=${listcatinfo.id}"
-								class="forum-post-link <c:choose>
-										<c:when test="${listcatinfo.pin_post == 1}">pin-tag
-										</c:when>
-										<c:otherwise>spoiler-tag</c:otherwise>
-									</c:choose>
-									
-									">${listcatinfo.title }</a>
+								class="forum-post-link spoiler-tag">${listcatinfo.category_name } > ${listcatinfo.title }</a>
 							<!-- /FORUM POST LINK -->
 
 							<!-- FORUM POST DESCRIPTION PREVIEW -->
@@ -279,8 +144,8 @@
 						<!-- TABLE ROW ITEM -->
 						<div class="table-row-item">
 							<!-- FORUM CATEGORY TEXT -->
-							<a href="${pageContext.request.contextPath}/forum/user?id=${listcatinfo.create_by_id}" class="forum-category-text blue">
-								${listcatinfo.create_by_name}</a>
+							<div class="forum-category-text blue">
+								${listcatinfo.create_by}</div>
 							<!-- /FORUM CATEGORY TEXT -->
 						</div>
 						<!-- /TABLE ROW ITEM -->
@@ -298,11 +163,11 @@
 						</div>
 						<!-- /TABLE ROW ITEM -->
 <div class="table-row-item">
-							<p class="table-text bold light">${listcatinfo.reply}</p>
+						
 						</div>
 						<!-- TABLE ROW ITEM -->
 						<div class="table-row-item">
-							<p class="table-text bold light">${listcatinfo.last_update_date}</p>
+							<p class="table-text bold light">${listcatinfo.create_date}</p>
 						</div>
 						<!-- /TABLE ROW ITEM -->
 					</div>

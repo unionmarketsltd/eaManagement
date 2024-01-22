@@ -121,109 +121,11 @@
 						</a>
 						<!-- /WIDGET OPTION -->
 
-						<!-- WIDGET OPTION -->
-						<a href="#" class="widget-option">
-							<p class="widget-option-text">Shipping Details</p>
-						</a>
-						<!-- /WIDGET OPTION -->
-
-						<!-- WIDGET OPTION -->
-						<a href="#" class="widget-option">
-							<p class="widget-option-text">Billing Details</p>
-						</a>
-						<!-- /WIDGET OPTION -->
-
-						<!-- WIDGET OPTION -->
-						<a href="orders-history.html" class="widget-option">
-							<p class="widget-option-text">Orders History</p>
-						</a>
-						<!-- /WIDGET OPTION -->
-
-						<!-- WIDGET OPTION HEADING -->
-						<div class="widget-option-heading red">
-							<p class="widget-option-text">Pixel Forums</p>
-						</div>
-						<!-- /WIDGET OPTION HEADING -->
-
-						<!-- WIDGET OPTION -->
-						<a href="profile-summary.html" class="widget-option">
-							<p class="widget-option-text">Summary</p>
-						</a>
-						<!-- /WIDGET OPTION -->
-
-						<!-- WIDGET OPTION -->
-						<a href="profile-activity.html" class="widget-option">
-							<p class="widget-option-text">Activity</p>
-						</a>
-						<!-- /WIDGET OPTION -->
-
-						<!-- WIDGET OPTION -->
-						<a href="profile-notifications.html" class="widget-option">
-							<p class="widget-option-text">Notifications</p>
-						</a>
-						<!-- /WIDGET OPTION -->
-
-						<!-- WIDGET OPTION -->
-						<a href="profile-messages.html" class="widget-option">
-							<p class="widget-option-text">Messages</p>
-						</a>
-						<!-- /WIDGET OPTION -->
-
-						<!-- WIDGET OPTION -->
-						<a href="profile-badges.html" class="widget-option">
-							<p class="widget-option-text">Profile Badges</p>
-						</a>
-						<!-- /WIDGET OPTION -->
-
-						<!-- WIDGET OPTION -->
-						<a href="profile-settings.html" class="widget-option">
-							<p class="widget-option-text">Settings</p>
-						</a>
-						<!-- /WIDGET OPTION -->
+						
 					</div>
 					<!-- /WIDGET OPTIONS -->
 				</div>
-				<!-- /WIDGET OPTIONS WRAP -->
-
-				<!-- WIDGET OPTIONS WRAP -->
-				<div class="widget-options-wrap">
-					<!-- CURRENT OPTION -->
-					<a href="wishlist.html">
-						<div class="current-option">
-							<!-- CURRENT OPTION VALUE -->
-							<div class="current-option-value">
-								<i class="icon-heart widget-option-icon"></i>
-								<p class="widget-option-text">
-									Wishlist <span class="quantity">(5)</span>
-								</p>
-							</div>
-							<!-- /CURRENT OPTION VALUE -->
-						</div>
-					</a>
-					<!-- /CURRENT OPTION -->
-				</div>
-				<!-- /WIDGET OPTIONS WRAP -->
-
-				<!-- WIDGET OPTIONS WRAP -->
-				<div class="widget-options-wrap">
-					<!-- CURRENT OPTION -->
-					<a href="product-compare.html">
-						<div class="current-option">
-							<!-- CURRENT OPTION VALUE -->
-							<div class="current-option-value">
-								<i class="icon-tag widget-option-icon"></i>
-								<p class="widget-option-text">
-									Compare <span class="quantity">(2)</span>
-								</p>
-							</div>
-							<!-- /CURRENT OPTION VALUE -->
-						</div>
-					</a>
-					<!-- /CURRENT OPTION -->
-				</div>
-				<!-- /WIDGET OPTIONS WRAP -->
-
-				<!-- BUTTON -->
+				
 
 
 				<a href="${pageContext.request.contextPath}/forum/logout"
@@ -303,38 +205,7 @@
           <!-- FORM ITEM -->
           <div class="form-item">
             <label class="rl-label">Show Results</label>
-            <!-- CHECK RADIO LIST -->
-            <div class="check-radio-list">
-              <!-- RADIO ITEM -->
-              <div class="radio-item">
-                <input type="radio" id="search_topic_post" name="search_results" value="search_topic_post" checked="">
-                <!-- RADIO CIRCLE -->
-                <div class="radio-circle red"></div>
-                <!-- RADIO CIRCLE -->
-                <label for="search_topic_post" class="rl-label">Topics and Posts</label>
-              </div>
-              <!-- /RADIO ITEM -->
-          
-              <!-- RADIO ITEM -->
-              <div class="radio-item">
-                <input type="radio" id="search_topic" name="search_results" value="search_topic">
-                <!-- RADIO CIRCLE -->
-                <div class="radio-circle red"></div>
-                <!-- RADIO CIRCLE -->
-                <label for="search_topic" class="rl-label">Only Topics</label>
-              </div>
-              <!-- /RADIO ITEM -->
-
-              <!-- RADIO ITEM -->
-              <div class="radio-item">
-                <input type="radio" id="search_post" name="search_results" value="search_post">
-                <!-- RADIO CIRCLE -->
-                <div class="radio-circle red"></div>
-                <!-- RADIO CIRCLE -->
-                <label for="search_post" class="rl-label">Only Posts</label>
-              </div>
-              <!-- /RADIO ITEM -->
-            </div>
+      
             <!-- /CHECK RADIO LIST -->
           </div>
           <!-- /FORM ITEM -->
@@ -344,7 +215,7 @@
         <!-- FORM ACTIONS -->
         <div class="form-actions right">
           <!-- BUTTON -->
-          <button class="button red">
+          <button class="button red" type="button" onclick="search()">
             Search Forums!
             <!-- BUTTON ORNAMENT -->
             <span class="button-ornament">
@@ -482,6 +353,19 @@
 	</div>
 	<!-- /FORM BOX -->
 </div>
+
+
+<script>
+
+function search()
+{
+	window.location.href = "${pageContext.request.contextPath}/forum/search?keyword="+document.getElementById('search_text').value;
+	
+	
+	}
+
+</script>
+
 
 
  

@@ -26,7 +26,7 @@
 					<!-- TAG LIST -->
 					<div class="tag-list">
 						<!-- TAG ORNAMENT -->
-						<a href="news-v4.html" class="tag-ornament">${topicinfo.category_name}</a>
+						<a href="${pageContext.request.contextPath}/forum/category?id=${topicinfo.category_id}" class="tag-ornament">${topicinfo.category_name}</a>
 						<!-- /TAG ORNAMENT -->
 					</div>
 					<!-- /TAG LIST -->
@@ -148,7 +148,7 @@
 					<!-- POST COMMENT ACTIONS -->
 					<div class="post-comment-actions">
 					
-						<div class="topic-action-icon bubble-ornament hoverable blue popup-quick-reply-trigger" onclick="quickreply('c','${ listinfo1.postownername }','${ listinfo1.create_by_img }',' ${ listinfo1.comment}',' ${ listinfo1.id}',' ${ listinfo1.depth}')">
+						<div class="topic-action-icon bubble-ornament hoverable blue popup-quick-reply-trigger" onclick="quickreply('c','${ listinfo1.postownername }','${ listinfo1.create_by_img }',' ${ listinfo1.comment}','${ listinfo1.id}','${ listinfo1.depth}')">
                     <i class="icon-action-undo reply-icon"></i>
                   </div>
 
@@ -171,7 +171,7 @@
 
 		<div style="border-top: 1px dotted grey;
     padding-top: 19px;">
-			<button type="button" class="button blue cloner-wrap popup-quick-reply-trigger" onclick="quickreply('t','${topicinfo.create_by_name}','${topicinfo.create_by_img}',' ${topicinfo.title}',' ${ listinfo1.id}',' ${ listinfo1.depth}')"
+			<button type="button" class="button blue cloner-wrap popup-quick-reply-trigger" onclick="quickreply('t','${topicinfo.create_by_name}','${topicinfo.create_by_img}','${topicinfo.title}','${ listinfo1.id}','${ listinfo1.depth}')"
 				style="position: relative; position: relative; float: right; width: 215px;">
 				Reply to this topic <!-- BUTTON ORNAMENT -->
 				<div class="button-ornament">
@@ -351,14 +351,27 @@
   function postreply()
 	{
 	  document.getElementById("replybtnicon").innerHTML = '<i class="fa fa-spinner fa-spin" style="margin-top: 4px;font-size:24px"></i>';
-	 
+	  
+	  var type = "";
+	  if(document.getElementById("replytype").innerHTML.indexOf("comment")>=0)
+		  {
+		  type='c';
+		
+		 
+		  }
+	  else
+		  {
+		  type='t';
+	
+		  }
+
 		$.ajax({
 			url : '${pageContext.request.contextPath}/forum/api/createnewreply',
 			type : 'post',
 			datatype : "application/json",
 			contentType : "application/json",
 			async : true,
-			data : JSON.stringify(getnewreplyobject()),
+			data : JSON.stringify(getnewreplyobject(type)),
 			success : function(data) {
 				console.log(data);
 				const jobj = JSON.parse(data.result);
