@@ -1,6 +1,7 @@
 package com.union.portal.controller;
 
 import java.sql.SQLException;
+import java.time.format.DateTimeFormatter;
 import java.util.Base64;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -25,15 +26,18 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.union.portal.common.APIProtectionHandler;
 import com.union.portal.common.HttpUtils;
 import com.union.portal.domain.FundClient_loginhistory;
 import com.union.portal.domain.forum_and_cat_name;
+import com.union.portal.domain.scroll_topic_info;
 import com.union.portal.domain.t_forum;
 import com.union.portal.domain.t_forum_category;
 import com.union.portal.domain.t_forum_topic;
 import com.union.portal.domain.t_forum_topiccount;
 import com.union.portal.domain.topic_comment_list;
+import com.union.portal.domain.topic_comment_user_like;
 import com.union.portal.domain.topic_search_result;
 import com.union.portal.domain.topic_subcomment_list;
 import com.union.portal.service.ForumService;
@@ -148,27 +152,47 @@ public class ForumController {
 	public String category(Model model, HttpServletRequest request) throws SQLException {
 		logger.info("Welcome category.");
 		String id = request.getParameter("id");
+		String page = request.getParameter("page");
 		String vLocal = LocaleContextHolder.getLocale().getLanguage();
-		
+
 		t_forum_category tfc = null;
 		tfc = forumservices.getforumcategoryinfo(id);
-		
-		
+		int pagenumber = 0;
+		if (page != null && page != "") {
+			pagenumber = Integer.parseInt(page) - 1;
+			if (pagenumber < 0) {
+				pagenumber = 0;
+			}
+
+		}
+
 		List<t_forum_topic> tft = null;
-		tft = forumservices.getforumcategorytopiclist(id);
+		tft = forumservices.getforumcategorytopiclist(id, pagenumber * 10);
+
+		for (t_forum_topic topic : tft) {
+			topic.last_update_date_string = topic.last_update_date.toLocalDateTime()
+					.format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss a"));
+		}
+
 		model.addAttribute("topiclist", tft);
-		
+
 		model.addAttribute("name", tfc.name);
-		model.addAttribute("createby", tfc.create_by);
+		model.addAttribute("createby", tfc.create_by_name);
 		model.addAttribute("createdate", tfc.create_date);
 		model.addAttribute("desc", tfc.description);
 		model.addAttribute("post", tfc.post_number);
 		model.addAttribute("comment", tfc.comment_number);
-		
-		
+		model.addAttribute("id", tfc.id);
+
+		int totalpage = forumservices.getforumcategorytotalPage(id);
+
+		model.addAttribute("maxpage", totalpage);
+
+		model.addAttribute("currentpage", pagenumber + 1);
+
 		model.addAttribute("lang", vLocal);
 		String returnURL = "";
-		
+
 		/*
 		 * HttpSession session = request.getSession();
 		 * logger.info((String)session.getAttribute("s_GName"));
@@ -177,126 +201,106 @@ public class ForumController {
 		 */
 		forum_and_cat_name fncn = null;
 		fncn = forumservices.getcategorynameandforumname(id);
-		
-		
-		
+
 		model.addAttribute("forumid", fncn.forumid);
 		model.addAttribute("categoryid", fncn.catid);
 		model.addAttribute("forumname", fncn.forumname);
 		model.addAttribute("categoryname", fncn.categoryname);
 		returnURL = "/category";
-		
+
 		return defaultpath + returnURL;
 	}
-	
-	
-	
-	
-	
+
 	@RequestMapping(value = "/search", method = RequestMethod.GET)
 	public String search(Model model, HttpServletRequest request) throws SQLException {
 		logger.info("Welcome search.");
 		String keyword = request.getParameter("keyword");
 		String vLocal = LocaleContextHolder.getLocale().getLanguage();
-		
-		List<topic_search_result>  tsr = null;
+
+		List<topic_search_result> tsr = null;
 		tsr = forumservices.getsearchresult(keyword);
-		
-		
-		model.addAttribute("searchfor", "Keyword: "+keyword);
-		
+
+		model.addAttribute("searchfor", "Keyword: " + keyword);
+
 		model.addAttribute("resultlist", tsr);
-		
+
 		model.addAttribute("lang", vLocal);
 		String returnURL = "";
-	
+
 		returnURL = "/search";
-		
+
 		return defaultpath + returnURL;
 	}
-	
-	
-	
-	
+
 	@RequestMapping(value = "/topic", method = RequestMethod.GET)
 	public String topic(Model model, HttpServletRequest request) throws SQLException {
 		logger.info("Welcome topic.");
 		String id = request.getParameter("id");
 		String vLocal = LocaleContextHolder.getLocale().getLanguage();
-		
+
 		t_forum_category tfc = null;
 		tfc = forumservices.getforumcategoryinfo(id);
-		
-		
+
 		t_forum_topic tft = null;
 		tft = forumservices.getforumtopicinfo(id);
-		
-		
+
 		List<topic_comment_list> tcl = null;
 		tcl = forumservices.getforumtopiccommentlist(id);
-		
-		
+		HttpSession session = request.getSession();
+		int isuserlike = forumservices.isuserlikethistopic(id, (String) session.getAttribute("s_GEmail"));
+
+		List<topic_comment_user_like> tcul = null;
+
+		tcul = forumservices.userliketopiccommentlist(id, (String) session.getAttribute("s_GEmail"));
+
 		forumservices.updatetopicview(id);
-		
-		
+		model.addAttribute("isuserlike", isuserlike);
 		model.addAttribute("topiclist", tft);
-		
+
+		model.addAttribute("tcullist", tcul);
+
 		model.addAttribute("topicinfo", tft);
-		
+
 		model.addAttribute("commentlist", tcl);
-		
+
 		model.addAttribute("lang", vLocal);
 		String returnURL = "";
-		
-	
+
 		returnURL = "/topic";
-		
+
 		return defaultpath + returnURL;
 	}
-	
-	
-	
-	
-	
+
 	@RequestMapping(value = "/createtopic", method = RequestMethod.GET)
 	public String createtopic(Model model, HttpServletRequest request) throws SQLException {
 		logger.info("Welcome createtopic.");
 		String categoryid = request.getParameter("cat");
 		String vLocal = LocaleContextHolder.getLocale().getLanguage();
-		
+
 		t_forum_category tfc = null;
 		tfc = forumservices.getforumcategoryinfo(categoryid);
 
-		
 		model.addAttribute("name", tfc.name);
 		model.addAttribute("createby", tfc.create_by);
 		model.addAttribute("createdate", tfc.create_date);
 		model.addAttribute("desc", tfc.description);
 		model.addAttribute("post", tfc.post_number);
 		model.addAttribute("comment", tfc.comment_number);
-		
-		
+
 		model.addAttribute("lang", vLocal);
 		String returnURL = "";
-		
-		
+
 		forum_and_cat_name fncn = null;
 		fncn = forumservices.getcategorynameandforumname(categoryid);
-		
-		
-		
+
 		model.addAttribute("forumid", fncn.forumid);
 		model.addAttribute("categoryid", fncn.catid);
 		model.addAttribute("forumname", fncn.forumname);
 		model.addAttribute("categoryname", fncn.categoryname);
 		returnURL = "/createtopic";
-		
+
 		return defaultpath + returnURL;
 	}
-	
-	
-	
-	
 
 	public static String decodeJwtResponse(String token) {
 		String base64Url = token.split("\\.")[1];
@@ -389,41 +393,74 @@ public class ForumController {
 		mav.addObject("result", responsestr);
 		return mav;
 	}
-	
-	
-	
-	
-	@PostMapping(value = { "/api/createnewtopic" }, consumes = { "application/json" }, produces = { "application/json" })
+
+	@PostMapping(value = { "/api/createnewtopic" }, consumes = { "application/json" }, produces = {
+			"application/json" })
 	public ModelAndView api_createnewtopic(@RequestBody String body, HttpServletRequest request) throws SQLException {
 		ModelAndView mav = new ModelAndView("jsonView");
 		JSONObject jsonbodyobj = new JSONObject(body);
 		logger.info("Welcome createnewtopic: ");
 		String responsestr = "";
 		HttpSession session = request.getSession();
-		
-		
+
 		String cat = jsonbodyobj.getString("cat");
 		String topic = jsonbodyobj.getString("topic");
 		String content = jsonbodyobj.getString("content");
 		String desc = jsonbodyobj.getString("desc");
-		
+
 		logger.info(cat);
 		logger.info(topic);
 		logger.info(content);
-		if(APIProtectionHandler.islogin(request))
-		{
-			forumservices.insertnewtopic(cat,topic,desc,content,(String) session.getAttribute("s_GEmail"));
+		if (APIProtectionHandler.islogin(request)) {
+			forumservices.insertnewtopic(cat, topic, desc, content, (String) session.getAttribute("s_GEmail"));
 			JSONObject jobj = new JSONObject();
-			jobj.put("redirect", "/category?id="+cat);
+			jobj.put("redirect", "/category?id=" + cat);
 			responsestr = jobj.toString();
-		}
-		else
-		{
+		} else {
 			JSONObject jobj = new JSONObject();
 			jobj.put("redirect", "/error");
 			responsestr = jobj.toString();
-			
-			
+
+		}
+		mav.addObject("result", APIProtectionHandler.ApiProtection(request, responsestr));
+		return mav;
+	}
+
+	@PostMapping(value = { "/api/userliketopic" }, consumes = { "application/json" }, produces = { "application/json" })
+	public ModelAndView api_userliketopic(@RequestBody String body, HttpServletRequest request) throws SQLException {
+		ModelAndView mav = new ModelAndView("jsonView");
+		JSONObject jsonbodyobj = new JSONObject(body);
+		logger.info("Welcome userliketopic: ");
+		String responsestr = "";
+		HttpSession session = request.getSession();
+
+		String tid = jsonbodyobj.getString("id");
+		String yesno = jsonbodyobj.getString("yesno");
+
+		if (APIProtectionHandler.islogin(request)) {
+
+			if (yesno.indexOf("Y") >= 0) {
+
+				int islike = forumservices.isuserlikethistopic(tid, (String) session.getAttribute("s_GEmail"));
+				if (islike == 0) {
+
+					forumservices.userliketopic(tid, (String) session.getAttribute("s_GEmail"));
+				} else {
+					forumservices.userlikeliketopic(tid, (String) session.getAttribute("s_GEmail"));
+				}
+
+			} else {
+				forumservices.userunliketopic(tid, (String) session.getAttribute("s_GEmail"));
+			}
+
+			JSONObject jobj = new JSONObject();
+			jobj.put("redirect", "/topic?id=" + tid);
+			responsestr = jobj.toString();
+		} else {
+			JSONObject jobj = new JSONObject();
+			jobj.put("redirect", "/error");
+			responsestr = jobj.toString();
+
 		}
 		mav.addObject("result", APIProtectionHandler.ApiProtection(request, responsestr));
 		return mav;
@@ -432,61 +469,123 @@ public class ForumController {
 	
 	
 	
+	@PostMapping(value = { "/api/userlikecomment" }, consumes = { "application/json" }, produces = { "application/json" })
+	public ModelAndView userlikecomment(@RequestBody String body, HttpServletRequest request) throws SQLException {
+		ModelAndView mav = new ModelAndView("jsonView");
+		JSONObject jsonbodyobj = new JSONObject(body);
+		logger.info("Welcome userliketopic: ");
+		String responsestr = "";
+		HttpSession session = request.getSession();
+
+		String tid = jsonbodyobj.getString("id");
+		String yesno = jsonbodyobj.getString("yesno");
+		String topicid = jsonbodyobj.getString("tid");
+
+		if (APIProtectionHandler.islogin(request)) {
+
+			if (yesno.indexOf("Y") >= 0) {
+
+				int islike = forumservices.isuserlikethiscomment(tid, (String) session.getAttribute("s_GEmail"));
+				if (islike == 0) {
+
+					forumservices.userlikecomment(tid, (String) session.getAttribute("s_GEmail"));
+				} else {
+					forumservices.userlikelikecomment(tid, (String) session.getAttribute("s_GEmail"));
+				}
+
+			} else {
+				forumservices.userunlikecomment(tid, (String) session.getAttribute("s_GEmail"));
+			}
+
+			JSONObject jobj = new JSONObject();
+			jobj.put("redirect", "/topic?id=" + topicid);
+			responsestr = jobj.toString();
+		} else {
+			JSONObject jobj = new JSONObject();
+			jobj.put("redirect", "/error");
+			responsestr = jobj.toString();
+
+		}
+		mav.addObject("result", APIProtectionHandler.ApiProtection(request, responsestr));
+		return mav;
+	}
 	
-	@PostMapping(value = { "/api/createnewreply" }, consumes = { "application/json" }, produces = { "application/json" })
+	
+
+	@RequestMapping(value = { "/api/getscrolltopicinfo" }, method = { RequestMethod.GET }, produces = {
+			"application/json;charset=UTF-8" })
+	@ResponseBody
+	public ModelAndView getscrolltopicinfo(HttpServletRequest request, Model model) {
+
+		ModelAndView mav = new ModelAndView("jsonView");
+		String responsestr = "";
+		HttpSession session = request.getSession();
+		if (APIProtectionHandler.islogin(request)) {
+			List<scroll_topic_info> sti = forumservices.getscrolltopicinfo();
+			List<scroll_topic_info> display = null;
+			for (scroll_topic_info topicInfo : sti) {
+				topicInfo.title = "<a href=\"topic?id=" + topicInfo.id + "\" class=\"link\">" + topicInfo.title + " ("
+						+ topicInfo.name + " " + topicInfo.create_date
+						+ ") </a><span class=\"separator\"><span class=\"separator-bar\">/</span><span class=\"separator-bar\">/</span></span>";
+
+			}
+
+			try {
+				ObjectMapper objectMapper = new ObjectMapper();
+				responsestr = objectMapper.writeValueAsString(sti);
+
+				// Print the JSON
+				System.out.println(responsestr);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+		} else {
+
+		}
+		mav.addObject("result", APIProtectionHandler.ApiProtection(request, responsestr));
+		return mav;
+	}
+
+	@PostMapping(value = { "/api/createnewreply" }, consumes = { "application/json" }, produces = {
+			"application/json" })
 	public ModelAndView api_createnewreply(@RequestBody String body, HttpServletRequest request) throws SQLException {
 		ModelAndView mav = new ModelAndView("jsonView");
 		JSONObject jsonbodyobj = new JSONObject(body);
 		logger.info("Welcome createnewreply: ");
 		String responsestr = "";
 		HttpSession session = request.getSession();
-		
-		
+
 		String tid = jsonbodyobj.getString("tid");
 		String pid = jsonbodyobj.getString("pid");
 		String depth = jsonbodyobj.getString("depth");
 		String cmd = jsonbodyobj.getString("cmd");
-		
-		
-		
+
 		logger.info(tid);
 		logger.info(pid);
 		logger.info(depth);
 		logger.info(cmd);
-		
-		if(APIProtectionHandler.islogin(request))
-		{
-			
-			if(Integer.parseInt(pid)<0)
-			{
-				forumservices.insertnewcommentfortopic(depth,tid,cmd,(String) session.getAttribute("s_GEmail"));
+
+		if (APIProtectionHandler.islogin(request)) {
+
+			if (Integer.parseInt(pid) < 0) {
+				forumservices.insertnewcommentfortopic(depth, tid, cmd, (String) session.getAttribute("s_GEmail"));
+			} else {
+				forumservices.insertnewcomment(pid, depth, tid, cmd, (String) session.getAttribute("s_GEmail"));
 			}
-			else
-			{
-				forumservices.insertnewcomment(pid,depth,tid,cmd,(String) session.getAttribute("s_GEmail"));
-			}
-			
-			
-			
+
 			JSONObject jobj = new JSONObject();
-			jobj.put("redirect", "/topic?id="+tid);
+			jobj.put("redirect", "/topic?id=" + tid);
 			responsestr = jobj.toString();
-		}
-		else
-		{
+		} else {
 			JSONObject jobj = new JSONObject();
 			jobj.put("redirect", "/error");
 			responsestr = jobj.toString();
-			
-			
+
 		}
 		mav.addObject("result", APIProtectionHandler.ApiProtection(request, responsestr));
 		return mav;
 	}
-	
-	
-	
-	
 
 	@RequestMapping(value = "/logout", method = RequestMethod.GET)
 	public String logout(HttpServletRequest request, Model model) {

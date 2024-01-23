@@ -37,53 +37,8 @@
 		<!-- /BANNER -->
 	</div>
 
-	<!-- LIVE NEWS WIDGET WRAP -->
-	<div class="live-news-widget-wrap">
-		<!-- LIVE NEWS WIDGET -->
-		<div class="live-news-widget grid-limit">
-			<!-- LIVE NEWS WIDGET STAIRS -->
-			<div class="live-news-widget-stairs left red">
-				<div class="live-news-widget-stair"></div>
-				<div class="live-news-widget-stair"></div>
-				<div class="live-news-widget-stair"></div>
-				<div class="live-news-widget-stair"></div>
-				<div class="live-news-widget-stair"></div>
-				<div class="live-news-widget-stair"></div>
-				<div class="live-news-widget-stair"></div>
-				<div class="live-news-widget-stair"></div>
-			</div>
-			<!-- /LIVE NEWS WIDGET STAIRS -->
+	<%@include file="inc/newsscroll.jsp"%>
 
-			<!-- LIVE NEWS WIDGET STAIRS -->
-			<div class="live-news-widget-stairs right blue">
-				<div class="live-news-widget-stair"></div>
-				<div class="live-news-widget-stair"></div>
-				<div class="live-news-widget-stair"></div>
-				<div class="live-news-widget-stair"></div>
-				<div class="live-news-widget-stair"></div>
-				<div class="live-news-widget-stair"></div>
-				<div class="live-news-widget-stair"></div>
-				<div class="live-news-widget-stair"></div>
-			</div>
-			<!-- /LIVE NEWS WIDGET STAIRS -->
-
-			<!-- LIVE NEWS WIDGET TITLE WRAP -->
-			<div class="live-news-widget-title-wrap">
-				<img class="live-news-widget-icon"
-					src="${pageContext.request.contextPath}/resources/forum/img/icons/live-news-icon.png"
-					alt="live-news-icon">
-				<p class="live-news-widget-title">Live News</p>
-			</div>
-			<!-- /LIVE NEWS WIDGET TITLE WRAP -->
-
-			<!-- LIVE NEWS WIDGET TEXT WRAP -->
-			<div id="lineslide-wrap1" class="live-news-widget-text-wrap">
-				<p class="live-news-widget-text"></p>
-			</div>
-			<!-- /LIVE NEWS WIDGET TEXT WRAP -->
-		</div>
-		<!-- /LIVE NEWS WIDGET -->
-	</div>
 
 
 	<div class="layout-content-full grid-limit">
@@ -94,16 +49,16 @@
 
 			<!-- FORUM ACTIONS -->
 			<div class="forum-actions">
-				
+
 
 				<!-- BUTTON -->
-				<a class="button small red popup-advanced-search-trigger">Search Forum
-					</a>
-				<a  href="${pageContext.request.contextPath}/forum/createtopic?cat=<%=request.getAttribute("categoryid")%>" class="button small blue ">Create
-					Topic</a>
+				<a class="button small red popup-advanced-search-trigger">Search
+					Forum </a> <a
+					href="${pageContext.request.contextPath}/forum/createtopic?cat=<%=request.getAttribute("categoryid")%>"
+					class="button small blue ">Create Topic</a>
 				<!-- /BUTTON -->
 
-	
+
 				<!-- /DROPDOWN SIMPLE WRAP -->
 			</div>
 			<!-- /FORUM ACTIONS -->
@@ -118,10 +73,10 @@
 						<!-- FORUM CATEGORY WRAP -->
 						<div class="forum-category-wrap">
 							<!-- FORUM CATEGORY IMG -->
-							<div> <img
-								class="forum-category-img"
-								src="${pageContext.request.contextPath}/resources/forum/img/forum/category-10.png"
-								alt="category-08">
+							<div>
+								<img class="forum-category-img"
+									src="${pageContext.request.contextPath}/resources/forum/img/forum/category-10.png"
+									alt="category-08">
 							</div>
 							<!-- /FORUM CATEGORY IMG -->
 
@@ -184,16 +139,16 @@
 							<!-- /FORUM POST LINK WRAP -->
 
 							<!-- FORUM POST LINK WRAP -->
-							<div class="forum-post-link-wrap">
-								<!-- FORUM POST LINK -->
+							<!--  <div class="forum-post-link-wrap">
+								
 								<a href="topic.html" class="forum-post-link">Latest Activity
 									: <%=request.getAttribute("createdate")%></a>
-								<!-- /FORUM POST LINK -->
+								
 
-								<!-- FORUM POST TIMESTAMP -->
+								
 								<p class="forum-post-timestamp">*</p>
-								<!-- /FORUM POST TIMESTAMP -->
-							</div>
+								
+							</div>-->
 							<!-- /FORUM POST LINK WRAP -->
 						</div>
 						<!-- /FORUM POST LINKS -->
@@ -234,8 +189,8 @@
 					<p class="table-row-header-title">Likes</p>
 				</div>
 				<!-- /TABLE ROW HEADER ITEM -->
-<div class="table-row-header-item padded-big">
-					<p class="table-row-header-title">replied</p>
+				<div class="table-row-header-item padded-big">
+					<p class="table-row-header-title">Comments</p>
 				</div>
 
 
@@ -260,7 +215,8 @@
 						<!-- TABLE ROW ITEM -->
 						<div class="table-row-item">
 							<!-- FORUM POST LINK -->
-							<a href="${pageContext.request.contextPath}/forum/topic?id=${listcatinfo.id}"
+							<a
+								href="${pageContext.request.contextPath}/forum/topic?id=${listcatinfo.id}"
 								class="forum-post-link <c:choose>
 										<c:when test="${listcatinfo.pin_post == 1}">pin-tag
 										</c:when>
@@ -279,8 +235,15 @@
 						<!-- TABLE ROW ITEM -->
 						<div class="table-row-item">
 							<!-- FORUM CATEGORY TEXT -->
-							<a href="${pageContext.request.contextPath}/forum/user?id=${listcatinfo.create_by_id}" class="forum-category-text blue">
-								${listcatinfo.create_by_name}</a>
+							<div
+								class="table-text bold gc" >
+								<div>
+								<img class="widget-option-img user-avatar micro" src="${listcatinfo.create_by_img}" alt="avatar-01">
+								</div>
+								<div>
+								 <div style="line-height:22px">${listcatinfo.create_by_name}</div>
+								</div>
+								</div>
 							<!-- /FORUM CATEGORY TEXT -->
 						</div>
 						<!-- /TABLE ROW ITEM -->
@@ -297,12 +260,12 @@
 							<p class="table-text bold light">${listcatinfo.likes}</p>
 						</div>
 						<!-- /TABLE ROW ITEM -->
-<div class="table-row-item">
+						<div class="table-row-item">
 							<p class="table-text bold light">${listcatinfo.reply}</p>
 						</div>
 						<!-- TABLE ROW ITEM -->
 						<div class="table-row-item">
-							<p class="table-text bold light">${listcatinfo.last_update_date}</p>
+							<p class="table-text bold light">${listcatinfo.last_update_date_string}</p>
 						</div>
 						<!-- /TABLE ROW ITEM -->
 					</div>
@@ -311,10 +274,69 @@
 
 
 				</c:forEach>
-				
+
 
 
 			</div>
+
+		</div>
+		<div class="page-navigation blue spaced right">
+	
+
+
+
+			<c:choose>
+				<c:when test="${currentpage eq 1}">
+
+				</c:when>
+				<c:otherwise>
+						<!-- CONTROL PREVIOUS -->
+			<a href="${pageContext.request.contextPath}/forum/category?id=${id}&page=${currentpage -1}" class="slider-control big control-previous">
+				<!-- ARROW ICON -->
+				<svg class="arrow-icon medium">
+          <use xlink:href="#svg-arrow-medium"></use>
+        </svg>
+				<!-- /ARROW ICON -->
+			</a>
+			<!-- /CONTROL PREVIOUS -->
+					<a href="${pageContext.request.contextPath}/forum/category?id=${id}&page=${currentpage -1}" class="page-navigation-item">${currentpage -1}</a>
+				</c:otherwise>
+			</c:choose>
+
+			<a href="${pageContext.request.contextPath}/forum/category?id=${id}&page=${currentpage}" class="page-navigation-item active"><%=request.getAttribute("currentpage")%></a>
+			
+			<c:choose>
+				<c:when test="${currentpage eq maxpage}">
+
+				</c:when>
+				<c:otherwise>
+					<a href="${pageContext.request.contextPath}/forum/category?id=${id}&page=${currentpage +1}" class="page-navigation-item">${currentpage +1}</a>
+				</c:otherwise>
+			</c:choose>
+			<div
+				class="page-navigation-item">...</div> <a href="${pageContext.request.contextPath}/forum/category?id=${id}&page=${maxpage}"
+				class="page-navigation-item"><%=request.getAttribute("maxpage")%></a>
+			<!-- CONTROL PREVIOUS -->
+			
+			
+			<c:choose>
+				<c:when test="${currentpage eq maxpage}">
+
+				</c:when>
+				<c:otherwise>
+						<a href="${pageContext.request.contextPath}/forum/category?id=${id}&page=${maxpage}"class="slider-control big control-next">
+				<!-- ARROW ICON -->
+				<svg class="arrow-icon medium">
+          <use xlink:href="#svg-arrow-medium"></use>
+        </svg>
+				<!-- /ARROW ICON -->
+			</a>
+				</c:otherwise>
+			</c:choose>
+			
+			
+		
+			<!-- /CONTROL PREVIOUS -->
 		</div>
 	</div>
 

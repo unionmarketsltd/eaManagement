@@ -8,11 +8,13 @@ import org.springframework.stereotype.Service;
 import com.union.portal.domain.FundClient_client;
 import com.union.portal.domain.FundClient_loginhistory;
 import com.union.portal.domain.forum_and_cat_name;
+import com.union.portal.domain.scroll_topic_info;
 import com.union.portal.domain.t_forum;
 import com.union.portal.domain.t_forum_category;
 import com.union.portal.domain.t_forum_topic;
 import com.union.portal.domain.t_forum_topiccount;
 import com.union.portal.domain.topic_comment_list;
+import com.union.portal.domain.topic_comment_user_like;
 import com.union.portal.domain.topic_search_result;
 import com.union.portal.domain.topic_subcomment_list;
 import com.union.portal.mapper.ForumMapper;
@@ -98,9 +100,9 @@ public class ForumServiceImpl implements ForumService {
 	}
 
 	@Override
-	public List<t_forum_topic> getforumcategorytopiclist(String categoryid) {
+	public List<t_forum_topic> getforumcategorytopiclist(String categoryid , int offset) {
 		// TODO Auto-generated method stub
-		return mapper.getforumcategorytopiclist(categoryid);
+		return mapper.getforumcategorytopiclist(categoryid ,offset);
 	}
 
 	@Override
@@ -162,6 +164,72 @@ public class ForumServiceImpl implements ForumService {
 	public List<topic_search_result> getsearchresult(String keyword) {
 		// TODO Auto-generated method stub
 		return mapper.getsearchresult(keyword);
+	}
+
+	@Override
+	public int getforumcategorytotalPage(String categoryid) {
+		// TODO Auto-generated method stub
+		return mapper.getforumcategorytotalPage(categoryid);
+	}
+
+	@Override
+	public List<scroll_topic_info> getscrolltopicinfo() {
+		// TODO Auto-generated method stub
+		return mapper.getscrolltopicinfo();
+	}
+
+	@Override
+	public void userliketopic(String tid, String email) {
+		mapper.userliketopic(tid, email);
+		
+	}
+
+	
+	public int isuserlikethistopic(String tid, String email) {
+		// TODO Auto-generated method stub
+		return mapper.isuserlikethistopic(tid, email);
+	}
+
+	@Override
+	public void userunliketopic(String tid, String email) {
+	mapper.userunliketopic(tid, email);
+	
+		
+	}
+
+	@Override
+	public void userlikeliketopic(String tid, String email) {
+		mapper.userlikeliketopic(tid, email);
+		
+	}
+
+	@Override
+	public List<topic_comment_user_like>  userliketopiccommentlist(String tid, String email) {
+		return mapper.userliketopiccommentlist(tid, email);
+		
+	}
+
+	@Override
+	public int isuserlikethiscomment(String tid, String email) {
+		return mapper.isuserlikethiscomment(tid, email);
+				
+	}
+
+	@Override
+	public void userlikecomment(String tid, String email) {
+		mapper.userlikecomment(tid, email);
+		
+	}
+
+	@Override
+	public void userlikelikecomment(String tid, String email) {
+		mapper.userlikelikecomment(tid, email);
+	}
+
+	@Override
+	public void userunlikecomment(String tid, String email) {
+		mapper.userunlikecomment(tid, email);
+		
 	}
 	
 	

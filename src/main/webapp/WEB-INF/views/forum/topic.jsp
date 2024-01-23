@@ -11,7 +11,8 @@
 <head>
 <%@include file="inc/header.jsp"%>
 <title>Pixel Diamond | Forum</title>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
 	<%@include file="inc/top.jsp"%>
@@ -26,7 +27,9 @@
 					<!-- TAG LIST -->
 					<div class="tag-list">
 						<!-- TAG ORNAMENT -->
-						<a href="${pageContext.request.contextPath}/forum/category?id=${topicinfo.category_id}" class="tag-ornament">${topicinfo.category_name}</a>
+						<a
+							href="${pageContext.request.contextPath}/forum/category?id=${topicinfo.category_id}"
+							class="tag-ornament">${topicinfo.category_name}</a>
 						<!-- /TAG ORNAMENT -->
 					</div>
 					<!-- /TAG LIST -->
@@ -77,6 +80,20 @@
 							<p class="post-open-comment-text">Comments</p>
 							<!-- /POST OPEN COMMENT TEXT-->
 						</div>
+
+						<div class="post-open-comment-info" style="margin-left: 18px">
+							<i class="fa fa-heart post-open-comment-icon" aria-hidden="true"
+								style="color: #f30a5c; font-size: 36px;"></i>
+
+							<!-- POST OPEN COMMENT COUNT -->
+							<a href="#op-comments" class="post-open-comment-count">${topicinfo.totallikes}</a>
+							<!-- /POST OPEN COMMENT COUNT -->
+
+							<!-- POST OPEN COMMENT TEXT-->
+							<p class="post-open-comment-text">Likes</p>
+							<!-- /POST OPEN COMMENT TEXT-->
+						</div>
+
 						<!-- /POST OPEN COMMENT INFO -->
 					</div>
 					<div
@@ -99,6 +116,78 @@
 			<!-- SECTION TITLE WRAP -->
 			<div class="section-title-wrap blue">
 				<h2 class="section-title medium">Comments (${topicinfo.reply})</h2>
+
+
+
+				<button type="button"
+					class="button blue cloner-wrap popup-quick-reply-trigger"
+					onclick="quickreply('t','Ng mingfung','https://lh3.googleusercontent.com/a/ACg8ocLEDhkqXsmJnfw5FH_3OHfVWY-lCOtU_iKQL9tnxGIqnA=s96-c','how to trade EURUSD','','')"
+					style="position: relative; position: relative; float: right; width: 215px; margin-top: -36px;">
+					Reply to this topic
+					<!-- BUTTON ORNAMENT -->
+					<div class="button-ornament">
+						<!-- ARROW ICON -->
+						<svg class="arrow-icon medium">
+            <use xlink:href="#svg-arrow-medium"></use>
+          </svg>
+						<!-- /ARROW ICON -->
+
+						<!-- CROSS ICON -->
+						<svg class="cross-icon small">
+            <use xlink:href="#svg-cross-small"></use>
+          </svg>
+						<!-- /CROSS ICON -->
+					</div>
+				</button>
+
+				<c:choose>
+					<c:when test="${isuserlike eq 0}">
+						<button type="button" class="button gray cloner-wrap"
+							onclick="likethistopic('Y')"
+							style="position: relative; position: relative; float: right; width: 215px; margin-top: -36px; margin-right: 10px">
+							click to like this
+							<div class="button-ornament">
+								<!-- ARROW ICON -->
+								<div class="arrow-icon medium">
+									<i class="fa fa-heart" aria-hidden="true"
+										style="margin-left: -4px"></i>
+								</div>
+								<!-- /ARROW ICON -->
+
+								<!-- CROSS ICON -->
+								<svg class="cross-icon small">
+            <use xlink:href="#svg-cross-small"></use>
+          </svg>
+								<!-- /CROSS ICON -->
+							</div>
+						</button>
+					</c:when>
+					<c:otherwise>
+						<button type="button" class="button red cloner-wrap"
+							onclick="likethistopic('N')"
+							style="position: relative; position: relative; float: right; width: 215px; margin-top: -36px; margin-right: 10px">
+							i liked this topic
+							<div class="button-ornament">
+								<!-- ARROW ICON -->
+								<div class="arrow-icon medium">
+									<i class="fa fa-heart" aria-hidden="true"
+										style="margin-left: -4px"></i>
+								</div>
+								<!-- /ARROW ICON -->
+
+								<!-- CROSS ICON -->
+								<svg class="cross-icon small">
+            <use xlink:href="#svg-cross-small"></use>
+          </svg>
+								<!-- /CROSS ICON -->
+							</div>
+						</button>
+					</c:otherwise>
+				</c:choose>
+
+
+
+
 				<div class="section-title-separator"></div>
 			</div>
 			<!-- /SECTION TITLE WRAP -->
@@ -134,7 +223,7 @@
 					<!-- /POST COMMENT USERNAME -->
 
 					<!-- POST COMMENT TIMESTAMP -->
-					<p class="post-comment-timestamp">${ listinfo1.userpost}Posts</p>
+					<!-- <p class="post-comment-timestamp">${ listinfo1.userpost}Posts</p> -->
 					<!-- /POST COMMENT TIMESTAMP -->
 
 					<!-- REPORT BUTTON -->
@@ -147,19 +236,48 @@
 
 					<!-- POST COMMENT ACTIONS -->
 					<div class="post-comment-actions">
-					
-						<div class="topic-action-icon bubble-ornament hoverable blue popup-quick-reply-trigger" onclick="quickreply('c','${ listinfo1.postownername }','${ listinfo1.create_by_img }',' ${ listinfo1.comment}','${ listinfo1.id}','${ listinfo1.depth}')">
-                    <i class="icon-action-undo reply-icon"></i>
-                  </div>
+
+						<div
+							class="topic-action-icon bubble-ornament hoverable blue popup-quick-reply-trigger"
+							onclick="quickreply('c','${ listinfo1.postownername }','${ listinfo1.create_by_img }',' ${ listinfo1.comment}','${ listinfo1.id}','${ listinfo1.depth}')">
+							<i class="icon-action-undo reply-icon"></i>
+						</div>
 
 						<!-- LIKE BUTTON -->
-						<div class="like-button bubble-ornament hoverable cyan">
-							<i class="icon-like like-icon"></i>
-						</div>
+
+						<c:forEach items="${ tcullist }" var="tcullistinfo"
+							varStatus="status4">
+							<c:choose>
+								<c:when test="${tcullistinfo.cid eq listinfo1.id }">
+									<div
+										class="like-button bubble-ornament
+									
+									<c:if test="${tcullistinfo.stat eq 1}">
+									
+									</c:if>
+									<c:if test="${tcullistinfo.stat ne 1}">
+									hoverable
+								</c:if>cyan"onclick="likecomment('${listinfo1.id}','<c:if test="${tcullistinfo.stat eq 1}">N</c:if><c:if test="${tcullistinfo.stat ne 1}">Y</c:if>')">
+										<i class="icon-like like-icon"></i>
+									</div>
+								</c:when>
+
+
+
+
+
+
+							</c:choose>
+						</c:forEach>
+
+
+
+
+
 						<!-- /LIKE BUTTON -->
 
 						<!-- LIKES COUNT -->
-						<p class="likes-count">${ listinfo1.like} Thumbs Up</p>
+						<p class="likes-count">${ listinfo1.like}Thumbs Up</p>
 						<!-- /LIKES COUNT -->
 					</div>
 					<!-- /POST COMMENT ACTIONS -->
@@ -169,11 +287,13 @@
 			</c:forEach>
 		</div>
 
-		<div style="border-top: 1px dotted grey;
-    padding-top: 19px;">
-			<button type="button" class="button blue cloner-wrap popup-quick-reply-trigger" onclick="quickreply('t','${topicinfo.create_by_name}','${topicinfo.create_by_img}','${topicinfo.title}','${ listinfo1.id}','${ listinfo1.depth}')"
+		<div style="border-top: 1px dotted grey; padding-top: 19px;">
+			<button type="button"
+				class="button blue cloner-wrap popup-quick-reply-trigger"
+				onclick="quickreply('t','${topicinfo.create_by_name}','${topicinfo.create_by_img}','${topicinfo.title}','${ listinfo1.id}','${ listinfo1.depth}')"
 				style="position: relative; position: relative; float: right; width: 215px;">
-				Reply to this topic <!-- BUTTON ORNAMENT -->
+				Reply to this topic
+				<!-- BUTTON ORNAMENT -->
 				<div class="button-ornament">
 					<!-- ARROW ICON -->
 					<svg class="arrow-icon medium">
@@ -192,96 +312,95 @@
 	</div>
 
 
-<div id="popup-quick-reply" class="popup-wrap full" style="position: fixed; left: 50%; z-index: 100001; opacity: 0; visibility: hidden; transform: translate(0px, 0px); display: block; transition: transform 0.3s ease-in-out 0s, opacity 0.3s ease-in-out 0s, visibility 0.3s ease-in-out 0s; top: 501px; margin-left: -685.5px;">
-    <!-- QUICK FORM WRAP -->
-    <div class="quick-form-wrap">
-      <!-- QUICK FORM -->
-      <div class="quick-form grid-limit">
-        <!-- SECTION TITLE WRAP -->
-        <div class="section-title-wrap blue">
-          <h2 class="section-title medium" id="replytype"></h2>
-          <div class="section-title-separator"></div>
-        </div>
-        <!-- /SECTION TITLE WRAP -->
+	<div id="popup-quick-reply" class="popup-wrap full"
+		style="position: fixed; left: 50%; z-index: 100001; opacity: 0; visibility: hidden; transform: translate(0px, 0px); display: block; transition: transform 0.3s ease-in-out 0s, opacity 0.3s ease-in-out 0s, visibility 0.3s ease-in-out 0s; top: 501px; margin-left: -685.5px;">
+		<!-- QUICK FORM WRAP -->
+		<div class="quick-form-wrap">
+			<!-- QUICK FORM -->
+			<div class="quick-form grid-limit">
+				<!-- SECTION TITLE WRAP -->
+				<div class="section-title-wrap blue">
+					<h2 class="section-title medium" id="replytype"></h2>
+					<div class="section-title-separator"></div>
+				</div>
+				<!-- /SECTION TITLE WRAP -->
 
-        <!-- TOPIC COMMENT REPLY USER -->
-        <div class="topic-comment-reply-user">
-          <!-- TOPIC COMMENT REPLY ICON -->
-          <i class="topic-comment-reply-icon icon-action-redo"></i>
-          <!-- /TOPIC COMMENT REPLY ICON -->
+				<!-- TOPIC COMMENT REPLY USER -->
+				<div class="topic-comment-reply-user">
+					<!-- TOPIC COMMENT REPLY ICON -->
+					<i class="topic-comment-reply-icon icon-action-redo"></i>
+					<!-- /TOPIC COMMENT REPLY ICON -->
 
-          <!-- USER AVATAR -->
-          <img class="user-avatar tiny"  id="replytoimg"src="img/users/09.jpg" alt="user-09">
-          <!-- /USER AVATAR -->
+					<!-- USER AVATAR -->
+					<img class="user-avatar tiny" id="replytoimg"
+						src="img/users/09.jpg" alt="user-09">
+					<!-- /USER AVATAR -->
 
-          <!-- TOPIC COMMENT REPLY NAME -->
-          <p class="topic-comment-reply-name" id="replyto">Eli-Valentine1890</p>
-          <!-- /TOPIC COMMENT REPLY NAME -->
-        </div>
-        <!-- /TOPIC COMMENT REPLY USER -->
-        
-        
-        <p id="replytooripost" style="margin-left:33px"></p>
-        <br>
-        <br>
+					<!-- TOPIC COMMENT REPLY NAME -->
+					<p class="topic-comment-reply-name" id="replyto">Eli-Valentine1890</p>
+					<!-- /TOPIC COMMENT REPLY NAME -->
+				</div>
+				<!-- /TOPIC COMMENT REPLY USER -->
 
-        <!-- FORM WRAP -->
-        <form class="form-wrap">
-          <!-- FORM ROW -->
-          <div class="form-row">
-            <!-- FORM ITEM -->
-            <div class="form-item blue">
-              <label for="quick_reply_text" class="rl-label">Write your reply</label>
-              <textarea name="quick_reply_text" id="quick_reply_text" placeholder="Write your reply here..."></textarea>
-            </div>
-            <!-- /FORM ITEM -->
-          </div>
-          <!-- /FORM ROW -->
 
-          <!-- FORM ACTIONS -->
-          <div class="form-actions right">
-            <!-- BUTTON -->
-            <p class="button gray no-decoration popup-quick-reply-trigger">Discard all</p>
-            <!-- /BUTTON -->
-  
-            <!-- BUTTON -->
-            <button class="button blue" type="button" onclick="postreply()">
-             <span id="replybtn"></span> 
-              <!-- BUTTON ORNAMENT -->
-              <span class="button-ornament" id="replybtnicon">
-                <!-- ARROW ICON -->
-                <svg class="arrow-icon medium">
+				<p id="replytooripost" style="margin-left: 33px"></p>
+				<br> <br>
+
+				<!-- FORM WRAP -->
+				<form class="form-wrap">
+					<!-- FORM ROW -->
+					<div class="form-row">
+						<!-- FORM ITEM -->
+						<div class="form-item blue">
+							<label for="quick_reply_text" class="rl-label">Write your
+								reply</label>
+							<textarea name="quick_reply_text" id="quick_reply_text"
+								placeholder="Write your reply here..."></textarea>
+						</div>
+						<!-- /FORM ITEM -->
+					</div>
+					<!-- /FORM ROW -->
+
+					<!-- FORM ACTIONS -->
+					<div class="form-actions right">
+						<!-- BUTTON -->
+						<p class="button gray no-decoration popup-quick-reply-trigger">Discard
+							all</p>
+						<!-- /BUTTON -->
+
+						<!-- BUTTON -->
+						<button class="button blue" type="button" onclick="postreply()">
+							<span id="replybtn"></span>
+							<!-- BUTTON ORNAMENT -->
+							<span class="button-ornament" id="replybtnicon"> <!-- ARROW ICON -->
+								<svg class="arrow-icon medium">
                   <use xlink:href="#svg-arrow-medium"></use>
-                </svg>
-                <!-- /ARROW ICON -->
-        
-                <!-- CROSS ICON -->
-                <svg class="cross-icon small">
+                </svg> <!-- /ARROW ICON --> <!-- CROSS ICON --> <svg
+									class="cross-icon small">
                   <use xlink:href="#svg-cross-small"></use>
-                </svg>
-                <!-- /CROSS ICON -->
-              </span>
-              <!-- /BUTTON ORNAMENT -->
-            </button>
-            <!-- /BUTTON -->
-          </div>
-          <!-- /FORM ACTIONS -->
-        </form>
-        <!-- /FORM WRAP -->
-      </div>
-      <!-- /QUICK FORM -->
-    </div>
-    <!-- /QUICK FORM WRAP -->
-  </div>
-  
-  
-  
-  
-  
-  
-  
-  
-  <script>
+                </svg> <!-- /CROSS ICON -->
+							</span>
+							<!-- /BUTTON ORNAMENT -->
+						</button>
+						<!-- /BUTTON -->
+					</div>
+					<!-- /FORM ACTIONS -->
+				</form>
+				<!-- /FORM WRAP -->
+			</div>
+			<!-- /QUICK FORM -->
+		</div>
+		<!-- /QUICK FORM WRAP -->
+	</div>
+
+
+
+
+
+
+
+
+	<script>
   
   function quickreply(replytype,replyto,userimg,oripost,id,depth){
 	 
@@ -306,10 +425,10 @@
 	  
   }
   </script>
-  
-  
-  
-  <script>
+
+
+
+	<script>
   
   
   
@@ -389,14 +508,66 @@
 		
 	}
   
- 
   
+  
+  function likethistopic(yesno)
+  {
+	  const id = new URLSearchParams(window.location.search).get('id');
+	  
+	  $.ajax({
+			url : '${pageContext.request.contextPath}/forum/api/userliketopic',
+			type : 'post',
+			datatype : "application/json",
+			contentType : "application/json",
+			async : true,
+			data : '{"id":"'+id+'" , "yesno":"'+yesno+'"}',
+			success : function(data) {
+				console.log(data);
+				const jobj = JSON.parse(data.result);
+				
+				window.location.href = "${pageContext.request.contextPath}/forum"+jobj.redirect;
+			},
+
+			error : function(xhr, status) {
+				alert("ERROR : " + xhr + " : " + status);
+
+				return;
+			}
+		});
+  }
+  
+ 
+  function likecomment( cid,yesno)
+  {
+	 
+	  const id = new URLSearchParams(window.location.search).get('id');
+	  $.ajax({
+			url : '${pageContext.request.contextPath}/forum/api/userlikecomment',
+			type : 'post',
+			datatype : "application/json",
+			contentType : "application/json",
+			async : true,
+			data : '{"id":"'+cid+'" , "yesno":"'+yesno+'","tid":"'+id+'"}',
+			success : function(data) {
+				console.log(data);
+				const jobj = JSON.parse(data.result);
+				
+				window.location.href = "${pageContext.request.contextPath}/forum"+jobj.redirect;
+			},
+
+			error : function(xhr, status) {
+				alert("ERROR : " + xhr + " : " + status);
+
+				return;
+			}
+		});
+  }
   
   </script>
-  
-  
-  
-  
+
+
+
+
 
 
 	<%@include file="inc/footer.jsp"%>
