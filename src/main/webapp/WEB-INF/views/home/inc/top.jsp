@@ -1821,8 +1821,8 @@
 
         <!-- LOGO TEXT -->
         <div class="logo-text">
-          <h2 class="logo-title">Pixel<span class="highlight">Diamond</span></h2>
-          <p class="logo-info">The Latest Gaming News</p>
+          <h2 class="logo-title">Inves<span class="highlight">Forum</span></h2>
+          <p class="logo-info">The Latest Asset News</p>
         </div>
         <!-- /LOGO TEXT -->
       </div>
@@ -1858,7 +1858,7 @@
       <ul class="main-menu">
         <!-- MAIN MENU ITEM -->
         <li class="main-menu-item">
-          <a href="index.html" class="main-menu-item-link">Home</a>
+          <a href="${pageContext.request.contextPath}/home/index" class="main-menu-item-link">Home</a>
         </li>
         <!-- /MAIN MENU ITEM -->
 
