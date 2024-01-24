@@ -30,4 +30,5 @@ public class t_forum_topic
 	public int author_post;
 	public String dayago;
 	public int totallikes;
+	public String thumbnail;
 }

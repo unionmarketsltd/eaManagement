@@ -49,7 +49,7 @@ public interface ForumService {
 
 	public List<topic_subcomment_list> getforumtopicsubcommentlist(String topicid);
 
-	public void insertnewtopic(String category_id, String title, String description,String content, String create_by);
+	public void insertnewtopic(String category_id, String title, String description,String content,String thumbnail, String create_by);
 	
 	
 	public void insertnewcomment( String p_id,String depth,String tid,String comment,String createby);
@@ -82,5 +82,12 @@ public interface ForumService {
 	public void userunlikecomment(String tid,String email);
 	
 	
+	public void updatetopic(String title,String description,String content,String id,String thumbnail,String createby);
+	
+	
+	public int isautorizedtoedittopic(String id,String email);
+	
+	
+	public void deletetopic(String id,String createby);
 	
 }

@@ -21513,3 +21513,16 @@ input[type="radio"]:disabled + .radio-circle {
     grid-template-columns: 22px 1fr;
     grid-gap: 0px;
 }
+
+
+.titlegrid {
+display: grid;
+grid-template-columns: 160px 1fr;
+grid-template-rows: 40px 1fr;
+grid-column-gap: 0px;
+grid-row-gap: 0px;
+}
+
+.titlegriddiv1 { grid-area: 1 / 1 / 3 / 2; }
+.titlegriddiv2 { grid-area: 1 / 2 / 2 / 3; margin-top:10px ;}
+.titlegriddiv3 { grid-area: 2 / 2 / 3 / 3; }

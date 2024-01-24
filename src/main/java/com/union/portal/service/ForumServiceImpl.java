@@ -124,8 +124,8 @@ public class ForumServiceImpl implements ForumService {
 	}
 
 	@Override
-	public void insertnewtopic(String category_id, String title, String description,String content, String create_by) {
-		mapper.insertnewtopic(category_id, title, description,content, create_by);
+	public void insertnewtopic(String category_id, String title, String description,String content,String thumbnail, String create_by) {
+		mapper.insertnewtopic(category_id, title, description,content,thumbnail, create_by);
 		
 	}
 
@@ -229,6 +229,24 @@ public class ForumServiceImpl implements ForumService {
 	@Override
 	public void userunlikecomment(String tid, String email) {
 		mapper.userunlikecomment(tid, email);
+		
+	}
+
+	@Override
+	public void updatetopic(String title, String description, String content, String id ,String thumbnail,String createby) {
+		mapper.updatetopic(title, description, content, id, thumbnail,createby);
+		
+	}
+
+	@Override
+	public int isautorizedtoedittopic(String id, String email) {
+		// TODO Auto-generated method stub
+		return mapper.isautorizedtoedittopic(id, email);
+	}
+
+	@Override
+	public void deletetopic(String id, String createby) {
+		mapper.deletetopic(id, createby);
 		
 	}
 	

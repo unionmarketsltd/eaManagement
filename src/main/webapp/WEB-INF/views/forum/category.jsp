@@ -171,6 +171,8 @@
 				<div class="table-row-header-item left">
 					<p class="table-row-header-title">Topic</p>
 				</div>
+				
+				
 				<div class="table-row-header-item left ">
 					<p class="table-row-header-title">Author</p>
 				</div>
@@ -213,9 +215,36 @@
 
 					<div class="table-row large">
 						<!-- TABLE ROW ITEM -->
+						
+						
+					
+					
+						
+						
 						<div class="table-row-item">
-							<!-- FORUM POST LINK -->
-							<a
+						
+							<c:choose>
+						<c:when test="${fn:length(listcatinfo.thumbnail) > 0}">
+						<a
+								href="${pageContext.request.contextPath}/forum/topic?id=${listcatinfo.id}">
+						<div class="titlegrid">
+						
+						<div class="titlegriddiv1">	<img src="${listcatinfo.thumbnail}" alt="thumbnail" width="140" height="100"></div>
+						<div class="titlegriddiv2"><div
+								
+								class="forum-post-link <c:choose>
+										<c:when test="${listcatinfo.pin_post == 1}">pin-tag
+										</c:when>
+										<c:otherwise>spoiler-tag</c:otherwise>
+									</c:choose>
+									
+									">${listcatinfo.title }</div></div>
+						<div class="titlegriddiv3"><p class="forum-post-description-preview forum-post-link-update">${listcatinfo.description}</p></div>
+						</div>
+						</a>
+						</c:when>
+						<c:otherwise>
+						<a
 								href="${pageContext.request.contextPath}/forum/topic?id=${listcatinfo.id}"
 								class="forum-post-link <c:choose>
 										<c:when test="${listcatinfo.pin_post == 1}">pin-tag
@@ -228,6 +257,12 @@
 
 							<!-- FORUM POST DESCRIPTION PREVIEW -->
 							<p class="forum-post-description-preview forum-post-link-update">${listcatinfo.description}</p>
+							
+							
+						</c:otherwise>
+						</c:choose>
+							<!-- FORUM POST LINK -->
+							
 							<!-- /FORUM POST DESCRIPTION PREVIEW -->
 						</div>
 						<!-- /TABLE ROW ITEM -->
