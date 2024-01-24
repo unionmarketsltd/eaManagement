@@ -436,12 +436,13 @@ public class ForumController {
 		String topic = jsonbodyobj.getString("topic");
 		String content = jsonbodyobj.getString("content");
 		String desc = jsonbodyobj.getString("desc");
+		String thumbnail = jsonbodyobj.getString("thumbnail");
 
 		logger.info(cat);
 		logger.info(topic);
 		logger.info(content);
 		if (APIProtectionHandler.islogin(request)) {
-			forumservices.insertnewtopic(cat, topic, desc, content, (String) session.getAttribute("s_GEmail"));
+			forumservices.insertnewtopic(cat, topic, desc, content,thumbnail, (String) session.getAttribute("s_GEmail"));
 			JSONObject jobj = new JSONObject();
 			jobj.put("redirect", "/category?id=" + cat);
 			responsestr = jobj.toString();
@@ -467,12 +468,12 @@ public class ForumController {
 		String topic = jsonbodyobj.getString("topic");
 		String content = jsonbodyobj.getString("content");
 		String desc = jsonbodyobj.getString("desc");
-
+		String thumbnail = jsonbodyobj.getString("thumbnail");
 		logger.info(id);
 		logger.info(topic);
 		logger.info(content);
 		if (APIProtectionHandler.islogin(request)) {
-			forumservices.updatetopic(topic, desc, content, id, (String) session.getAttribute("s_GEmail"));
+			forumservices.updatetopic(topic, desc, content, id,thumbnail, (String) session.getAttribute("s_GEmail"));
 			JSONObject jobj = new JSONObject();
 			jobj.put("redirect", "/topic?id=" + id);
 			responsestr = jobj.toString();

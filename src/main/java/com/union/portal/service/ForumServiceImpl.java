@@ -124,8 +124,8 @@ public class ForumServiceImpl implements ForumService {
 	}
 
 	@Override
-	public void insertnewtopic(String category_id, String title, String description,String content, String create_by) {
-		mapper.insertnewtopic(category_id, title, description,content, create_by);
+	public void insertnewtopic(String category_id, String title, String description,String content,String thumbnail, String create_by) {
+		mapper.insertnewtopic(category_id, title, description,content,thumbnail, create_by);
 		
 	}
 
@@ -233,8 +233,8 @@ public class ForumServiceImpl implements ForumService {
 	}
 
 	@Override
-	public void updatetopic(String title, String description, String content, String id ,String createby) {
-		mapper.updatetopic(title, description, content, id, createby);
+	public void updatetopic(String title, String description, String content, String id ,String thumbnail,String createby) {
+		mapper.updatetopic(title, description, content, id, thumbnail,createby);
 		
 	}
 
