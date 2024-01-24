@@ -375,7 +375,7 @@
 						<!-- /LIKE BUTTON -->
 
 						<!-- LIKES COUNT -->
-						<p class="likes-count">${ listinfo1.like}ThumbsUp</p>
+						<!--  <p class="likes-count">${ listinfo1.like}ThumbsUp</p>-->
 						<!-- /LIKES COUNT -->
 					</div>
 					<!-- /POST COMMENT ACTIONS -->
