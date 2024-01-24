@@ -223,7 +223,7 @@ public List<t_forum_topiccount> getforumtopiccountlist();
 	public List<topic_subcomment_list> getforumtopicsubcommentlist(@Param("topicid")String topicid);
 	
 	@Insert("INSERT INTO `forum`.`t_forum_topic`(`thumbnail`,`category_id`,`title`,`description`,`content`,`views`,`likes`,`create_date`,`create_by`,`last_update_date`,`last_comment_date`,`pin_post`)\r\n"
-			+ "VALUES(#{thumbnail}#{category_id},#{title},#{description},#{content},0,0,now(),#{create_by},now(),now(),0);")
+			+ "VALUES(#{thumbnail},#{category_id},#{title},#{description},#{content},0,0,now(),#{create_by},now(),now(),0);")
 	public void insertnewtopic( @Param("category_id")String category_id,@Param("title")String title,@Param("description")String description,@Param("content")String content,@Param("thumbnail")String thumbnail, @Param("create_by")String create_by);
 	
 	
