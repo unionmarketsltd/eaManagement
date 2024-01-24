@@ -537,7 +537,7 @@
     <ul class="mobile-menu">
       <!-- MOBILE MENU ITEM -->
       <li class="mobile-menu-item">
-        <a href="index.html" class="mobile-menu-item-link">Home</a>
+        <a href="index.html" class="mobile-menu-item-link">Homew</a>
       </li>
       <!-- /MOBILE MENU ITEM -->
 
@@ -565,7 +565,7 @@
             <ul class="mobile-dropdown pd-dropdown">
               <!-- MOBILE DROPDOWN ITEM -->
               <li class="mobile-dropdown-item">
-                <a href="esports-home.html" class="mobile-dropdown-item-link">eSports Home</a>
+                <a href="esports-home.html" class="mobile-dropdown-item-link">eSports wwwHome</a>
               </li>
               <!-- /MOBILE DROPDOWN ITEM -->
 
@@ -583,7 +583,7 @@
 
               <!-- MOBILE DROPDOWN ITEM -->
               <li class="mobile-dropdown-item">
-                <a href="esports-tournament.html" class="mobile-dropdown-item-link">Tournament Page</a>
+                <a href="esports-tournament.html" class="mobile-dropdown-item-link">Tournamentwwwwww Page</a>
               </li>
               <!-- /MOBILE DROPDOWN ITEM -->
             </ul>
@@ -742,7 +742,7 @@
             <ul class="mobile-dropdown pd-dropdown">
               <!-- MOBILE DROPDOWN ITEM -->
               <li class="mobile-dropdown-item">
-                <a href="index.html" class="mobile-dropdown-item-link">Main Homepage</a>
+                <a href="index.html" class="mobile-dropdown-item-link">Main Homepdddage</a>
               </li>
               <!-- /MOBILE DROPDOWN ITEM -->
 
@@ -1854,6 +1854,9 @@
       </div>
       <!-- /SEARCH BUTTON -->
 
+
+
+
       <!-- MAIN MENU -->
       <ul class="main-menu">
         <!-- MAIN MENU ITEM -->
@@ -1861,11 +1864,15 @@
           <a href="${pageContext.request.contextPath}/home/index" class="main-menu-item-link">Home</a>
         </li>
         <!-- /MAIN MENU ITEM -->
+        
+<c:forEach items="${ forumlist }" var="listinfo" varStatus="status"><!-- Forums -->
+        
 
+            
         <!-- MAIN MENU ITEM -->
         <li class="main-menu-item">
           <a href="esports-home.html" class="main-menu-item-link">
-            eSports
+            ${listinfo.name }
             <!-- SVG ARROW -->
             <svg class="arrow-icon">
               <use xlink:href="#svg-arrow"></use>
@@ -1874,680 +1881,186 @@
           </a>
 
           <!-- SUBMENU -->
-          <ul class="submenu">
+          <ul class="submenu void">
             <!-- SUBMENU ITEM -->
-            <li class="submenu-item grid-limit">
+            <li class="submenu-item padded">
               <!-- LINK SECTIONS WRAP -->
               <div class="link-sections-wrap">
                 <!-- LINK SECTIONS -->
                 <div class="link-sections">
+                  <c:forEach items="${ forumcatlist }" var="forumcatlist" varStatus="status2">
                   <!-- LINK SECTION -->
-                  <div class="link-section">
+                  <c:choose>
+					<c:when test="${listinfo.id == forumcatlist.forum_id}">
+					<div class="link-section">
                     <!-- SECTION TITLE WRAP -->
                     <div class="section-title-wrap violet">
-                      <h2 class="section-title small">Main Pages</h2>
+                      <h2 class="section-title small">${forumcatlist.name}</h2>
                       <div class="section-title-separator"></div>
                     </div>
                     <!-- /SECTION TITLE WRAP -->
-
+					
                     <!-- LINK LIST -->
                     <ul class="link-list medium">
                       <!-- LINK LIST ITEM -->
                       <li class="link-list-item">
-                        <a href="esports-home.html">eSports Home</a>
+                        <a href="esports-home.html">${forumcatlist.description}</a>
                       </li>
                       <!-- /LINK LIST ITEM -->
 
-                      <!-- LINK LIST ITEM -->
-                      <li class="link-list-item">
-                        <a href="esports-news.html">eSports News</a>
-                      </li>
-                      <!-- /LINK LIST ITEM -->
-
-                      <!-- LINK LIST ITEM -->
-                      <li class="link-list-item">
-                        <a href="esports-post.html">eSports Post Page</a>
-                      </li>
-                      <!-- /LINK LIST ITEM -->
-
-                      <!-- LINK LIST ITEM -->
-                      <li class="link-list-item">
-                        <a href="esports-tournament.html">Tournament Page</a>
-                      </li>
-                      <!-- /LINK LIST ITEM -->
                     </ul>
                     <!-- /LINK LIST -->
                   </div>
+					</c:when>
+				  </c:choose>
+                  
                   <!-- /LINK SECTION -->
+				  </c:forEach>
+				  
+                 
+              <!-- LINE SEPARATOR -->
+              <div class="line-separator"></div>
 
-                  <!-- LINK SECTION -->
-                  <div class="link-section">
-                    <!-- SECTION TITLE WRAP -->
-                    <div class="section-title-wrap violet">
-                      <h2 class="section-title small">Match Overviews</h2>
-                      <div class="section-title-separator"></div>
+              <!-- NEWS ITEMS PREVIEW -->
+              <div class="news-items-preview">
+                <!-- POST PREVIEW -->
+                <div class="post-preview gaming-news">
+                  <!-- POST PREVIEW IMG WRAP -->
+                  <a href="post-v1.html">
+                    <div class="post-preview-img-wrap">
+                      <!-- POST PREVIEW IMG -->
+                      <figure class="post-preview-img liquid">
+                      <img src="${pageContext.request.contextPath}/resources/forum/img/posts/09.jpg" alt="post-09">
+                      </figure>
+                      <!-- /POST PREVIEW IMG -->
                     </div>
-                    <!-- /SECTION TITLE WRAP -->
-
-                    <!-- LINK LIST -->
-                    <ul class="link-list medium">
-                      <!-- LINK LIST ITEM -->
-                      <li class="link-list-item">
-                        <a href="esports-match-overview-v1.html">Match Overview V1</a>
-                      </li>
-                      <!-- /LINK LIST ITEM -->
-
-                      <!-- LINK LIST ITEM -->
-                      <li class="link-list-item">
-                        <a href="esports-match-overview-v2.html">Match Overview V2</a>
-                      </li>
-                      <!-- /LINK LIST ITEM -->
-
-                      <!-- LINK LIST ITEM -->
-                      <li class="link-list-item">
-                        <a href="esports-match-overview-v3.html">Match Overview V3</a>
-                      </li>
-                      <!-- /LINK LIST ITEM -->
-
-                      <!-- LINK LIST ITEM -->
-                      <li class="link-list-item">
-                        <a href="esports-match-overview-v4.html">Match Overview V4</a>
-                      </li>
-                      <!-- /LINK LIST ITEM -->
-                    </ul>
-                    <!-- /LINK LIST -->
+                  </a>
+                  <!-- /POST PREVIEW IMG WRAP -->
+            
+                  <!-- TAG ORNAMENT -->
+                  <a href="news-v1.html" class="tag-ornament">Gaming News</a>
+                  <!-- /TAG ORNAMENT -->
+            
+                  <!-- POST PREVIEW TITLE -->
+                  <a href="post-v1.html" class="post-preview-title">New "Rizen" game is gonna be released in summer 2019</a>
+                  <!-- POST AUTHOR INFO -->
+                  <div class="post-author-info-wrap">
+                    <p class="post-author-info small light">By <a href="search-results.html" class="post-author">Vellatrix</a><span class="separator">|</span>December 15th, 2018</p>
                   </div>
-                  <!-- /LINK SECTION -->
-
-                  <!-- LINK SECTION -->
-                  <div class="link-section">
-                    <!-- SECTION TITLE WRAP -->
-                    <div class="section-title-wrap violet">
-                      <h2 class="section-title small">Teams &amp; Players</h2>
-                      <div class="section-title-separator"></div>
-                    </div>
-                    <!-- /SECTION TITLE WRAP -->
-
-                    <!-- LINK LIST -->
-                    <ul class="link-list medium">
-                      <!-- LINK LIST ITEM -->
-                      <li class="link-list-item">
-                        <a href="esports-team.html">eSports Team Page</a>
-                      </li>
-                      <!-- /LINK LIST ITEM -->
-
-                      <!-- LINK LIST ITEM -->
-                      <li class="link-list-item">
-                        <a href="esports-player.html">eSports Player Page</a>
-                      </li>
-                      <!-- /LINK LIST ITEM -->
-
-                      <!-- LINK LIST ITEM -->
-                      <li class="link-list-item">
-                        <a href="esports-streamers.html">Streamers Page</a>
-                      </li>
-                      <!-- /LINK LIST ITEM -->
-
-                      <!-- LINK LIST ITEM -->
-                      <li class="link-list-item">
-                        <a href="esports-calendar.html">Scores with Calendar</a>
-                      </li>
-                      <!-- /LINK LIST ITEM -->
-                    </ul>
-                    <!-- /LINK LIST -->
-                  </div>
-                  <!-- /LINK SECTION -->
+                  <!-- /POST AUTHOR INFO -->
+                  <!-- POST PREVIEW TEXT -->
+                  <p class="post-preview-text">Lorem ipsum dolor sit amet, consectetur bere adipisicing elit, sed do eiusmod por lorem incididunt ut labore.</p>
                 </div>
-                <!-- /LINK SECTIONS -->
+                <!-- /POST PREVIEW -->
 
-                <!-- LINK SECTIONS -->
-                <div class="link-sections">
-                  <!-- LINK SECTION -->
-                  <div class="link-section">
-                    <!-- SECTION TITLE WRAP -->
-                    <div class="section-title-wrap violet">
-                      <h2 class="section-title small">Esports Widgets</h2>
-                      <div class="section-title-separator"></div>
+                <!-- POST PREVIEW -->
+                <div class="post-preview game-review">
+                  <!-- POST PREVIEW IMG WRAP -->
+                  <a href="post-v2.html">
+                    <div class="post-preview-img-wrap">
+                      <!-- POST PREVIEW IMG -->
+                      <figure class="post-preview-img liquid">
+                      <img src="${pageContext.request.contextPath}/resources/forum/img/posts/08.jpg" alt="post-08">
+                      </figure>
+                      <!-- /POST PREVIEW IMG -->
+
+                      <!-- REVIEW RATING -->
+                      <div class="review-rating">
+                        <div id="menu-rate-08-1" class="arc small"></div>
+                      </div>
+                      <!-- /REVIEW RATING -->
                     </div>
-                    <!-- /SECTION TITLE WRAP -->
-
-                    <!-- LINK LIST -->
-                    <ul class="link-list medium">
-                      <!-- LINK LIST ITEM -->
-                      <li class="link-list-item">
-                        <a href="esports-widgets-v1.html">Widgets Page 01</a>
-                      </li>
-                      <!-- /LINK LIST ITEM -->
-                    </ul>
-                    <!-- /LINK LIST -->
-
-                    <!-- LINK LIST -->
-                    <ul class="link-list medium">
-                      <!-- LINK LIST ITEM -->
-                      <li class="link-list-item">
-                        <a href="esports-widgets-v2.html">Widgets Page 02</a>
-                      </li>
-                      <!-- /LINK LIST ITEM -->
-                    </ul>
-                    <!-- /LINK LIST -->
-
-                    <!-- LINK LIST -->
-                    <ul class="link-list medium">
-                      <!-- LINK LIST ITEM -->
-                      <li class="link-list-item">
-                        <a href="esports-widgets-v3.html">Widgets Page 03</a>
-                      </li>
-                      <!-- /LINK LIST ITEM -->
-                    </ul>
-                    <!-- /LINK LIST -->
+                  </a>
+                  <!-- /POST PREVIEW IMG WRAP -->
+            
+                  <!-- TAG ORNAMENT -->
+                  <a href="news-v2.html" class="tag-ornament">Game Reviews</a>
+                  <!-- /TAG ORNAMENT -->
+            
+                  <!-- POST PREVIEW TITLE -->
+                  <a href="post-v2.html" class="post-preview-title">The new mecha cyborg game is breaking barriers</a>
+                  <!-- POST AUTHOR INFO -->
+                  <div class="post-author-info-wrap">
+                    <p class="post-author-info small light">By <a href="search-results.html" class="post-author">Vellatrix</a><span class="separator">|</span>December 15th, 2018</p>
                   </div>
-                  <!-- /LINK SECTION -->
+                  <!-- /POST AUTHOR INFO -->
+                  <!-- POST PREVIEW TEXT -->
+                  <p class="post-preview-text">Lorem ipsum dolor sit amet, consectetur bere adipisicing elit, sed do eiusmod por lorem incididunt ut labore.</p>
                 </div>
-                <!-- /LINK SECTIONS -->
+                <!-- /POST PREVIEW -->
 
-                <!-- LINK SECTIONS -->
-                <div class="link-sections">
-                  <!-- LINK SECTION -->
-                  <div class="link-section full">
-                    <!-- SECTION TITLE WRAP -->
-                    <div class="section-title-wrap violet">
-                      <h2 class="section-title small">Pixel Streamers</h2>
-                      <div class="section-title-separator"></div>
+                <!-- POST PREVIEW -->
+                <div class="post-preview e-sport">
+                  <!-- POST PREVIEW IMG WRAP -->
+                  <a href="esports-post.html">
+                    <div class="post-preview-img-wrap">
+                      <!-- POST PREVIEW IMG -->
+                      <figure class="post-preview-img liquid">
+                      <img src="${pageContext.request.contextPath}/resources/forum/img/posts/38.jpg" alt="post-38">
+                      </figure>
+                      <!-- /POST PREVIEW IMG -->
                     </div>
-                    <!-- /SECTION TITLE WRAP -->
-
-                    <!-- STREAMER AVATARS -->
-                    <div class="streamer-avatars">
-                      <!-- STREAMER AVATAR -->
-                      <div class="streamer-avatar">
-                        <a href="esports-streamers.html">
-                        <!-- PP HEXAGON -->
-                        <div class="pp-hexagon">
-                          <!-- HEXAGON ICON -->
-                          <svg class="hexagon-icon hexagon-border">
-                            <use xlink:href="#svg-hexagon"></use>
-                          </svg>
-                          <!-- /HEXAGON ICON -->
-
-                          <!-- HEXAGON ICON -->
-                          <svg class="hexagon-icon hexagon-fill">
-                            <use xlink:href="#svg-hexagon"></use>
-                          </svg>
-                          <!-- /HEXAGON ICON -->
-                        </div>
-                        <!-- /PP HEXAGON -->
-
-                        <!-- STREAMER AVATAR IMG WRAP -->
-                        <div class="streamer-avatar-img-wrap">
-                          <!-- STREAMER AVATAR IMG -->
-                          <img class="streamer-avatar-img"src="${pageContext.request.contextPath}/resources/forum/img/streamers/streamer-hex-01.png" alt="st-avatar-01">
-                        </div>
-                        <!-- /STREAMER AVATAR IMG WRAP -->
-                        </a>
-                      </div>
-                      <!-- /STREAMER AVATAR -->
-
-                      <!-- STREAMER AVATAR -->
-                      <div class="streamer-avatar">
-                        <a href="esports-streamers.html">
-                        <!-- PP HEXAGON -->
-                        <div class="pp-hexagon">
-                          <!-- HEXAGON ICON -->
-                          <svg class="hexagon-icon hexagon-border">
-                            <use xlink:href="#svg-hexagon"></use>
-                          </svg>
-                          <!-- /HEXAGON ICON -->
-
-                          <!-- HEXAGON ICON -->
-                          <svg class="hexagon-icon hexagon-fill">
-                            <use xlink:href="#svg-hexagon"></use>
-                          </svg>
-                          <!-- /HEXAGON ICON -->
-                        </div>
-                        <!-- /PP HEXAGON -->
-
-                        <!-- STREAMER AVATAR IMG WRAP -->
-                        <div class="streamer-avatar-img-wrap">
-                          <!-- STREAMER AVATAR IMG -->
-                          <img class="streamer-avatar-img"src="${pageContext.request.contextPath}/resources/forum/img/streamers/streamer-hex-02.png" alt="st-avatar-02">
-                        </div>
-                        <!-- /STREAMER AVATAR IMG WRAP -->
-                        </a>
-                      </div>
-                      <!-- /STREAMER AVATAR -->
-
-                      <!-- STREAMER AVATAR -->
-                      <div class="streamer-avatar">
-                        <a href="esports-streamers.html">
-                        <!-- PP HEXAGON -->
-                        <div class="pp-hexagon">
-                          <!-- HEXAGON ICON -->
-                          <svg class="hexagon-icon hexagon-border">
-                            <use xlink:href="#svg-hexagon"></use>
-                          </svg>
-                          <!-- /HEXAGON ICON -->
-
-                          <!-- HEXAGON ICON -->
-                          <svg class="hexagon-icon hexagon-fill">
-                            <use xlink:href="#svg-hexagon"></use>
-                          </svg>
-                          <!-- /HEXAGON ICON -->
-                        </div>
-                        <!-- /PP HEXAGON -->
-
-                        <!-- STREAMER AVATAR IMG WRAP -->
-                        <div class="streamer-avatar-img-wrap">
-                          <!-- STREAMER AVATAR IMG -->
-                          <img class="streamer-avatar-img"src="${pageContext.request.contextPath}/resources/forum/img/streamers/streamer-hex-03.png" alt="st-avatar-03">
-                        </div>
-                        <!-- /STREAMER AVATAR IMG WRAP -->
-                        </a>
-                      </div>
-                      <!-- /STREAMER AVATAR -->
-
-                      <!-- STREAMER AVATAR -->
-                      <div class="streamer-avatar">
-                        <a href="esports-streamers.html">
-                        <!-- PP HEXAGON -->
-                        <div class="pp-hexagon">
-                          <!-- HEXAGON ICON -->
-                          <svg class="hexagon-icon hexagon-border">
-                            <use xlink:href="#svg-hexagon"></use>
-                          </svg>
-                          <!-- /HEXAGON ICON -->
-
-                          <!-- HEXAGON ICON -->
-                          <svg class="hexagon-icon hexagon-fill">
-                            <use xlink:href="#svg-hexagon"></use>
-                          </svg>
-                          <!-- /HEXAGON ICON -->
-                        </div>
-                        <!-- /PP HEXAGON -->
-
-                        <!-- STREAMER AVATAR IMG WRAP -->
-                        <div class="streamer-avatar-img-wrap">
-                          <!-- STREAMER AVATAR IMG -->
-                          <img class="streamer-avatar-img"src="${pageContext.request.contextPath}/resources/forum/img/streamers/streamer-hex-04.png" alt="st-avatar-04">
-                        </div>
-                        <!-- /STREAMER AVATAR IMG WRAP -->
-                        </a>
-                      </div>
-                      <!-- /STREAMER AVATAR -->
-
-                      <!-- STREAMER AVATAR -->
-                      <div class="streamer-avatar">
-                        <a href="esports-streamers.html">
-                        <!-- PP HEXAGON -->
-                        <div class="pp-hexagon">
-                          <!-- HEXAGON ICON -->
-                          <svg class="hexagon-icon hexagon-border">
-                            <use xlink:href="#svg-hexagon"></use>
-                          </svg>
-                          <!-- /HEXAGON ICON -->
-
-                          <!-- HEXAGON ICON -->
-                          <svg class="hexagon-icon hexagon-fill">
-                            <use xlink:href="#svg-hexagon"></use>
-                          </svg>
-                          <!-- /HEXAGON ICON -->
-                        </div>
-                        <!-- /PP HEXAGON -->
-
-                        <!-- STREAMER AVATAR IMG WRAP -->
-                        <div class="streamer-avatar-img-wrap">
-                          <!-- STREAMER AVATAR IMG -->
-                          <img class="streamer-avatar-img"src="${pageContext.request.contextPath}/resources/forum/img/streamers/streamer-hex-05.png" alt="st-avatar-05">
-                        </div>
-                        <!-- /STREAMER AVATAR IMG WRAP -->
-                        </a>
-                      </div>
-                      <!-- /STREAMER AVATAR -->
-                    </div>
-                    <!-- /STREAMER AVATARS -->
+                  </a>
+                  <!-- /POST PREVIEW IMG WRAP -->
+            
+                  <!-- TAG ORNAMENT -->
+                  <a href="esports-news.html" class="tag-ornament">Esports</a>
+                  <!-- /TAG ORNAMENT -->
+            
+                  <!-- POST PREVIEW TITLE -->
+                  <a href="esports-post.html" class="post-preview-title">Pro Soccer 2017 world league kicked off today!</a>
+                  <!-- POST AUTHOR INFO -->
+                  <div class="post-author-info-wrap">
+                    <p class="post-author-info small light">By <a href="search-results.html" class="post-author">Faye V.</a><span class="separator">|</span>December 15th, 2018</p>
                   </div>
-                  <!-- /LINK SECTION -->
+                  <!-- /POST AUTHOR INFO -->
+                  <!-- POST PREVIEW TEXT -->
+                  <p class="post-preview-text">Lorem ipsum dolor sit amet, consectetur bere adipisicing elit, sed do eiusmod por lorem incididunt ut labore.</p>
                 </div>
-                <!-- /LINK SECTIONS -->
+                <!-- /POST PREVIEW -->
+
+                <!-- POST PREVIEW -->
+                <div class="post-preview geeky-news">
+                  <!-- POST PREVIEW IMG WRAP -->
+                  <a href="post-v4.html">
+                    <div class="post-preview-img-wrap">
+                      <!-- POST PREVIEW IMG -->
+                      <figure class="post-preview-img liquid">
+                      <img src="${pageContext.request.contextPath}/resources/forum/img/posts/02.jpg" alt="post-02">
+                      </figure>
+                      <!-- /POST PREVIEW IMG -->
+                    </div>
+                  </a>
+                  <!-- /POST PREVIEW IMG WRAP -->
+            
+                  <!-- TAG ORNAMENT -->
+                  <a href="news-v4.html" class="tag-ornament">Geeky news</a>
+                  <!-- /TAG ORNAMENT -->
+            
+                  <!-- POST PREVIEW TITLE -->
+                  <a href="post-v4.html" class="post-preview-title">Jessica Tam to star in the new "Charlotte" series</a>
+                  <!-- POST AUTHOR INFO -->
+                  <div class="post-author-info-wrap">
+                    <p class="post-author-info small light">By <a href="search-results.html" class="post-author">Vellatrix</a><span class="separator">|</span>December 15th, 2018</p>
+                  </div>
+                  <!-- /POST AUTHOR INFO -->
+                  <!-- POST PREVIEW TEXT -->
+                  <p class="post-preview-text">Lorem ipsum dolor sit amet, consectetur bere adipisicing elit, sed do eiusmod por lorem incididunt ut labore.</p>
+                </div>
+                <!-- /POST PREVIEW -->
               </div>
-              <!-- /LINK SECTIONS WRAP -->
 
-              <!-- LINK SECTIONS WRAP -->
-              <div class="link-sections-wrap">
-                <!-- LINK SECTIONS -->
-                <div class="link-sections">
-                  <!-- LINK SECTION -->
-                  <div class="link-section">
-                    <!-- SECTION TITLE WRAP -->
-                    <div class="section-title-wrap violet">
-                      <h2 class="section-title small">Featured Match</h2>
-                      <div class="section-title-separator"></div>
-                    </div>
-                    <!-- /SECTION TITLE WRAP -->
-
-                    <!-- WIDGET MATCH BOX -->
-                    <div class="widget-match-box">
-                      <!-- WIDGET TITLE WRAP -->
-                      <div class="widget-title-wrap">
-                        <h6 class="widget-title">Xenowatch league finals</h6>
-                        <p class="widget-text">August 28th, 2018</p>
-                      </div>
-                      <!-- /WIDGET TITLE WRAP -->
-
-                      <!-- WIDGET TEAM VS -->
-                      <div class="widget-team-vs">
-                        <!-- WIDGET TEAM VS ITEM -->
-                        <div class="widget-team-vs-item">
-                          <!-- TEAM INFO WRAP -->
-                          <div class="team-info-wrap medium">
-                            <!-- TEAM LOGO -->
-                            <img class="team-logo"src="${pageContext.request.contextPath}/resources/forum/img/teams/logos/01.png" alt="logo-01">
-                            <!-- /TEAM LOGO -->
-
-                            <!-- TEAM INFO -->
-                            <div class="team-info">
-                              <!-- TEAM NAME -->
-                              <p class="team-name">The Lone Wolves</p>
-                              <!-- /TEAM NAME -->
-
-                              <!-- TEAM COUNTRY -->
-                              <p class="team-country">United States</p>
-                              <!-- /TEAM COUNTRY -->
-                            </div>
-                            <!-- /TEAM INFO -->
-                          </div>
-                          <!-- /TEAM INFO WRAP -->
-
-                          <!-- TEAM SCORE -->
-                          <p class="team-score">12</p>
-                          <!-- /TEAM SCORE -->
-                        </div>
-                        <!-- /WIDGET TEAM VS ITEM -->
-
-                        <!-- WIDGET TEAM VS ITEM -->
-                        <div class="widget-team-vs-item">
-                          <!-- TEAM INFO WRAP -->
-                          <div class="team-info-wrap medium">
-                            <!-- TEAM LOGO -->
-                            <img class="team-logo"src="${pageContext.request.contextPath}/resources/forum/img/teams/logos/02.png" alt="logo-02">
-                            <!-- /TEAM LOGO -->
-
-                            <!-- TEAM INFO -->
-                            <div class="team-info">
-                              <!-- TEAM NAME -->
-                              <p class="team-name">Raging Rhinos</p>
-                              <!-- /TEAM NAME -->
-
-                              <!-- TEAM COUNTRY -->
-                              <p class="team-country">South Africa</p>
-                              <!-- /TEAM COUNTRY -->
-                            </div>
-                            <!-- /TEAM INFO -->
-                          </div>
-                          <!-- /TEAM INFO WRAP -->
-
-                          <!-- TEAM SCORE -->
-                          <p class="team-score">10</p>
-                          <!-- /TEAM SCORE -->
-                        </div>
-                        <!-- /WIDGET TEAM VS ITEM -->
-                      </div>
-                      <!-- /WIDGET TEAM VS -->
-                    </div>
-                    <!-- /WIDGET MATCH BOX -->
-
-                    <!-- WIDGET MATCH BOX -->
-                    <div class="widget-match-box">
-                      <!-- WIDGET TITLE WRAP -->
-                      <div class="widget-title-wrap">
-                        <!-- WIDGET TITLE -->
-                        <h6 class="widget-title">Match Stats</h6>
-                        <!-- /WIDGET TITLE -->
-
-                        <!-- STATS REFERENCE -->
-                        <div class="stats-reference">
-                          <!-- STAT REFERENCE -->
-                          <div class="stat-reference blue">
-                            <!-- STAT REFERENCE TEXT -->
-                            <p class="stat-reference-text">TLW</p>
-                            <!-- /STAT REFERENCE TEXT -->
-                          </div>
-                          <!-- /STAT REFERENCE -->
-
-                          <!-- STAT REFERENCE -->
-                          <div class="stat-reference yellow">
-                            <!-- STAT REFERENCE TEXT -->
-                            <p class="stat-reference-text">RRH</p>
-                            <!-- /STAT REFERENCE TEXT -->
-                          </div>
-                          <!-- /STAT REFERENCE -->
-                        </div>
-                        <!-- /STATS REFERENCE -->
-                      </div>
-                      <!-- /WIDGET TITLE WRAP -->
-
-                      <!-- WIDGET TEAM STATS -->
-                      <div class="widget-team-stats">
-                        <!-- PROGRESS STAT WRAP -->
-                        <div class="progress-stat-wrap">
-                          <!-- BAR PROGRESS INFO -->
-                          <p class="bar-progress-info">Total Kills</p>
-                          <!-- PROGRESS BAR WRAP -->
-                          <div id="mn-pg-1" class="progress-bar-wrap">
-                            <div class="bar-progress-wrap left">
-                              <p id="tlw-kills-stat" class="bar-progress-text"></p>
-                            </div>
-                            <div class="bar-progress-wrap right">
-                              <p id="rrh-kills-stat" class="bar-progress-text"></p>
-                            </div>
-                          </div>
-                          <!-- /PROGRESS BAR WRAP -->
-                        </div>
-                        <!-- /PROGRESS STAT WRAP -->
-
-                        <!-- PROGRESS STAT WRAP -->
-                        <div class="progress-stat-wrap">
-                          <!-- BAR PROGRESS INFO -->
-                          <p class="bar-progress-info">Total Deaths</p>
-                          <!-- PROGRESS BAR WRAP -->
-                          <div id="mn-pg-2" class="progress-bar-wrap">
-                            <div class="bar-progress-wrap left">
-                              <p id="tlw-deaths-stat" class="bar-progress-text"></p>
-                            </div>
-                            <div class="bar-progress-wrap right">
-                              <p id="rrh-deaths-stat" class="bar-progress-text"></p>
-                            </div>
-                          </div>
-                          <!-- /PROGRESS BAR WRAP -->
-                        </div>
-                        <!-- /PROGRESS STAT WRAP -->
-
-                        <!-- PROGRESS STAT WRAP -->
-                        <div class="progress-stat-wrap">
-                          <!-- BAR PROGRESS INFO -->
-                          <p class="bar-progress-info">Total Assists</p>
-                          <!-- PROGRESS BAR WRAP -->
-                          <div id="mn-pg-3" class="progress-bar-wrap">
-                            <div class="bar-progress-wrap left">
-                              <p id="tlw-assists-stat" class="bar-progress-text"></p>
-                            </div>
-                            <div class="bar-progress-wrap right">
-                              <p id="rrh-assists-stat" class="bar-progress-text"></p>
-                            </div>
-                          </div>
-                          <!-- /PROGRESS BAR WRAP -->
-                        </div>
-                        <!-- /PROGRESS STAT WRAP -->
-                      </div>
-                      <!-- /WIDGET TEAM STATS -->
-                    </div>
-                    <!-- /WIDGET MATCH BOX -->
-                  </div>
-                  <!-- /LINK SECTION -->
-                </div>
-                <!-- /LINK SECTIONS -->
-              </div>
-              <!-- /LINK SECTIONS WRAP -->
-
-              <!-- LINK SECTIONS WRAP -->
-              <div class="link-sections-wrap">
-                <!-- LINK SECTIONS -->
-                <div class="link-sections">
-                  <!-- LINK SECTION -->
-                  <div class="link-section">
-                    <!-- SECTION TITLE WRAP -->
-                    <div class="section-title-wrap violet">
-                      <h2 class="section-title small">Featured Articles</h2>
-                      <div class="section-title-separator"></div>
-                    </div>
-                    <!-- /SECTION TITLE WRAP -->
-
-                    <!-- POST PREVIEW SHOWCASE -->
-                    <div class="post-preview-showcase grid-1col gutter-small">
-                      <!-- POST PREVIEW -->
-                      <div class="post-preview tiny e-sport">
-                        <!-- POST PREVIEW IMG WRAP -->
-                        <a href="esports-post.html">
-                          <div class="post-preview-img-wrap">
-                            <!-- POST PREVIEW IMG -->
-                            <figure class="post-preview-img liquid">
-                            <img src="${pageContext.request.contextPath}/resources/forum/img/posts/36.jpg" alt="post-36">
-                            </figure>
-                            <!-- /POST PREVIEW IMG -->
-                          </div>
-                        </a>
-                        <!-- /POST PREVIEW IMG WRAP -->
-                  
-                        <!-- POST PREVIEW TITLE -->
-                        <a href="esports-post.html" class="post-preview-title">Gwen Parker is leading her team to the semifinals</a>
-                        <!-- POST AUTHOR INFO -->
-                        <div class="post-author-info-wrap">
-                          <p class="post-author-info small light">By <a href="search-results.html" class="post-author">Dexter</a><span class="separator">|</span>Dec 15th, 2018</p>
-                        </div>
-                        <!-- /POST AUTHOR INFO -->
-                      </div>
-                      <!-- /POST PREVIEW -->
-
-                      <!-- POST PREVIEW -->
-                      <div class="post-preview tiny e-sport">
-                        <!-- POST PREVIEW IMG WRAP -->
-                        <a href="esports-post.html">
-                          <div class="post-preview-img-wrap">
-                            <!-- POST PREVIEW IMG -->
-                            <figure class="post-preview-img liquid">
-                            <img src="${pageContext.request.contextPath}/resources/forum/img/posts/38.jpg" alt="post-38">
-                            </figure>
-                            <!-- /POST PREVIEW IMG -->
-                          </div>
-                        </a>
-                        <!-- /POST PREVIEW IMG WRAP -->
-                  
-                        <!-- POST PREVIEW TITLE -->
-                        <a href="esports-post.html" class="post-preview-title">Pro Soccer 2018 world league kicked off today!</a>
-                        <!-- POST AUTHOR INFO -->
-                        <div class="post-author-info-wrap">
-                          <p class="post-author-info small light">By <a href="search-results.html" class="post-author">Faye V.</a><span class="separator">|</span>Dec 15th, 2018</p>
-                        </div>
-                        <!-- /POST AUTHOR INFO -->
-                      </div>
-                      <!-- /POST PREVIEW -->
-
-                      <!-- POST PREVIEW -->
-                      <div class="post-preview tiny e-sport">
-                        <!-- POST PREVIEW IMG WRAP -->
-                        <a href="esports-post.html">
-                          <div class="post-preview-img-wrap">
-                            <!-- POST PREVIEW IMG -->
-                            <figure class="post-preview-img liquid">
-                            <img src="${pageContext.request.contextPath}/resources/forum/img/posts/37.jpg" alt="post-37">
-                            </figure>
-                            <!-- /POST PREVIEW IMG -->
-                          </div>
-                        </a>
-                        <!-- /POST PREVIEW IMG WRAP -->
-                  
-                        <!-- POST PREVIEW TITLE -->
-                        <a href="esports-post.html" class="post-preview-title">Last night the wolves beat the rhinos 12-10</a>
-                        <!-- POST AUTHOR INFO -->
-                        <div class="post-author-info-wrap">
-                          <p class="post-author-info small light">By <a href="search-results.html" class="post-author">Faye V.</a><span class="separator">|</span>Dec 15th, 2018</p>
-                        </div>
-                        <!-- /POST AUTHOR INFO -->
-                      </div>
-                      <!-- /POST PREVIEW -->
-
-                      <!-- POST PREVIEW -->
-                      <div class="post-preview tiny e-sport">
-                        <!-- POST PREVIEW IMG WRAP -->
-                        <a href="esports-post.html">
-                          <div class="post-preview-img-wrap">
-                            <!-- POST PREVIEW IMG -->
-                            <figure class="post-preview-img liquid">
-                            <img src="${pageContext.request.contextPath}/resources/forum/img/posts/39.jpg" alt="post-39">
-                            </figure>
-                            <!-- /POST PREVIEW IMG -->
-                          </div>
-                        </a>
-                        <!-- /POST PREVIEW IMG WRAP -->
-                  
-                        <!-- POST PREVIEW TITLE -->
-                        <a href="esports-post.html" class="post-preview-title">We had an interview with the great Emily Danniels</a>
-                        <!-- POST AUTHOR INFO -->
-                        <div class="post-author-info-wrap">
-                          <p class="post-author-info small light">By <a href="search-results.html" class="post-author">Vellatrix</a><span class="separator">|</span>Dec 15th, 2018</p>
-                        </div>
-                        <!-- /POST AUTHOR INFO -->
-                      </div>
-                      <!-- /POST PREVIEW -->
-
-                      <!-- POST PREVIEW -->
-                      <div class="post-preview tiny e-sport">
-                        <!-- POST PREVIEW IMG WRAP -->
-                        <a href="esports-post.html">
-                          <div class="post-preview-img-wrap">
-                            <!-- POST PREVIEW IMG -->
-                            <figure class="post-preview-img liquid">
-                            <img src="${pageContext.request.contextPath}/resources/forum/img/posts/40.jpg" alt="post-40">
-                            </figure>
-                            <!-- /POST PREVIEW IMG -->
-                          </div>
-                        </a>
-                        <!-- /POST PREVIEW IMG WRAP -->
-                  
-                        <!-- POST PREVIEW TITLE -->
-                        <a href="esports-post.html" class="post-preview-title">The Siberian Tigers arrived at New York for the finals</a>
-                        <!-- POST AUTHOR INFO -->
-                        <div class="post-author-info-wrap">
-                          <p class="post-author-info small light">By <a href="search-results.html" class="post-author">Vellatrix</a><span class="separator">|</span>Dec 15th, 2018</p>
-                        </div>
-                        <!-- /POST AUTHOR INFO -->
-                      </div>
-                      <!-- /POST PREVIEW -->
-                    </div>
-                    <!-- /POST PREVIEW SHOWCASE -->
-                  </div>
-                  <!-- /LINK SECTION -->
-                </div>
-                <!-- /LINK SECTIONS -->
-              </div>
-              <!-- /LINK SECTIONS WRAP -->
+              
             </li>
             <!-- /SUBMENU ITEM -->
           </ul>
           <!-- /SUBMENU -->
         </li>
         <!-- /MAIN MENU ITEM -->
+</c:forEach>
 
-        <!-- MAIN MENU ITEM -->
-        <li class="main-menu-item">
-          <a href="news-v1.html" class="main-menu-item-link">News</a>
-        </li>
-        <!-- /MAIN MENU ITEM -->
 
-        <!-- MAIN MENU ITEM -->
-        <li class="main-menu-item">
-          <a href="news-v2.html" class="main-menu-item-link">Reviews</a>
-        </li>
-        <!-- /MAIN MENU ITEM -->
+
 
         <!-- MAIN MENU ITEM -->
         <li class="main-menu-item">
@@ -2579,7 +2092,7 @@
                   <ul class="link-list">
                     <!-- LINK LIST ITEM -->
                     <li class="link-list-item">
-                      <a href="index.html">Main Homepage</a>
+                      <a href="index.html">Main Homepageddddd</a>
                     </li>
                     <!-- /LINK LIST ITEM -->
 
@@ -2621,96 +2134,7 @@
                   </ul>
                   <!-- /LINK LIST -->
 
-                  <!-- LINK LIST -->
-                  <ul class="link-list">
-                    <!-- LINK LIST ITEM -->
-                    <li class="link-list-item">
-                      <a href="post-v1.html">Post Page V1</a>
-                    </li>
-                    <!-- /LINK LIST ITEM -->
-
-                    <!-- LINK LIST ITEM -->
-                    <li class="link-list-item">
-                      <a href="post-v2.html">Post Page V2</a>
-                    </li>
-                    <!-- /LINK LIST ITEM -->
-
-                    <!-- LINK LIST ITEM -->
-                    <li class="link-list-item">
-                      <a href="post-v3.html">Post Page V3</a>
-                    </li>
-                    <!-- /LINK LIST ITEM -->
-
-                    <!-- LINK LIST ITEM -->
-                    <li class="link-list-item">
-                      <a href="post-v4.html">Post Page V4</a>
-                    </li>
-                    <!-- /LINK LIST ITEM -->
-
-                    <!-- LINK LIST ITEM -->
-                    <li class="link-list-item">
-                      <a href="browse-videos.html">Browse Videos</a>
-                    </li>
-                    <!-- /LINK LIST ITEM -->
-
-                    <!-- LINK LIST ITEM -->
-                    <li class="link-list-item">
-                      <a href="post-video.html">Video Post Page</a>
-                    </li>
-                    <!-- /LINK LIST ITEM -->
-
-                    <!-- LINK LIST ITEM -->
-                    <li class="link-list-item">
-                      <a href="search-results.html">Search Results</a>
-                    </li>
-                    <!-- /LINK LIST ITEM -->
-                  </ul>
-                  <!-- /LINK LIST -->
-
-                  <!-- LINK LIST -->
-                  <ul class="link-list">
-                    <!-- LINK LIST ITEM -->
-                    <li class="link-list-item">
-                      <a href="calendar.html">Events Calendar</a>
-                    </li>
-                    <!-- /LINK LIST ITEM -->
-
-                    <!-- LINK LIST ITEM -->
-                    <li class="link-list-item">
-                      <a href="event.html">Open Event</a>
-                    </li>
-                    <!-- /LINK LIST ITEM -->
-
-                    <!-- LINK LIST ITEM -->
-                    <li class="link-list-item">
-                      <a href="404.html">404 Error Page</a>
-                    </li>
-                    <!-- /LINK LIST ITEM -->
-
-                    <!-- LINK LIST ITEM -->
-                    <li class="link-list-item">
-                      <a href="shortcodes.html">Shortcodes</a>
-                    </li>
-                    <!-- /LINK LIST ITEM -->
-
-                    <!-- LINK LIST ITEM -->
-                    <li class="link-list-item">
-                      <a href="menu-dropdowns.html">Menu &amp; Dropdowns</a>
-                    </li>
-                    <!-- /LINK LIST ITEM -->
-
-                    <!-- LINK LIST ITEM -->
-                    <li class="link-list-item">
-                      <a href="headers-dividers.html">Headers &amp; Dividers</a>
-                    </li>
-                    <!-- /LINK LIST ITEM -->
-
-                    <!-- LINK LIST ITEM -->
-                    <li class="link-list-item">
-                      <a href="pixel-popups.html">Pixel Popups</a>
-                    </li>
-                    <!-- /LINK LIST ITEM -->
-                  </ul>
+                  
                   <!-- /LINK LIST -->
                 </div>
                 <!-- /LINK SECTION -->

@@ -23,7 +23,10 @@ import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
 import com.union.portal.common.APIProtectionHandler;
 import com.union.portal.common.HttpUtils;
+import com.union.portal.domain.t_forum;
+import com.union.portal.domain.t_forum_category;
 import com.union.portal.domain.FundClient_loginhistory;
+import com.union.portal.service.HomeService;
 import com.union.portal.service.ForumService;
 import lombok.AllArgsConstructor;
 
@@ -53,7 +56,10 @@ public class HomeController {
 	SessionLocaleResolver localeResolver;
 
 	@Autowired
-	ForumService fundclientservice;
+	ForumService forumservices;
+	
+	@Autowired
+	HomeService homeservice;
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String slash(Model model) {
@@ -83,19 +89,19 @@ public class HomeController {
 
 	@RequestMapping(value = "/index", method = RequestMethod.GET)
 	public String index(Model model, HttpServletRequest request) {
-		/*HttpSession session = request.getSession();
-
-		String userseq = (String) session.getAttribute("s_Seq");
-
-		logger.info("Welcome index " + userseq);
-		String vLocal = LocaleContextHolder.getLocale().getLanguage();
-		model.addAttribute("lang", vLocal);
 		
+		
+		List<t_forum> listforum = null;
+		List<t_forum_category> listforumcat = null;
+		
+		listforum = forumservices.getforumlist();
+		listforumcat = forumservices.getforumcategorylist();
+		
+		model.addAttribute("forumlist", listforum);
+		model.addAttribute("forumcatlist", listforumcat);
 
-		List<FundClient_loginhistory> fcl = null;
-		fcl = fundclientservice.getloginhistory((String) session.getAttribute("s_Login"));
-		model.addAttribute("loginhistorylist", fcl);
-		model.addAttribute("email", (String) session.getAttribute("s_Login"));*/
+		//Menu All pages require End
+		
 		String returnURL = "";
 		returnURL = "/index";
 
@@ -113,7 +119,7 @@ public class HomeController {
 
 		return defaultpath + returnURL;
 	}
-
+/*
 	@RequestMapping(value = "/loginConfirm", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
 	@ResponseBody
 	public ModelAndView loginConfirm(HttpServletRequest request, @RequestParam("email") String email,
@@ -141,5 +147,5 @@ public class HomeController {
 		mav.addObject("result", APIProtectionHandler.ApiProtection(request, responsestr, Boolean.valueOf(false)));
 		return mav;
 	}
-
+*/
 }
