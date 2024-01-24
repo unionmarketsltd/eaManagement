@@ -93,9 +93,9 @@
 						<!-- CURRENT OPTION VALUE -->
 						<div class="current-option-value">
 							<img class="widget-option-img user-avatar micro"
-								src="${pageContext.request.contextPath}/resources/forum/img/users/05.jpg"
+								src="<%=s_GImgUrl%>"
 								alt="avatar-01">
-							<p class="widget-option-text">James_Spiegel</p>
+							<p class="widget-option-text"><%=s_GName%></p>
 						</div>
 						<!-- /CURRENT OPTION VALUE -->
 
@@ -363,6 +363,8 @@ function search()
 	
 	
 	}
+	
+var scrolltext = "";
 
 </script>
 

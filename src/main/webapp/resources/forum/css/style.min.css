@@ -1,6 +1,9 @@
 @import url("https://fonts.googleapis.com/css?family=Roboto:400,500,700,900");
 @import url("https://fonts.googleapis.com/css?family=Exo:400,600,700,800");
 
+
+
+
 * {
     margin: 0;
     padding: 0;
@@ -6606,11 +6609,11 @@ a {
 }
 
 .button.gray:hover {
-    background-color: #1c95f3
+    background-color: #f30a5c
 }
 
 .button.gray:hover .button-ornament {
-    background-color: #0270c5
+    background-color: #f30a5c
 }
 
 .button.fb {
@@ -13284,7 +13287,7 @@ input[type="radio"]:disabled + .radio-circle {
 }
 
 .post-open-comment-info .post-open-comment-icon.icon-bubbles {
-    color: #dbdbdb;
+    color: #1c95f3;
     font-size: 36px
 }
 
@@ -21501,3 +21504,12 @@ input[type="radio"]:disabled + .radio-circle {
 }
 
 /*# sourceMappingURL=style.min.css.map */
+
+
+
+
+.gc {
+    display: grid !important;
+    grid-template-columns: 22px 1fr;
+    grid-gap: 0px;
+}

@@ -10,11 +10,13 @@ import org.apache.ibatis.annotations.Update;
 import com.union.portal.domain.FundClient_client;
 import com.union.portal.domain.FundClient_loginhistory;
 import com.union.portal.domain.forum_and_cat_name;
+import com.union.portal.domain.scroll_topic_info;
 import com.union.portal.domain.t_forum;
 import com.union.portal.domain.t_forum_category;
 import com.union.portal.domain.t_forum_topic;
 import com.union.portal.domain.t_forum_topiccount;
 import com.union.portal.domain.topic_comment_list;
+import com.union.portal.domain.topic_comment_user_like;
 import com.union.portal.domain.topic_search_result;
 import com.union.portal.domain.topic_subcomment_list;
 
@@ -113,7 +115,7 @@ public List<t_forum_topiccount> getforumtopiccountlist();
 	
 	
 	
-	@Select("SELECT t_forum_category.*, count(distinct t_forum_topic.id) as post_number, count(distinct t_forum_comment.id) as comment_number, max(distinct t_forum_comment.create_date) as last_update  FROM forum.t_forum_category join t_forum_topic on t_forum_category.id = t_forum_topic.category_id left join t_forum_comment on t_forum_comment.topic_id = t_forum_topic.id where t_forum_category.id =#{categoryid}")
+	@Select("SELECT t_forum_category.*,(select name from t_user where email = t_forum_category.create_by) as create_by_name ,count(distinct t_forum_topic.id) as post_number, count(distinct t_forum_comment.id) as comment_number, max(distinct t_forum_comment.create_date) as last_update  FROM forum.t_forum_category join t_forum_topic on t_forum_category.id = t_forum_topic.category_id left join t_forum_comment on t_forum_comment.topic_id = t_forum_topic.id where t_forum_category.id =#{categoryid}")
 	public t_forum_category getforumcategoryinfo(@Param("categoryid")String categoryid);
 	
 	
@@ -122,10 +124,23 @@ public List<t_forum_topiccount> getforumtopiccountlist();
 	@Select("SELECT forum.t_forum_topic.* , \r\n"
 			+ "(select count(*) from t_forum_comment where t_forum_comment.topic_id = forum.t_forum_topic.id  ) as reply,\r\n"
 			+ "(select name from t_user where email = create_by ) as create_by_name , \r\n"
+			+ "(select google_image_url from t_user where email = create_by ) as create_by_img , \r\n"
 			+ " (select id from t_user where email = create_by ) as create_by_id  \r\n"
 			+ " FROM forum.t_forum_topic \r\n"
-			+ " where category_id =#{categoryid} order by pin_post desc, last_comment_date desc ,last_comment_date desc")
-	public List<t_forum_topic> getforumcategorytopiclist(@Param("categoryid")String categoryid);
+			+ " where category_id =#{categoryid} order by pin_post desc, last_comment_date desc ,last_comment_date desc LIMIT 10 OFFSET #{offset}")
+	public List<t_forum_topic> getforumcategorytopiclist(@Param("categoryid")String categoryid, @Param("offset")int offset);
+	
+	
+	@Select("SELECT CEIL(count(*) /10) as totalpage\r\n"
+			+ "FROM \r\n"
+			+ "    forum.t_forum_topic\r\n"
+			+ "WHERE \r\n"
+			+ "    category_id = #{categoryid}\r\n"
+			+ "ORDER BY \r\n"
+			+ "    pin_post DESC, last_comment_date DESC, last_comment_date DESC\r\n"
+			+ "")
+	public int getforumcategorytotalPage(@Param("categoryid")String categoryid);
+	
 	
 	@Select("SELECT * \r\n"
 			+ ",(SELECT \r\n"
@@ -153,6 +168,9 @@ public List<t_forum_topiccount> getforumtopiccountlist();
 			+ " (select id\r\n"
 			+ " from t_user\r\n"
 			+ " where email = forum.t_forum_topic.create_by) as create_by_id, \r\n"
+			+ " (select count(*)\r\n"
+			+ " from forum.t_forum_topic_user_like\r\n"
+			+ " where topic = forum.t_forum_topic.id) as totallikes, \r\n"
 			+ " (select count(*)\r\n"
 			+ " from t_forum_comment\r\n"
 			+ " where topic_id = forum.t_forum_topic.id) as reply\r\n"
@@ -237,5 +255,73 @@ public List<t_forum_topiccount> getforumtopiccountlist();
 	
 	
 	
+	@Select("select id,title,(select name from t_user where email = create_by) as name , create_date from t_forum_topic order by create_date desc limit 5\r\n"
+			+ "")
+	public List<scroll_topic_info> getscrolltopicinfo();
+	
+	@Select("INSERT INTO `forum`.`t_forum_topic_user_like`\r\n"
+			+ "	(`topic`,\r\n"
+			+ "	`email`,\r\n"
+			+ "	`status`,\r\n"
+			+ "	`create_date`)\r\n"
+			+ "	VALUES\r\n"
+			+ "	(#{tid},\r\n"
+			+ "	#{email},\r\n"
+			+ "	1,\r\n"
+			+ "	now());")
+	public void userliketopic(@Param("tid")String tid,@Param("email")String email);
+	
+	
 
+	@Select("SELECT count(*) as ilike FROM forum.t_forum_topic_user_like where email=#{email} and topic = #{tid} and dbsts = 'A';")
+	public int isuserlikethistopic(@Param("tid")String tid,@Param("email")String email);
+	
+	
+	@Select("UPDATE forum.t_forum_topic_user_like\r\n"
+			+ "SET status = 0\r\n"
+			+ "WHERE email = #{email} and topic = #{tid};")
+	public void userunliketopic(@Param("tid")String tid,@Param("email")String email);
+	
+	@Select("UPDATE forum.t_forum_topic_user_like\r\n"
+			+ "SET status = 1\r\n"
+			+ "WHERE email = #{email} and topic = #{tid};")
+	public void userlikeliketopic(@Param("tid")String tid,@Param("email")String email);
+	
+	
+	@Select("SELECT a.comment_id as cid, a.status as stat FROM forum.t_forum_comment_user_like a join forum.t_forum_comment b on a.comment_id = b.id where a.email=#{email} and b.topic_id = #{tid} \r\n"
+			+ "")
+	public List<topic_comment_user_like> userliketopiccommentlist(@Param("tid")String tid,@Param("email")String email);
+	
+	
+	
+	
+	
+	@Select("SELECT count(*) as ilike FROM forum.t_forum_comment_user_like where email=#{email} and comment_id = #{tid} and dbsts = 'A';")
+	public int isuserlikethiscomment(@Param("tid")String tid,@Param("email")String email);
+	
+	
+	@Select("INSERT INTO `forum`.`t_forum_comment_user_like`\r\n"
+			+ "	(`comment_id`,\r\n"
+			+ "	`email`,\r\n"
+			+ "	`status`,\r\n"
+			+ "	`create_date`)\r\n"
+			+ "	VALUES\r\n"
+			+ "	(#{tid},\r\n"
+			+ "	#{email},\r\n"
+			+ "	1,\r\n"
+			+ "	now());")
+	public void userlikecomment(@Param("tid")String tid,@Param("email")String email);
+	
+	
+	
+	@Select("UPDATE forum.t_forum_comment_user_like\r\n"
+			+ "SET status = 1\r\n"
+			+ "WHERE email = #{email} and comment_id = #{tid};")
+	public void userlikelikecomment(@Param("tid")String tid,@Param("email")String email);
+	
+	@Select("UPDATE forum.t_forum_comment_user_like\r\n"
+			+ "SET status = 0\r\n"
+			+ "WHERE email = #{email} and comment_id = #{tid};")
+	public void userunlikecomment(@Param("tid")String tid,@Param("email")String email);
+	
 }

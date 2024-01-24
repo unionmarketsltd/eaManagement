@@ -32,55 +32,8 @@
 		</div>
 		<!-- /BANNER -->
 	</div>
-
-	<!-- LIVE NEWS WIDGET WRAP -->
-	<div class="live-news-widget-wrap">
-		<!-- LIVE NEWS WIDGET -->
-		<div class="live-news-widget grid-limit">
-			<!-- LIVE NEWS WIDGET STAIRS -->
-			<div class="live-news-widget-stairs left red">
-				<div class="live-news-widget-stair"></div>
-				<div class="live-news-widget-stair"></div>
-				<div class="live-news-widget-stair"></div>
-				<div class="live-news-widget-stair"></div>
-				<div class="live-news-widget-stair"></div>
-				<div class="live-news-widget-stair"></div>
-				<div class="live-news-widget-stair"></div>
-				<div class="live-news-widget-stair"></div>
-			</div>
-			<!-- /LIVE NEWS WIDGET STAIRS -->
-
-			<!-- LIVE NEWS WIDGET STAIRS -->
-			<div class="live-news-widget-stairs right blue">
-				<div class="live-news-widget-stair"></div>
-				<div class="live-news-widget-stair"></div>
-				<div class="live-news-widget-stair"></div>
-				<div class="live-news-widget-stair"></div>
-				<div class="live-news-widget-stair"></div>
-				<div class="live-news-widget-stair"></div>
-				<div class="live-news-widget-stair"></div>
-				<div class="live-news-widget-stair"></div>
-			</div>
-			<!-- /LIVE NEWS WIDGET STAIRS -->
-
-			<!-- LIVE NEWS WIDGET TITLE WRAP -->
-			<div class="live-news-widget-title-wrap">
-				<img class="live-news-widget-icon"
-					src="${pageContext.request.contextPath}/resources/forum/img/icons/live-news-icon.png"
-					alt="live-news-icon">
-				<p class="live-news-widget-title">Live News</p>
-			</div>
-			<!-- /LIVE NEWS WIDGET TITLE WRAP -->
-
-			<!-- LIVE NEWS WIDGET TEXT WRAP -->
-			<div id="lineslide-wrap1" class="live-news-widget-text-wrap">
-				<p class="live-news-widget-text"></p>
-			</div>
-			<!-- /LIVE NEWS WIDGET TEXT WRAP -->
-		</div>
-		<!-- /LIVE NEWS WIDGET -->
-	</div>
-
+<%@include file="inc/newsscroll.jsp"%>
+	
 
 	<div class="layout-content-full grid-limit">
 		<!-- FILTERS ROW -->
@@ -122,14 +75,12 @@
 				<!-- /TABLE ROW HEADER ITEM -->
 
 				<!-- TABLE ROW HEADER ITEM -->
-				<div class="table-row-header-item padded-large">
-					<p class="table-row-header-title">Category</p>
-				</div>
+			
 				<!-- /TABLE ROW HEADER ITEM -->
 
 				<!-- TABLE ROW HEADER ITEM -->
 				<div class="table-row-header-item left">
-					<p class="table-row-header-title"></p>
+					<p class="table-row-header-title">Category</p>
 				</div>
 				<!-- /TABLE ROW HEADER ITEM -->
 			</div>
@@ -187,7 +138,7 @@
 						<!-- /TABLE ROW ITEM -->
 
 						<!-- TABLE ROW ITEM -->
-						<div class="table-row-item padded-large">
+						<!--  <div class="table-row-item padded-large">
 							<p class="table-text bold light">	<c:forEach items="${ listforumtopiccount }"
 									var="listtopiccountinfo2" varStatus="status2">
 
@@ -197,7 +148,7 @@
 										</c:when>
 									</c:choose>
 								</c:forEach></p>
-						</div>
+						</div>-->
 						<!-- /TABLE ROW ITEM -->
 
 						<!-- TABLE ROW ITEM -->
