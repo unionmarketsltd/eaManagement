@@ -194,18 +194,11 @@
 		<div class="form-actions right">
 
 			<!-- BUTTON -->
-			<button class="button blue" onclick="posttopic()" type="button">
+			<button class="button blue" onclick="posttopic()" type="button" id="postbtn" style="padding: 0 34px 0 34px !important">
 				Post your topic
-				<!-- BUTTON ORNAMENT -->
-				<span class="button-ornament"> <!-- ARROW ICON --> <svg
-						class="arrow-icon medium">
-                <use xlink:href="#svg-arrow-medium"></use>
-              </svg> <!-- /ARROW ICON --> <!-- CROSS ICON --> <svg
-						class="cross-icon small">
-                <use xlink:href="#svg-cross-small"></use>
-              </svg> <!-- /CROSS ICON -->
-				</span>
-				<!-- /BUTTON ORNAMENT -->
+				
+				
+					
 			</button>
 
 			<script
@@ -219,8 +212,9 @@
 	
 	function posttopic()
 	{
-		
-	
+		if(checkempty())
+			{
+	        document.getElementById("postbtn").InnerHTML ='Post your topic <i class="fa fa-spinner fa-spin" style="font-size:24px"></i>';
 		$.ajax({
 			url : '${pageContext.request.contextPath}/forum/api/createnewtopic',
 			type : 'post',
@@ -241,7 +235,7 @@
 				return;
 			}
 		});
-		
+			}
 		
 	}
 	</script>

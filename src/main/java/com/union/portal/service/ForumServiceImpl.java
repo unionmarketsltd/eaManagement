@@ -231,6 +231,24 @@ public class ForumServiceImpl implements ForumService {
 		mapper.userunlikecomment(tid, email);
 		
 	}
+
+	@Override
+	public void updatetopic(String title, String description, String content, String id ,String createby) {
+		mapper.updatetopic(title, description, content, id, createby);
+		
+	}
+
+	@Override
+	public int isautorizedtoedittopic(String id, String email) {
+		// TODO Auto-generated method stub
+		return mapper.isautorizedtoedittopic(id, email);
+	}
+
+	@Override
+	public void deletetopic(String id, String createby) {
+		mapper.deletetopic(id, createby);
+		
+	}
 	
 	
 

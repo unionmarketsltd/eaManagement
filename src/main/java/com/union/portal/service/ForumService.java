@@ -82,5 +82,12 @@ public interface ForumService {
 	public void userunlikecomment(String tid,String email);
 	
 	
+	public void updatetopic(String title,String description,String content,String id,String createby);
+	
+	
+	public int isautorizedtoedittopic(String id,String email);
+	
+	
+	public void deletetopic(String id,String createby);
 	
 }

@@ -93,7 +93,79 @@
 							<p class="post-open-comment-text">Likes</p>
 							<!-- /POST OPEN COMMENT TEXT-->
 						</div>
+						<c:choose>
+							<c:when test="${isallowedit eq 1}">
+								<a
+									href="${pageContext.request.contextPath}/forum/edittopic?id=${topicinfo.id}"
+									class="post-open-comment-info" style="margin-left: 21px; margin-top:3px"> <i
+									class="fa fa-edit post-open-comment-icon" aria-hidden="true"
+									style="color: #80808073; font-size: 22px;"></i> 
 
+
+								</a>
+								
+								
+							<a
+									href="#" onclick="deletepost()"
+									class="post-open-comment-info" style="margin-left: -9px"> <i
+									class="fa fa-trash post-open-comment-icon" aria-hidden="true"
+									style="color: #80808073; font-size: 23px;"></i> <!-- POST OPEN COMMENT COUNT -->
+									
+
+
+								</a>
+								
+								<script>
+								
+								function deletethistopic() {
+									
+
+									$
+											.ajax({
+												url : '${pageContext.request.contextPath}/forum/api/deletetopic',
+												type : 'post',
+												datatype : "application/json",
+												contentType : "application/json",
+												async : true,
+												data : '{"id":"' + ${topicinfo.id} + '" , "cid":"' + ${topicinfo.category_id} + '"}',
+												success : function(data) {
+													console.log(data);
+													const jobj = JSON.parse(data.result);
+
+													window.location.href = "${pageContext.request.contextPath}/forum"
+															+ jobj.redirect;
+												},
+
+												error : function(xhr, status) {
+													alert("ERROR : " + xhr + " : " + status);
+
+													return;
+												}
+											});
+								}
+								
+								
+								
+								function deletepost()
+								{
+									
+							            var userResponse = confirm("Do you want to delete this topic?");
+							            
+							            if (userResponse) {
+							            	deletethistopic();
+							            } else {
+							              
+							            }
+							        }
+								
+								
+								
+								</script>
+								
+								
+
+							</c:when>
+						</c:choose>
 						<!-- /POST OPEN COMMENT INFO -->
 					</div>
 					<div
@@ -187,6 +259,30 @@
 
 
 
+				<a
+					href="${pageContext.request.contextPath}/forum/category?id=${topicinfo.category_id}"
+					class="button yellow cloner-wrap "
+					onclick="quickreply('t','Ng mingfung','https://lh3.googleusercontent.com/a/ACg8ocLEDhkqXsmJnfw5FH_3OHfVWY-lCOtU_iKQL9tnxGIqnA=s96-c','how to trade EURUSD','','')"
+					style="position: relative; position: relative; float: right; width: 215px; margin-top: -36px; margin-right: 10px">
+					Back to category list <!-- BUTTON ORNAMENT -->
+					<div class="button-ornament">
+						<!-- ARROW ICON -->
+						<div class="arrow-icon medium">
+							<i class="fa fa-arrow-left" aria-hidden="true"
+								style="margin-left: -4px"></i>
+						</div>
+						<!-- /ARROW ICON -->
+
+						<!-- CROSS ICON -->
+						<svg class="cross-icon small">
+            <use xlink:href="#svg-cross-small"></use>
+          </svg>
+						<!-- /CROSS ICON -->
+					</div>
+				</a>
+
+
+
 
 				<div class="section-title-separator"></div>
 			</div>
@@ -257,7 +353,9 @@
 									</c:if>
 									<c:if test="${tcullistinfo.stat ne 1}">
 									hoverable
-								</c:if>cyan"onclick="likecomment('${listinfo1.id}','<c:if test="${tcullistinfo.stat eq 1}">N</c:if><c:if test="${tcullistinfo.stat ne 1}">Y</c:if>')">
+								</c:if>cyan"
+										id="comment_${tcullistinfo.cid}"
+										onclick="likecomment('${listinfo1.id}','<c:if test="${tcullistinfo.stat eq 1}">N</c:if><c:if test="${tcullistinfo.stat ne 1}">Y</c:if>')">
 										<i class="icon-like like-icon"></i>
 									</div>
 								</c:when>
@@ -277,7 +375,7 @@
 						<!-- /LIKE BUTTON -->
 
 						<!-- LIKES COUNT -->
-						<p class="likes-count">${ listinfo1.like}Thumbs Up</p>
+						<p class="likes-count">${ listinfo1.like}ThumbsUp</p>
 						<!-- /LIKES COUNT -->
 					</div>
 					<!-- /POST COMMENT ACTIONS -->
@@ -401,169 +499,177 @@
 
 
 	<script>
-  
-  function quickreply(replytype,replyto,userimg,oripost,id,depth){
-	 
-	  if(replytype == 'c')
-		  {
-		  document.getElementById('replytooripost').innerHTML  =oripost;
-		  document.getElementById('replytoimg').src  = userimg;
-		  document.getElementById('replyto').innerHTML  = replyto +'<span id = "replypid">'+id+'</span>'+'<span id = "replydepth">'+depth+'</span>';
-		  document.getElementById('replytype').innerHTML ="Reply to this comment";
-		  document.getElementById('replybtn').innerHTML ="Reply this comment";
-		  }
-	  else
-		  {
-		  document.getElementById('replytooripost').innerHTML  =oripost;
-		  document.getElementById('replytoimg').src  = userimg;
-		  document.getElementById('replyto').innerHTML  = replyto +'<span id = "replypid">'+id+'</span>'+'<span id = "replydepth">'+depth+'</span>';
-		  document.getElementById('replytype').innerHTML ="Reply to this topic";
-		  document.getElementById('replybtn').innerHTML ="Reply this topic";
-		  }
-	  
-	  
-	  
-  }
-  </script>
+		function quickreply(replytype, replyto, userimg, oripost, id, depth) {
+
+			if (replytype == 'c') {
+				document.getElementById('replytooripost').innerHTML = oripost;
+				document.getElementById('replytoimg').src = userimg;
+				document.getElementById('replyto').innerHTML = replyto
+						+ '<span id = "replypid">' + id + '</span>'
+						+ '<span id = "replydepth">' + depth + '</span>';
+				document.getElementById('replytype').innerHTML = "Reply to this comment";
+				document.getElementById('replybtn').innerHTML = "Reply this comment";
+			} else {
+				document.getElementById('replytooripost').innerHTML = oripost;
+				document.getElementById('replytoimg').src = userimg;
+				document.getElementById('replyto').innerHTML = replyto
+						+ '<span id = "replypid">' + id + '</span>'
+						+ '<span id = "replydepth">' + depth + '</span>';
+				document.getElementById('replytype').innerHTML = "Reply to this topic";
+				document.getElementById('replybtn').innerHTML = "Reply this topic";
+			}
+
+		}
+	</script>
 
 
 
 	<script>
-  
-  
-  
-  function getnewreplyobject( type)
-	{
-	  
-		var tid = new URLSearchParams(window.location.search).get('id');
-		
-		
-		var cmd = document.getElementById("quick_reply_text").value;
-		
-		var obj = new Object() ; 
-		
-		obj.tid = tid;
-		
-		if(type=='c')
-			{
-			var pid = document.getElementById("replypid").innerHTML;
-			var depth = document.getElementById("replydepth").innerHTML;
-			obj.pid = pid;
-			obj.depth = (parseInt(depth)+1).toString() ;
-			
-		
+		function getnewreplyobject(type) {
+
+			var tid = new URLSearchParams(window.location.search).get('id');
+
+			var cmd = document.getElementById("quick_reply_text").value;
+
+			var obj = new Object();
+
+			obj.tid = tid;
+
+			if (type == 'c') {
+				var pid = document.getElementById("replypid").innerHTML;
+				var depth = document.getElementById("replydepth").innerHTML;
+				obj.pid = pid;
+				obj.depth = (parseInt(depth) + 1).toString();
+
+			} else {
+				obj.pid = "-1";
+				obj.depth = "0";
+
 			}
-		else
-			{
-			obj.pid = "-1";
-			obj.depth = "0" ;
-			
+
+			obj.cmd = cmd;
+			return obj;
+		}
+
+		function postreply() {
+			document.getElementById("replybtnicon").innerHTML = '<i class="fa fa-spinner fa-spin" style="margin-top: 4px;font-size:24px"></i>';
+
+			var type = "";
+			if (document.getElementById("replytype").innerHTML
+					.indexOf("comment") >= 0) {
+				type = 'c';
+
+			} else {
+				type = 't';
+
 			}
+
+			$
+					.ajax({
+						url : '${pageContext.request.contextPath}/forum/api/createnewreply',
+						type : 'post',
+						datatype : "application/json",
+						contentType : "application/json",
+						async : true,
+						data : JSON.stringify(getnewreplyobject(type)),
+						success : function(data) {
+							console.log(data);
+							const jobj = JSON.parse(data.result);
+
+							window.location.href = "${pageContext.request.contextPath}/forum"
+									+ jobj.redirect;
+						},
+
+						error : function(xhr, status) {
+							alert("ERROR : " + xhr + " : " + status);
+
+							return;
+						}
+					});
+
+		}
+
+		function likethistopic(yesno) {
+			const id = new URLSearchParams(window.location.search).get('id');
+
+			$
+					.ajax({
+						url : '${pageContext.request.contextPath}/forum/api/userliketopic',
+						type : 'post',
+						datatype : "application/json",
+						contentType : "application/json",
+						async : true,
+						data : '{"id":"' + id + '" , "yesno":"' + yesno + '"}',
+						success : function(data) {
+							console.log(data);
+							const jobj = JSON.parse(data.result);
+
+							window.location.href = "${pageContext.request.contextPath}/forum"
+									+ jobj.redirect;
+						},
+
+						error : function(xhr, status) {
+							alert("ERROR : " + xhr + " : " + status);
+
+							return;
+						}
+					});
+		}
 		
-		obj.cmd = cmd;	
-		return obj;
-	}
-	
-  
-  
-  
-  function postreply()
-	{
-	  document.getElementById("replybtnicon").innerHTML = '<i class="fa fa-spinner fa-spin" style="margin-top: 4px;font-size:24px"></i>';
-	  
-	  var type = "";
-	  if(document.getElementById("replytype").innerHTML.indexOf("comment")>=0)
-		  {
-		  type='c';
 		
-		 
-		  }
-	  else
-		  {
-		  type='t';
-	
-		  }
+		
 
-		$.ajax({
-			url : '${pageContext.request.contextPath}/forum/api/createnewreply',
-			type : 'post',
-			datatype : "application/json",
-			contentType : "application/json",
-			async : true,
-			data : JSON.stringify(getnewreplyobject(type)),
-			success : function(data) {
-				console.log(data);
-				const jobj = JSON.parse(data.result);
-				
-				window.location.href = "${pageContext.request.contextPath}/forum"+jobj.redirect;
-			},
-
-			error : function(xhr, status) {
-				alert("ERROR : " + xhr + " : " + status);
-
-				return;
+		function likecomment(cid, yesno1) {
+			console.log(cid);
+			var yesno;
+			if (document.getElementById("comment_" + cid).classList
+					.contains("hoverable")) {
+				yesno = 'Y';
+				document.getElementById("comment_" + cid).classList
+						.remove("hoverable");
+			} else {
+				yesno = 'N';
+				document.getElementById("comment_" + cid).classList
+						.add("hoverable");
 			}
-		});
-		
-		
-	}
-  
-  
-  
-  function likethistopic(yesno)
-  {
-	  const id = new URLSearchParams(window.location.search).get('id');
-	  
-	  $.ajax({
-			url : '${pageContext.request.contextPath}/forum/api/userliketopic',
-			type : 'post',
-			datatype : "application/json",
-			contentType : "application/json",
-			async : true,
-			data : '{"id":"'+id+'" , "yesno":"'+yesno+'"}',
-			success : function(data) {
-				console.log(data);
-				const jobj = JSON.parse(data.result);
-				
-				window.location.href = "${pageContext.request.contextPath}/forum"+jobj.redirect;
-			},
 
-			error : function(xhr, status) {
-				alert("ERROR : " + xhr + " : " + status);
+			const id = new URLSearchParams(window.location.search).get('id');
+			$
+					.ajax({
+						url : '${pageContext.request.contextPath}/forum/api/userlikecomment',
+						type : 'post',
+						datatype : "application/json",
+						contentType : "application/json",
+						async : true,
+						data : '{"id":"' + cid + '" , "yesno":"' + yesno
+								+ '","tid":"' + id + '"}',
+						success : function(data) {
+							console.log(data);
+							const jobj = JSON.parse(data.result);
 
-				return;
-			}
-		});
-  }
-  
- 
-  function likecomment( cid,yesno)
-  {
-	 
-	  const id = new URLSearchParams(window.location.search).get('id');
-	  $.ajax({
-			url : '${pageContext.request.contextPath}/forum/api/userlikecomment',
-			type : 'post',
-			datatype : "application/json",
-			contentType : "application/json",
-			async : true,
-			data : '{"id":"'+cid+'" , "yesno":"'+yesno+'","tid":"'+id+'"}',
-			success : function(data) {
-				console.log(data);
-				const jobj = JSON.parse(data.result);
-				
-				window.location.href = "${pageContext.request.contextPath}/forum"+jobj.redirect;
-			},
+							//window.location.href = "${pageContext.request.contextPath}/forum"+jobj.redirect;
+							if (jobj.redirect.indexOf("topic") >= 0)
+								var comid = "comment_" + cid;
+							console.log(comid);
 
-			error : function(xhr, status) {
-				alert("ERROR : " + xhr + " : " + status);
+							if (yesno == 'Y') {
+								document.getElementById(comid).classList
+										.remove("hoverable");
 
-				return;
-			}
-		});
-  }
-  
-  </script>
+							} else {
+								document.getElementById(comid).classList
+										.add("hoverable");
+							}
+						},
+
+						error : function(xhr, status) {
+							alert("ERROR : " + xhr + " : " + status);
+
+							return;
+						}
+					});
+		}
+	</script>
 
 
 

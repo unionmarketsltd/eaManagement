@@ -1364,8 +1364,10 @@ loadingScripts();
 function loadingScripts() {
     /* getting url of current page */
     var url = window.location.pathname.indexOf('createtopic');
+    var url1 = window.location.pathname.indexOf('edittopic');
     console.log(url);
-    if (url == -1) { /* checking whether the current page is home page or not */
+    console.log(url1);
+    if (url == -1 && url1 ==-1) { /* checking whether the current page is home page or not */
         var script = document.createElement('script');
         script.src = "${pageContext.request.contextPath}/resources/forum/app.bundle.min.js";
         document.body.appendChild(script);

@@ -127,7 +127,7 @@ public List<t_forum_topiccount> getforumtopiccountlist();
 			+ "(select google_image_url from t_user where email = create_by ) as create_by_img , \r\n"
 			+ " (select id from t_user where email = create_by ) as create_by_id  \r\n"
 			+ " FROM forum.t_forum_topic \r\n"
-			+ " where category_id =#{categoryid} order by pin_post desc, last_comment_date desc ,last_comment_date desc LIMIT 10 OFFSET #{offset}")
+			+ " where category_id =#{categoryid} and dbsts='A' order by pin_post desc, last_comment_date desc ,last_comment_date desc LIMIT 10 OFFSET #{offset}")
 	public List<t_forum_topic> getforumcategorytopiclist(@Param("categoryid")String categoryid, @Param("offset")int offset);
 	
 	
@@ -135,7 +135,7 @@ public List<t_forum_topiccount> getforumtopiccountlist();
 			+ "FROM \r\n"
 			+ "    forum.t_forum_topic\r\n"
 			+ "WHERE \r\n"
-			+ "    category_id = #{categoryid}\r\n"
+			+ "    category_id = #{categoryid} and dbsts='A' \r\n"
 			+ "ORDER BY \r\n"
 			+ "    pin_post DESC, last_comment_date DESC, last_comment_date DESC\r\n"
 			+ "")
@@ -288,7 +288,27 @@ public List<t_forum_topiccount> getforumtopiccountlist();
 	public void userlikeliketopic(@Param("tid")String tid,@Param("email")String email);
 	
 	
-	@Select("SELECT a.comment_id as cid, a.status as stat FROM forum.t_forum_comment_user_like a join forum.t_forum_comment b on a.comment_id = b.id where a.email=#{email} and b.topic_id = #{tid} \r\n"
+	@Select("SELECT\r\n"
+			+ "    a.comment_id AS cid,\r\n"
+			+ "    a.status AS stat\r\n"
+			+ "FROM\r\n"
+			+ "    forum.t_forum_comment_user_like a\r\n"
+			+ "JOIN\r\n"
+			+ "    forum.t_forum_comment b ON a.comment_id = b.id\r\n"
+			+ "WHERE\r\n"
+			+ "    a.email = #{email} AND\r\n"
+			+ "    b.topic_id = #{tid}\r\n"
+			+ "\r\n"
+			+ "UNION\r\n"
+			+ "\r\n"
+			+ "SELECT\r\n"
+			+ "    id AS cid,\r\n"
+			+ "    0 AS stat\r\n"
+			+ "FROM\r\n"
+			+ "    forum.t_forum_comment\r\n"
+			+ "WHERE\r\n"
+			+ "    topic_id = #{tid} AND\r\n"
+			+ "    id NOT IN (SELECT comment_id FROM forum.t_forum_comment_user_like WHERE email = #{email});\r\n"
 			+ "")
 	public List<topic_comment_user_like> userliketopiccommentlist(@Param("tid")String tid,@Param("email")String email);
 	
@@ -324,4 +344,29 @@ public List<t_forum_topiccount> getforumtopiccountlist();
 			+ "WHERE email = #{email} and comment_id = #{tid};")
 	public void userunlikecomment(@Param("tid")String tid,@Param("email")String email);
 	
+	
+	
+	@Insert("UPDATE `forum`.`t_forum_topic`\r\n"
+			+ "SET\r\n"
+			+ "`title` = #{title},\r\n"
+			+ "`description` = #{description},\r\n"
+			+ "`content` = #{content},\r\n"
+			+ "`last_update_date` = now()\r\n"
+			+ "WHERE `id` = #{id} and `create_by` = #{createby};")
+	public void updatetopic(@Param("title")String title,@Param("description")String description,@Param("content")String content,@Param("id")String id,@Param("createby")String createby);
+
+	@Select("select count(*) as count from `forum`.`t_forum_topic` WHERE `id` =#{id} and create_by =#{email};")
+	public int isautorizedtoedittopic(@Param("id")String id,@Param("email")String email);
+	
+	
+	@Update("UPDATE `forum`.`t_forum_topic`\r\n"
+			+ "SET\r\n"
+			+ "`dbsts` = 'D'\r\n"
+			+ "WHERE `id` = #{id} and `create_by` = #{createby};")
+	public void deletetopic(@Param("id")String id,@Param("createby")String createby);
+
+	
+	
+
+
 }

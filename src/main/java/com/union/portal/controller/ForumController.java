@@ -252,8 +252,10 @@ public class ForumController {
 		List<topic_comment_user_like> tcul = null;
 
 		tcul = forumservices.userliketopiccommentlist(id, (String) session.getAttribute("s_GEmail"));
+		int isallowedit = forumservices.isautorizedtoedittopic(id, (String) session.getAttribute("s_GEmail"));
 
 		forumservices.updatetopicview(id);
+		model.addAttribute("isallowedit", isallowedit);
 		model.addAttribute("isuserlike", isuserlike);
 		model.addAttribute("topiclist", tft);
 
@@ -309,6 +311,33 @@ public class ForumController {
 		jsonPayload = Pattern.compile("\\p{C}").matcher(jsonPayload).replaceAll("");
 		System.out.println(jsonPayload);
 		return jsonPayload;
+	}
+
+	@RequestMapping(value = "/edittopic", method = RequestMethod.GET)
+	public String edittopic(Model model, HttpServletRequest request) throws SQLException {
+		logger.info("Welcome edittopic.");
+		String id = request.getParameter("id");
+
+		String vLocal = LocaleContextHolder.getLocale().getLanguage();
+		String returnURL = "";
+		HttpSession session = request.getSession();
+		if (forumservices.isautorizedtoedittopic(id, (String) session.getAttribute("s_GEmail")) == 1) {
+
+			t_forum_topic tft = null;
+			tft = forumservices.getforumtopicinfo(id);
+			tft.content = tft.content.replace("\"", "\\\"");
+
+			model.addAttribute("tft", tft);
+
+			model.addAttribute("lang", vLocal);
+
+			returnURL = defaultpath + "/edittopic";
+
+		} else {
+			returnURL = "redirect:" + defaultpath + "/topic?id=" + id;
+		}
+
+		return returnURL;
 	}
 
 	@RequestMapping(value = "/loginByGoogle", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
@@ -426,6 +455,73 @@ public class ForumController {
 		return mav;
 	}
 
+	@PostMapping(value = { "/api/edittopic" }, consumes = { "application/json" }, produces = { "application/json" })
+	public ModelAndView api_edittopic(@RequestBody String body, HttpServletRequest request) throws SQLException {
+		ModelAndView mav = new ModelAndView("jsonView");
+		JSONObject jsonbodyobj = new JSONObject(body);
+		logger.info("Welcome edittopic: ");
+		String responsestr = "";
+		HttpSession session = request.getSession();
+
+		String id = jsonbodyobj.getString("id");
+		String topic = jsonbodyobj.getString("topic");
+		String content = jsonbodyobj.getString("content");
+		String desc = jsonbodyobj.getString("desc");
+
+		logger.info(id);
+		logger.info(topic);
+		logger.info(content);
+		if (APIProtectionHandler.islogin(request)) {
+			forumservices.updatetopic(topic, desc, content, id, (String) session.getAttribute("s_GEmail"));
+			JSONObject jobj = new JSONObject();
+			jobj.put("redirect", "/topic?id=" + id);
+			responsestr = jobj.toString();
+		} else {
+			JSONObject jobj = new JSONObject();
+			jobj.put("redirect", "/error");
+			responsestr = jobj.toString();
+
+		}
+		mav.addObject("result", APIProtectionHandler.ApiProtection(request, responsestr));
+		return mav;
+	}
+	
+	
+	@PostMapping(value = { "/api/deletetopic" }, consumes = { "application/json" }, produces = { "application/json" })
+	public ModelAndView api_deletetopic(@RequestBody String body, HttpServletRequest request) throws SQLException {
+		ModelAndView mav = new ModelAndView("jsonView");
+		JSONObject jsonbodyobj = new JSONObject(body);
+		logger.info("Welcome deletetopic: ");
+		String responsestr = "";
+		HttpSession session = request.getSession();
+
+		String id = jsonbodyobj.getString("id");
+		String cid = jsonbodyobj.getString("cid");
+		int isallowedit = forumservices.isautorizedtoedittopic(id, (String) session.getAttribute("s_GEmail"));
+		
+		
+		if (APIProtectionHandler.islogin(request)) {
+			if(isallowedit ==1)
+			{
+				forumservices.deletetopic(id, (String) session.getAttribute("s_GEmail"));
+				JSONObject jobj = new JSONObject();
+				jobj.put("redirect", "/category?id=" + cid);
+				responsestr = jobj.toString();
+			}
+			
+		} else {
+			JSONObject jobj = new JSONObject();
+			jobj.put("redirect", "/error");
+			responsestr = jobj.toString();
+
+		}
+		mav.addObject("result", APIProtectionHandler.ApiProtection(request, responsestr));
+		return mav;
+	}
+
+	
+	
+
 	@PostMapping(value = { "/api/userliketopic" }, consumes = { "application/json" }, produces = { "application/json" })
 	public ModelAndView api_userliketopic(@RequestBody String body, HttpServletRequest request) throws SQLException {
 		ModelAndView mav = new ModelAndView("jsonView");
@@ -465,11 +561,9 @@ public class ForumController {
 		mav.addObject("result", APIProtectionHandler.ApiProtection(request, responsestr));
 		return mav;
 	}
-	
-	
-	
-	
-	@PostMapping(value = { "/api/userlikecomment" }, consumes = { "application/json" }, produces = { "application/json" })
+
+	@PostMapping(value = { "/api/userlikecomment" }, consumes = { "application/json" }, produces = {
+			"application/json" })
 	public ModelAndView userlikecomment(@RequestBody String body, HttpServletRequest request) throws SQLException {
 		ModelAndView mav = new ModelAndView("jsonView");
 		JSONObject jsonbodyobj = new JSONObject(body);
@@ -509,8 +603,6 @@ public class ForumController {
 		mav.addObject("result", APIProtectionHandler.ApiProtection(request, responsestr));
 		return mav;
 	}
-	
-	
 
 	@RequestMapping(value = { "/api/getscrolltopicinfo" }, method = { RequestMethod.GET }, produces = {
 			"application/json;charset=UTF-8" })

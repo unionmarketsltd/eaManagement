@@ -33,6 +33,51 @@ function getnewtopicobject()
 		return obj;
 	}
 	
+	function getedittopicobject()
+	{
+		var id = new URLSearchParams(window.location.search).get('id');
+		var topic = document.getElementById("topicname").value;
+		var desc = document.getElementById("topicdesc").value;
+		var markupStr = $('#summernote').summernote('code');
+		var obj = new Object() ; 
+		obj.id = id;
+		obj.desc = desc;
+		obj.topic = topic;
+		obj.content = markupStr;
+		console.log(obj);
+		console.log(id);
+		console.log(topic);
+		console.log(markupStr);
+		
+		return obj;
+	}
+	
+	
+	function checkempty()
+	{
+		var ok = true;
+		var topic = document.getElementById("topicname").value;
+		
+		var markupStr = $('#summernote').summernote('code');
+		
+		
+		if (topic === null || topic.length === 0)
+		{
+			alert("Topic title cannot be empty.");
+			ok =false;
+			return ok;
+		}
+		
+		
+		if (markupStr === null || markupStr.length === 0 || markupStr ==="<p><br></p>")
+		{
+			alert("Topic contents cannot be empty");
+			ok = false;
+		}
+		
+		return ok;
+	}
+	
 	
 	
 	 
