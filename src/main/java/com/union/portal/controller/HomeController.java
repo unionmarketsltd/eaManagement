@@ -148,4 +148,46 @@ public class HomeController {
 		return mav;
 	}
 */
+
+	@RequestMapping(value = "/mypage", method = RequestMethod.GET)
+	public String mypage(Model model, HttpServletRequest request) {
+		
+		
+		List<t_forum> listforum = null;
+		List<t_forum_category> listforumcat = null;
+		
+		listforum = forumservices.getforumlist();
+		listforumcat = forumservices.getforumcategorylist();
+		
+		model.addAttribute("forumlist", listforum);
+		model.addAttribute("forumcatlist", listforumcat);
+
+		//Menu All pages require End
+		
+		String returnURL = "";
+		returnURL = "/mypage";
+
+		return defaultpath + returnURL;
+	}
+
+	@RequestMapping(value = "/contact", method = RequestMethod.GET)
+	public String Contact(Model model, HttpServletRequest request) {
+		
+		
+		List<t_forum> listforum = null;
+		List<t_forum_category> listforumcat = null;
+		
+		listforum = forumservices.getforumlist();
+		listforumcat = forumservices.getforumcategorylist();
+		
+		model.addAttribute("forumlist", listforum);
+		model.addAttribute("forumcatlist", listforumcat);
+
+		//Menu All pages require End
+		
+		String returnURL = "";
+		returnURL = "/contact";
+
+		return defaultpath + returnURL;
+	}
 }
