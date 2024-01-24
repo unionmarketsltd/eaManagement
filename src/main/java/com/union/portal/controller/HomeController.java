@@ -45,7 +45,7 @@ public class HomeController {
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 
 	private static String defaultpath = "/home/";
-
+	private static String forumdefaultpath = "/forum/";
 	// private static String serverinfo = "MT5Genie";
 
 	private static String serverinfo = "MT5B";
@@ -149,7 +149,7 @@ public class HomeController {
 	}
 */
 
-	@RequestMapping(value = "/mypage", method = RequestMethod.GET)
+/*	@RequestMapping(value = "/mypage", method = RequestMethod.GET)
 	public String mypage(Model model, HttpServletRequest request) {
 		
 		
@@ -168,6 +168,17 @@ public class HomeController {
 		returnURL = "/mypage";
 
 		return defaultpath + returnURL;
+	}
+	*/
+	
+	
+	@RequestMapping(value = "/mypage", method = RequestMethod.GET)
+	public String mypage(Model model, HttpServletRequest request) {
+		
+		
+		
+
+		return "redirect:"+forumdefaultpath + "mypage";
 	}
 
 	@RequestMapping(value = "/contact", method = RequestMethod.GET)

@@ -40,6 +40,7 @@ import com.union.portal.domain.topic_comment_list;
 import com.union.portal.domain.topic_comment_user_like;
 import com.union.portal.domain.topic_search_result;
 import com.union.portal.domain.topic_subcomment_list;
+import com.union.portal.domain.t_user;
 import com.union.portal.service.ForumService;
 import lombok.AllArgsConstructor;
 
@@ -207,6 +208,30 @@ public class ForumController {
 		model.addAttribute("forumname", fncn.forumname);
 		model.addAttribute("categoryname", fncn.categoryname);
 		returnURL = "/category";
+
+		return defaultpath + returnURL;
+	}
+	
+	
+	
+	
+	@RequestMapping(value = "/mypage", method = RequestMethod.GET)
+	public String mypage(Model model, HttpServletRequest request) throws SQLException {
+		logger.info("Welcome mypage.");
+		HttpSession session = request.getSession();
+		String vLocal = LocaleContextHolder.getLocale().getLanguage();
+		t_user  tu = forumservices.getuserinfo((String) session.getAttribute("s_GEmail"));
+		
+		List<t_forum_topic> mtl = forumservices.getmytopiclist((String) session.getAttribute("s_GEmail"));
+		
+		List<t_forum_topic> mctp = forumservices.getmycommentedtopiclist((String) session.getAttribute("s_GEmail"));
+		model.addAttribute("topiclist", mtl);
+		model.addAttribute("commentedtopiclist", mctp);
+		model.addAttribute("userinfo", tu);
+		
+
+	String returnURL = "";
+		returnURL = "/mypage";
 
 		return defaultpath + returnURL;
 	}
@@ -683,14 +708,23 @@ public class ForumController {
 	@RequestMapping(value = "/logout", method = RequestMethod.GET)
 	public String logout(HttpServletRequest request, Model model) {
 		logger.info("Welcome logout.");
-
+		String redirect = request.getParameter("redirect");
 		String vLocal = LocaleContextHolder.getLocale().getLanguage();
 		model.addAttribute("lang", vLocal);
 		HttpSession session = request.getSession(false);
 		if (session != null)
 			session.invalidate();
 		// request.getRequestDispatcher("/index.jsp").forward(request,response);
-		return "redirect:" + defaultpath + "login";
+		logger.info("redirect" +redirect);
+		if(redirect !=null)
+		{
+			return "redirect:" + defaultpath + "login?redirect="+redirect;
+		}
+		else
+		{
+			return "redirect:" + defaultpath + "login";
+		}
+		
 	}
 
 }

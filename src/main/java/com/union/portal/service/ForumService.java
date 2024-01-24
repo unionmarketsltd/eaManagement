@@ -12,6 +12,7 @@ import com.union.portal.domain.t_forum;
 import com.union.portal.domain.t_forum_category;
 import com.union.portal.domain.t_forum_topic;
 import com.union.portal.domain.t_forum_topiccount;
+import com.union.portal.domain.t_user;
 import com.union.portal.domain.topic_comment_list;
 import com.union.portal.domain.topic_comment_user_like;
 import com.union.portal.domain.topic_search_result;
@@ -89,5 +90,13 @@ public interface ForumService {
 	
 	
 	public void deletetopic(String id,String createby);
+	
+	public t_user getuserinfo(String email);
+	
+	public List<t_forum_topic> getmytopiclist(String createby);
+	
+	
+	public List<t_forum_topic> getmycommentedtopiclist(String createby);
+
 	
 }

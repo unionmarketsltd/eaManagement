@@ -15,6 +15,7 @@ import com.union.portal.domain.t_forum;
 import com.union.portal.domain.t_forum_category;
 import com.union.portal.domain.t_forum_topic;
 import com.union.portal.domain.t_forum_topiccount;
+import com.union.portal.domain.t_user;
 import com.union.portal.domain.topic_comment_list;
 import com.union.portal.domain.topic_comment_user_like;
 import com.union.portal.domain.topic_search_result;
@@ -367,7 +368,18 @@ public List<t_forum_topiccount> getforumtopiccountlist();
 	public void deletetopic(@Param("id")String id,@Param("createby")String createby);
 
 	
+	@Select("select * from `forum`.`t_user` WHERE `email` =#{email};")
+	public t_user getuserinfo(@Param("email")String email);
+
+
 	
-
-
+	@Select("SELECT * FROM forum.t_forum_topic where create_by = #{createby} and dbsts = 'A' order by id desc;")
+	public List<t_forum_topic> getmytopiclist(@Param("createby")String createby);
+	
+	
+	
+	@Select("SELECT distinct b.*  FROM forum.t_forum_comment a join forum.t_forum_topic b on a.topic_id = b.id where a.create_by = #{createby} and a.dbsts = 'A' order by a.create_date desc;")
+	public List<t_forum_topic> getmycommentedtopiclist(@Param("createby")String createby);
+	
+	
 }

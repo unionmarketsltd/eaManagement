@@ -2076,3 +2076,59 @@
     <!-- /MENU PULL ICON -->
   </div>
   <!-- /MOBILE MENU PULL -->
+  
+  
+  <script>
+
+function search()
+{
+	window.location.href = "${pageContext.request.contextPath}/forum/search?keyword="+document.getElementById('search_text').value;
+	
+	
+	}
+	
+var scrolltext = "";
+
+</script>
+
+
+<script>
+	
+
+    
+    
+    function getscrolltopicinfo()
+	{
+		
+	
+		$.ajax({
+			url : '/portal/forum/api/getscrolltopicinfo',
+			type : 'get',
+			datatype : "application/json",
+			contentType : "application/json",
+			async : false,
+			data : '',
+			success : function(data) {
+				console.log(data);
+				const jobj = JSON.parse(data.result);
+				console.log(jobj);
+				
+				const extractedTitles = jobj.map(({ title, name }) => ({ title, name:'' }));
+				console.log(extractedTitles);
+				scrolltext = extractedTitles;
+				
+			},
+
+			error : function(xhr, status) {
+			//	alert("ERROR : " + xhr + " : " + status);
+
+				return;
+			}
+		});
+		
+		
+	}getscrolltopicinfo();
+    
+   
+	</script>
+  

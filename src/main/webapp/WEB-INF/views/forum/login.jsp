@@ -474,7 +474,26 @@ var scrolltext = "";
 					async : true,
 					data : '',
 					success : function(data) {
-						window.location.href = "${pageContext.request.contextPath}"+data.result;
+						
+						if(data.result.indexOf("checktnc")>=0)
+							{
+							window.location.href = "${pageContext.request.contextPath}"+data.result;
+							}
+						else
+							{
+							const redirect = new URLSearchParams(window.location.search).get('redirect');
+							
+							if(redirect != null)
+								{
+								
+								window.location.href = redirect;
+								}
+							else
+								{
+								window.location.href = "${pageContext.request.contextPath}"+data.result;
+								}
+							}
+						
 						
 					},
 					error : function(xhr, status) {

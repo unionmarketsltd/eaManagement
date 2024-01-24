@@ -15,7 +15,10 @@ String s_isLogin = (String)session.getAttribute("s_isLogin");
 if ( s_GEmail == null || s_isLogin != "1" ){
 %>	
 <script type="text/javascript">
-	document.location.href="${pageContext.request.contextPath}/forum/logout";
+
+//	var previousPageUrl = document.referrer;
+	
+	 document.location.href="${pageContext.request.contextPath}/forum/logout?redirect="+ window.location.href;
 </script>
 <%
 }

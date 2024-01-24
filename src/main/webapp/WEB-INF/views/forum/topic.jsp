@@ -214,10 +214,10 @@
 
 				<c:choose>
 					<c:when test="${isuserlike eq 0}">
-						<button type="button" class="button gray cloner-wrap"
+						<button type="button" class="button gray cloner-wrap" id="likebtn"
 							onclick="likethistopic('Y')"
 							style="position: relative; position: relative; float: right; width: 215px; margin-top: -36px; margin-right: 10px">
-							click to like this
+							<span id="likebtntext">click to like this </span>
 							<div class="button-ornament">
 								<!-- ARROW ICON -->
 								<div class="arrow-icon medium">
@@ -235,10 +235,10 @@
 						</button>
 					</c:when>
 					<c:otherwise>
-						<button type="button" class="button red cloner-wrap"
+						<button type="button" class="button red cloner-wrap" id="likebtn"
 							onclick="likethistopic('N')"
 							style="position: relative; position: relative; float: right; width: 215px; margin-top: -36px; margin-right: 10px">
-							i liked this topic
+							<span id="likebtntext">i liked this topic </span>
 							<div class="button-ornament">
 								<!-- ARROW ICON -->
 								<div class="arrow-icon medium">
@@ -589,8 +589,27 @@
 
 		}
 
-		function likethistopic(yesno) {
+		function likethistopic(yesno1) {
 			const id = new URLSearchParams(window.location.search).get('id');
+			var yesno ="";
+			if (document.getElementById("likebtn").classList
+					.contains("gray")) {
+				yesno = 'Y';
+				document.getElementById("likebtn").classList
+						.remove("gray");
+				document.getElementById("likebtn").classList
+				.add("red");
+				
+				document.getElementById("likebtntext").innerHTML='i liked this topic';
+			} else {
+				yesno = 'N';
+				document.getElementById("likebtn").classList
+						.remove("red");
+				document.getElementById("likebtn").classList
+				.add("gray");
+				document.getElementById("likebtntext").innerHTML='click to like this';
+			}
+			
 
 			$
 					.ajax({
@@ -604,8 +623,7 @@
 							console.log(data);
 							const jobj = JSON.parse(data.result);
 
-							window.location.href = "${pageContext.request.contextPath}/forum"
-									+ jobj.redirect;
+							//window.location.href = "${pageContext.request.contextPath}/forum"+ jobj.redirect;
 						},
 
 						error : function(xhr, status) {
