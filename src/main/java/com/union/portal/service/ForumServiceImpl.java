@@ -14,6 +14,7 @@ import com.union.portal.domain.t_forum_category;
 import com.union.portal.domain.t_forum_topic;
 import com.union.portal.domain.t_forum_topiccount;
 import com.union.portal.domain.t_user;
+import com.union.portal.domain.topic_comment_likes;
 import com.union.portal.domain.topic_comment_list;
 import com.union.portal.domain.topic_comment_user_like;
 import com.union.portal.domain.topic_search_result;
@@ -267,6 +268,12 @@ public class ForumServiceImpl implements ForumService {
 	public List<t_forum_topic> getmycommentedtopiclist(String createby) {
 		// TODO Auto-generated method stub
 		return mapper.getmycommentedtopiclist(createby);
+	}
+
+	@Override
+	public List<topic_comment_likes> getcommentlikecount(String tid) {
+		// TODO Auto-generated method stub
+		return mapper.getcommentlikecount(tid);
 	}
 	
 	

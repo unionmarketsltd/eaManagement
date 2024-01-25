@@ -16,6 +16,7 @@ import com.union.portal.domain.t_forum_category;
 import com.union.portal.domain.t_forum_topic;
 import com.union.portal.domain.t_forum_topiccount;
 import com.union.portal.domain.t_user;
+import com.union.portal.domain.topic_comment_likes;
 import com.union.portal.domain.topic_comment_list;
 import com.union.portal.domain.topic_comment_user_like;
 import com.union.portal.domain.topic_search_result;
@@ -122,13 +123,14 @@ public List<t_forum_topiccount> getforumtopiccountlist();
 	
 	
 	
-	@Select("SELECT forum.t_forum_topic.* , \r\n"
-			+ "(select count(*) from t_forum_comment where t_forum_comment.topic_id = forum.t_forum_topic.id  ) as reply,\r\n"
-			+ "(select name from t_user where email = create_by ) as create_by_name , \r\n"
-			+ "(select google_image_url from t_user where email = create_by ) as create_by_img , \r\n"
-			+ " (select id from t_user where email = create_by ) as create_by_id  \r\n"
-			+ " FROM forum.t_forum_topic \r\n"
-			+ " where category_id =#{categoryid} and dbsts='A' order by pin_post desc, last_comment_date desc ,last_comment_date desc LIMIT 10 OFFSET #{offset}")
+	@Select("SELECT id,category_id,title,description,views,create_date,create_by,last_update_date,pin_post,thumbnail , \r\n"
+			+ "(select count(*) from t_forum_topic_user_like where topic = forum.t_forum_topic.id) as likes,\r\n"
+			+ "			(select count(*) from t_forum_comment where t_forum_comment.topic_id = forum.t_forum_topic.id  ) as reply,\r\n"
+			+ "			(select name from t_user where email = create_by ) as create_by_name , \r\n"
+			+ "			(select google_image_url from t_user where email = create_by ) as create_by_img , \r\n"
+			+ "			 (select id from t_user where email = create_by ) as create_by_id  \r\n"
+			+ "			 FROM forum.t_forum_topic \r\n"
+			+ "			 where category_id =#{categoryid} and dbsts='A' order by pin_post desc, last_comment_date desc ,last_comment_date desc LIMIT 10 OFFSET #{offset}")
 	public List<t_forum_topic> getforumcategorytopiclist(@Param("categoryid")String categoryid, @Param("offset")int offset);
 	
 	
@@ -381,5 +383,6 @@ public List<t_forum_topiccount> getforumtopiccountlist();
 	@Select("SELECT distinct b.*  FROM forum.t_forum_comment a join forum.t_forum_topic b on a.topic_id = b.id where a.create_by = #{createby} and a.dbsts = 'A' order by a.create_date desc;")
 	public List<t_forum_topic> getmycommentedtopiclist(@Param("createby")String createby);
 	
-	
+	@Select("SELECT id as cid , (select count(*) from t_forum_comment_user_like where comment_id = t_forum_comment.id and status =1) as likecount FROM forum.t_forum_comment where topic_id =#{tid}")
+	public List<topic_comment_likes> getcommentlikecount(@Param("tid")String tid);
 }

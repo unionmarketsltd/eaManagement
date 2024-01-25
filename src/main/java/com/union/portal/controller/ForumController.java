@@ -41,6 +41,7 @@ import com.union.portal.domain.topic_comment_user_like;
 import com.union.portal.domain.topic_search_result;
 import com.union.portal.domain.topic_subcomment_list;
 import com.union.portal.domain.t_user;
+import com.union.portal.domain.topic_comment_likes;
 import com.union.portal.service.ForumService;
 import lombok.AllArgsConstructor;
 
@@ -278,12 +279,15 @@ public class ForumController {
 
 		tcul = forumservices.userliketopiccommentlist(id, (String) session.getAttribute("s_GEmail"));
 		int isallowedit = forumservices.isautorizedtoedittopic(id, (String) session.getAttribute("s_GEmail"));
+		
+		List<topic_comment_likes> tclike = null;
+		tclike = forumservices.getcommentlikecount(id);
 
 		forumservices.updatetopicview(id);
 		model.addAttribute("isallowedit", isallowedit);
 		model.addAttribute("isuserlike", isuserlike);
 		model.addAttribute("topiclist", tft);
-
+		model.addAttribute("topiccommentlikeslist", tclike);
 		model.addAttribute("tcullist", tcul);
 
 		model.addAttribute("topicinfo", tft);

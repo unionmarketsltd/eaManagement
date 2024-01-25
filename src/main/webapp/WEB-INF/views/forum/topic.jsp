@@ -97,24 +97,24 @@
 							<c:when test="${isallowedit eq 1}">
 								<a
 									href="${pageContext.request.contextPath}/forum/edittopic?id=${topicinfo.id}"
-									class="post-open-comment-info" style="margin-left: 21px; margin-top:3px"> <i
+									class="post-open-comment-info"
+									style="margin-left: 21px; margin-top: 3px"> <i
 									class="fa fa-edit post-open-comment-icon" aria-hidden="true"
-									style="color: #80808073; font-size: 22px;"></i> 
+									style="color: #80808073; font-size: 22px;"></i>
 
 
 								</a>
-								
-								
-							<a
-									href="#" onclick="deletepost()"
+
+
+								<a href="#" onclick="deletepost()"
 									class="post-open-comment-info" style="margin-left: -9px"> <i
 									class="fa fa-trash post-open-comment-icon" aria-hidden="true"
 									style="color: #80808073; font-size: 23px;"></i> <!-- POST OPEN COMMENT COUNT -->
-									
+
 
 
 								</a>
-								
+
 								<script>
 								
 								function deletethistopic() {
@@ -161,8 +161,8 @@
 								
 								
 								</script>
-								
-								
+
+
 
 							</c:when>
 						</c:choose>
@@ -370,7 +370,20 @@
 
 
 
+						<c:forEach items="${ topiccommentlikeslist }" var="likelistinfo"
+							varStatus="status4">
+							<c:choose>
+								<c:when test="${likelistinfo.cid eq listinfo1.id }">
+									<p class="likes-count" id="likecount_${likelistinfo.cid}">${ likelistinfo.likecount}</p><p class="likes-count"  style="margin-left:3px !important"> Likes</p>
+								</c:when>
 
+
+
+
+
+
+							</c:choose>
+						</c:forEach>
 
 						<!-- /LIKE BUTTON -->
 
@@ -600,6 +613,7 @@
 				document.getElementById("likebtn").classList
 				.add("red");
 				
+				
 				document.getElementById("likebtntext").innerHTML='i liked this topic';
 			} else {
 				yesno = 'N';
@@ -645,10 +659,23 @@
 				yesno = 'Y';
 				document.getElementById("comment_" + cid).classList
 						.remove("hoverable");
+				var element = document.getElementById("likecount_" + cid);
+	                var currentNumber = parseInt(element.innerHTML.trim(), 10);
+	                var newNumber = currentNumber + 1;
+	                element.innerHTML = newNumber;
+	
+				
 			} else {
 				yesno = 'N';
 				document.getElementById("comment_" + cid).classList
 						.add("hoverable");
+				
+				var element = document.getElementById("likecount_" + cid);
+                var currentNumber = parseInt(element.innerHTML.trim(), 10);
+                var newNumber = currentNumber - 1;
+                element.innerHTML = newNumber;
+                
+                
 			}
 
 			const id = new URLSearchParams(window.location.search).get('id');
