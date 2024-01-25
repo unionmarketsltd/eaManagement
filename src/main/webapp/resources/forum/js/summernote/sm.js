@@ -137,9 +137,6 @@ function getnewtopicobject()
 
             return output;
         }
-	
-	
-	
-	 
-	
-	
+        
+        
+        

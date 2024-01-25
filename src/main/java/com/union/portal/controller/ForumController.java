@@ -1,5 +1,10 @@
 package com.union.portal.controller;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.sql.SQLException;
 import java.time.format.DateTimeFormatter;
 import java.util.Base64;
@@ -368,6 +373,28 @@ public class ForumController {
 
 		return returnURL;
 	}
+	
+	
+	 public static String convertImageToBase64(String imageUrl) throws IOException {
+	        URL url = new URL(imageUrl);
+	        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+	        connection.setRequestMethod("GET");
+
+	        try (InputStream inputStream = connection.getInputStream()) {
+	            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+	            byte[] buffer = new byte[1024];
+	            int bytesRead;
+
+	            while ((bytesRead = inputStream.read(buffer)) != -1) {
+	                outputStream.write(buffer, 0, bytesRead);
+	            }
+
+	            byte[] imageBytes = outputStream.toByteArray();
+	            return "data:image/jpeg;base64, "+Base64.getEncoder().encodeToString(imageBytes);
+	        } finally {
+	            connection.disconnect();
+	        }
+	    }
 
 	@RequestMapping(value = "/loginByGoogle", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
 	@ResponseBody
@@ -383,6 +410,14 @@ public class ForumController {
 		String fullname = UserGoogleLoginCredential.getString("name");
 		String imageurl = UserGoogleLoginCredential.getString("picture");
 		String googleid = UserGoogleLoginCredential.getString("sub");
+		String outputimageurl = "";
+		
+		try {
+			
+			outputimageurl = convertImageToBase64(imageurl);
+		}catch (IOException e) {
+			outputimageurl = imageurl;
+        }
 
 		boolean isnewuser = forumservices.isnewuser(email);
 
@@ -390,7 +425,7 @@ public class ForumController {
 
 			session.setAttribute("s_GEmail", String.valueOf(email));
 			session.setAttribute("s_GName", String.valueOf(fullname));
-			session.setAttribute("s_GImgUrl", String.valueOf(imageurl));
+			session.setAttribute("s_GImgUrl", String.valueOf(outputimageurl));
 			session.setAttribute("s_GID", String.valueOf(googleid));
 			session.setAttribute("s_isLogin", String.valueOf("1"));
 			responsestr = defaultpath + "index";
@@ -398,7 +433,7 @@ public class ForumController {
 		} else {
 			session.setAttribute("s_GEmail", String.valueOf(email));
 			session.setAttribute("s_GName", String.valueOf(fullname));
-			session.setAttribute("s_GImgUrl", String.valueOf(imageurl));
+			session.setAttribute("s_GImgUrl", String.valueOf(outputimageurl));
 			session.setAttribute("s_GID", String.valueOf(googleid));
 			session.setAttribute("s_isLogin", String.valueOf("0"));
 			logger.info((String) session.getAttribute("s_GName"));
