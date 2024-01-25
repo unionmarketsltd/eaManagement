@@ -173,7 +173,7 @@ public List<t_forum_topiccount> getforumtopiccountlist();
 			+ " where email = forum.t_forum_topic.create_by) as create_by_id, \r\n"
 			+ " (select count(*)\r\n"
 			+ " from forum.t_forum_topic_user_like\r\n"
-			+ " where topic = forum.t_forum_topic.id) as totallikes, \r\n"
+			+ " where topic = forum.t_forum_topic.id and  `status` = 1) as totallikes, \r\n"
 			+ " (select count(*)\r\n"
 			+ " from t_forum_comment\r\n"
 			+ " where topic_id = forum.t_forum_topic.id) as reply\r\n"
@@ -271,13 +271,17 @@ public List<t_forum_topiccount> getforumtopiccountlist();
 			+ "	(#{tid},\r\n"
 			+ "	#{email},\r\n"
 			+ "	1,\r\n"
-			+ "	now());")
+			+ "	now()) ;")
 	public void userliketopic(@Param("tid")String tid,@Param("email")String email);
 	
 	
 
-	@Select("SELECT count(*) as ilike FROM forum.t_forum_topic_user_like where email=#{email} and topic = #{tid} and dbsts = 'A';")
+	@Select("SELECT count(*) as ilike FROM forum.t_forum_topic_user_like where email=#{email} and topic = #{tid} and dbsts = 'A' and `status` =1;")
 	public int isuserlikethistopic(@Param("tid")String tid,@Param("email")String email);
+	
+	
+	@Select("SELECT count(*) as ilike FROM forum.t_forum_topic_user_like where email=#{email} and topic = #{tid} and dbsts = 'A';")
+	public int islikerecordexist(@Param("tid")String tid,@Param("email")String email);
 	
 	
 	@Select("UPDATE forum.t_forum_topic_user_like\r\n"

@@ -86,11 +86,9 @@ public class HomeController {
 
 		return defaultpath + returnURL;
 	}
-
-	@RequestMapping(value = "/index", method = RequestMethod.GET)
-	public String index(Model model, HttpServletRequest request) {
-		
-		
+	
+	public void top(Model model)
+	{
 		List<t_forum> listforum = null;
 		List<t_forum_category> listforumcat = null;
 		
@@ -100,7 +98,13 @@ public class HomeController {
 		model.addAttribute("forumlist", listforum);
 		model.addAttribute("forumcatlist", listforumcat);
 
-		//Menu All pages require End
+	}
+
+	@RequestMapping(value = "/index", method = RequestMethod.GET)
+	public String index(Model model, HttpServletRequest request) {
+		
+		
+		top(model);
 		
 		String returnURL = "";
 		returnURL = "/index";

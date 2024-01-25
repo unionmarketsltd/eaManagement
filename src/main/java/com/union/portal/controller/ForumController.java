@@ -77,6 +77,27 @@ public class ForumController {
 
 	@Autowired
 	ForumService forumservices;
+	
+	
+	
+	public void top(Model model , HttpServletRequest request)
+	{
+		
+		HttpSession session = request.getSession();
+		List<t_forum> top_listforum = null;
+		List<t_forum_category> top_listforumcat = null;
+		
+		top_listforum = forumservices.getforumlist();
+		top_listforumcat = forumservices.getforumcategorylist();
+		
+		model.addAttribute("top_forumlist", top_listforum);
+		model.addAttribute("top_forumcatlist", top_listforumcat);
+		model.addAttribute("name", (String) session.getAttribute("s_GName"));
+		model.addAttribute("photo", (String) session.getAttribute("s_GImgUrl"));
+		
+	}
+	
+	
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String slash(Model model) {
@@ -103,16 +124,45 @@ public class ForumController {
 
 		return defaultpath + returnURL;
 	}
-
+	
+	
 	@RequestMapping(value = "/index", method = RequestMethod.GET)
 	public String index(Model model, HttpServletRequest request) {
+		
+		
+		top(model,request);
+		
+		String returnURL = "";
+		returnURL = "/index";
+
+		return defaultpath + returnURL;
+	}
+	
+	
+	@RequestMapping(value = "/contact", method = RequestMethod.GET)
+	public String contact(Model model, HttpServletRequest request) {
+		
+		
+		top(model,request);
+		
+		String returnURL = "";
+		returnURL = "/contact";
+
+		return defaultpath + returnURL;
+	}
+	
+	
+	
+
+	@RequestMapping(value = "/main", method = RequestMethod.GET)
+	public String main(Model model, HttpServletRequest request) {
 		HttpSession session = request.getSession();
 
 		logger.info("Welcome index ");
 		String vLocal = LocaleContextHolder.getLocale().getLanguage();
 		model.addAttribute("lang", vLocal);
 		String returnURL = "";
-
+		top( model , request);
 		List<t_forum> listforum = null;
 		List<t_forum_category> listforumcat = null;
 		List<t_forum_topiccount> listforumtopiccount = null;
@@ -123,15 +173,15 @@ public class ForumController {
 		model.addAttribute("forumlist", listforum);
 		model.addAttribute("forumcatlist", listforumcat);
 		model.addAttribute("listforumtopiccount", listforumtopiccount);
-		returnURL = "/index";
+		returnURL = "/main";
 
 		return defaultpath + returnURL;
 	}
 
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
-	public String login(Model model) throws SQLException {
+	public String login(Model model , HttpServletRequest request) throws SQLException {
 		logger.info("Welcome home! Login.");
-
+		top( model , request);
 		String vLocal = LocaleContextHolder.getLocale().getLanguage();
 		model.addAttribute("lang", vLocal);
 		String returnURL = "";
@@ -149,6 +199,7 @@ public class ForumController {
 		String returnURL = "";
 		returnURL = "/checktnc";
 		HttpSession session = request.getSession();
+		top( model , request);
 		logger.info((String) session.getAttribute("s_GName"));
 
 		model.addAttribute("name", (String) session.getAttribute("s_GName"));
@@ -161,7 +212,7 @@ public class ForumController {
 		String id = request.getParameter("id");
 		String page = request.getParameter("page");
 		String vLocal = LocaleContextHolder.getLocale().getLanguage();
-
+		top( model , request);
 		t_forum_category tfc = null;
 		tfc = forumservices.getforumcategoryinfo(id);
 		int pagenumber = 0;
@@ -225,6 +276,7 @@ public class ForumController {
 	public String mypage(Model model, HttpServletRequest request) throws SQLException {
 		logger.info("Welcome mypage.");
 		HttpSession session = request.getSession();
+		top( model , request);
 		String vLocal = LocaleContextHolder.getLocale().getLanguage();
 		t_user  tu = forumservices.getuserinfo((String) session.getAttribute("s_GEmail"));
 		
@@ -245,6 +297,7 @@ public class ForumController {
 	@RequestMapping(value = "/search", method = RequestMethod.GET)
 	public String search(Model model, HttpServletRequest request) throws SQLException {
 		logger.info("Welcome search.");
+		top( model , request);
 		String keyword = request.getParameter("keyword");
 		String vLocal = LocaleContextHolder.getLocale().getLanguage();
 
@@ -266,6 +319,7 @@ public class ForumController {
 	@RequestMapping(value = "/topic", method = RequestMethod.GET)
 	public String topic(Model model, HttpServletRequest request) throws SQLException {
 		logger.info("Welcome topic.");
+		top( model , request);
 		String id = request.getParameter("id");
 		String vLocal = LocaleContextHolder.getLocale().getLanguage();
 
@@ -310,6 +364,7 @@ public class ForumController {
 	@RequestMapping(value = "/createtopic", method = RequestMethod.GET)
 	public String createtopic(Model model, HttpServletRequest request) throws SQLException {
 		logger.info("Welcome createtopic.");
+		top( model , request);
 		String categoryid = request.getParameter("cat");
 		String vLocal = LocaleContextHolder.getLocale().getLanguage();
 
@@ -350,6 +405,7 @@ public class ForumController {
 	@RequestMapping(value = "/edittopic", method = RequestMethod.GET)
 	public String edittopic(Model model, HttpServletRequest request) throws SQLException {
 		logger.info("Welcome edittopic.");
+		top( model , request);
 		String id = request.getParameter("id");
 
 		String vLocal = LocaleContextHolder.getLocale().getLanguage();
@@ -400,6 +456,7 @@ public class ForumController {
 	@ResponseBody
 	public ModelAndView loginConfirm(HttpServletRequest request, Model model) {
 		HttpSession session = request.getSession();
+		
 		logger.info("welcome login by google" + serverinfo);
 		ModelAndView mav = new ModelAndView("jsonView");
 		String responsestr = "";
@@ -603,11 +660,21 @@ public class ForumController {
 			if (yesno.indexOf("Y") >= 0) {
 
 				int islike = forumservices.isuserlikethistopic(tid, (String) session.getAttribute("s_GEmail"));
+				int islikerecordexist =forumservices.islikerecordexist(tid, (String) session.getAttribute("s_GEmail"));
 				if (islike == 0) {
-
-					forumservices.userliketopic(tid, (String) session.getAttribute("s_GEmail"));
-				} else {
-					forumservices.userlikeliketopic(tid, (String) session.getAttribute("s_GEmail"));
+					
+					if(islikerecordexist == 0) {
+						
+						forumservices.userliketopic(tid, (String) session.getAttribute("s_GEmail"));
+					}
+					else
+					{
+						forumservices.userlikeliketopic(tid, (String) session.getAttribute("s_GEmail"));
+					}
+					
+					
+				
+					
 				}
 
 			} else {
@@ -753,7 +820,7 @@ public class ForumController {
 		HttpSession session = request.getSession(false);
 		if (session != null)
 			session.invalidate();
-		// request.getRequestDispatcher("/index.jsp").forward(request,response);
+		// request.getRequestDispatcher("/main.jsp").forward(request,response);
 		logger.info("redirect" +redirect);
 		if(redirect !=null)
 		{

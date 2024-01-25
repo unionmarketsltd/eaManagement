@@ -11,7 +11,7 @@
 <html lang="en">
 <head>
 <%@include file="inc/header.jsp"%>
-<title>Pixel Diamond | Forum</title>
+<title>INVESFORUM | Create Topic</title>
 
 <link
 	href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css"

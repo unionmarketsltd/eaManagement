@@ -10,7 +10,7 @@
 <html lang="en">
 <head>
 <%@include file="inc/header.jsp"%>
-<title>Pixel Diamond | Forum</title>
+<title>INVESFORUM | Topic</title>
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>

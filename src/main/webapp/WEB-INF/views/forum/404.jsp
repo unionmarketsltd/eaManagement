@@ -16,8 +16,7 @@
 	<div class="wrapper">
 		<%@include file="inc/top.jsp"%>
 
-		<!-- Main Sidebar Container -->
-		<%@include file="inc/left.jsp"%>
+	
 
 		<!-- Content Wrapper. Contains page content -->
 		<div class="content-wrapper">
@@ -62,7 +61,7 @@
 									<h3>Sorry,</h3>
 									<h5> We can't find the page you're looking for,</h5>
 									<h5> This may due to the page is no longer exist or you have no privilege to access to the page,</h5>
-									<h5> Click here to <a href="${pageContext.request.contextPath}/stp/index">Return to home</a></h5>
+									<h5> Click here to <a href="${pageContext.request.contextPath}/forum/index">Return to home</a></h5>
 									
 								</div>
 								

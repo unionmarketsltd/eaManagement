@@ -10,7 +10,7 @@
 <html lang="en">
 <head>
 <%@include file="inc/header.jsp"%>
-<title>Pixel Diamond | Forum</title>
+<title>INVESFORUM | My Page</title>
 
 </head>
 <body>

@@ -21,78 +21,14 @@
 
           <!-- LOGO TEXT -->
           <div class="logo-text">
-            <h2 class="logo-title">Pixel<span class="highlight">Diamond</span></h2>
-            <p class="logo-info">The Latest Gaming News</p>
+            <h2 class="logo-title">INVES<span class="highlight">FORUM</span></h2>
+            <p class="logo-info">The Latest Asset News</p>
           </div>
           <!-- /LOGO TEXT -->
         </div>
         <!-- /LOGO -->
 
         <!-- SPONSORS SLIDER WRAP -->
-        <div class="sponsors-slider-wrap">
-          <!-- SPONSORS SLIDER CONTROLS -->
-          <div id="footer-sponsor-slider-controls" class="sponsors-slider-controls">
-            <div class="sponsors-slider-control control-previous">
-              <!-- ARROW ICON -->
-              <svg class="arrow-icon medium">
-                <use xlink:href="#svg-arrow-medium"></use>
-              </svg>
-              <!-- /ARROW ICON -->
-            </div>
-            <div class="sponsors-slider-control control-next">
-              <!-- ARROW ICON -->
-              <svg class="arrow-icon medium">
-                <use xlink:href="#svg-arrow-medium"></use>
-              </svg>
-              <!-- /ARROW ICON -->
-            </div>
-          </div>
-          <!-- /SPONSORS SLIDER CONTROLS -->
-
-          <!-- SPONSORS SLIDER -->
-          <div id="footer-sponsor-slider" class="sponsors-slider">
-            <!-- SPONSORS SLIDER ITEMS -->
-            <div class="sponsors-slider-items">
-              <!-- SPONSORS SLIDER ITEM -->
-              <div class="sponsors-slider-item">
-                <img class="sponsor-img"src="${pageContext.request.contextPath}/resources/forum/img/sponsors/sponsor01.png" alt="sponsor01">
-              </div>
-              <!-- /SPONSORS SLIDER ITEM -->
-
-              <!-- SPONSORS SLIDER ITEM -->
-              <div class="sponsors-slider-item">
-                <img class="sponsor-img"src="${pageContext.request.contextPath}/resources/forum/img/sponsors/sponsor02.png" alt="sponsor02">
-              </div>
-              <!-- /SPONSORS SLIDER ITEM -->
-
-              <!-- SPONSORS SLIDER ITEM -->
-              <div class="sponsors-slider-item">
-                <img class="sponsor-img"src="${pageContext.request.contextPath}/resources/forum/img/sponsors/sponsor03.png" alt="sponsor03">
-              </div>
-              <!-- /SPONSORS SLIDER ITEM -->
-
-              <!-- SPONSORS SLIDER ITEM -->
-              <div class="sponsors-slider-item">
-                <img class="sponsor-img"src="${pageContext.request.contextPath}/resources/forum/img/sponsors/sponsor04.png" alt="sponsor04">
-              </div>
-              <!-- /SPONSORS SLIDER ITEM -->
-
-              <!-- SPONSORS SLIDER ITEM -->
-              <div class="sponsors-slider-item">
-                <img class="sponsor-img"src="${pageContext.request.contextPath}/resources/forum/img/sponsors/sponsor05.png" alt="sponsor05">
-              </div>
-              <!-- /SPONSORS SLIDER ITEM -->
-
-              <!-- SPONSORS SLIDER ITEM -->
-              <div class="sponsors-slider-item">
-                <img class="sponsor-img"src="${pageContext.request.contextPath}/resources/forum/img/sponsors/sponsor06.png" alt="sponsor06">
-              </div>
-              <!-- /SPONSORS SLIDER ITEM -->
-            </div>
-            <!-- /SPONSORS SLIDER ITEMS -->
-          </div>
-          <!-- /SPONSORS SLIDER -->
-        </div>
         <!-- /SPONSORS SLIDER WRAP -->
 
         <!-- SOCIAL LINKS -->

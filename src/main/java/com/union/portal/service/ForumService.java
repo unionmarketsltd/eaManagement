@@ -102,6 +102,8 @@ public interface ForumService {
 	
 	public List<topic_comment_likes> getcommentlikecount(String tid);
 	
+	public int islikerecordexist(String tid,String email);
+	
 
 	
 }

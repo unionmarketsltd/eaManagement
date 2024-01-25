@@ -275,6 +275,11 @@ public class ForumServiceImpl implements ForumService {
 		// TODO Auto-generated method stub
 		return mapper.getcommentlikecount(tid);
 	}
+
+	@Override
+	public int islikerecordexist(String tid, String email) {
+		return mapper.islikerecordexist(tid, email);
+	}
 	
 	
 
