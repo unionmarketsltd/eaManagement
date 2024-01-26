@@ -205,6 +205,14 @@
 				src="${pageContext.request.contextPath}/resources/forum/js/summernote/sm.js"></script>
 			<!-- /BUTTON -->
 		</div>
+		
+		  <h2>Upload File - Multiple File</h2>
+    <form method="POST" action="${pageContext.request.contextPath}/forum/uploadFile" enctype="multipart/form-data">
+        <input type="file" name="file" id="fileinput" multiple/>
+        <input type="text" name=id id="topicid" style="display:none"/>
+        <br/><br/>
+        <button type="submit" id="uploadbtn" style="display:none">Upload</button>
+    </form>
 	</div>
 
 
@@ -226,7 +234,19 @@
 				console.log(data);
 				const jobj = JSON.parse(data.result);
 				
-				window.location.href = "${pageContext.request.contextPath}/forum"+jobj.redirect;
+				
+				if(jobj.id >0)
+					{
+					 const fileInput = document.getElementById('fileinput');
+			            if (fileInput.files.length > 0) {
+			            	 document.getElementById("topicid").value = jobj.id;
+			                document.getElementById("uploadbtn").click();
+			            } else {
+			            	window.location.href = "${pageContext.request.contextPath}/forum/topic?id="+jobj.id;
+			            }
+					}
+				
+				
 			},
 
 			error : function(xhr, status) {

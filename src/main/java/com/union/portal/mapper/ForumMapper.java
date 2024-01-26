@@ -14,6 +14,7 @@ import com.union.portal.domain.scroll_topic_info;
 import com.union.portal.domain.t_forum;
 import com.union.portal.domain.t_forum_category;
 import com.union.portal.domain.t_forum_topic;
+import com.union.portal.domain.t_forum_topic_file;
 import com.union.portal.domain.t_forum_topiccount;
 import com.union.portal.domain.t_top_latest_news;
 import com.union.portal.domain.t_user;
@@ -430,4 +431,32 @@ public List<t_forum_topiccount> getforumtopiccountlist();
 					+ "ORDER BY\r\n"
 					+ "    createdate DESC;")
 	public List<t_top_latest_news> gettopmenulatesttopic();
+	
+	
+	
+	
+	@Insert("INSERT INTO `forum`.`t_forum_topic_file`\r\n"
+			+ "	(`topic_id`,\r\n"
+			+ "	`file_name`,\r\n"
+			+ "	`file_path_name`,\r\n"
+			+ "	`create_by`,\r\n"
+			+ "	`create_date`)\r\n"
+			+ "	VALUES\r\n"
+			+ "	(\r\n"
+			+ "	#{topic_id},\r\n"
+			+ "	#{file_name},\r\n"
+			+ "	#{file_path_name},#{createby},now());")
+	public void recordtopicfiledetail(@Param("topic_id")String topic_id,@Param("file_name")String file_name,@Param("file_path_name")String file_path_name,@Param("createby")String createby);
+
+	@Select("select id as aa from t_forum_topic where  category_id  = #{category_id} and title = #{title} and description  = #{description} and content = #{content} and create_by = #{create_by} order by create_date desc limit 1 ")
+	public int gettopicidby( @Param("category_id")String category_id,@Param("title")String title,@Param("description")String description,@Param("content")String content,@Param("thumbnail")String thumbnail, @Param("create_by")String create_by);
+	
+	@Select("select * from t_forum_topic_file where topic_id = #{tid} and dbsts='A'")
+	public List<t_forum_topic_file> gettopicfilelist(@Param("tid")String tid);
+	
+	
+	@Update("UPDATE `forum`.`t_forum_topic_file`\r\n"
+			+ "SET `dbsts` = 'D'  WHERE `id` = #{id} and create_by = #{createby}  ;")
+	public void deletefile(@Param("id")String id ,@Param("createby")String createby);
+	
 }

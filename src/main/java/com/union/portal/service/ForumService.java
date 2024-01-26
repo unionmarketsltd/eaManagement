@@ -11,6 +11,7 @@ import com.union.portal.domain.scroll_topic_info;
 import com.union.portal.domain.t_forum;
 import com.union.portal.domain.t_forum_category;
 import com.union.portal.domain.t_forum_topic;
+import com.union.portal.domain.t_forum_topic_file;
 import com.union.portal.domain.t_forum_topiccount;
 import com.union.portal.domain.t_top_latest_news;
 import com.union.portal.domain.t_user;
@@ -106,5 +107,16 @@ public interface ForumService {
 	public int islikerecordexist(String tid,String email);
 	
 	public List<t_top_latest_news> gettopmenulatesttopic();
+	public void recordtopicfiledetail(String topic_id,String file_name,String file_path_name,String createby);
 	
+	
+	
+	public int gettopicidby( String category_id,String title,String description,String content,String thumbnail, String create_by);
+	
+	public List<t_forum_topic_file> gettopicfilelist(String tid);
+	
+	
+	public void deletefile(String id ,String createby);
+	
+
 }

@@ -13,40 +13,64 @@
 <title>INVESFORUM | Topic</title>
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-	
-	
-	<style>
-	
-	loading-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
-    display: none; /* Initially hidden */
-    justify-content: center;
-    align-items: center;
-    z-index: 1000; /* Ensure it's above other content */
+
+
+<style>
+loading-overlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+	display: none; /* Initially hidden */
+	justify-content: center;
+	align-items: center;
+	z-index: 1000; /* Ensure it's above other content */
 }
 
 .loading-spinner {
-    border: 5px solid #f3f3f3; /* Light grey */
-    border-top: 5px solid #3498db; /* Blue */
-    border-radius: 50%;
-    width: 50px;
-    height: 50px;
-    animation: spin 1s linear infinite;
-    text-align: center;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 50px;
+	border: 5px solid #f3f3f3; /* Light grey */
+	border-top: 5px solid #3498db; /* Blue */
+	border-radius: 50%;
+	width: 50px;
+	height: 50px;
+	animation: spin 1s linear infinite;
+	text-align: center;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 50px;
 }
 
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}</style>
+@
+keyframes spin { 0% {
+	transform: rotate(0deg);
+}
+100
+
+
+%
+{
+transform
+
+
+:
+
+
+rotate
+(
+
+
+360deg
+
+
+)
+;
+
+
+}
+}
+</style>
 </head>
 <body>
 	<%@include file="inc/top.jsp"%>
@@ -207,6 +231,34 @@
 
 						${topicinfo.content}</div>
 
+					<c:if test="${not empty filelist}">
+						<div class="widget-sidebar">
+							<!-- SECTION TITLE WRAP -->
+							<div class="section-title-wrap blue">
+								<h2 class="section-title medium">Uploaded File</h2>
+								<div class="section-title-separator"></div>
+							</div>
+							<!-- /SECTION TITLE WRAP -->
+
+							<!-- TAG LIST -->
+							<div class="tag-list">
+								<!-- TAG ITEM -->
+
+								<c:forEach items="${ filelist }" var="listinfo"
+									varStatus="status1">
+
+
+									<a href="${pageContext.request.contextPath}/forum/file/${listinfo.file_path_name}" class="tag-item">
+										${listinfo.file_name}</a>
+
+
+
+
+								</c:forEach>
+							</div>
+
+						</div>
+					</c:if>
 				</div>
 
 			</div>
@@ -225,8 +277,7 @@
 
 
 
-				<button type="button"
-					class="button blue cloner-wrap "
+				<button type="button" class="button blue cloner-wrap "
 					onclick="quickreply('t','Ng mingfung','https://lh3.googleusercontent.com/a/ACg8ocLEDhkqXsmJnfw5FH_3OHfVWY-lCOtU_iKQL9tnxGIqnA=s96-c','how to trade EURUSD','','')"
 					style="position: relative; position: relative; float: right; width: 215px; margin-top: -36px;">
 					Reply to this topic
@@ -319,13 +370,16 @@
 
 
 				<div class="section-title-separator"></div>
-				
-				
+
+
 				<div class="loading-overlay" id="commentloading">
-    <div class="loading-spinner"></div>
-</div>
-				<iframe id="myIframe" onload="setIframeHeight()" src="${pageContext.request.contextPath}/forum/topiccomment?id=${topicinfo.id}" title="Iframe Example" frameBorder="0" scrolling="no" style="width:100%; height:100%;display:none"></iframe>
-			
+					<div class="loading-spinner"></div>
+				</div>
+				<iframe id="myIframe" onload="setIframeHeight()"
+					src="${pageContext.request.contextPath}/forum/topiccomment?id=${topicinfo.id}"
+					title="Iframe Example" frameBorder="0" scrolling="no"
+					style="width: 100%; height: 100%; display: none"></iframe>
+
 			</div>
 			<!-- /SECTION TITLE WRAP -->
 
@@ -333,8 +387,7 @@
 		</div>
 
 		<div style="border-top: 1px dotted grey; padding-top: 19px;">
-			<button type="button"
-				class="button blue cloner-wrap "
+			<button type="button" class="button blue cloner-wrap "
 				onclick="quickreply('t','${topicinfo.create_by_name}','${topicinfo.create_by_img}','${topicinfo.title}','${ listinfo1.id}','${ listinfo1.depth}')"
 				style="position: relative; position: relative; float: right; width: 215px;">
 				Reply to this topic
@@ -367,8 +420,8 @@
 				<div class="section-title-wrap blue">
 					<h2 class="section-title medium" id="replytype"></h2>
 					<div class="section-title-separator"></div>
-					
-						</div>
+
+				</div>
 				<!-- /SECTION TITLE WRAP -->
 
 				<!-- TOPIC COMMENT REPLY USER -->
@@ -444,7 +497,8 @@
 
 
 
-<button id="popupshow" class="popup-quick-reply-trigger" style="display:none"></button>
+	<button id="popupshow" class="popup-quick-reply-trigger"
+		style="display: none"></button>
 
 	<script>
 		function quickreply(replytype, replyto, userimg, oripost, id, depth) {
@@ -655,7 +709,7 @@
 
 
 
-<script>
+	<script>
        
             // Function to set the height of the iframe based on its content
             function setIframeHeight() {

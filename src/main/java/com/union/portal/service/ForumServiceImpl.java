@@ -12,6 +12,7 @@ import com.union.portal.domain.scroll_topic_info;
 import com.union.portal.domain.t_forum;
 import com.union.portal.domain.t_forum_category;
 import com.union.portal.domain.t_forum_topic;
+import com.union.portal.domain.t_forum_topic_file;
 import com.union.portal.domain.t_forum_topiccount;
 import com.union.portal.domain.t_top_latest_news;
 import com.union.portal.domain.t_user;
@@ -287,7 +288,27 @@ public class ForumServiceImpl implements ForumService {
 		// TODO Auto-generated method stub
 		return mapper.gettopmenulatesttopic();
 	}
-	
+
+	@Override
+	public void recordtopicfiledetail(String topic_id, String file_name, String file_path_name, String createby) {
+		mapper.recordtopicfiledetail(topic_id, file_name, file_path_name, createby);
+		
+	}
+
+	@Override
+	public int gettopicidby(String category_id, String title, String description, String content, String thumbnail,
+			String create_by) {
+		return mapper.gettopicidby(category_id, title, description, content, thumbnail, create_by);
+	}
+
+	@Override
+	public List<t_forum_topic_file> gettopicfilelist(String tid) {
+		return mapper.gettopicfilelist(tid);
+	}
+	@Override
+	public void deletefile(String id ,String createby) {
+		 mapper.deletefile(id,createby);
+	}
 	
 
 	

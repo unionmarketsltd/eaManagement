@@ -1,33 +1,54 @@
 package com.union.portal.controller;
-
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.MediaType;
+import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.SQLException;
 import java.time.format.DateTimeFormatter;
 import java.util.Base64;
 import java.util.List;
+import java.util.Random;
 import java.util.regex.Pattern;
 
+import javax.mail.Quota.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
@@ -40,6 +61,7 @@ import com.union.portal.domain.scroll_topic_info;
 import com.union.portal.domain.t_forum;
 import com.union.portal.domain.t_forum_category;
 import com.union.portal.domain.t_forum_topic;
+import com.union.portal.domain.t_forum_topic_file;
 import com.union.portal.domain.t_forum_topiccount;
 import com.union.portal.domain.t_top_latest_news;
 import com.union.portal.domain.topic_comment_list;
@@ -328,18 +350,22 @@ public class ForumController {
 		top( model , request);
 		String id = request.getParameter("id");
 		String vLocal = LocaleContextHolder.getLocale().getLanguage();
-
+		HttpSession session = request.getSession();
 		t_forum_category tfc = null;
 		tfc = forumservices.getforumcategoryinfo(id);
 
 		t_forum_topic tft = null;
 		tft = forumservices.getforumtopicinfo(id);
-
+		int isallowedit = forumservices.isautorizedtoedittopic(id, (String) session.getAttribute("s_GEmail"));
 		forumservices.updatetopicview(id);
 		model.addAttribute("topiclist", tft);
 		model.addAttribute("topicinfo", tft);
 
+		List<t_forum_topic_file> tftf = forumservices.gettopicfilelist(id);
 	
+		model.addAttribute("filelist",tftf);
+		model.addAttribute("isallowedit",isallowedit);
+		model.addAttribute("topicinfo", tft);
 
 		model.addAttribute("lang", vLocal);
 		String returnURL = "";
@@ -372,12 +398,12 @@ public class ForumController {
 		List<topic_comment_user_like> tcul = null;
 
 		tcul = forumservices.userliketopiccommentlist(id, (String) session.getAttribute("s_GEmail"));
-		int isallowedit = forumservices.isautorizedtoedittopic(id, (String) session.getAttribute("s_GEmail"));
+		//int isallowedit = forumservices.isautorizedtoedittopic(id, (String) session.getAttribute("s_GEmail"));
 		
 		List<topic_comment_likes> tclike = null;
 		tclike = forumservices.getcommentlikecount(id);
 
-		model.addAttribute("isallowedit", isallowedit);
+		//model.addAttribute("isallowedit", isallowedit);
 		model.addAttribute("isuserlike", isuserlike);
 		model.addAttribute("topiccommentlikeslist", tclike);
 		model.addAttribute("tcullist", tcul);
@@ -448,7 +474,9 @@ public class ForumController {
 			tft.content = tft.content.replace("\"", "\\\"");
 
 			model.addAttribute("tft", tft);
-
+			List<t_forum_topic_file> tftf = forumservices.gettopicfilelist(id);
+			
+			model.addAttribute("filelist",tftf);
 			model.addAttribute("lang", vLocal);
 
 			returnURL = defaultpath + "/edittopic";
@@ -594,12 +622,16 @@ public class ForumController {
 		logger.info(content);
 		if (APIProtectionHandler.islogin(request)) {
 			forumservices.insertnewtopic(cat, topic, desc, content,thumbnail, (String) session.getAttribute("s_GEmail"));
+			
+			int id  = forumservices.gettopicidby(cat,topic,desc,content,thumbnail,(String) session.getAttribute("s_GEmail"));
 			JSONObject jobj = new JSONObject();
 			jobj.put("redirect", "/category?id=" + cat);
+			jobj.put("id", id);
 			responsestr = jobj.toString();
 		} else {
 			JSONObject jobj = new JSONObject();
 			jobj.put("redirect", "/error");
+			jobj.put("id", -1);
 			responsestr = jobj.toString();
 
 		}
@@ -670,6 +702,40 @@ public class ForumController {
 		mav.addObject("result", APIProtectionHandler.ApiProtection(request, responsestr));
 		return mav;
 	}
+	
+	
+	
+	@PostMapping(value = { "/api/deletefile" }, consumes = { "application/json" }, produces = { "application/json" })
+	public ModelAndView api_deletefile(@RequestBody String body, HttpServletRequest request) throws SQLException {
+		ModelAndView mav = new ModelAndView("jsonView");
+		JSONObject jsonbodyobj = new JSONObject(body);
+		logger.info("Welcome deletefile: ");
+		String responsestr = "";
+		HttpSession session = request.getSession();
+
+		String id = jsonbodyobj.getString("id");
+		int isallowedit = forumservices.isautorizedtoedittopic(id, (String) session.getAttribute("s_GEmail"));
+		
+		
+		if (APIProtectionHandler.islogin(request)) {
+			if(isallowedit ==1)
+			{
+				forumservices.deletefile(id, (String) session.getAttribute("s_GEmail"));
+				JSONObject jobj = new JSONObject();
+				jobj.put("answer", "ok");
+				responsestr = jobj.toString();
+			}
+			
+		} else {
+			JSONObject jobj = new JSONObject();
+			jobj.put("answer", "fail");
+			responsestr = jobj.toString();
+
+		}
+		mav.addObject("result", APIProtectionHandler.ApiProtection(request, responsestr));
+		return mav;
+	}
+	
 
 	
 	
@@ -860,5 +926,86 @@ public class ForumController {
 		}
 		
 	}
+	private static final String TOMCAT_HOME_PROPERTY = "catalina.home";
+	private static final String TOMCAT_HOME_PATH = System.getProperty(TOMCAT_HOME_PROPERTY);
+	private static final String PIZZA_IMAGES = "FORUM_TOPIC_FILE";
+	private static final String PIZZA_IMAGES_PATH = TOMCAT_HOME_PATH + File.separator + PIZZA_IMAGES;
+	private static final File PIZZA_IMAGES_DIR = new File(PIZZA_IMAGES_PATH);
+	private static final String PIZZA_IMAGES_DIR_ABSOLUTE_PATH = PIZZA_IMAGES_DIR.getAbsolutePath() + File.separator;
+	private static final String FAILED_UPLOAD_MESSAGE = "You failed to upload [%s] because the file because %s";
+	private static final String SUCCESS_UPLOAD_MESSAGE = "You successfully uploaded file = [%s]";
+
+	private void createPizzaImagesDirIfNeeded() {
+		if (!PIZZA_IMAGES_DIR.exists()) {
+			PIZZA_IMAGES_DIR.mkdirs();
+		}
+	}
+	 private static final String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+	    public static String generateRandomString(int length) {
+	        Random random = new Random();
+	        StringBuilder sb = new StringBuilder(length);
+
+	        for (int i = 0; i < length; i++) {
+	            int randomIndex = random.nextInt(CHARACTERS.length());
+	            char randomChar = CHARACTERS.charAt(randomIndex);
+	            sb.append(randomChar);
+	        }
+
+	        return sb.toString();
+	    }
+	
+	@RequestMapping(value = "/uploadFile", method = RequestMethod.POST)
+	private String uploadmultiplefile(@RequestParam("file") List<MultipartFile> allfile,@RequestParam("id") String topic_id,
+			HttpServletRequest request) {
+		
+		createPizzaImagesDirIfNeeded();
+		
+		if (APIProtectionHandler.islogin(request)) {
+		try {
+			HttpSession session = request.getSession();
+			for (MultipartFile file  : allfile) {
+				
+				String filename = topic_id+"_"+generateRandomString(10)+"_"+file.getOriginalFilename();
+			File files = new File(
+					PIZZA_IMAGES_DIR_ABSOLUTE_PATH +  filename);
+			BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(files));
+			stream.write(file.getBytes());
+			stream.close();
+			
+			forumservices.recordtopicfiledetail( topic_id, file.getOriginalFilename(), filename ,(String) session.getAttribute("s_GEmail") );
+
+			}
+			return "redirect:" + defaultpath + "topic?id="+topic_id;
+		} catch (Exception e) {
+			return "redirect:" + defaultpath + "error?msg=failuploadfile";
+		}
+		}else
+		{
+			return "redirect:" + defaultpath + "index";
+		}
+	}
+
+	
+	
+	@RequestMapping(value = "/file/{filename}.{extension}")
+	@ResponseBody
+	public ResponseEntity<byte[]> getImage(@PathVariable(value = "filename") String filename,
+			@PathVariable(value = "extension") String ext ) throws IOException {
+		createPizzaImagesDirIfNeeded();
+
+		File serverFile = new File(PIZZA_IMAGES_DIR_ABSOLUTE_PATH + filename + "." + ext);
+		 byte[] fileContent = Files.readAllBytes(serverFile.toPath());
+
+	       
+		 HttpHeaders headers = new HttpHeaders();
+	        headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+	        headers.setContentDispositionFormData("attachment", filename + "." + ext);
+
+	        return new ResponseEntity<>(fileContent, headers, HttpStatus.OK);
+	   
+
+	}
+    
 
 }
