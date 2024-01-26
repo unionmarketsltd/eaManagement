@@ -293,9 +293,9 @@
 
 
 <!-- NAVIGATION WRAP -->
-<nav class="navigation-wrap">
+<nav class="navigation-wrap" style="border-bottom: 1px solid #80808014;">
 	<!-- NAVIGATION -->
-	<div class="navigation grid-limit">
+	<div class="navigation grid-limit" >
 		<!-- LOGO -->
 		<div class="logo">
 			<!-- LOGO IMG -->
