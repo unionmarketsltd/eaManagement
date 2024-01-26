@@ -56,7 +56,7 @@
 
     
     
-    function posttopic()
+    function newsscrolltopic()
 	{
 		
 	
@@ -86,7 +86,7 @@
 		});
 		
 		
-	}posttopic();
+	}newsscrolltopic();
     
    
 	</script>

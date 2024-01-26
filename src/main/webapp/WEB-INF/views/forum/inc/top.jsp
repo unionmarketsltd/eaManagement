@@ -57,72 +57,75 @@
 	<!-- HEADER -->
 	<div class="header grid-limit">
 		<!-- WIDGET SELECTABLES -->
-		
-		<div class="widget-selectables">
-        <!-- WIDGET OPTIONS WRAP -->
-        <div class="widget-options-wrap" style="position: relative;">
-          <!-- CURRENT OPTION -->
-          <div id="lang-dropdown-trigger" class="current-option">
-             <!-- CURRENT OPTION VALUE -->
-            <div id="lang-dropdown-option-value" class="current-option-value">
-              <img class="widget-option-img" src="/portal/resources/forum/img/flags/flag-us.png" alt="flag-us">
-              <p class="widget-option-text">English</p>
-            </div>
-            <!-- /CURRENT OPTION VALUE -->
 
-            <!-- ARROW ICON -->
-            <svg class="arrow-icon">
+		<div class="widget-selectables">
+			<!-- WIDGET OPTIONS WRAP -->
+			<div class="widget-options-wrap" style="position: relative;">
+				<!-- CURRENT OPTION -->
+				<div id="lang-dropdown-trigger" class="current-option">
+					<!-- CURRENT OPTION VALUE -->
+					<div id="lang-dropdown-option-value" class="current-option-value">
+						<img class="widget-option-img"
+							src="/portal/resources/forum/img/flags/flag-us.png" alt="flag-us">
+						<p class="widget-option-text">English</p>
+					</div>
+					<!-- /CURRENT OPTION VALUE -->
+
+					<!-- ARROW ICON -->
+					<svg class="arrow-icon">
               <use xlink:href="#svg-arrow"></use>
             </svg>
-            <!-- /ARROW ICON -->
-          </div>
-          <!-- /CURRENT OPTION -->
+					<!-- /ARROW ICON -->
+				</div>
+				<!-- /CURRENT OPTION -->
 
-          <!-- WIDGET OPTIONS -->
-          <div id="lang-dropdown" class="widget-options small" style="position: absolute; z-index: 9999; top: -18px; left: -10px; visibility: hidden; opacity: 0; transition: all 0.4s ease-in-out 0s;">
-            <!-- WIDGET OPTION -->
-            <div class="widget-option">
-              <img class="widget-option-img" src="/portal/resources/forum/img/flags/flag-us.png" alt="flag-us">
-              <p class="widget-option-text">English</p>
-            </div>
-            <!-- /WIDGET OPTION -->
+				<!-- WIDGET OPTIONS -->
+				<div id="lang-dropdown" class="widget-options small"
+					style="position: absolute; z-index: 9999; top: -18px; left: -10px; visibility: hidden; opacity: 0; transition: all 0.4s ease-in-out 0s;">
+					<!-- WIDGET OPTION -->
+					<div class="widget-option">
+						<img class="widget-option-img"
+							src="/portal/resources/forum/img/flags/flag-us.png" alt="flag-us">
+						<p class="widget-option-text">English</p>
+					</div>
+					<!-- /WIDGET OPTION -->
 
-            <!-- WIDGET OPTION -->
-          <!--  <div class="widget-option">
+					<!-- WIDGET OPTION -->
+					<!--  <div class="widget-option">
               <img class="widget-option-img"src="/portal/resources/forum/img/flags/flag-es.png" alt="flag-es">
               <p class="widget-option-text">Spanish</p>
             </div>-->
-            <!-- /WIDGET OPTION -->
+					<!-- /WIDGET OPTION -->
 
-            <!-- WIDGET OPTION -->
-           <!-- <div class="widget-option">
+					<!-- WIDGET OPTION -->
+					<!-- <div class="widget-option">
               <img class="widget-option-img"src="/portal/resources/forum/img/flags/flag-fr.png" alt="flag-fr">
               <p class="widget-option-text">French</p>
             </div>-->
-            <!-- /WIDGET OPTION -->
+					<!-- /WIDGET OPTION -->
 
-            <!-- WIDGET OPTION -->
-           <!-- <div class="widget-option">
+					<!-- WIDGET OPTION -->
+					<!-- <div class="widget-option">
               <img class="widget-option-img"src="/portal/resources/forum/img/flags/flag-jp.png" alt="flag-jp">
               <p class="widget-option-text">Japanese</p>
             </div>-->
-            <!-- /WIDGET OPTION -->
-          </div>
-          <!-- /WIDGET OPTIONS -->
-        </div>
-        <!-- /WIDGET OPTIONS WRAP -->
+					<!-- /WIDGET OPTION -->
+				</div>
+				<!-- /WIDGET OPTIONS -->
+			</div>
+			<!-- /WIDGET OPTIONS WRAP -->
 
-        <!-- WIDGET OPTIONS WRAP -->
-        <!-- /WIDGET OPTIONS WRAP -->
-      </div>
+			<!-- WIDGET OPTIONS WRAP -->
+			<!-- /WIDGET OPTIONS WRAP -->
+		</div>
 		<div class="widget-selectables">
 			<!-- WIDGET OPTIONS WRAP -->
 			<div class="widget-options-wrap">
 				<!-- CURRENT OPTION -->
 
-			
+
 			</div>
-			
+
 		</div>
 		<!-- /WIDGET SELECTABLES -->
 
@@ -139,8 +142,7 @@
 					<div id="account-dropdown-trigger" class="current-option">
 						<!-- CURRENT OPTION VALUE -->
 						<div class="current-option-value">
-							<img class="widget-option-img user-avatar micro"
-								src="${photo}"
+							<img class="widget-option-img user-avatar micro" src="${photo}"
 								alt="avatar-01">
 							<p class="widget-option-text">${name}</p>
 						</div>
@@ -163,16 +165,17 @@
 						<!-- /WIDGET OPTION HEADING -->
 
 						<!-- WIDGET OPTION -->
-						<a href="${pageContext.request.contextPath}/forum/mypage" class="widget-option">
+						<a href="${pageContext.request.contextPath}/forum/mypage"
+							class="widget-option">
 							<p class="widget-option-text">My Page</p>
 						</a>
 						<!-- /WIDGET OPTION -->
 
-						
+
 					</div>
 					<!-- /WIDGET OPTIONS -->
 				</div>
-				
+
 
 
 				<a href="${pageContext.request.contextPath}/forum/logout"
@@ -214,337 +217,280 @@
 	<!-- /WIDGET SELECTABLES -->
 </div>
 
-<div id="popup-advanced-search" class="popup-wrap mid" style="position: absolute; left: 50%; z-index: 100001; opacity: 1; visibility: hidden; transform: translate(0px, 0px); display: block; transition: transform 0.3s ease-in-out 0s, opacity 0.3s ease-in-out 0s, visibility 0.3s ease-in-out 0s; top: 102px; margin-left: -385px;">
-    <!-- FORM BOX -->
-    <div class="form-box medium">
-      <!-- SECTION TITLE WRAP -->
-      <div class="section-title-wrap red">
-        <h2 class="section-title medium">search forum</h2>
-        <div class="section-title-separator"></div>
-      </div>
-      <!-- /SECTION TITLE WRAP -->
+<div id="popup-advanced-search" class="popup-wrap mid"
+	style="position: absolute; left: 50%; z-index: 100001; opacity: 1; visibility: hidden; transform: translate(0px, 0px); display: block; transition: transform 0.3s ease-in-out 0s, opacity 0.3s ease-in-out 0s, visibility 0.3s ease-in-out 0s; top: 102px; margin-left: -385px;">
+	<!-- FORM BOX -->
+	<div class="form-box medium">
+		<!-- SECTION TITLE WRAP -->
+		<div class="section-title-wrap red">
+			<h2 class="section-title medium">search forum</h2>
+			<div class="section-title-separator"></div>
+		</div>
+		<!-- /SECTION TITLE WRAP -->
 
-      <!-- FORM WRAP -->
-      <form class="form-wrap">
-        <!-- BUTTON CLOSE -->
-        <div class="button-close red popup-advanced-search-trigger">
-          <!-- CROSS ICON -->
-          <svg class="cross-icon small">
+		<!-- FORM WRAP -->
+		<form class="form-wrap">
+			<!-- BUTTON CLOSE -->
+			<div class="button-close red popup-advanced-search-trigger">
+				<!-- CROSS ICON -->
+				<svg class="cross-icon small">
             <use xlink:href="#svg-cross-small"></use>
           </svg>
-          <!-- /CROSS ICON -->
-        </div>
-        <!-- /BUTTON CLOSE -->
+				<!-- /CROSS ICON -->
+			</div>
+			<!-- /BUTTON CLOSE -->
 
-        <!-- FORM ROW -->
-        <div class="form-row">
-          <!-- FORM ITEM -->
-          <div class="form-item red">
-           
-            <input type="text" id="search_text" name="search_text" placeholder="What are you looking for?...">
-          </div>
-          <!-- /FORM ITEM -->
-        </div>
+			<!-- FORM ROW -->
+			<div class="form-row">
+				<!-- FORM ITEM -->
+				<div class="form-item red">
+
+					<input type="text" id="search_text" name="search_text"
+						placeholder="What are you looking for?...">
+				</div>
+				<!-- /FORM ITEM -->
+			</div>
 
 
-        <!-- FORM ROW -->
-        <div class="form-row">
-          <!-- FORM ITEM -->
-          <div class="form-item">
-            <label class="rl-label">Show Results</label>
-      
-            <!-- /CHECK RADIO LIST -->
-          </div>
-          <!-- /FORM ITEM -->
-        </div>
-        <!-- /FORM ROW -->
+			<!-- FORM ROW -->
+			<div class="form-row">
+				<!-- FORM ITEM -->
+				<div class="form-item">
+					<label class="rl-label">Show Results</label>
 
-        <!-- FORM ACTIONS -->
-        <div class="form-actions right">
-          <!-- BUTTON -->
-          <button class="button red" type="button" onclick="search()">
-            Search Forums!
-            <!-- BUTTON ORNAMENT -->
-            <span class="button-ornament">
-              <!-- ARROW ICON -->
-              <svg class="arrow-icon medium">
+					<!-- /CHECK RADIO LIST -->
+				</div>
+				<!-- /FORM ITEM -->
+			</div>
+			<!-- /FORM ROW -->
+
+			<!-- FORM ACTIONS -->
+			<div class="form-actions right">
+				<!-- BUTTON -->
+				<button class="button red" type="button" onclick="search()">
+					Search Forums!
+					<!-- BUTTON ORNAMENT -->
+					<span class="button-ornament"> <!-- ARROW ICON --> <svg
+							class="arrow-icon medium">
                 <use xlink:href="#svg-arrow-medium"></use>
-              </svg>
-              <!-- /ARROW ICON -->
-      
-              <!-- CROSS ICON -->
-              <svg class="cross-icon small">
+              </svg> <!-- /ARROW ICON --> <!-- CROSS ICON --> <svg
+							class="cross-icon small">
                 <use xlink:href="#svg-cross-small"></use>
-              </svg>
-              <!-- /CROSS ICON -->
-            </span>
-            <!-- /BUTTON ORNAMENT -->
-          </button>
-          <!-- /BUTTON -->
-        </div>
-        <!-- /FORM ACTIONS -->
-      </form>
-      <!-- /FORM WRAP -->
-    </div>
-    <!-- /FORM BOX -->
-  </div>
-  
-  
-  
-  
-  <!-- NAVIGATION WRAP -->
-  <nav class="navigation-wrap">
-    <!-- NAVIGATION -->
-    <div class="navigation grid-limit">
-      <!-- LOGO -->
-      <div class="logo">
-        <!-- LOGO IMG -->
-        <figure class="logo-img">
-        <img src="${pageContext.request.contextPath}/resources/forum/img/brand/logo.png" alt="Logo">
-        </figure>
-        <!-- /LOGO IMG -->
+              </svg> <!-- /CROSS ICON -->
+					</span>
+					<!-- /BUTTON ORNAMENT -->
+				</button>
+				<!-- /BUTTON -->
+			</div>
+			<!-- /FORM ACTIONS -->
+		</form>
+		<!-- /FORM WRAP -->
+	</div>
+	<!-- /FORM BOX -->
+</div>
 
-        <!-- LOGO TEXT -->
-        <div class="logo-text">
-          <h2 class="logo-title">Inves<span class="highlight">Forum</span></h2>
-          <p class="logo-info">The Latest Asset News</p>
-        </div>
-        <!-- /LOGO TEXT -->
-      </div>
-      <!-- /LOGO -->
 
-   
 
-      <!-- SEARCH BUTTON -->
-      <div class="search-button search-popup-open">
-        <!-- SEARCH ICON -->
-        <svg class="search-icon">
+
+<!-- NAVIGATION WRAP -->
+<nav class="navigation-wrap">
+	<!-- NAVIGATION -->
+	<div class="navigation grid-limit">
+		<!-- LOGO -->
+		<div class="logo">
+			<!-- LOGO IMG -->
+			<figure class="logo-img">
+				<img
+					src="${pageContext.request.contextPath}/resources/forum/img/brand/logo.png"
+					alt="Logo">
+			</figure>
+			<!-- /LOGO IMG -->
+
+			<!-- LOGO TEXT -->
+			<div class="logo-text">
+				<h2 class="logo-title">
+					Inves<span class="highlight">Forum</span>
+				</h2>
+				<p class="logo-info">The Latest Asset News</p>
+			</div>
+			<!-- /LOGO TEXT -->
+		</div>
+		<!-- /LOGO -->
+
+
+
+		<!-- SEARCH BUTTON -->
+		<div class="search-button search-popup-open">
+			<!-- SEARCH ICON -->
+			<svg class="search-icon">
           <use xlink:href="#svg-search"></use>
         </svg>
-        <!-- /SEARCH ICON -->
-      </div>
-      <!-- /SEARCH BUTTON -->
+			<!-- /SEARCH ICON -->
+		</div>
+		<!-- /SEARCH BUTTON -->
 
 
 
 
-      <!-- MAIN MENU -->
-      <ul class="main-menu">
-        <!-- MAIN MENU ITEM -->
-        <li class="main-menu-item">
-          <a href="${pageContext.request.contextPath}/forum/index" class="main-menu-item-link">Home</a>
-        </li>
-        
-           <li class="main-menu-item">
-          <a href="${pageContext.request.contextPath}/forum/main" class="main-menu-item-link">Forum</a>
-        </li>
-        
-        <!-- /MAIN MENU ITEM -->
-<c:forEach items="${ top_forumlist }" var="top_listinfo" varStatus="status"><!-- Forums -->            
-        <!-- MAIN MENU ITEM -->
-        <li class="main-menu-item">
-          <a href="#" class="main-menu-item-link">
-            ${top_listinfo.name }
-            <!-- SVG ARROW -->
-            <svg class="arrow-icon">
+		<!-- MAIN MENU -->
+		<ul class="main-menu">
+			<!-- MAIN MENU ITEM -->
+			<li class="main-menu-item"><a
+				href="${pageContext.request.contextPath}/forum/index"
+				class="main-menu-item-link">Home</a></li>
+
+			<li class="main-menu-item"><a
+				href="${pageContext.request.contextPath}/forum/main"
+				class="main-menu-item-link">Forum</a></li>
+
+			<!-- /MAIN MENU ITEM -->
+			<c:forEach items="${ top_forumlist }" var="top_listinfo"
+				varStatus="status">
+				<!-- Forums -->
+				<!-- MAIN MENU ITEM -->
+				<li class="main-menu-item"><a href="#"
+					class="main-menu-item-link"> ${top_listinfo.name } <!-- SVG ARROW -->
+						<svg class="arrow-icon">
               <use xlink:href="#svg-arrow"></use>
-            </svg>
-            <!-- /SVG ARROW -->
-          </a>
+            </svg> <!-- /SVG ARROW -->
+				</a> <!-- SUBMENU -->
+					<ul class="submenu void">
+						<!-- SUBMENU ITEM -->
+						<li class="submenu-item padded">
+							<!-- LINK SECTIONS WRAP -->
+							<div class="link-sections-wrap">
+								<!-- LINK SECTIONS -->
+								<div class="link-sections">
+									<c:forEach items="${ top_forumcatlist }" var="top_forumcatlist"
+										varStatus="status2">
+										<!-- LINK SECTION -->
+										<c:choose>
+											<c:when
+												test="${top_listinfo.id == top_forumcatlist.forum_id}">
+												<div class="link-section">
+													<!-- SECTION TITLE WRAP -->
 
-          <!-- SUBMENU -->
-          <ul class="submenu void">
-            <!-- SUBMENU ITEM -->
-            <li class="submenu-item padded">
-              <!-- LINK SECTIONS WRAP -->
-              <div class="link-sections-wrap">
-                <!-- LINK SECTIONS -->
-                <div class="link-sections">
-                  <c:forEach items="${ top_forumcatlist }" var="top_forumcatlist" varStatus="status2">
-                  <!-- LINK SECTION -->
-                  <c:choose>
-					<c:when test="${top_listinfo.id == top_forumcatlist.forum_id}">
-					<div class="link-section">
-                    <!-- SECTION TITLE WRAP -->
-                
-                    <div class="section-title-wrap blue">
-                    <h2 class="section-title small"><a href="${pageContext.request.contextPath}/forum/category?id=${top_forumcatlist.id}" style="color:#363636">${top_forumcatlist.name}</a></h2>
-                    <div class="section-title-separator"></div>
-                  </div>
-                    <!-- /SECTION TITLE WRAP -->
-					
-                    <!-- LINK LIST -->
-                    <ul class="link-list medium">
-                      <!-- LINK LIST ITEM -->
-                      <li class="link-list-item">
-                        <a href="${pageContext.request.contextPath}/forum/category?id=${top_forumcatlist.id}">${top_forumcatlist.description}</a>
-                      </li>
-                      <!-- /LINK LIST ITEM -->
+													<div class="section-title-wrap blue">
+														<h2 class="section-title small">
+															<a
+																href="${pageContext.request.contextPath}/forum/category?id=${top_forumcatlist.id}"
+																style="color: #363636">${top_forumcatlist.name}</a>
+														</h2>
+														<div class="section-title-separator"></div>
+													</div>
+													<!-- /SECTION TITLE WRAP -->
 
-                    </ul>
-                    <!-- /LINK LIST -->
-                  </div>
-					</c:when>
-				  </c:choose>
-                  
-                  <!-- /LINK SECTION -->
-				  </c:forEach>
-				  
-                 
-              <!-- LINE SEPARATOR -->
-              <div class="line-separator"></div>
+													<!-- LINK LIST -->
+													<ul class="link-list medium">
+														<!-- LINK LIST ITEM -->
+														<li class="link-list-item"><a
+															href="${pageContext.request.contextPath}/forum/category?id=${top_forumcatlist.id}">${top_forumcatlist.description}</a>
+														</li>
+														<!-- /LINK LIST ITEM -->
 
-              <!-- NEWS ITEMS PREVIEW -->
-              <div class="news-items-preview">
-                <!-- POST PREVIEW -->
-                <div class="post-preview gaming-news">
-                  <!-- POST PREVIEW IMG WRAP -->
-                  <a href="post-v1.html">
-                    <div class="post-preview-img-wrap">
-                      <!-- POST PREVIEW IMG -->
-                      <figure class="post-preview-img liquid">
-                      <img src="${pageContext.request.contextPath}/resources/forum/img/posts/09.jpg" alt="post-09">
-                      </figure>
-                      <!-- /POST PREVIEW IMG -->
-                    </div>
-                  </a>
-                  <!-- /POST PREVIEW IMG WRAP -->
-            
-                  <!-- TAG ORNAMENT -->
-                  <a href="news-v1.html" class="tag-ornament">Gaming News</a>
-                  <!-- /TAG ORNAMENT -->
-            
-                  <!-- POST PREVIEW TITLE -->
-                  <a href="post-v1.html" class="post-preview-title">New "Rizen" game is gonna be released in summer 2019</a>
-                  <!-- POST AUTHOR INFO -->
-                  <div class="post-author-info-wrap">
-                    <p class="post-author-info small light">By <a href="search-results.html" class="post-author">Vellatrix</a><span class="separator">|</span>December 15th, 2018</p>
-                  </div>
-                  <!-- /POST AUTHOR INFO -->
-                  <!-- POST PREVIEW TEXT -->
-                  <p class="post-preview-text">Lorem ipsum dolor sit amet, consectetur bere adipisicing elit, sed do eiusmod por lorem incididunt ut labore.</p>
-                </div>
-                <!-- /POST PREVIEW -->
+													</ul>
+													<!-- /LINK LIST -->
+												</div>
+											</c:when>
+										</c:choose>
 
-                <!-- POST PREVIEW -->
-                <div class="post-preview game-review">
-                  <!-- POST PREVIEW IMG WRAP -->
-                  <a href="post-v2.html">
-                    <div class="post-preview-img-wrap">
-                      <!-- POST PREVIEW IMG -->
-                      <figure class="post-preview-img liquid">
-                      <img src="${pageContext.request.contextPath}/resources/forum/img/posts/08.jpg" alt="post-08">
-                      </figure>
-                      <!-- /POST PREVIEW IMG -->
+										<!-- /LINK SECTION -->
+									</c:forEach>
 
-                      <!-- REVIEW RATING -->
-                      <div class="review-rating">
-                        <div id="menu-rate-08-1" class="arc small"></div>
-                      </div>
-                      <!-- /REVIEW RATING -->
-                    </div>
-                  </a>
-                  <!-- /POST PREVIEW IMG WRAP -->
-            
-                  <!-- TAG ORNAMENT -->
-                  <a href="news-v2.html" class="tag-ornament">Game Reviews</a>
-                  <!-- /TAG ORNAMENT -->
-            
-                  <!-- POST PREVIEW TITLE -->
-                  <a href="post-v2.html" class="post-preview-title">The new mecha cyborg game is breaking barriers</a>
-                  <!-- POST AUTHOR INFO -->
-                  <div class="post-author-info-wrap">
-                    <p class="post-author-info small light">By <a href="search-results.html" class="post-author">Vellatrix</a><span class="separator">|</span>December 15th, 2018</p>
-                  </div>
-                  <!-- /POST AUTHOR INFO -->
-                  <!-- POST PREVIEW TEXT -->
-                  <p class="post-preview-text">Lorem ipsum dolor sit amet, consectetur bere adipisicing elit, sed do eiusmod por lorem incididunt ut labore.</p>
-                </div>
-                <!-- /POST PREVIEW -->
 
-                <!-- POST PREVIEW -->
-                <div class="post-preview e-sport">
-                  <!-- POST PREVIEW IMG WRAP -->
-                  <a href="esports-post.html">
-                    <div class="post-preview-img-wrap">
-                      <!-- POST PREVIEW IMG -->
-                      <figure class="post-preview-img liquid">
-                      <img src="${pageContext.request.contextPath}/resources/forum/img/posts/38.jpg" alt="post-38">
-                      </figure>
-                      <!-- /POST PREVIEW IMG -->
-                    </div>
-                  </a>
-                  <!-- /POST PREVIEW IMG WRAP -->
-            
-                  <!-- TAG ORNAMENT -->
-                  <a href="esports-news.html" class="tag-ornament">Esports</a>
-                  <!-- /TAG ORNAMENT -->
-            
-                  <!-- POST PREVIEW TITLE -->
-                  <a href="esports-post.html" class="post-preview-title">Pro Soccer 2017 world league kicked off today!</a>
-                  <!-- POST AUTHOR INFO -->
-                  <div class="post-author-info-wrap">
-                    <p class="post-author-info small light">By <a href="search-results.html" class="post-author">Faye V.</a><span class="separator">|</span>December 15th, 2018</p>
-                  </div>
-                  <!-- /POST AUTHOR INFO -->
-                  <!-- POST PREVIEW TEXT -->
-                  <p class="post-preview-text">Lorem ipsum dolor sit amet, consectetur bere adipisicing elit, sed do eiusmod por lorem incididunt ut labore.</p>
-                </div>
-                <!-- /POST PREVIEW -->
+									<!-- LINE SEPARATOR -->
+									<div class="line-separator"></div>
 
-                <!-- POST PREVIEW -->
-                <div class="post-preview geeky-news">
-                  <!-- POST PREVIEW IMG WRAP -->
-                  <a href="post-v4.html">
-                    <div class="post-preview-img-wrap">
-                      <!-- POST PREVIEW IMG -->
-                      <figure class="post-preview-img liquid">
-                      <img src="${pageContext.request.contextPath}/resources/forum/img/posts/02.jpg" alt="post-02">
-                      </figure>
-                      <!-- /POST PREVIEW IMG -->
-                    </div>
-                  </a>
-                  <!-- /POST PREVIEW IMG WRAP -->
-            
-                  <!-- TAG ORNAMENT -->
-                  <a href="news-v4.html" class="tag-ornament">Geeky news</a>
-                  <!-- /TAG ORNAMENT -->
-            
-                  <!-- POST PREVIEW TITLE -->
-                  <a href="post-v4.html" class="post-preview-title">Jessica Tam to star in the new "Charlotte" series</a>
-                  <!-- POST AUTHOR INFO -->
-                  <div class="post-author-info-wrap">
-                    <p class="post-author-info small light">By <a href="search-results.html" class="post-author">Vellatrix</a><span class="separator">|</span>December 15th, 2018</p>
-                  </div>
-                  <!-- /POST AUTHOR INFO -->
-                  <!-- POST PREVIEW TEXT -->
-                  <p class="post-preview-text">Lorem ipsum dolor sit amet, consectetur bere adipisicing elit, sed do eiusmod por lorem incididunt ut labore.</p>
-                </div>
-                <!-- /POST PREVIEW -->
-              </div>
+									<!-- NEWS ITEMS PREVIEW -->
+									<div class="news-items-preview">
+										<!-- POST PREVIEW -->
+<c:set var="limit" value="0"/>
+										<c:forEach items="${ top_listlatesttopic }"
+											var="top_listlatesttopicinfo" varStatus="status3">
+											<!-- LINK SECTION -->
+											
+											<c:choose>
+												<c:when
+													test="${top_listlatesttopicinfo.fid == top_listinfo.id}">
+													<c:set var="limit" value="${limit + 1}" />
+													<c:choose>
+													<c:when  test = "${limit lt 5}">
+								
+													<div class="post-preview gaming-news">
+														<!-- POST PREVIEW IMG WRAP -->
+														<a href="${pageContext.request.contextPath}/forum/topic?id=${top_listlatesttopicinfo.tid}">
+														
+														
+														
+														
+															<div class="post-preview-img-wrap">
+																<!-- POST PREVIEW IMG -->
+																<figure class="post-preview-img liquid">
+																	
+																		<c:choose>
+																		<c:when test = "${fn:length(top_listlatesttopicinfo.thumbnail) > 10}" >
+																		<img src="${top_listlatesttopicinfo.thumbnail}" alt="post-09">
+																		</c:when>
+																		<c:otherwise>
+																			<img src="${pageContext.request.contextPath}/resources/forum/img/posts/09.jpg" alt="post-09">
+																		
+																		</c:otherwise>
+																		
+																		</c:choose>
+																		
+																		
+																</figure>
+																<!-- /POST PREVIEW IMG -->
+															</div>
+														</a>
+														<!-- /POST PREVIEW IMG WRAP -->
 
-              
-            </li>
-            <!-- /SUBMENU ITEM -->
-          </ul>
-          <!-- /SUBMENU -->
-        </li>
-        <!-- /MAIN MENU ITEM -->
-</c:forEach>
-        <!-- MAIN MENU ITEM -->
-        <li class="main-menu-item">
-          <a href="${pageContext.request.contextPath}/forum/contact" class="main-menu-item-link">Contact</a>
-        </li>
-        <!-- /MAIN MENU ITEM -->
+														<!-- TAG ORNAMENT -->
+														<a href="news-v1.html" class="tag-ornament">${top_listlatesttopicinfo.category_name}</a>
+														<!-- /TAG ORNAMENT -->
 
-      </ul>
-      <!-- /MAIN MENU -->
-    </div>
-    <!-- NAVIGATION -->
-  </nav>
-  <!-- /NAVIGATION WRAP -->
-  
-  
+														<!-- POST PREVIEW TITLE -->
+														<a href="post-v1.html" class="post-preview-title">${top_listlatesttopicinfo.title}</a>
+														<!-- POST AUTHOR INFO -->
+														<div class="post-author-info-wrap">
+															<p class="post-author-info small light">
+																By <a href="search-results.html" class="post-author">${top_listlatesttopicinfo.author}</a><span
+																	class="separator">|</span>${top_listlatesttopicinfo.createdate}
+															</p>
+														</div>
+														<!-- /POST AUTHOR INFO -->
+														<!-- POST PREVIEW TEXT -->
+														<p class="post-preview-text">${top_listlatesttopicinfo.descs}</p>
+													</div>
+													
+													</c:when>
+													</c:choose>
+												</c:when>
+											</c:choose>
+
+											<!-- /LINK SECTION -->
+										</c:forEach>
+
+									</div>
+						</li>
+						<!-- /SUBMENU ITEM -->
+					</ul> <!-- /SUBMENU --></li>
+				<!-- /MAIN MENU ITEM -->
+			</c:forEach>
+			<!-- MAIN MENU ITEM -->
+			<li class="main-menu-item"><a
+				href="${pageContext.request.contextPath}/forum/contact"
+				class="main-menu-item-link">Contact</a></li>
+			<!-- /MAIN MENU ITEM -->
+
+		</ul>
+		<!-- /MAIN MENU -->
+	</div>
+	<!-- NAVIGATION -->
+</nav>
+<!-- /NAVIGATION WRAP -->
+
+
 <div id="popup-create-topic" class="popup-wrap mid"
 	style="position: absolute; left: 50%; z-index: 100001; opacity: 0; visibility: hidden; transform: translate(0px, 100px); display: block; transition: transform 0.3s ease-in-out 0s, opacity 0.3s ease-in-out 0s, visibility 0.3s ease-in-out 0s; top: 181px; margin-left: -385px;">
 	<!-- FORM BOX -->
@@ -658,31 +604,26 @@
 
 
 <script>
+	function search() {
+		window.location.href = "${pageContext.request.contextPath}/forum/search?keyword="
+				+ document.getElementById('search_text').value;
 
-function search()
-{
-	window.location.href = "${pageContext.request.contextPath}/forum/search?keyword="+document.getElementById('search_text').value;
-	
-	
 	}
-	
-	
 
-	
-var scrolltext = "";
+	var scrolltext = "";
 
+	document
+			.getElementById("top_search")
+			.addEventListener(
+					"keyup",
+					function(event) {
+						if (event.keyCode === 13) {
+							window.location.href = "${pageContext.request.contextPath}/forum/search?keyword="
+									+ document.getElementById('top_search').value;
 
-
-document.getElementById("top_search").addEventListener("keyup", function(event) {
-  if (event.keyCode === 13) {
-	  window.location.href = "${pageContext.request.contextPath}/forum/search?keyword="+document.getElementById('top_search').value;
-  	
-  }
-});
-
-
+						}
+					});
 </script>
 
 
 
- 

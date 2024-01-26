@@ -50,8 +50,39 @@ margin-right:auto !important
 		</div>
 		<!-- /BANNER -->
 	</div>
-	<!-- /BANNER WRAP -->
+	<!-- /BANNER WRAP --><script type="text/javascript">
+  function newsscrolltopic()
+	{
+		
+	
+		$.ajax({
+			url : '${pageContext.request.contextPath}/forum/api/getscrolltopicinfo',
+			type : 'get',
+			datatype : "application/json",
+			contentType : "application/json",
+			async : false,
+			data : '',
+			success : function(data) {
+				console.log(data);
+				const jobj = JSON.parse(data.result);
+				console.log(jobj);
+				
+				const extractedTitles = jobj.map(({ title, name }) => ({ title, name:'' }));
+				console.log(extractedTitles);
+				scrolltext = extractedTitles;
+				
+			},
 
+			error : function(xhr, status) {
+			//	alert("ERROR : " + xhr + " : " + status);
+
+				return;
+			}
+		});
+		
+		
+	}newsscrolltopic();
+	</script>
 	<!-- LIVE NEWS WIDGET WRAP -->
 	<div class="live-news-widget-wrap">
 		<!-- LIVE NEWS WIDGET -->
@@ -106,7 +137,7 @@ margin-right:auto !important
 			
 
 				<!-- TAB BODY -->
-				<div class="tab-body">
+				<div class="tab-body" style="min-height: calc(100vh - 674px);">
 					<!-- TAB ITEM -->
 					<div class="tab-item">
 						<!-- FORM BOX -->

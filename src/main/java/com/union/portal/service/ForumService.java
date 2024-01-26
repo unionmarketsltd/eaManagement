@@ -12,6 +12,7 @@ import com.union.portal.domain.t_forum;
 import com.union.portal.domain.t_forum_category;
 import com.union.portal.domain.t_forum_topic;
 import com.union.portal.domain.t_forum_topiccount;
+import com.union.portal.domain.t_top_latest_news;
 import com.union.portal.domain.t_user;
 import com.union.portal.domain.topic_comment_likes;
 import com.union.portal.domain.topic_comment_list;
@@ -104,6 +105,6 @@ public interface ForumService {
 	
 	public int islikerecordexist(String tid,String email);
 	
-
+	public List<t_top_latest_news> gettopmenulatesttopic();
 	
 }

@@ -41,6 +41,7 @@ import com.union.portal.domain.t_forum;
 import com.union.portal.domain.t_forum_category;
 import com.union.portal.domain.t_forum_topic;
 import com.union.portal.domain.t_forum_topiccount;
+import com.union.portal.domain.t_top_latest_news;
 import com.union.portal.domain.topic_comment_list;
 import com.union.portal.domain.topic_comment_user_like;
 import com.union.portal.domain.topic_search_result;
@@ -86,6 +87,11 @@ public class ForumController {
 		HttpSession session = request.getSession();
 		List<t_forum> top_listforum = null;
 		List<t_forum_category> top_listforumcat = null;
+		List<t_top_latest_news> ttln= null;
+		
+		ttln = forumservices.gettopmenulatesttopic();
+		model.addAttribute("top_listlatesttopic", ttln);
+		
 		
 		top_listforum = forumservices.getforumlist();
 		top_listforumcat = forumservices.getforumcategorylist();
@@ -329,6 +335,35 @@ public class ForumController {
 		t_forum_topic tft = null;
 		tft = forumservices.getforumtopicinfo(id);
 
+		forumservices.updatetopicview(id);
+		model.addAttribute("topiclist", tft);
+		model.addAttribute("topicinfo", tft);
+
+	
+
+		model.addAttribute("lang", vLocal);
+		String returnURL = "";
+
+		returnURL = "/topic";
+
+		return defaultpath + returnURL;
+	}
+	
+	
+	
+	
+	
+	
+	@RequestMapping(value = "/topiccomment", method = RequestMethod.GET)
+	public String topiccomment(Model model, HttpServletRequest request) throws SQLException {
+		logger.info("Welcome topiccomment.");
+		top( model , request);
+		String id = request.getParameter("id");
+		String vLocal = LocaleContextHolder.getLocale().getLanguage();
+
+	
+	
+
 		List<topic_comment_list> tcl = null;
 		tcl = forumservices.getforumtopiccommentlist(id);
 		HttpSession session = request.getSession();
@@ -342,24 +377,19 @@ public class ForumController {
 		List<topic_comment_likes> tclike = null;
 		tclike = forumservices.getcommentlikecount(id);
 
-		forumservices.updatetopicview(id);
 		model.addAttribute("isallowedit", isallowedit);
 		model.addAttribute("isuserlike", isuserlike);
-		model.addAttribute("topiclist", tft);
 		model.addAttribute("topiccommentlikeslist", tclike);
 		model.addAttribute("tcullist", tcul);
-
-		model.addAttribute("topicinfo", tft);
-
 		model.addAttribute("commentlist", tcl);
-
 		model.addAttribute("lang", vLocal);
 		String returnURL = "";
 
-		returnURL = "/topic";
+		returnURL = "/iframecomment";
 
 		return defaultpath + returnURL;
 	}
+	
 
 	@RequestMapping(value = "/createtopic", method = RequestMethod.GET)
 	public String createtopic(Model model, HttpServletRequest request) throws SQLException {
@@ -743,8 +773,8 @@ public class ForumController {
 
 		ModelAndView mav = new ModelAndView("jsonView");
 		String responsestr = "";
-		HttpSession session = request.getSession();
-		if (APIProtectionHandler.islogin(request)) {
+		
+	
 			List<scroll_topic_info> sti = forumservices.getscrolltopicinfo();
 			List<scroll_topic_info> display = null;
 			for (scroll_topic_info topicInfo : sti) {
@@ -764,10 +794,8 @@ public class ForumController {
 				e.printStackTrace();
 			}
 
-		} else {
-
-		}
-		mav.addObject("result", APIProtectionHandler.ApiProtection(request, responsestr));
+		
+		mav.addObject("result",  responsestr);
 		return mav;
 	}
 

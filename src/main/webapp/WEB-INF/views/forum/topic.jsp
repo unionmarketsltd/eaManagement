@@ -13,6 +13,40 @@
 <title>INVESFORUM | Topic</title>
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	
+	
+	<style>
+	
+	loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+    display: none; /* Initially hidden */
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* Ensure it's above other content */
+}
+
+.loading-spinner {
+    border: 5px solid #f3f3f3; /* Light grey */
+    border-top: 5px solid #3498db; /* Blue */
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 50px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}</style>
 </head>
 <body>
 	<%@include file="inc/top.jsp"%>
@@ -192,7 +226,7 @@
 
 
 				<button type="button"
-					class="button blue cloner-wrap popup-quick-reply-trigger"
+					class="button blue cloner-wrap "
 					onclick="quickreply('t','Ng mingfung','https://lh3.googleusercontent.com/a/ACg8ocLEDhkqXsmJnfw5FH_3OHfVWY-lCOtU_iKQL9tnxGIqnA=s96-c','how to trade EURUSD','','')"
 					style="position: relative; position: relative; float: right; width: 215px; margin-top: -36px;">
 					Reply to this topic
@@ -285,122 +319,22 @@
 
 
 				<div class="section-title-separator"></div>
+				
+				
+				<div class="loading-overlay" id="commentloading">
+    <div class="loading-spinner"></div>
+</div>
+				<iframe id="myIframe" onload="setIframeHeight()" src="${pageContext.request.contextPath}/forum/topiccomment?id=${topicinfo.id}" title="Iframe Example" frameBorder="0" scrolling="no" style="width:100%; height:100%;display:none"></iframe>
+			
 			</div>
 			<!-- /SECTION TITLE WRAP -->
 
-			<c:forEach items="${ commentlist }" var="listinfo1"
-				varStatus="status1">
 
-
-				<div class="post-comment"
-					<c:choose><c:when test="${listinfo1.depth > 0}"> style="padding: 9px 0 9px calc(100px *${ listinfo1.depth+1 });
-    border-bottom: 1px dotted #80808000;"</c:when> <c:otherwise>style="border-top: 1px solid #dbdbdb !important;border-bottom:none !important"</c:otherwise></c:choose>>
-					<!-- USER AVATAR -->
-
-
-					<figure
-						class="user-avatar  liquid imgLiquid_bgSize imgLiquid_ready"
-						style=" left:calc(100px *${ listinfo1.depth }); background-image: url(${ listinfo1.create_by_img }); background-size: cover; background-position: center center; background-repeat: no-repeat;">
-
-						<img src="${ listinfo1.create_by_img }" alt="user-07"
-							style="display: none;">
-					</figure>
-					<!-- /USER AVATAR -->
-
-					<!-- POST COMMENT USERNAME -->
-					<p class="post-comment-username">
-						<c:choose>
-							<c:when test="${listinfo1.depth > 0}">
-								<span style="font-size: 25px; color: #6969694f;">&#11172;</span>
-							</c:when>
-						</c:choose>
-						${ listinfo1.postownername }
-					</p>
-					<!-- /POST COMMENT USERNAME -->
-
-					<!-- POST COMMENT TIMESTAMP -->
-					<!-- <p class="post-comment-timestamp">${ listinfo1.userpost}Posts</p> -->
-					<!-- /POST COMMENT TIMESTAMP -->
-
-					<!-- REPORT BUTTON -->
-					<a href="#" class="report-button">${ listinfo1.dayago }</a>
-					<!-- /REPORT BUTTON -->
-
-					<!-- POST COMMENT TEXT -->
-					<p class="post-comment-text">${ listinfo1.comment}</p>
-					<!-- /POST COMMENT TEXT -->
-
-					<!-- POST COMMENT ACTIONS -->
-					<div class="post-comment-actions">
-
-						<div
-							class="topic-action-icon bubble-ornament hoverable blue popup-quick-reply-trigger"
-							onclick="quickreply('c','${ listinfo1.postownername }','${ listinfo1.create_by_img }',' ${ listinfo1.comment}','${ listinfo1.id}','${ listinfo1.depth}')">
-							<i class="icon-action-undo reply-icon"></i>
-						</div>
-
-						<!-- LIKE BUTTON -->
-
-						<c:forEach items="${ tcullist }" var="tcullistinfo"
-							varStatus="status4">
-							<c:choose>
-								<c:when test="${tcullistinfo.cid eq listinfo1.id }">
-									<div
-										class="like-button bubble-ornament
-									
-									<c:if test="${tcullistinfo.stat eq 1}">
-									
-									</c:if>
-									<c:if test="${tcullistinfo.stat ne 1}">
-									hoverable
-								</c:if>cyan"
-										id="comment_${tcullistinfo.cid}"
-										onclick="likecomment('${listinfo1.id}','<c:if test="${tcullistinfo.stat eq 1}">N</c:if><c:if test="${tcullistinfo.stat ne 1}">Y</c:if>')">
-										<i class="icon-like like-icon"></i>
-									</div>
-								</c:when>
-
-
-
-
-
-
-							</c:choose>
-						</c:forEach>
-
-
-
-						<c:forEach items="${ topiccommentlikeslist }" var="likelistinfo"
-							varStatus="status4">
-							<c:choose>
-								<c:when test="${likelistinfo.cid eq listinfo1.id }">
-									<p class="likes-count" id="likecount_${likelistinfo.cid}">${ likelistinfo.likecount}</p><p class="likes-count"  style="margin-left:3px !important"> Likes</p>
-								</c:when>
-
-
-
-
-
-
-							</c:choose>
-						</c:forEach>
-
-						<!-- /LIKE BUTTON -->
-
-						<!-- LIKES COUNT -->
-						<!--  <p class="likes-count">${ listinfo1.like}ThumbsUp</p>-->
-						<!-- /LIKES COUNT -->
-					</div>
-					<!-- /POST COMMENT ACTIONS -->
-
-					<!-- /POST COMMENT -->
-				</div>
-			</c:forEach>
 		</div>
 
 		<div style="border-top: 1px dotted grey; padding-top: 19px;">
 			<button type="button"
-				class="button blue cloner-wrap popup-quick-reply-trigger"
+				class="button blue cloner-wrap "
 				onclick="quickreply('t','${topicinfo.create_by_name}','${topicinfo.create_by_img}','${topicinfo.title}','${ listinfo1.id}','${ listinfo1.depth}')"
 				style="position: relative; position: relative; float: right; width: 215px;">
 				Reply to this topic
@@ -433,7 +367,8 @@
 				<div class="section-title-wrap blue">
 					<h2 class="section-title medium" id="replytype"></h2>
 					<div class="section-title-separator"></div>
-				</div>
+					
+						</div>
 				<!-- /SECTION TITLE WRAP -->
 
 				<!-- TOPIC COMMENT REPLY USER -->
@@ -509,11 +444,13 @@
 
 
 
-
+<button id="popupshow" class="popup-quick-reply-trigger" style="display:none"></button>
 
 	<script>
 		function quickreply(replytype, replyto, userimg, oripost, id, depth) {
-
+			console.log(replytype, replyto, userimg, oripost, id, depth);
+			document.getElementById('popupshow').click();
+		
 			if (replytype == 'c') {
 				document.getElementById('replytooripost').innerHTML = oripost;
 				document.getElementById('replytoimg').src = userimg;
@@ -588,9 +525,9 @@
 						success : function(data) {
 							console.log(data);
 							const jobj = JSON.parse(data.result);
-
-							window.location.href = "${pageContext.request.contextPath}/forum"
-									+ jobj.redirect;
+							reloadiframe();
+							//window.location.href = "${pageContext.request.contextPath}/forum"
+								//	+ jobj.redirect;
 						},
 
 						error : function(xhr, status) {
@@ -718,8 +655,37 @@
 
 
 
+<script>
+       
+            // Function to set the height of the iframe based on its content
+            function setIframeHeight() {
+            	
+            	
+                var iframe = document.getElementById('myIframe');
+                iframe.style.display = "";
+              document.getElementById('commentloading').style.display="none";
+                var innerDoc = iframe.contentDocument || iframe.contentWindow.document;
+                var iframeHeight = innerDoc.body.scrollHeight + 'px';
+                iframe.style.height = iframeHeight;
+                var elementsWithStyle = document.querySelectorAll('[style="width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.8); position: fixed; top: 0px; left: 0px; z-index: 100000; opacity: 1; visibility: visible; transition: opacity 0.3s ease-in-out 0s, visibility 0.3s ease-in-out 0s;"]');
+if(elementsWithStyle.length >0)
+	{
+	elementsWithStyle[0].click();
+	}
+            	
+            }
+function reloadiframe()
+{
+	var iframe = document.getElementById('myIframe');
 
-
+	// Reload the iframe
+	iframe.src = iframe.src;
+	// Select elements with the specified inline style
+	
+}
+           
+       
+    </script>
 
 	<%@include file="inc/footer.jsp"%>
 </body>

@@ -15,6 +15,7 @@ import com.union.portal.domain.t_forum;
 import com.union.portal.domain.t_forum_category;
 import com.union.portal.domain.t_forum_topic;
 import com.union.portal.domain.t_forum_topiccount;
+import com.union.portal.domain.t_top_latest_news;
 import com.union.portal.domain.t_user;
 import com.union.portal.domain.topic_comment_likes;
 import com.union.portal.domain.topic_comment_list;
@@ -389,4 +390,44 @@ public List<t_forum_topiccount> getforumtopiccountlist();
 	
 	@Select("SELECT id as cid , (select count(*) from t_forum_comment_user_like where comment_id = t_forum_comment.id and status =1) as likecount FROM forum.t_forum_comment where topic_id =#{tid}")
 	public List<topic_comment_likes> getcommentlikecount(@Param("tid")String tid);
+	
+	
+	
+	
+		    
+			
+			@Select("SELECT\r\n"
+					+ "    fid,\r\n"
+					+ "    category_id,\r\n"
+					+ "    category_name,\r\n"
+					+ "    tid,\r\n"
+					+ "    title,\r\n"
+					+ "    descs,\r\n"
+					+ "    createdate,\r\n"
+					+ "    author,\r\n"
+					+ "    thumbnail\r\n"
+					+ "FROM (\r\n"
+					+ "    SELECT\r\n"
+					+ "        c.id AS fid,\r\n"
+					+ "        b.id AS category_id,\r\n"
+					+ "        b.name AS category_name,\r\n"
+					+ "        a.id AS tid,\r\n"
+					+ "        a.title AS title,\r\n"
+					+ "        a.description AS descs,\r\n"
+					+ "        a.create_date AS createdate,\r\n"
+					+ "        (SELECT name FROM t_user WHERE t_user.email = a.create_by) AS author,\r\n"
+					+ "        a.thumbnail AS thumbnail,\r\n"
+					+ "        ROW_NUMBER() OVER (PARTITION BY b.id ORDER BY a.create_date DESC) AS row_num\r\n"
+					+ "    FROM\r\n"
+					+ "        t_forum_topic a\r\n"
+					+ "    JOIN\r\n"
+					+ "        t_forum_category b ON a.category_id = b.id\r\n"
+					+ "    JOIN\r\n"
+					+ "        t_forum c ON b.forum_id = c.id\r\n"
+					+ ") AS subquery\r\n"
+					+ "WHERE\r\n"
+					+ "    row_num <= 3\r\n"
+					+ "ORDER BY\r\n"
+					+ "    createdate DESC;")
+	public List<t_top_latest_news> gettopmenulatesttopic();
 }
