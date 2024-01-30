@@ -101,7 +101,7 @@ public interface ForumService {
 	
 	public List<t_forum_topic> getmycommentedtopiclist(String createby);
 	
-	
+	public List<t_forum_topic> getmylikedtopiclist(String createby);
 	public List<topic_comment_likes> getcommentlikecount(String tid);
 	
 	public int islikerecordexist(String tid,String email);

@@ -295,7 +295,7 @@
 <!-- NAVIGATION WRAP -->
 <nav class="navigation-wrap" style="border-bottom: 1px solid #80808014;">
 	<!-- NAVIGATION -->
-	<div class="navigation grid-limit" >
+	<div class="navigation grid-limit">
 		<!-- LOGO -->
 		<div class="logo">
 			<!-- LOGO IMG -->
@@ -404,66 +404,80 @@
 									<!-- NEWS ITEMS PREVIEW -->
 									<div class="news-items-preview">
 										<!-- POST PREVIEW -->
-<c:set var="limit" value="0"/>
+										<c:set var="limit" value="0" />
 										<c:forEach items="${ top_listlatesttopic }"
 											var="top_listlatesttopicinfo" varStatus="status3">
 											<!-- LINK SECTION -->
-											
+
 											<c:choose>
 												<c:when
 													test="${top_listlatesttopicinfo.fid == top_listinfo.id}">
 													<c:set var="limit" value="${limit + 1}" />
 													<c:choose>
-													<c:when  test = "${limit lt 5}">
-								
-													<div class="post-preview gaming-news">
-														<!-- POST PREVIEW IMG WRAP -->
-														<a href="${pageContext.request.contextPath}/forum/topic?id=${top_listlatesttopicinfo.tid}">
-														
-														
-														
-														
-															<div class="post-preview-img-wrap">
-																<!-- POST PREVIEW IMG -->
-																<figure class="post-preview-img liquid">
-																	
-																		<c:choose>
-																		<c:when test = "${fn:length(top_listlatesttopicinfo.thumbnail) > 10}" >
-																		<img src="${top_listlatesttopicinfo.thumbnail}" alt="post-09">
-																		</c:when>
-																		<c:otherwise>
-																			<img src="${pageContext.request.contextPath}/resources/forum/img/posts/09.jpg" alt="post-09">
-																		
-																		</c:otherwise>
-																		
-																		</c:choose>
-																		
-																		
-																</figure>
-																<!-- /POST PREVIEW IMG -->
+														<c:when test="${limit lt 5}">
+
+															<div class="post-preview gaming-news">
+																<!-- POST PREVIEW IMG WRAP -->
+																<a
+																	href="${pageContext.request.contextPath}/forum/topic?id=${top_listlatesttopicinfo.tid}">
+
+
+
+
+																	<div class="post-preview-img-wrap">
+																		<!-- POST PREVIEW IMG -->
+																		<figure class="post-preview-img liquid">
+
+																			<c:choose>
+																				<c:when
+																					test="${fn:length(top_listlatesttopicinfo.thumbnail) > 10}">
+																					<img src="${top_listlatesttopicinfo.thumbnail}"
+																						alt="post-09">
+																				</c:when>
+																				<c:otherwise>
+
+
+
+																					<img
+																						src="${pageContext.request.contextPath}/resources/forum/img/defaultimg/d_${top_listlatesttopicinfo.thumbnail}.jpg"
+																						alt="post-09">
+
+																				</c:otherwise>
+
+																			</c:choose>
+
+
+																		</figure>
+																		<!-- /POST PREVIEW IMG -->
+																	</div>
+																</a>
+																<!-- /POST PREVIEW IMG WRAP -->
+
+																<!-- TAG ORNAMENT -->
+																<a
+																	href="${pageContext.request.contextPath}/forum/topic?id=${top_listlatesttopicinfo.tid}"
+																	class="tag-ornament">${top_listlatesttopicinfo.category_name}</a>
+																<!-- /TAG ORNAMENT -->
+
+																<!-- POST PREVIEW TITLE -->
+																<a
+																	href="${pageContext.request.contextPath}/forum/topic?id=${top_listlatesttopicinfo.tid}"
+																	class="post-preview-title">${top_listlatesttopicinfo.title}</a>
+																<!-- POST AUTHOR INFO -->
+																<div class="post-author-info-wrap">
+																	<p class="post-author-info small light">
+																		By <a
+																			href="${pageContext.request.contextPath}/forum/topic?id=${top_listlatesttopicinfo.tid}"
+																			class="post-author">${top_listlatesttopicinfo.author}</a><span
+																			class="separator">|</span>${top_listlatesttopicinfo.createdate}
+																	</p>
+																</div>
+																<!-- /POST AUTHOR INFO -->
+																<!-- POST PREVIEW TEXT -->
+																<p class="post-preview-text">${top_listlatesttopicinfo.descs}</p>
 															</div>
-														</a>
-														<!-- /POST PREVIEW IMG WRAP -->
 
-														<!-- TAG ORNAMENT -->
-														<a href="news-v1.html" class="tag-ornament">${top_listlatesttopicinfo.category_name}</a>
-														<!-- /TAG ORNAMENT -->
-
-														<!-- POST PREVIEW TITLE -->
-														<a href="post-v1.html" class="post-preview-title">${top_listlatesttopicinfo.title}</a>
-														<!-- POST AUTHOR INFO -->
-														<div class="post-author-info-wrap">
-															<p class="post-author-info small light">
-																By <a href="search-results.html" class="post-author">${top_listlatesttopicinfo.author}</a><span
-																	class="separator">|</span>${top_listlatesttopicinfo.createdate}
-															</p>
-														</div>
-														<!-- /POST AUTHOR INFO -->
-														<!-- POST PREVIEW TEXT -->
-														<p class="post-preview-text">${top_listlatesttopicinfo.descs}</p>
-													</div>
-													
-													</c:when>
+														</c:when>
 													</c:choose>
 												</c:when>
 											</c:choose>

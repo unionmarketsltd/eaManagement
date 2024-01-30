@@ -126,7 +126,7 @@ public List<t_forum_topiccount> getforumtopiccountlist();
 	
 	
 	@Select("SELECT id,category_id,title,description,views,create_date,create_by,last_update_date,pin_post,thumbnail , \r\n"
-			+ "(select count(*) from t_forum_topic_user_like where topic = forum.t_forum_topic.id) as likes,\r\n"
+			+ "(select count(*) from t_forum_topic_user_like where topic = forum.t_forum_topic.id and status =1) as likes,\r\n"
 			+ "			(select count(*) from t_forum_comment where t_forum_comment.topic_id = forum.t_forum_topic.id  ) as reply,\r\n"
 			+ "			(select name from t_user where email = create_by ) as create_by_name , \r\n"
 			+ "			(select google_image_url from t_user where email = create_by ) as create_by_img , \r\n"
@@ -381,12 +381,19 @@ public List<t_forum_topiccount> getforumtopiccountlist();
 
 
 	
-	@Select("SELECT * FROM forum.t_forum_topic where create_by = #{createby} and dbsts = 'A' order by id desc;")
+	@Select("SELECT category_id,title,description,views ,pin_post, (select count(*) from t_forum_topic_user_like where topic = forum.t_forum_topic.id and status =1) as likes,\r\n"
+			+ "\r\n"
+			+ " (select count(*) from t_forum_comment where topic_id = forum.t_forum_topic.id) as reply\r\n"
+			+ "\r\n"
+			+ "\r\n"
+			+ " FROM forum.t_forum_topic where create_by = #{createby} and dbsts = 'A' order by id desc;")
 	public List<t_forum_topic> getmytopiclist(@Param("createby")String createby);
 	
 	
 	
-	@Select("SELECT distinct b.*  FROM forum.t_forum_comment a join forum.t_forum_topic b on a.topic_id = b.id where a.create_by = #{createby} and a.dbsts = 'A' order by a.create_date desc;")
+	@Select(" SELECT distinct b.id,b.category_id,b.title,b.description,b.views, (select count(*) from t_forum_topic_user_like where topic = b.id and status =1) as likes,\r\n"
+			+ "\r\n"
+			+ " (select count(*) from t_forum_comment where topic_id = b.id) as reply FROM forum.t_forum_comment a join forum.t_forum_topic b on a.topic_id = b.id where a.create_by = #{createby} and a.dbsts = 'A' order by a.create_date desc;")
 	public List<t_forum_topic> getmycommentedtopiclist(@Param("createby")String createby);
 	
 	@Select("SELECT id as cid , (select count(*) from t_forum_comment_user_like where comment_id = t_forum_comment.id and status =1) as likecount FROM forum.t_forum_comment where topic_id =#{tid}")
@@ -394,8 +401,15 @@ public List<t_forum_topiccount> getforumtopiccountlist();
 	
 	
 	
+	@Select(" SELECT distinct b.id,b.category_id,b.title,b.description,b.views, (select count(*) from t_forum_topic_user_like where topic = b.id and status =1) as likes,\r\n"
+			+ "\r\n"
+			+ "	 (select count(*) from t_forum_comment where topic_id = b.id) as reply FROM forum.t_forum_topic_user_like a join forum.t_forum_topic b on a.topic = b.id where a.email = 'mingfung93@gmail.com' and a.dbsts = 'A' order by a.create_date desc;\r\n"
+			+ "	\r\n"
+			+ "		")
+	public List<t_forum_topic> getmylikedtopiclist(@Param("createby")String createby);
 	
-		    
+	
+	    
 			
 			@Select("SELECT\r\n"
 					+ "    fid,\r\n"

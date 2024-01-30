@@ -309,6 +309,12 @@ public class ForumServiceImpl implements ForumService {
 	public void deletefile(String id ,String createby) {
 		 mapper.deletefile(id,createby);
 	}
+
+	@Override
+	public List<t_forum_topic> getmylikedtopiclist(String createby) {
+		// TODO Auto-generated method stub
+		return mapper.getmylikedtopiclist(createby);
+	}
 	
 
 	

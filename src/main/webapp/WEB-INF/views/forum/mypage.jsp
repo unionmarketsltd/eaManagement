@@ -84,7 +84,7 @@
 				
 				
 				<div class="table-row-header-item left ">
-					<p class="table-row-header-title">Author</p>
+					<p class="table-row-header-title">Views</p>
 				</div>
 				<!-- /TABLE ROW HEADER ITEM -->
 
@@ -223,7 +223,7 @@
 				
 				
 				<div class="table-row-header-item left ">
-					<p class="table-row-header-title">Author</p>
+					<p class="table-row-header-title">Views</p>
 				</div>
 				<!-- /TABLE ROW HEADER ITEM -->
 
@@ -340,6 +340,146 @@
 			</div>
 
 		</div>
+		
+		
+		
+		
+		<br>
+    <br>
+    
+    <div class="section-title-wrap blue no-space">
+                <h2 class="section-title medium">My Liked Topics</h2>
+                <div class="section-title-separator"></div>
+              </div>
+
+		<div class="table forum-topics">
+			<!-- TABLE ROW HEADER -->
+			<div class="table-row-header">
+				<!-- TABLE ROW HEADER ITEM -->
+				<div class="table-row-header-item left">
+					<p class="table-row-header-title">Topic</p>
+				</div>
+				
+				
+				<div class="table-row-header-item left ">
+					<p class="table-row-header-title">Views</p>
+				</div>
+				<!-- /TABLE ROW HEADER ITEM -->
+
+
+
+				
+
+				<!-- TABLE ROW HEADER ITEM -->
+				<div class="table-row-header-item padded-big">
+					<p class="table-row-header-title">Likes</p>
+				</div>
+				<!-- /TABLE ROW HEADER ITEM -->
+				<div class="table-row-header-item padded-big">
+					<p class="table-row-header-title">Comments</p>
+				</div>
+
+
+				
+			</div>
+			<!-- /TABLE ROW HEADER -->
+
+			<!-- TABLE ROWS -->
+			<div class="table-rows">
+				<!-- TABLE ROW -->
+
+
+				<c:forEach items="${ likedtopiclist }" var="listcatinfo2"
+					varStatus="status1">
+
+
+					<div class="table-row large">
+						<!-- TABLE ROW ITEM -->
+						
+						
+					
+					
+						
+						
+						<div class="table-row-item">
+						
+							<c:choose>
+						<c:when test="${fn:length(listcatinfo2.thumbnail) > 0}">
+						<a
+								href="${pageContext.request.contextPath}/forum/topic?id=${listcatinfo2.id}">
+						<div class="titlegrid">
+						
+						<div class="titlegriddiv1">	<img src="${listcatinfo2.thumbnail}" alt="thumbnail" width="140" height="100"></div>
+						<div class="titlegriddiv2"><div
+								
+								class="forum-post-link <c:choose>
+										<c:when test="${listcatinfo2.pin_post == 1}">pin-tag
+										</c:when>
+										<c:otherwise>spoiler-tag</c:otherwise>
+									</c:choose>
+									
+									">${listcatinfo2.title }</div></div>
+						<div class="titlegriddiv3"><p class="forum-post-description-preview forum-post-link-update">${listcatinfo2.description}</p></div>
+						</div>
+						</a>
+						</c:when>
+						<c:otherwise>
+						<a
+								href="${pageContext.request.contextPath}/forum/topic?id=${listcatinfo2.id}"
+								class="forum-post-link <c:choose>
+										<c:when test="${listcatinfo2.pin_post == 1}">pin-tag
+										</c:when>
+										<c:otherwise>spoiler-tag</c:otherwise>
+									</c:choose>
+									
+									">${listcatinfo2.title }</a>
+							<!-- /FORUM POST LINK -->
+
+							<!-- FORUM POST DESCRIPTION PREVIEW -->
+							<p class="forum-post-description-preview forum-post-link-update">${listcatinfo2.description}</p>
+							
+							
+						</c:otherwise>
+						</c:choose>
+							<!-- FORUM POST LINK -->
+							
+							<!-- /FORUM POST DESCRIPTION PREVIEW -->
+						</div>
+						<!-- /TABLE ROW ITEM -->
+
+						<!-- TABLE ROW ITEM -->
+				
+						<!-- /TABLE ROW ITEM -->
+
+
+						<!-- TABLE ROW ITEM -->
+						<div class="table-row-item">
+							<p class="table-text bold">${listcatinfo2.views}</p>
+						</div>
+						<!-- /TABLE ROW ITEM -->
+
+						<!-- TABLE ROW ITEM -->
+						<div class="table-row-item">
+							<p class="table-text bold light">${listcatinfo2.likes}</p>
+						</div>
+						<!-- /TABLE ROW ITEM -->
+						<div class="table-row-item">
+							<p class="table-text bold light">${listcatinfo2.reply}</p>
+						</div>
+			
+					</div>
+					<!-- /TABLE ROW -->
+
+
+
+				</c:forEach>
+
+
+
+			</div>
+
+		</div>
+		
 		
 	</div>
 

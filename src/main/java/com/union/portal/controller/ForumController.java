@@ -112,6 +112,19 @@ public class ForumController {
 		List<t_top_latest_news> ttln= null;
 		
 		ttln = forumservices.gettopmenulatesttopic();
+		
+		for (t_top_latest_news news : ttln) {
+           if(news.thumbnail == null || news.thumbnail.length()<3)
+           {
+        	   Random rand = new Random();
+
+               // Generate a random number from 1 to 5
+               int randomNumber = rand.nextInt(5) + 1;
+        	   news.setThumbnail( String.valueOf(randomNumber));
+           }
+        }
+		
+		
 		model.addAttribute("top_listlatesttopic", ttln);
 		
 		
@@ -311,8 +324,14 @@ public class ForumController {
 		List<t_forum_topic> mtl = forumservices.getmytopiclist((String) session.getAttribute("s_GEmail"));
 		
 		List<t_forum_topic> mctp = forumservices.getmycommentedtopiclist((String) session.getAttribute("s_GEmail"));
+		
+		
+		List<t_forum_topic> mll = forumservices.getmylikedtopiclist((String) session.getAttribute("s_GEmail"));
+		
+		
 		model.addAttribute("topiclist", mtl);
 		model.addAttribute("commentedtopiclist", mctp);
+		model.addAttribute("likedtopiclist", mll);
 		model.addAttribute("userinfo", tu);
 		
 
