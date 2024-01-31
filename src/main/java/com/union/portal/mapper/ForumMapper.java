@@ -87,10 +87,10 @@ public interface ForumMapper {
 	
 	
 	
-	@Select("SELECT * FROM forum.t_forum")
+	@Select("SELECT * FROM forum.t_forum where dbsts='A' ")
 	public List<t_forum> getforumlist();
 	
-	@Select("SELECT * FROM forum.t_forum_category")
+	@Select("SELECT * FROM forum.t_forum_category where dbsts='A' ")
 	public List<t_forum_category> getforumcategorylist();
 	
 	@Select("SELECT \r\n"
@@ -434,11 +434,12 @@ public List<t_forum_topiccount> getforumtopiccountlist();
 					+ "        a.thumbnail AS thumbnail,\r\n"
 					+ "        ROW_NUMBER() OVER (PARTITION BY b.id ORDER BY a.create_date DESC) AS row_num\r\n"
 					+ "    FROM\r\n"
-					+ "        t_forum_topic a\r\n"
+					+ "        t_forum_topic a \r\n"
 					+ "    JOIN\r\n"
 					+ "        t_forum_category b ON a.category_id = b.id\r\n"
 					+ "    JOIN\r\n"
 					+ "        t_forum c ON b.forum_id = c.id\r\n"
+					+ "    where a.dbsts='A' \r\n"
 					+ ") AS subquery\r\n"
 					+ "WHERE\r\n"
 					+ "    row_num <= 3\r\n"

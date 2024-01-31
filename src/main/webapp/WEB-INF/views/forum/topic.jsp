@@ -107,8 +107,7 @@ rotate
 							<figure
 								class="user-avatar tiny liquid imgLiquid_bgSize imgLiquid_ready"
 								style="background-image: url(${topicinfo.create_by_img}); background-size: cover; background-position: center center; background-repeat: no-repeat;">
-								<img src="${topicinfo.create_by_img}" alt="user-04"
-									style="display: none;">
+								<img src="${topicinfo.create_by_img}" alt="user-04" style="display: none;">
 							</figure>
 						</a>
 						<!-- /USER AVATAR -->
@@ -278,7 +277,7 @@ rotate
 
 
 				<button type="button" class="button blue cloner-wrap "
-					onclick="quickreply('t','Ng mingfung','https://lh3.googleusercontent.com/a/ACg8ocLEDhkqXsmJnfw5FH_3OHfVWY-lCOtU_iKQL9tnxGIqnA=s96-c','how to trade EURUSD','','')"
+					onclick="quickreply('t','${topicinfo.create_by_name}','${topicinfo.create_by_img}','${fn:replace(fn:replace(topicinfo.title, '\'', ''), '\"', '')}','','')"
 					style="position: relative; position: relative; float: right; width: 215px; margin-top: -36px;">
 					Reply to this topic
 					<!-- BUTTON ORNAMENT -->
