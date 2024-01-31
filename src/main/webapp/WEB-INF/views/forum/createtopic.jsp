@@ -218,6 +218,8 @@
 
 	<script>
 	
+	
+	
 	function posttopic()
 	{
 		if(checkempty())
