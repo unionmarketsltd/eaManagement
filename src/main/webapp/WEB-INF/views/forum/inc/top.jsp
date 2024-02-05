@@ -139,41 +139,21 @@
 				<!-- WIDGET OPTIONS WRAP -->
 				<div class="widget-options-wrap">
 					<!-- CURRENT OPTION -->
-					<div id="account-dropdown-trigger" class="current-option">
+					<a href="${pageContext.request.contextPath}/forum/mypage" class="current-option" style="float:right">
 						<!-- CURRENT OPTION VALUE -->
 						<div class="current-option-value">
-							<img class="widget-option-img user-avatar micro" src="${photo}"
+							<img class="widget-option-img user-avatar micro" src="${top_photo}"
 								alt="avatar-01">
-							<p class="widget-option-text">${name}</p>
+							<p class="widget-option-text">${top_name}</p>
 						</div>
 						<!-- /CURRENT OPTION VALUE -->
 
 						<!-- ARROW ICON -->
-						<svg class="arrow-icon">
-              <use xlink:href="#svg-arrow"></use>
-            </svg>
+					
 						<!-- /ARROW ICON -->
-					</div>
+					</a>
 					<!-- /CURRENT OPTION -->
 
-					<!-- WIDGET OPTIONS -->
-					<div id="account-dropdown" class="widget-options short linkable">
-						<!-- WIDGET OPTION HEADING -->
-						<div class="widget-option-heading blue">
-							<p class="widget-option-text">Main Account</p>
-						</div>
-						<!-- /WIDGET OPTION HEADING -->
-
-						<!-- WIDGET OPTION -->
-						<a href="${pageContext.request.contextPath}/forum/mypage"
-							class="widget-option">
-							<p class="widget-option-text">My Page</p>
-						</a>
-						<!-- /WIDGET OPTION -->
-
-
-					</div>
-					<!-- /WIDGET OPTIONS -->
 				</div>
 
 

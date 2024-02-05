@@ -130,11 +130,16 @@ public class ForumController {
 		
 		top_listforum = forumservices.getforumlist();
 		top_listforumcat = forumservices.getforumcategorylist();
-		
+		t_user  tu = forumservices.getuserinfo((String) session.getAttribute("s_GEmail"));
 		model.addAttribute("top_forumlist", top_listforum);
 		model.addAttribute("top_forumcatlist", top_listforumcat);
-		model.addAttribute("name", (String) session.getAttribute("s_GName"));
-		model.addAttribute("photo", (String) session.getAttribute("s_GImgUrl"));
+		if(tu!=null)
+		{
+			model.addAttribute("top_name", tu.getName());
+			model.addAttribute("top_photo", tu.getGoogle_image_url());
+		}
+		
+	
 		
 	}
 	
@@ -556,11 +561,14 @@ public class ForumController {
 		boolean isnewuser = forumservices.isnewuser(email);
 
 		if (!isnewuser) {
+			
+			t_user  tu = forumservices.getuserinfo(email);
+			
 
-			session.setAttribute("s_GEmail", String.valueOf(email));
-			session.setAttribute("s_GName", String.valueOf(fullname));
-			session.setAttribute("s_GImgUrl", String.valueOf(outputimageurl));
-			session.setAttribute("s_GID", String.valueOf(googleid));
+			session.setAttribute("s_GEmail", tu.getEmail());
+			session.setAttribute("s_GName", tu.getName());
+			session.setAttribute("s_GImgUrl", tu.getGoogle_image_url());
+			session.setAttribute("s_GID", tu.getGoogle_id());
 			session.setAttribute("s_isLogin", String.valueOf("1"));
 			responsestr = defaultpath + "index";
 			logger.info((String) session.getAttribute("s_GName"));
