@@ -50,7 +50,7 @@
 			<!-- FORM ITEM -->
 			<div class="form-item blue">
 				<label for="topic_tags" class="rl-label">Topic Title</label> <input
-					type="text" value='${tft.title }' id="topicname"
+					type="text" value="${fn:replace(fn:replace(tft.title, '\'', ''), '\"', '')}" id="topicname"
 					placeholder="Your topic title...">
 			</div>
 			<!-- /FORM ITEM -->
@@ -61,7 +61,7 @@
 			<div class="form-item blue">
 				<label for="topic_tags" class="rl-label">Short Description
 					For the topic</label> <input type="text" id="topicdesc"
-					placeholder="Your topic description..." value='${tft.description }'>
+					placeholder="Your topic description..."  value="${fn:replace(fn:replace(tft.description, '\'', ''), '\"', '')}">
 			</div>
 			<!-- /FORM ITEM -->
 		</div>
