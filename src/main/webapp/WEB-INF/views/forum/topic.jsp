@@ -143,7 +143,7 @@ rotate
 								style="color: #f30a5c; font-size: 36px;"></i>
 
 							<!-- POST OPEN COMMENT COUNT -->
-							<a href="#op-comments" class="post-open-comment-count">${topicinfo.totallikes}</a>
+							<a href="#op-comments" class="post-open-comment-count" id="topiclikecount">${topicinfo.totallikes}</a>
 							<!-- /POST OPEN COMMENT COUNT -->
 
 							<!-- POST OPEN COMMENT TEXT-->
@@ -626,7 +626,16 @@ rotate
 						success : function(data) {
 							console.log(data);
 							const jobj = JSON.parse(data.result);
-
+							var intValue = parseInt(document.getElementById("topiclikecount").innerHTML);
+							if(yesno == 'Y')
+								{
+								document.getElementById("topiclikecount").innerHTML=intValue+1;
+								}
+							else
+								{
+								document.getElementById("topiclikecount").innerHTML=intValue-1;
+								}
+							
 							//window.location.href = "${pageContext.request.contextPath}/forum"+ jobj.redirect;
 						},
 

@@ -386,9 +386,10 @@ public class ForumController {
 		model.addAttribute("topicinfo", tft);
 
 		List<t_forum_topic_file> tftf = forumservices.gettopicfilelist(id);
-	
+		int isuserlike = forumservices.isuserlikethistopic(id, (String) session.getAttribute("s_GEmail"));
 		model.addAttribute("filelist",tftf);
 		model.addAttribute("isallowedit",isallowedit);
+		model.addAttribute("isuserlike",isuserlike);
 		model.addAttribute("topicinfo", tft);
 
 		model.addAttribute("lang", vLocal);
