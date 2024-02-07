@@ -20,37 +20,78 @@
 	<p class="search-popup-text">Write what you are looking for and
 		press enter to begin your search!</p>
 </div>
-<!-- /SEARCH POPUP -->
-
-<!-- INVENTORY BAG PREVIEW -->
-<!-- /INVENTORY BAG PREVIEW -->
-
-<!-- MOBILE MENU WRAP -->
-<div class="mobile-menu-wrap">
-	<!-- CROSS ICON -->
-	<svg class="cross-icon big mobile-menu-close">
+<div class="window-overlay "><div class="mobile-menu-wrap ">
+    <!-- CROSS ICON -->
+    <svg class="cross-icon big mobile-menu-close">
       <use xlink:href="#svg-cross-big"></use>
     </svg>
-	<!-- /CROSS ICON -->
+    <!-- /CROSS ICON -->
 
-	<!-- SEARCH POPUP OPEN -->
-	<svg class="search-popup-open search-icon">
-      <use xlink:href="#svg-search"></use>
-    </svg>
-	<!-- /SEARCH POPUP OPEN -->
+    <!-- SEARCH POPUP OPEN -->
+  
+    <!-- /SEARCH POPUP OPEN -->
 
-	<!-- LOGO IMG -->
-	<figure class="logo-img">
-		<img
-			src="${pageContext.request.contextPath}/resources/forum/img/brand/logo.png"
-			alt="Logo">
-	</figure>
-	<!-- /LOGO IMG -->
+    <!-- LOGO IMG -->
+    <figure class="logo-img">
+      <img src="${pageContext.request.contextPath}/resources/forum/img/brand/logo.png" alt="Logo">
+    </figure>
+    <!-- /LOGO IMG -->
 
-	<!-- MOBILE MENU -->
-	<!-- /MOBILE MENU -->
-</div>
-<!-- /MOBILE MENU WRAP -->
+    <!-- MOBILE MENU -->
+    <ul class="mobile-menu">
+      <!-- MOBILE MENU ITEM -->
+      <li class="mobile-menu-item">
+        <a href="${pageContext.request.contextPath}/forum/index" class="mobile-menu-item-link">Home</a>
+      </li>
+      <!-- /MOBILE MENU ITEM -->
+
+      <!-- MOBILE MENU ITEM -->
+      
+      <!-- /MOBILE MENU ITEM -->
+
+      <!-- MOBILE MENU ITEM -->
+      <li class="mobile-menu-item">
+        <a href="${pageContext.request.contextPath}/forum/main" class="mobile-menu-item-link">Forum</a>
+      </li>
+      <!-- /MOBILE MENU ITEM -->
+
+
+
+		<c:forEach items="${ top_forumlist }" var="top_listinfo1"
+				varStatus="status">
+			 <li class="mobile-menu-item">
+        <p class="mobile-menu-item-link pd-dropdown-handler">${top_listinfo1.name } </p> <!-- SUBMENU -->
+          <svg class="arrow-icon medium">
+          <use xlink:href="#svg-arrow-medium"></use>
+        </svg>
+				  <ul class="mobile-dropdown pd-dropdown" style="display: none;">
+				   <li class="mobile-dropdown-item">
+									<c:forEach items="${ top_forumcatlist }" var="top_forumcatlist1"
+										varStatus="status2">
+										<!-- LINK SECTION -->
+										<c:choose>
+											<c:when
+												test="${top_listinfo1.id == top_forumcatlist1.forum_id}">
+												
+															<a
+																href="${pageContext.request.contextPath}/forum/category?id=${top_forumcatlist1.id}"
+																style="color: #363636" class="mobile-dropdown-item-link pd-dropdown-handler">${top_forumcatlist1.name}</a>
+													
+											
+											</c:when>
+										</c:choose>
+
+										
+									</c:forEach>
+ </li>
+</ul>
+			</c:forEach>
+  
+   <li class="mobile-menu-item">
+        <a href="${pageContext.request.contextPath}/forum/contact" class="mobile-menu-item-link">Contact</a>
+      </li>
+    <!-- /MOBILE MENU -->
+  </div></div>
 
 <!-- HEADER WRAP -->
 <div class="header-wrap">
@@ -483,7 +524,15 @@
 	<!-- NAVIGATION -->
 </nav>
 <!-- /NAVIGATION WRAP -->
-
+<div class="mobile-menu-pull mobile-menu-open">
+    <!-- MENU PULL ICON -->
+    <svg class="menu-pull-icon">
+      <use xlink:href="#svg-menu-pull"></use>
+    </svg>
+    <!-- /MENU PULL ICON -->
+  </div>
+  
+  
 
 <div id="popup-create-topic" class="popup-wrap mid"
 	style="position: absolute; left: 50%; z-index: 100001; opacity: 0; visibility: hidden; transform: translate(0px, 100px); display: block; transition: transform 0.3s ease-in-out 0s, opacity 0.3s ease-in-out 0s, visibility 0.3s ease-in-out 0s; top: 181px; margin-left: -385px;">

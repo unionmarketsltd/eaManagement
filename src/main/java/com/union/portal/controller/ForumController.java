@@ -1034,6 +1034,184 @@ public class ForumController {
 	   
 
 	}
+	
+	
+	
+	
+	
+	
+	///////////////////////////////////////////MT5 Code Here/////////////////////////////////////////////////////////////
+	///////////////////////////////////////////MT5 Code Here/////////////////////////////////////////////////////////////
+	///////////////////////////////////////////MT5 Code Here/////////////////////////////////////////////////////////////
+	///////////////////////////////////////////MT5 Code Here/////////////////////////////////////////////////////////////
+	///////////////////////////////////////////MT5 Code Here/////////////////////////////////////////////////////////////
+	///////////////////////////////////////////MT5 Code Here/////////////////////////////////////////////////////////////
+	///////////////////////////////////////////MT5 Code Here/////////////////////////////////////////////////////////////
+	///////////////////////////////////////////MT5 Code Here/////////////////////////////////////////////////////////////
+	///////////////////////////////////////////MT5 Code Here/////////////////////////////////////////////////////////////
+	///////////////////////////////////////////MT5 Code Here/////////////////////////////////////////////////////////////
+	
+	
+	@RequestMapping(value = "/viewMt5Account", method = RequestMethod.GET)
+	public String viewMt5Account(Model model, HttpServletRequest request) {
+		
+		
+		top(model,request);
+		
+		 String responsestr = "";
+		HttpUtils httpUtils = new HttpUtils(this.serverinfo);
+	    HttpSession session = request.getSession();
+	    if (httpUtils.sendAuth(this.serverinfo)) {
+	      String path = "/api/user/get?login=" + "3301";
+	      try {
+	        responsestr = httpUtils.sendGet(this.serverinfo, path);
+	        
+	        JSONObject accountinfo = new JSONObject(responsestr);
+	        
+
+	        
+	      } catch (Exception e) {
+	        e.printStackTrace();
+	      } 
+	    } 
+	    
+		
+		String returnURL = "";
+		returnURL = "/viewmt5account";
+
+		return defaultpath + returnURL;
+	}
+	
+	
+	  @RequestMapping(value = {"/getAccountInfo"}, method = {RequestMethod.GET}, produces = {"application/json;charset=UTF-8"})
+	  @ResponseBody
+	  public ModelAndView getAccountInfo(HttpServletRequest request, Model model) {
+	    logger.info("Get getAccountInfo ........" + this.serverinfo);
+	    String id = request.getParameter("id");
+	    ModelAndView mav = new ModelAndView("jsonView");
+	    String responsestr = "";
+	    HttpUtils httpUtils = new HttpUtils(this.serverinfo);
+	    HttpSession session = request.getSession();
+	    if (httpUtils.sendAuth(this.serverinfo)) {
+	      String path = "/api/user/get?login=" + id;
+	      try {
+	        responsestr = httpUtils.sendGet(this.serverinfo, path);
+	        responsestr.indexOf("0 Done");
+	      } catch (Exception e) {
+	        e.printStackTrace();
+	      } 
+	    } 
+	    mav.addObject("result", APIProtectionHandler.ApiProtection(request, responsestr));
+	    return mav;
+	  }
+	  
+	  
+	  
+	  @RequestMapping(value = {"/getAccountDetail"}, method = {RequestMethod.GET}, produces = {"application/json;charset=UTF-8"})
+	  @ResponseBody
+	  public ModelAndView getAccountDetail(HttpServletRequest request, Model model) {
+	    logger.info("Get getAccountDetail ........" + this.serverinfo);
+	    String id = request.getParameter("id");
+	    ModelAndView mav = new ModelAndView("jsonView");
+	    String responsestr = "";
+	    HttpUtils httpUtils = new HttpUtils(this.serverinfo);
+	    HttpSession session = request.getSession();
+	    if (httpUtils.sendAuth(this.serverinfo)) {
+	      String path = "/api/user/account/get?login=" + id;
+	      try {
+	        responsestr = httpUtils.sendGet(this.serverinfo, path);
+	        responsestr.indexOf("0 Done");
+	      } catch (Exception e) {
+	        e.printStackTrace();
+	      } 
+	    } 
+	    mav.addObject("result", APIProtectionHandler.ApiProtection(request, responsestr));
+	    return mav;
+	  }
+	
+	
+	
+	  @RequestMapping(value = {"/getAccountPositions"}, method = {RequestMethod.GET}, produces = {"application/json;charset=UTF-8"})
+	  @ResponseBody
+	  public ModelAndView getAccountPosition(HttpServletRequest request, Model model) {
+	    logger.info("Get getAccountPosition ........" + this.serverinfo);
+	    String id = request.getParameter("id");
+	    ModelAndView mav = new ModelAndView("jsonView");
+	    String responsestr = "";
+	    HttpUtils httpUtils = new HttpUtils(this.serverinfo);
+	    HttpSession session = request.getSession();
+	    if (httpUtils.sendAuth(this.serverinfo)) {
+	      String path = "/api/position/get_page?login=" + id+"&offset=0&total=100";
+	      try {
+	        responsestr = httpUtils.sendGet(this.serverinfo, path);
+	        responsestr.indexOf("0 Done");
+	      } catch (Exception e) {
+	        e.printStackTrace();
+	      } 
+	    } 
+	    mav.addObject("result", APIProtectionHandler.ApiProtection(request, responsestr));
+	    return mav;
+	  }
+	
+	
+	  @RequestMapping(value = {"/getHistory"}, method = {RequestMethod.GET}, produces = {"application/json;charset=UTF-8"})
+	  @ResponseBody
+	  public ModelAndView get100History(HttpServletRequest request, Model model) {
+	    logger.info("Get get100History ........" + this.serverinfo);
+	    String id = request.getParameter("id");
+	    String page = request.getParameter("page");
+	    ModelAndView mav = new ModelAndView("jsonView");
+	    String responsestr = "";
+	    HttpUtils httpUtils = new HttpUtils(this.serverinfo);
+	    HttpSession session = request.getSession();
+	    if (httpUtils.sendAuth(this.serverinfo)) {
+	    	  long currentTimeMillis = System.currentTimeMillis();
+
+	          // Convert milliseconds to seconds
+	          long currentSeconds = currentTimeMillis / 1000;
+	      String path = "/api/history/get_total?login="+ id+"&from=0&to="+ Long.toString(currentSeconds);
+	      try {
+	        responsestr = httpUtils.sendGet(this.serverinfo, path);
+	        
+	        JSONObject totalobj = new JSONObject(responsestr);
+	        String totalrow = totalobj.getJSONObject("answer").getString("total");
+	        try {
+	        	int row = Integer.parseInt(totalrow);
+	        	  path = "/api/history/get_page?login="+id+"&from=0&to="+ Long.toString(currentSeconds) +"&offset="+(row-(50*Integer.parseInt(page)))+"&total=50";
+	        	  try {
+	      	        responsestr = httpUtils.sendGet(this.serverinfo, path);
+	      	      responsestr.indexOf("0 Done");
+	    	      } catch (Exception e) {
+	    	        e.printStackTrace();
+	    	      } 
+	        }
+	        
+	        catch (NumberFormatException e) {
+
+	        }
+	        responsestr.indexOf("0 Done");
+	      } catch (Exception e) {
+	        e.printStackTrace();
+	      } 
+	    } 
+	    mav.addObject("result", APIProtectionHandler.ApiProtection(request, responsestr));
+	    return mav;
+	  }
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
     
 
 }
