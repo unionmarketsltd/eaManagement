@@ -716,7 +716,7 @@ function myTask() {
     getAccountPositions();
     GetAccountInfo();
 }
-setInterval(myTask, 5000); // 4000 milliseconds = 4 seconds
+setInterval(myTask, ${duration}000); // 4000 milliseconds = 4 seconds
 
 
 function inserthistoryTable (jsonString ,page)

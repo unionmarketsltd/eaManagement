@@ -488,8 +488,8 @@ public List<t_forum_topiccount> getforumtopiccountlist();
 	
 	
 	
-	@Select("SELECT name FROM forum.t_mt5_account_list where login = #{login} and dbsts = 'A';")
-	public String getmt5accountname(@Param("login")String login);
+	@Select("SELECT * FROM forum.t_mt5_account_list where login = #{login} and dbsts = 'A';")
+	public t_mt5_account_list getmt5accountname(@Param("login")String login);
 	
 	
 	

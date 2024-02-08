@@ -1016,7 +1016,7 @@ public class ForumController {
 		String id = request.getParameter("id");
 		top(model, request);
 		if (forumservices.isallowviewaccount(id)) {
-		String name = forumservices.getmt5accountname(id);
+			t_mt5_account_list account = forumservices.getmt5accountname(id);
 
 		String responsestr = "";
 		HttpUtils httpUtils = new HttpUtils(this.serverinfo);
@@ -1033,9 +1033,9 @@ public class ForumController {
 			}
 		}
 		
-model.addAttribute("name", name);
+model.addAttribute("name", account.name);
 model.addAttribute("id", id);
-		
+model.addAttribute("duration", account.api_call_interval_second);
 		returnURL = "/viewmt5account";
 		
 		} else {

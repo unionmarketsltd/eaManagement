@@ -337,7 +337,7 @@ public class ForumServiceImpl implements ForumService {
 	}
 
 	@Override
-	public String getmt5accountname(String login) {
+	public t_mt5_account_list getmt5accountname(String login) {
 		// TODO Auto-generated method stub
 		return mapper.getmt5accountname(login)
 				;

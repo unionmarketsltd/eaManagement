@@ -120,7 +120,7 @@ public interface ForumService {
 	public void deletefile(String id ,String createby);
 	public boolean isallowviewaccount(String login);
 	public List<t_mt5_account_list> getmt5accountlist();
-	public String getmt5accountname(String login);
+	public t_mt5_account_list getmt5accountname(String login);
 	
 
 }
