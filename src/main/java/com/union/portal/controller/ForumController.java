@@ -30,6 +30,8 @@ import java.util.regex.Pattern;
 import javax.mail.Quota.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -1222,6 +1224,75 @@ if (forumservices.isallowviewaccount(id)) {
 	responsestr = "unautorized";
 }
 mav.addObject("result", APIProtectionHandler.ApiProtection(request, String.valueOf(totalpage)));
+return mav;
+}
+	
+	
+	
+	
+	
+	@RequestMapping(value = { "/getprofitchartdata" }, method = { RequestMethod.GET }, produces = {
+	"application/json;charset=UTF-8" })
+@ResponseBody
+public ModelAndView getprofitchartdata(HttpServletRequest request, Model model) {
+logger.info("Get getprofitchartdata ........" + this.serverinfo);
+String id = request.getParameter("id");
+
+ModelAndView mav = new ModelAndView("jsonView");
+String responsestr = "";
+if (forumservices.isallowviewaccount(id)) {
+	HttpUtils httpUtils = new HttpUtils(this.serverinfo);
+	HttpSession session = request.getSession();
+	if (httpUtils.sendAuth(this.serverinfo)) {
+		long currentTimeMillis = System.currentTimeMillis();
+
+			try {
+				long currentSeconds = currentTimeMillis / 1000;
+			String	path = "/api/deal/get_batch?login=" + id + "&from=0&to=" + Long.toString(currentSeconds); ;
+				try {
+					responsestr = httpUtils.sendGet(this.serverinfo, path);
+					
+					
+					JSONObject returnobj = new JSONObject(responsestr);
+					
+					
+					JSONArray jarray = returnobj.getJSONArray("answer");
+					
+					JSONArray outputarray = new JSONArray();
+					 Double outputprofit= (double) 0;
+					for (int i = 0; i < jarray.length(); i++) {
+						
+					    JSONObject element = jarray.getJSONObject(i);
+
+	 
+ 
+					   Double profit  =Double.parseDouble(element.getString("Profit"))+Double.parseDouble(element.getString("Storage"))+Double.parseDouble(element.getString("Commission")) ;
+					   logger.info(String.valueOf(profit));
+					   outputprofit = outputprofit+profit;
+					   
+					   outputarray.put(outputprofit);
+ 
+					    // Do something with the element
+					}
+					
+					
+					responsestr = outputarray.toString();
+
+					
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			
+			responsestr.indexOf("0 Done");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+} else {
+	responsestr = "unautorized";
+}
+mav.addObject("result", APIProtectionHandler.ApiProtection(request, responsestr));
 return mav;
 }
 

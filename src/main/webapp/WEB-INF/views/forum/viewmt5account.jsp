@@ -11,7 +11,7 @@
 <%@include file="inc/session.jsp"%>
 <%@include file="inc/header.jsp"%>
 <title>INVESFORUM | Home</title>
-
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
         // Wait for the DOM content to be fully loaded
         document.addEventListener("DOMContentLoaded", function() {
@@ -21,36 +21,43 @@
     </script>
 
 </head>
-<body style="display:none">
+<body style="display: none">
 	<%@include file="inc/top.jsp"%>
 
 	<!-- BANNER WRAP -->
 
 	<!-- BANNER SLIDER -->
 	<!-- /BANNER SLIDER -->
-	
-	
-	<div class="banner-wrap gaming-news cloner-wrap-3" data-title="Code Copied<br>to Clipboard!" style="position: relative;">
-      <!-- BANNER -->
-      <div class="banner grid-limit">
-        <h2 class="banner-title">${name} </h2>
-        <p class="banner-sections">
-          <span class="banner-section">Trade Account</span>
-          <!-- ARROW ICON -->
-          <svg class="arrow-icon">
+
+
+	<div class="banner-wrap gaming-news cloner-wrap-3"
+		data-title="Code Copied<br>to Clipboard!" style="position: relative;">
+		<!-- BANNER -->
+		<div class="banner grid-limit">
+			<h2 class="banner-title">${name}</h2>
+			<p class="banner-sections">
+				<span class="banner-section">Trade Account</span>
+				<!-- ARROW ICON -->
+				<svg class="arrow-icon">
             <use xlink:href="#svg-arrow"></use>
           </svg>
-          <!-- /ARROW ICON -->
-          <span class="banner-section" >${id} </span>
-        </p>
-      </div>
-      <!-- /BANNER -->
-    <div class="xm-tooltip v2 red medium" style="white-space: nowrap; position: absolute; z-index: 99999; top: -58px; left: 50%; margin-left: -58.5px; visibility: hidden; opacity: 0; transform: scale(0); transition: all 0.3s ease-in-out 0s;"><p class="xm-tooltip-text">Code Copied<br>to Clipboard!</p></div></div>
+				<!-- /ARROW ICON -->
+				<span class="banner-section">${id} </span>
+			</p>
+		</div>
+		<!-- /BANNER -->
+		<div class="xm-tooltip v2 red medium"
+			style="white-space: nowrap; position: absolute; z-index: 99999; top: -58px; left: 50%; margin-left: -58.5px; visibility: hidden; opacity: 0; transform: scale(0); transition: all 0.3s ease-in-out 0s;">
+			<p class="xm-tooltip-text">
+				Code Copied<br>to Clipboard!
+			</p>
+		</div>
+	</div>
 
 	<%@include file="inc/newsscroll.jsp"%>
 
 	<div class="layout-content-full v2 grid-limit layout-item gutter-big">
-
+	
 
 		<div class="widget-item">
 			<!-- SECTION TITLE WRAP -->
@@ -361,9 +368,22 @@
 			<!-- TABLE -->
 			<!-- /TABLE -->
 		</div>
+		
+		
+		
+		<div class="widget-item">
+			<!-- SECTION TITLE WRAP -->
+			<div class="section-title-wrap violet small-space">
+				<h2 class="section-title medium">Profit Chart</h2>
+				<div class="section-title-separator"></div>
+			</div>
+			
+				<canvas id="myChart1" width="800" height="400"></canvas>
+			
+			</div>
 
 
-<div class="widget-item">
+		<div class="widget-item">
 			<!-- SECTION TITLE WRAP -->
 			<div class="section-title-wrap violet small-space">
 				<h2 class="section-title medium">History</h2>
@@ -401,14 +421,14 @@
 						<p class="table-row-header-title">Volume</p>
 					</div>
 					<!-- /TABLE ROW HEADER ITEM -->
-					
+
 					<div class="table-row-header-item">
 						<p class="table-row-header-title">Profit (USD)</p>
 					</div>
 					<div class="table-row-header-item">
 						<p class="table-row-header-title">Swap (USD)</p>
 					</div>
-					
+
 
 					<!-- TABLE ROW HEADER ITEM -->
 					<div class="table-row-header-item padded">
@@ -423,7 +443,7 @@
 					<!-- /TABLE ROW HEADER ITEM -->
 
 					<!-- TABLE ROW HEADER ITEM -->
-					
+
 					<!-- /TABLE ROW HEADER ITEM -->
 				</div>
 				<!-- /TABLE ROW HEADER -->
@@ -456,26 +476,92 @@
 
 
 
-<div class="page-navigation blue spaced right" id="pagingContainer" style="margin-top: -35px;
-    margin-bottom: 16px;">   
-   
-    </div>
-    
-    
-    
-    
+		<div class="page-navigation blue spaced right" id="pagingContainer"
+			style="margin-top: -35px; margin-bottom: 16px;"></div>
+
+
+
+
 
 
 	</div>
 
-
-
 	<script>
+       function insertchart(data)
+       {
+    	   
+    	   
+     
+        var chartData = {
+            labels:Array.from({ length: data.length }, (_, i) => i + 1),
+            datasets: [{
+                label: 'Profit In USD',
+                backgroundColor: '#f30a5c',
+                borderColor: '#f30a5c',
+                borderWidth: 4,
+                data: data,
+            }]
+        };
+
+        
+     
+
+        // Get the canvas element
+        var ctx = document.getElementById('myChart1').getContext('2d');
+
+        // Create the chart
+        var myChart = new Chart(ctx, {
+            type: 'line',
+            data: chartData,
+            options: {bezierCurve : true,
+            	elements: {
+                    point:{
+                        radius: 1
+                    }
+                },
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: false
+                        }
+                    }],
+                    xAxes: [{
+                        display: false, // hide x-axis
+                        gridLines: {
+                            display: false // hide grid lines for x-axis
+                        }
+                    }]
+                }
+            }
+        });
+       }
+   
 	
 	const parameterid = new URLSearchParams(window.location.search).get('id');
 	
 	
 	var totalpagenumber = 0;
+	
+	
+	function getprofitchartdata() {
+		$
+				.ajax({
+					url : '${pageContext.request.contextPath}/forum/getprofitchartdata?id='+parameterid,
+					type : 'get',
+					async : false,
+					data : '',
+					success : function(data) {
+						const jobject = JSON.parse(data.result);
+						insertchart(jobject);
+					},
+					error : function(xhr, status) {
+						alert("ERROR : " + xhr + " : " + status);
+						return;
+					}
+				});
+	}getprofitchartdata() ;
+	
+	
 	function getHistorytotalPage() {
 		$
 				.ajax({
