@@ -13,6 +13,7 @@ import com.union.portal.domain.t_forum_category;
 import com.union.portal.domain.t_forum_topic;
 import com.union.portal.domain.t_forum_topic_file;
 import com.union.portal.domain.t_forum_topiccount;
+import com.union.portal.domain.t_mt5_account_list;
 import com.union.portal.domain.t_top_latest_news;
 import com.union.portal.domain.t_user;
 import com.union.portal.domain.topic_comment_likes;
@@ -117,6 +118,9 @@ public interface ForumService {
 	
 	
 	public void deletefile(String id ,String createby);
+	public boolean isallowviewaccount(String login);
+	public List<t_mt5_account_list> getmt5accountlist();
+	public String getmt5accountname(String login);
 	
 
 }

@@ -16,6 +16,7 @@ import com.union.portal.domain.t_forum_category;
 import com.union.portal.domain.t_forum_topic;
 import com.union.portal.domain.t_forum_topic_file;
 import com.union.portal.domain.t_forum_topiccount;
+import com.union.portal.domain.t_mt5_account_list;
 import com.union.portal.domain.t_top_latest_news;
 import com.union.portal.domain.t_user;
 import com.union.portal.domain.topic_comment_likes;
@@ -473,5 +474,23 @@ public List<t_forum_topiccount> getforumtopiccountlist();
 	@Update("UPDATE `forum`.`t_forum_topic_file`\r\n"
 			+ "SET `dbsts` = 'D'  WHERE `id` = #{id} and create_by = #{createby}  ;")
 	public void deletefile(@Param("id")String id ,@Param("createby")String createby);
+	
+	
+	
+	
+	@Select("SELECT count(*) FROM forum.t_mt5_account_list where login=#{login} and dbsts = 'A';")
+	public int isallowviewaccount(@Param("login")String login);
+	
+	
+	
+	@Select("SELECT * FROM forum.t_mt5_account_list where  dbsts = 'A';")
+	public List<t_mt5_account_list> getmt5accountlist();
+	
+	
+	
+	@Select("SELECT name FROM forum.t_mt5_account_list where login = #{login} and dbsts = 'A';")
+	public String getmt5accountname(@Param("login")String login);
+	
+	
 	
 }

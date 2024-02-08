@@ -14,6 +14,7 @@ import com.union.portal.domain.t_forum_category;
 import com.union.portal.domain.t_forum_topic;
 import com.union.portal.domain.t_forum_topic_file;
 import com.union.portal.domain.t_forum_topiccount;
+import com.union.portal.domain.t_mt5_account_list;
 import com.union.portal.domain.t_top_latest_news;
 import com.union.portal.domain.t_user;
 import com.union.portal.domain.topic_comment_likes;
@@ -314,6 +315,32 @@ public class ForumServiceImpl implements ForumService {
 	public List<t_forum_topic> getmylikedtopiclist(String createby) {
 		// TODO Auto-generated method stub
 		return mapper.getmylikedtopiclist(createby);
+	}
+
+	@Override
+	public boolean isallowviewaccount(String login) {
+		// TODO Auto-generated method stub
+		if(mapper.isallowviewaccount(login) >0)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+
+	@Override
+	public List<t_mt5_account_list> getmt5accountlist() {
+		// TODO Auto-generated method stub
+		return mapper.getmt5accountlist();
+	}
+
+	@Override
+	public String getmt5accountname(String login) {
+		// TODO Auto-generated method stub
+		return mapper.getmt5accountname(login)
+				;
 	}
 	
 

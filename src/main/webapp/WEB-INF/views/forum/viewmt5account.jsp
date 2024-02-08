@@ -8,56 +8,533 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <html lang="en">
 <head>
+<%@include file="inc/session.jsp"%>
 <%@include file="inc/header.jsp"%>
 <title>INVESFORUM | Home</title>
 
-
+<script>
+        // Wait for the DOM content to be fully loaded
+        document.addEventListener("DOMContentLoaded", function() {
+            // Display the body content once everything is loaded
+            document.body.style.display = "block";
+        });
+    </script>
 
 </head>
-<body>
+<body style="display:none">
 	<%@include file="inc/top.jsp"%>
- 
+
 	<!-- BANNER WRAP -->
 
-  <!-- BANNER SLIDER -->
-  <!-- /BANNER SLIDER -->
+	<!-- BANNER SLIDER -->
+	<!-- /BANNER SLIDER -->
+	
+	
+	<div class="banner-wrap gaming-news cloner-wrap-3" data-title="Code Copied<br>to Clipboard!" style="position: relative;">
+      <!-- BANNER -->
+      <div class="banner grid-limit">
+        <h2 class="banner-title">${name} </h2>
+        <p class="banner-sections">
+          <span class="banner-section">Trade Account</span>
+          <!-- ARROW ICON -->
+          <svg class="arrow-icon">
+            <use xlink:href="#svg-arrow"></use>
+          </svg>
+          <!-- /ARROW ICON -->
+          <span class="banner-section" >${id} </span>
+        </p>
+      </div>
+      <!-- /BANNER -->
+    <div class="xm-tooltip v2 red medium" style="white-space: nowrap; position: absolute; z-index: 99999; top: -58px; left: 50%; margin-left: -58.5px; visibility: hidden; opacity: 0; transform: scale(0); transition: all 0.3s ease-in-out 0s;"><p class="xm-tooltip-text">Code Copied<br>to Clipboard!</p></div></div>
 
-<%@include file="inc/newsscroll.jsp"%>
+	<%@include file="inc/newsscroll.jsp"%>
 
-<div>
-<p id="accountinfo"></p>
-
-<br>
-<br>
-
-<p id="accountinfodetail"></p>
-
-<br>
-<br>
-
-
-<p id="orderlist"></p>
-
-
-<br>
-<br>
-
-
-<p id="historylist"></p>
-
-
-</div>
+	<div class="layout-content-full v2 grid-limit layout-item gutter-big">
 
 
+		<div class="widget-item">
+			<!-- SECTION TITLE WRAP -->
+			<div class="section-title-wrap violet no-space">
+				<h2 class="section-title medium">Account Overview</h2>
+				<div class="section-title-separator"></div>
+			</div>
+			<!-- /SECTION TITLE WRAP -->
 
-<script>
+			<!-- TAB WRAP -->
+			<div class="tab-wrap">
+				<!-- TAB BODY -->
+				<div class="tab-body">
+					<!-- TAB ITEM -->
+					<div class="tab-item">
+						<!-- WIDGET TEAM OVERVIEW -->
+						<div class="widget-team-overview">
+							<!-- TEAM OVERVIEW -->
+							<div class="team-overview">
 
 
+								<!-- OVERVIEW INFO WRAP -->
+								<div class="overview-info-wrap" style="margin: auto">
+									<!-- OVERVIEW INFO -->
+									<div class="overview-info">
+										<!-- OVERVIEW INFO ITEM -->
+										<div class="overview-info-item">
+											<!-- OVERVIEW INFO ITEM TITLE -->
+											<p class="overview-info-item-title">Name</p>
+											<!-- /OVERVIEW INFO ITEM TITLE -->
+
+											<!-- OVERVIEW INFO ITEM TEXT -->
+											<p class="overview-info-item-text"></p>
+											<!-- /OVERVIEW INFO ITEM TEXT -->
+										</div>
+										<!-- /OVERVIEW INFO ITEM -->
+
+										<!-- OVERVIEW INFO ITEM -->
+										<div class="overview-info-item">
+											<!-- OVERVIEW INFO ITEM TITLE -->
+											<p class="overview-info-item-title">Country</p>
+											<!-- /OVERVIEW INFO ITEM TITLE -->
+
+											<!-- OVERVIEW INFO ITEM TEXT -->
+											<p class="overview-info-item-text">
+												<img src="img/flags/flag-us.png" alt="us-flag"> United
+												States
+											</p>
+											<!-- /OVERVIEW INFO ITEM TEXT -->
+										</div>
+										<!-- /OVERVIEW INFO ITEM -->
+
+										<!-- OVERVIEW INFO ITEM -->
+										<div class="overview-info-item">
+											<!-- OVERVIEW INFO ITEM TITLE -->
+											<p class="overview-info-item-title">Login</p>
+											<!-- /OVERVIEW INFO ITEM TITLE -->
+
+											<!-- OVERVIEW INFO ITEM TEXT -->
+											<p class="overview-info-item-text"></p>
+											<!-- /OVERVIEW INFO ITEM TEXT -->
+										</div>
+										<!-- /OVERVIEW INFO ITEM -->
+
+									</div>
+									<div class="overview-info">
+										<!-- OVERVIEW INFO ITEM -->
+
+
+										<div class="overview-info-item">
+											<!-- OVERVIEW INFO ITEM TITLE -->
+											<p class="overview-info-item-title">Group</p>
+											<!-- /OVERVIEW INFO ITEM TITLE -->
+
+											<!-- OVERVIEW INFO ITEM TEXT -->
+											<p class="overview-info-item-text"></p>
+											<!-- /OVERVIEW INFO ITEM TEXT -->
+										</div>
+										<div class="overview-info-item">
+											<!-- OVERVIEW INFO ITEM TITLE -->
+											<p class="overview-info-item-title">Registration</p>
+											<!-- /OVERVIEW INFO ITEM TITLE -->
+
+											<!-- OVERVIEW INFO ITEM TEXT -->
+											<p class="overview-info-item-text"></p>
+											<!-- /OVERVIEW INFO ITEM TEXT -->
+										</div>
+										<div class="overview-info-item">
+											<!-- OVERVIEW INFO ITEM TITLE -->
+											<p class="overview-info-item-title">LastAccess</p>
+											<!-- /OVERVIEW INFO ITEM TITLE -->
+
+											<!-- OVERVIEW INFO ITEM TEXT -->
+											<p class="overview-info-item-text"></p>
+											<!-- /OVERVIEW INFO ITEM TEXT -->
+										</div>
+
+									</div>
+
+									<div class="overview-info">
+										<!-- OVERVIEW INFO ITEM -->
+
+
+										<div class="overview-info-item">
+											<!-- OVERVIEW INFO ITEM TITLE -->
+											<p class="overview-info-item-title">Leverage</p>
+											<!-- /OVERVIEW INFO ITEM TITLE -->
+
+											<!-- OVERVIEW INFO ITEM TEXT -->
+											<p class="overview-info-item-text"></p>
+											<!-- /OVERVIEW INFO ITEM TEXT -->
+										</div>
+
+										<div class="overview-info-item">
+											<!-- OVERVIEW INFO ITEM TITLE -->
+											<p class="overview-info-item-title">Balance</p>
+											<!-- /OVERVIEW INFO ITEM TITLE -->
+
+											<!-- OVERVIEW INFO ITEM TEXT -->
+											<p class="overview-info-item-text"></p>
+											<!-- /OVERVIEW INFO ITEM TEXT -->
+										</div>
+										<div class="overview-info-item">
+											<!-- OVERVIEW INFO ITEM TITLE -->
+											<p class="overview-info-item-title">Margin</p>
+											<!-- /OVERVIEW INFO ITEM TITLE -->
+
+											<!-- OVERVIEW INFO ITEM TEXT -->
+											<p class="overview-info-item-text"></p>
+											<!-- /OVERVIEW INFO ITEM TEXT -->
+										</div>
+									</div>
+
+
+									<div class="overview-info">
+										<!-- OVERVIEW INFO ITEM -->
+
+
+										<div class="overview-info-item">
+											<!-- OVERVIEW INFO ITEM TITLE -->
+											<p class="overview-info-item-title">MarginFree</p>
+											<!-- /OVERVIEW INFO ITEM TITLE -->
+
+											<!-- OVERVIEW INFO ITEM TEXT -->
+											<p class="overview-info-item-text"></p>
+											<!-- /OVERVIEW INFO ITEM TEXT -->
+										</div>
+
+										<div class="overview-info-item">
+											<!-- OVERVIEW INFO ITEM TITLE -->
+											<p class="overview-info-item-title">MarginLevel</p>
+											<!-- /OVERVIEW INFO ITEM TITLE -->
+
+											<!-- OVERVIEW INFO ITEM TEXT -->
+											<p class="overview-info-item-text"></p>
+											<!-- /OVERVIEW INFO ITEM TEXT -->
+										</div>
+										<div class="overview-info-item">
+											<!-- OVERVIEW INFO ITEM TITLE -->
+											<p class="overview-info-item-title">Equity</p>
+											<!-- /OVERVIEW INFO ITEM TITLE -->
+
+											<!-- OVERVIEW INFO ITEM TEXT -->
+											<p class="overview-info-item-text"></p>
+											<!-- /OVERVIEW INFO ITEM TEXT -->
+										</div>
+									</div>
+
+									<div class="overview-info">
+										<!-- OVERVIEW INFO ITEM -->
+
+
+										<div class="overview-info-item">
+											<!-- OVERVIEW INFO ITEM TITLE -->
+											<p class="overview-info-item-title">Profit</p>
+											<!-- /OVERVIEW INFO ITEM TITLE -->
+
+											<!-- OVERVIEW INFO ITEM TEXT -->
+											<p class="overview-info-item-text"></p>
+											<!-- /OVERVIEW INFO ITEM TEXT -->
+										</div>
+
+										<div class="overview-info-item">
+											<!-- OVERVIEW INFO ITEM TITLE -->
+											<p class="overview-info-item-title">Storage</p>
+											<!-- /OVERVIEW INFO ITEM TITLE -->
+
+											<!-- OVERVIEW INFO ITEM TEXT -->
+											<p class="overview-info-item-text"></p>
+											<!-- /OVERVIEW INFO ITEM TEXT -->
+										</div>
+										<div class="overview-info-item">
+											<!-- OVERVIEW INFO ITEM TITLE -->
+											<p class="overview-info-item-title">Floating</p>
+											<!-- /OVERVIEW INFO ITEM TITLE -->
+
+											<!-- OVERVIEW INFO ITEM TEXT -->
+											<p class="overview-info-item-text"></p>
+											<!-- /OVERVIEW INFO ITEM TEXT -->
+										</div>
+									</div>
+									<!-- /OVERVIEW INFO WRAP -->
+								</div>
+								<!-- ARC RATE WRAP -->
+								<!-- /ARC RATE WRAP -->
+							</div>
+							<!-- /TEAM OVERVIEW -->
+						</div>
+						<!-- /WIDGET TEAM OVERVIEW -->
+					</div>
+					<!-- /TAB ITEM -->
+				</div>
+				<!-- /TAB BODY -->
+
+				<!-- TAB HEADER -->
+				<!-- /TAB HEADER -->
+			</div>
+			<!-- /TAB WRAP -->
+		</div>
+
+
+		<div class="widget-item">
+			<!-- SECTION TITLE WRAP -->
+			<div class="section-title-wrap violet small-space">
+				<h2 class="section-title medium">Open Positions</h2>
+				<div class="section-title-separator"></div>
+			</div>
+			<!-- /SECTION TITLE WRAP -->
+
+			<!-- TABLE -->
+			<div class="table standings ">
+				<!-- TABLE ROW HEADER -->
+				<div class="table-row-header">
+					<!-- TABLE ROW HEADER ITEM -->
+					<div class="table-row-header-item position">
+						<p class="table-row-header-title">Position</p>
+					</div>
+					<!-- /TABLE ROW HEADER ITEM -->
+
+					<!-- TABLE ROW HEADER ITEM -->
+
+
+					<!-- TABLE ROW HEADER ITEM -->
+					<div class="table-row-header-item padded">
+						<p class="table-row-header-title">type</p>
+					</div>
+					<div class="table-row-header-item padded">
+						<p class="table-row-header-title">Open Price</p>
+					</div>
+					<!-- /TABLE ROW HEADER ITEM -->
+
+					<!-- TABLE ROW HEADER ITEM -->
+					<div class="table-row-header-item padded">
+						<p class="table-row-header-title">Current Price</p>
+					</div>
+					<!-- /TABLE ROW HEADER ITEM -->
+
+					<!-- TABLE ROW HEADER ITEM -->
+					<div class="table-row-header-item padded">
+						<p class="table-row-header-title">SL Price</p>
+					</div>
+					<!-- /TABLE ROW HEADER ITEM -->
+
+					<!-- TABLE ROW HEADER ITEM -->
+					<div class="table-row-header-item padded">
+						<p class="table-row-header-title">TP Price</p>
+					</div>
+					<!-- /TABLE ROW HEADER ITEM -->
+
+					<!-- TABLE ROW HEADER ITEM -->
+					<div class="table-row-header-item">
+						<p class="table-row-header-title">Lot</p>
+					</div>
+					<!-- /TABLE ROW HEADER ITEM -->
+
+					<!-- TABLE ROW HEADER ITEM -->
+					<div class="table-row-header-item">
+						<p class="table-row-header-title">Profit (USD)</p>
+					</div>
+					<div class="table-row-header-item">
+						<p class="table-row-header-title">Swap (USD)</p>
+					</div>
+					<!-- /TABLE ROW HEADER ITEM -->
+				</div>
+				<!-- /TABLE ROW HEADER -->
+
+				<!-- TABLE ROWS -->
+				<div class="table-rows" id="opendiv">
+					<!-- TABLE ROW -->
+					<!-- /TABLE ROW -->
+
+					<!-- TABLE ROW -->
+					<!-- /TABLE ROW -->
+
+					<!-- TABLE ROW -->
+					<!-- /TABLE ROW -->
+
+					<!-- TABLE ROW -->
+					<!-- /TABLE ROW -->
+
+					<!-- TABLE ROW -->
+					<!-- /TABLE ROW -->
+				</div>
+				<!-- /TABLE ROWS -->
+			</div>
+			<!-- /TABLE -->
+
+			<!-- TABLE -->
+			<!-- /TABLE -->
+		</div>
+
+
+<div class="widget-item">
+			<!-- SECTION TITLE WRAP -->
+			<div class="section-title-wrap violet small-space">
+				<h2 class="section-title medium">History</h2>
+				<div class="section-title-separator"></div>
+			</div>
+			<!-- /SECTION TITLE WRAP -->
+
+			<!-- TABLE -->
+			<div class="table standings ">
+				<!-- TABLE ROW HEADER -->
+				<div class="table-row-header">
+					<!-- TABLE ROW HEADER ITEM -->
+					<div class="table-row-header-item position">
+						<p class="table-row-header-title">Position</p>
+					</div>
+					<!-- /TABLE ROW HEADER ITEM -->
+
+					<!-- TABLE ROW HEADER ITEM -->
+
+
+					<!-- TABLE ROW HEADER ITEM -->
+					<div class="table-row-header-item padded">
+						<p class="table-row-header-title">Time</p>
+					</div>
+					<!-- /TABLE ROW HEADER ITEM -->
+
+					<!-- TABLE ROW HEADER ITEM -->
+					<div class="table-row-header-item padded">
+						<p class="table-row-header-title">Type</p>
+					</div>
+					<!-- /TABLE ROW HEADER ITEM -->
+
+					<!-- TABLE ROW HEADER ITEM -->
+					<div class="table-row-header-item padded">
+						<p class="table-row-header-title">Volume</p>
+					</div>
+					<!-- /TABLE ROW HEADER ITEM -->
+					
+					<div class="table-row-header-item">
+						<p class="table-row-header-title">Profit (USD)</p>
+					</div>
+					<div class="table-row-header-item">
+						<p class="table-row-header-title">Swap (USD)</p>
+					</div>
+					
+
+					<!-- TABLE ROW HEADER ITEM -->
+					<div class="table-row-header-item padded">
+						<p class="table-row-header-title">SL Price</p>
+					</div>
+					<!-- /TABLE ROW HEADER ITEM -->
+
+					<!-- TABLE ROW HEADER ITEM -->
+					<div class="table-row-header-item">
+						<p class="table-row-header-title">TP Price</p>
+					</div>
+					<!-- /TABLE ROW HEADER ITEM -->
+
+					<!-- TABLE ROW HEADER ITEM -->
+					
+					<!-- /TABLE ROW HEADER ITEM -->
+				</div>
+				<!-- /TABLE ROW HEADER -->
+
+				<!-- TABLE ROWS -->
+				<div class="table-rows" id="historydiv">
+					<!-- TABLE ROW -->
+					<!-- /TABLE ROW -->
+
+					<!-- TABLE ROW -->
+					<!-- /TABLE ROW -->
+
+					<!-- TABLE ROW -->
+					<!-- /TABLE ROW -->
+
+					<!-- TABLE ROW -->
+					<!-- /TABLE ROW -->
+
+					<!-- TABLE ROW -->
+					<!-- /TABLE ROW -->
+				</div>
+				<!-- /TABLE ROWS -->
+			</div>
+			<!-- /TABLE -->
+
+			<!-- TABLE -->
+			<!-- /TABLE -->
+		</div>
+
+
+
+
+<div class="page-navigation blue spaced right" id="pagingContainer" style="margin-top: -35px;
+    margin-bottom: 16px;">   
+   
+    </div>
+    
+    
+    
+    
+
+
+	</div>
+
+
+
+	<script>
+	
+	const parameterid = new URLSearchParams(window.location.search).get('id');
+	
+	
+	var totalpagenumber = 0;
+	function getHistorytotalPage() {
+		$
+				.ajax({
+					url : '${pageContext.request.contextPath}/forum/getHistorytotalPage?id='+parameterid,
+					type : 'get',
+					async : false,
+					data : '',
+					success : function(data) {
+						totalpagenumber = data.result;
+						generatePagingNumbers(totalpagenumber, 1);
+					},
+					error : function(xhr, status) {
+						alert("ERROR : " + xhr + " : " + status);
+						return;
+					}
+				});
+	}getHistorytotalPage();
+
+	
+	
+	function buyOrSell(input) {
+	    if (input.indexOf("0")>=0) {
+	        return "buy";
+	    } else if (input.indexOf("1")>=0) {
+	        return "sell";
+	    } else {
+	        return "-";
+	    }
+	}
+	
+	
+function insertuserdetail (jsonString)
+{
+	
+	
+   
+    // Parse JSON string into JavaScript object
+    var jsonData = JSON.parse(jsonString);
+
+    // Get elements and update HTML content with JSON data
+    var overviewItems = document.querySelectorAll('.overview-info-item-title');
+    var overviewValues = document.querySelectorAll('.overview-info-item-text');
+
+    for (var key in jsonData.answer) {
+      var index = Array.from(overviewItems).findIndex(function(item) {
+        return item.textContent === key;
+      });
+
+      if (index !== -1) {
+        overviewValues[index].textContent = jsonData.answer[key];
+      }
+    }
+    
+}
 
 function GetInfo() {
 	$
 			.ajax({
-				url : '${pageContext.request.contextPath}/forum/getAccountInfo?id=3301',
+				url : '${pageContext.request.contextPath}/forum/getAccountInfo?id='+parameterid,
 				type : 'get',
 				async : false,
 				data : '',
@@ -68,7 +545,8 @@ function GetInfo() {
 						console.log(jobject.retcode);
 						if (jobject.retcode == "0 Done") {
 							if (jobject.hasOwnProperty('answer')) {
-								document.getElementById("accountinfo").innerHTML = data.result;
+								
+								insertuserdetail (data.result);
 							}
 						}
 
@@ -91,7 +569,7 @@ GetInfo();
 function GetAccountInfo() {
 	$
 			.ajax({
-				url : '${pageContext.request.contextPath}/forum/getAccountDetail?id=3301',
+				url : '${pageContext.request.contextPath}/forum/getAccountDetail?id='+parameterid,
 				type : 'get',
 				async : false,
 				data : '',
@@ -102,7 +580,8 @@ function GetAccountInfo() {
 						console.log(jobject.retcode);
 						if (jobject.retcode == "0 Done") {
 							if (jobject.hasOwnProperty('answer')) {
-								document.getElementById("accountinfodetail").innerHTML = data.result;
+								
+								insertuserdetail (data.result);
 							}
 						}
 
@@ -121,21 +600,23 @@ function GetAccountInfo() {
 
 
 
-function getHistory() {
+function getHistory(page) {
 	$
 			.ajax({
-				url : '${pageContext.request.contextPath}/forum/getHistory?id=3301&page=1',
+				url : '${pageContext.request.contextPath}/forum/getHistory?id='+parameterid+'&page='+page,
 				type : 'get',
 				async : false,
 				data : '',
 				success : function(data) {
 					if (data.result.indexOf("0 Done" >= 0)) {
-						console.log(data.result);
+					//	console.log(data.result);
 						const jobject = JSON.parse(data.result);
 						console.log(jobject.retcode);
+						console.log(data.result);
 						if (jobject.retcode == "0 Done") {
 							if (jobject.hasOwnProperty('answer')) {
-								document.getElementById("historylist").innerHTML = data.result;
+								generatePagingNumbers(totalpagenumber, page);
+								inserthistoryTable(data.result ,page);
 							}
 						}
 
@@ -150,7 +631,7 @@ function getHistory() {
 					return;
 				}
 			});
-}getHistory();
+}getHistory(1);
 
 
 
@@ -158,7 +639,7 @@ function getHistory() {
 function getAccountPositions() {
 	$
 			.ajax({
-				url : '${pageContext.request.contextPath}/forum/getAccountPositions?id=3301',
+				url : '${pageContext.request.contextPath}/forum/getAccountPositions?id='+parameterid,
 				type : 'get',
 				async : false,
 				data : '',
@@ -169,11 +650,51 @@ function getAccountPositions() {
 						console.log(jobject.retcode);
 						if (jobject.retcode == "0 Done") {
 							if (jobject.hasOwnProperty('answer')) {
-								document.getElementById("orderlist").innerHTML = data.result;
-							}
+								//document.getElementById("orderlist").innerHTML = data.result;
+							
+								var tableRowsContainer = document.getElementById("opendiv");
+								tableRowsContainer.innerHTML = "";
+
+								// Loop through each object in the JSON data and create a table row for each
+								jobject.answer.forEach(function(item ,index) {
+								  // Create a new table row element
+								   let currentIndex = index + 1;
+								  
+								  var row1c = '<div class="table-row">'
+								+'  <div class="table-row-item position">'
+					        
+								+'  <p class="table-text">'+currentIndex+'</p>'
+					  
+								+'   <div class="team-info-wrap">'
+					              
+							
+					                 
+								+'    <div class="team-info">'
+								+'     <p class="team-name">'+item.Symbol+'</p>'
+								+'     <p class="team-country">'+item.Position+'</p>'
+								+'    </div>'
+					                 
+								+'   </div>'
+					               
+								+'   </div>' 
+								+'<div class="table-row-item"><p class="table-text bold">'+buyOrSell(item.Action)+'</p></div>'
+								+'<div class="table-row-item"><p class="table-text bold">'+item.PriceOpen+'</p></div>'
+								+'<div class="table-row-item"><p class="table-text bold">'+item.PriceCurrent+'</p></div>'
+								+'<div class="table-row-item"><p class="table-text bold">'+item.PriceSL+'</p></div>'
+								+'<div class="table-row-item"><p class="table-text bold">'+item.PriceTP+'</p></div>'
+								+'<div class="table-row-item"><p class="table-text bold">'+item.Volume+'</p></div>'
+								+'<div class="table-row-item"><p class="table-text bold">'+item.Profit+'</p></div>'
+								+'<div class="table-row-item"><p class="table-text bold">'+item.Storage+'</p></div>';
+					            
+					             
+								
+								   tableRowsContainer.innerHTML +=row1c;
+								 
+								});
 						}
 
-					} else {
+					}
+					}else {
 						alert(data.result);
 						
 						return;
@@ -187,17 +708,103 @@ function getAccountPositions() {
 }
 
 
+getAccountPositions();
+GetAccountInfo();
 
 function myTask() {
     console.log("Task executed!");
     getAccountPositions();
     GetAccountInfo();
 }
-setInterval(myTask, 4000); // 4000 milliseconds = 4 seconds
+setInterval(myTask, 5000); // 4000 milliseconds = 4 seconds
+
+
+function inserthistoryTable (jsonString ,page)
+{
+	
+	const jobject = JSON.parse(jsonString);
+	
+
+	
+	var tableRowsContainer = document.getElementById("historydiv");
+	tableRowsContainer.innerHTML = "";
+
+	// Loop through each object in the JSON data and create a table row for each
+	jobject.answer.forEach(function(item ,index) {
+	  // Create a new table row element
+	   let currentIndex = (index + 1)+(50*(page-1));
+	  
+	  var row1c = '<div class="table-row">'
+	+'  <div class="table-row-item position">'
+
+	+'  <p class="table-text">'+currentIndex+'</p>'
+
+	+'   <div class="team-info-wrap">'
+      
+
+         
+	+'    <div class="team-info">'
+	+'     <p class="team-name">'+item.Symbol+'</p>'
+	+'     <p class="team-country">'+item.Order+'</p>'
+	+'    </div>'
+         
+	+'   </div>'
+       
+	+'   </div>' 
+	+'<div class="table-row-item"><p class="table-text bold">'+timenow(item.Time)+'</p></div>'
+	+'<div class="table-row-item"><p class="table-text bold">'+buyOrSell(item.Action)+'</p></div>'
+	+'<div class="table-row-item"><p class="table-text bold">'+item.Volume+'</p></div>'
+	+'<div class="table-row-item"><p class="table-text bold">'+item.Profit+'</p></div>'
+	+'<div class="table-row-item"><p class="table-text bold">'+item.Storage+'</p></div>'
+	+'<div class="table-row-item"><p class="table-text bold">'+item.PriceSL+'</p></div>'
+	+'<div class="table-row-item"><p class="table-text bold">'+item.PriceTP+'</p></div>';
+    
+     
+	
+	   tableRowsContainer.innerHTML +=row1c;
+	 
+    
+});
+}
+
+
+
+
+
+  
+// Function to generate paging numbers
+function generatePagingNumbers(totalPages, currentPage) {
+  var pagingContainer = document.getElementById('pagingContainer');
+  if (!pagingContainer) return;
+  
+  var paginationHTML = '';
+  for (var i = 1; i <= totalPages; i++) {
+    if (i === currentPage) {
+      paginationHTML += '<a href="#" class=" page-navigation-item active">' + i + '</a>';
+    } else {
+      paginationHTML += '<button type="button" class="page-navigation-item" onclick="getHistory('+i+')">' + i + '</button>';
+    }
+  }
+
+
+  pagingContainer.innerHTML = paginationHTML;
+}
+
+
+
+function timenow(unixTimestamp) {
+    // Convert Unix timestamp to milliseconds
+    var date = new Date(unixTimestamp * 1000);
+
+    // Convert to local time and format as a string
+    var localTimeString = date.toLocaleString(); // Converts to local date and time
+
+    return localTimeString;
+}
 
 </script>
-  <!-- LAYOUT CONTENT 1 -->
-  <!-- /LAYOUT CONTENT 1 -->
+	<!-- LAYOUT CONTENT 1 -->
+	<!-- /LAYOUT CONTENT 1 -->
 	<%@include file="inc/footer.jsp"%>
 </body>
 </html>

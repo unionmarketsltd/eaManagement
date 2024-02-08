@@ -512,6 +512,58 @@
 					</ul> <!-- /SUBMENU --></li>
 				<!-- /MAIN MENU ITEM -->
 			</c:forEach>
+			
+			
+			<li class="main-menu-item">
+          <a href="#" class="main-menu-item-link">
+            Trade Account
+            <!-- SVG ARROW -->
+            <svg class="arrow-icon">
+              <use xlink:href="#svg-arrow"></use>
+            </svg>
+            <!-- /SVG ARROW -->
+          </a>
+
+          <!-- SUBMENU -->
+          <ul class="submenu void">
+            <!-- SUBMENU ITEM -->
+            <li class="submenu-item padded">
+              <!-- LINK SECTIONS -->
+              <div class="link-sections">
+                <!-- LINK SECTION -->
+                <div class="link-section">
+                  <!-- SECTION TITLE WRAP -->
+                  <div class="section-title-wrap blue">
+                    <h2 class="section-title small">Public Viewable Accounts</h2>
+                    <div class="section-title-separator"></div>
+                  </div>
+                  <!-- /SECTION TITLE WRAP -->
+
+                  <!-- LINK LIST -->
+                  <ul class="link-list">
+                    <!-- LINK LIST ITEM -->
+                   
+                    
+                    <c:forEach items="${top_tmal}" var="toptmal" varStatus="status66">
+											
+								 <li class="link-list-item">
+                      <a href="${pageContext.request.contextPath}/forum/viewMt5Account?id=${toptmal.login}">${toptmal.name}</a>
+                    </li>			
+											
+											</c:forEach>
+                    
+                    
+                   
+                  </ul>
+                  <!-- /LINK LIST -->
+
+                 
+             
+            </li>
+            <!-- /SUBMENU ITEM -->
+          </ul>
+          <!-- /SUBMENU -->
+        </li>
 			<!-- MAIN MENU ITEM -->
 			<li class="main-menu-item"><a
 				href="${pageContext.request.contextPath}/forum/contact"

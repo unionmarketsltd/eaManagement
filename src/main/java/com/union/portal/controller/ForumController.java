@@ -1,4 +1,5 @@
 package com.union.portal.controller;
+
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -63,6 +64,7 @@ import com.union.portal.domain.t_forum_category;
 import com.union.portal.domain.t_forum_topic;
 import com.union.portal.domain.t_forum_topic_file;
 import com.union.portal.domain.t_forum_topiccount;
+import com.union.portal.domain.t_mt5_account_list;
 import com.union.portal.domain.t_top_latest_news;
 import com.union.portal.domain.topic_comment_list;
 import com.union.portal.domain.topic_comment_user_like;
@@ -100,50 +102,47 @@ public class ForumController {
 
 	@Autowired
 	ForumService forumservices;
-	
-	
-	
-	public void top(Model model , HttpServletRequest request)
-	{
-		
+
+	public void top(Model model, HttpServletRequest request) {
+
 		HttpSession session = request.getSession();
 		List<t_forum> top_listforum = null;
 		List<t_forum_category> top_listforumcat = null;
-		List<t_top_latest_news> ttln= null;
+		List<t_top_latest_news> ttln = null;
+		List<t_mt5_account_list> tmal = null;
 		
-		ttln = forumservices.gettopmenulatesttopic();
-		
-		for (t_top_latest_news news : ttln) {
-           if(news.thumbnail == null || news.thumbnail.length()<3)
-           {
-        	   Random rand = new Random();
 
-               // Generate a random number from 1 to 5
-               int randomNumber = rand.nextInt(5) + 1;
-        	   news.setThumbnail( String.valueOf(randomNumber));
-           }
-        }
-		
-		
+		ttln = forumservices.gettopmenulatesttopic();
+
+		for (t_top_latest_news news : ttln) {
+			if (news.thumbnail == null || news.thumbnail.length() < 3) {
+				Random rand = new Random();
+
+				// Generate a random number from 1 to 5
+				int randomNumber = rand.nextInt(5) + 1;
+				news.setThumbnail(String.valueOf(randomNumber));
+			}
+		}
+
 		model.addAttribute("top_listlatesttopic", ttln);
-		
+	
 		
 		top_listforum = forumservices.getforumlist();
 		top_listforumcat = forumservices.getforumcategorylist();
-		t_user  tu = forumservices.getuserinfo((String) session.getAttribute("s_GEmail"));
+		t_user tu = forumservices.getuserinfo((String) session.getAttribute("s_GEmail"));
 		model.addAttribute("top_forumlist", top_listforum);
 		model.addAttribute("top_forumcatlist", top_listforumcat);
-		if(tu!=null)
-		{
+		
+		
+		tmal = forumservices.getmt5accountlist();
+		model.addAttribute("top_tmal", tmal);
+		
+		if (tu != null) {
 			model.addAttribute("top_name", tu.getName());
 			model.addAttribute("top_photo", tu.getGoogle_image_url());
 		}
-		
-	
-		
+
 	}
-	
-	
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String slash(Model model) {
@@ -170,35 +169,28 @@ public class ForumController {
 
 		return defaultpath + returnURL;
 	}
-	
-	
+
 	@RequestMapping(value = "/index", method = RequestMethod.GET)
 	public String index(Model model, HttpServletRequest request) {
-		
-		
-		top(model,request);
-		
+
+		top(model, request);
+
 		String returnURL = "";
 		returnURL = "/index";
 
 		return defaultpath + returnURL;
 	}
-	
-	
+
 	@RequestMapping(value = "/contact", method = RequestMethod.GET)
 	public String contact(Model model, HttpServletRequest request) {
-		
-		
-		top(model,request);
-		
+
+		top(model, request);
+
 		String returnURL = "";
 		returnURL = "/contact";
 
 		return defaultpath + returnURL;
 	}
-	
-	
-	
 
 	@RequestMapping(value = "/main", method = RequestMethod.GET)
 	public String main(Model model, HttpServletRequest request) {
@@ -208,7 +200,7 @@ public class ForumController {
 		String vLocal = LocaleContextHolder.getLocale().getLanguage();
 		model.addAttribute("lang", vLocal);
 		String returnURL = "";
-		top( model , request);
+		top(model, request);
 		List<t_forum> listforum = null;
 		List<t_forum_category> listforumcat = null;
 		List<t_forum_topiccount> listforumtopiccount = null;
@@ -225,9 +217,9 @@ public class ForumController {
 	}
 
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
-	public String login(Model model , HttpServletRequest request) throws SQLException {
+	public String login(Model model, HttpServletRequest request) throws SQLException {
 		logger.info("Welcome home! Login.");
-		top( model , request);
+		top(model, request);
 		String vLocal = LocaleContextHolder.getLocale().getLanguage();
 		model.addAttribute("lang", vLocal);
 		String returnURL = "";
@@ -245,7 +237,7 @@ public class ForumController {
 		String returnURL = "";
 		returnURL = "/checktnc";
 		HttpSession session = request.getSession();
-		top( model , request);
+		top(model, request);
 		logger.info((String) session.getAttribute("s_GName"));
 
 		model.addAttribute("name", (String) session.getAttribute("s_GName"));
@@ -258,7 +250,7 @@ public class ForumController {
 		String id = request.getParameter("id");
 		String page = request.getParameter("page");
 		String vLocal = LocaleContextHolder.getLocale().getLanguage();
-		top( model , request);
+		top(model, request);
 		t_forum_category tfc = null;
 		tfc = forumservices.getforumcategoryinfo(id);
 		int pagenumber = 0;
@@ -314,33 +306,27 @@ public class ForumController {
 
 		return defaultpath + returnURL;
 	}
-	
-	
-	
-	
+
 	@RequestMapping(value = "/mypage", method = RequestMethod.GET)
 	public String mypage(Model model, HttpServletRequest request) throws SQLException {
 		logger.info("Welcome mypage.");
 		HttpSession session = request.getSession();
-		top( model , request);
+		top(model, request);
 		String vLocal = LocaleContextHolder.getLocale().getLanguage();
-		t_user  tu = forumservices.getuserinfo((String) session.getAttribute("s_GEmail"));
-		
+		t_user tu = forumservices.getuserinfo((String) session.getAttribute("s_GEmail"));
+
 		List<t_forum_topic> mtl = forumservices.getmytopiclist((String) session.getAttribute("s_GEmail"));
-		
+
 		List<t_forum_topic> mctp = forumservices.getmycommentedtopiclist((String) session.getAttribute("s_GEmail"));
-		
-		
+
 		List<t_forum_topic> mll = forumservices.getmylikedtopiclist((String) session.getAttribute("s_GEmail"));
-		
-		
+
 		model.addAttribute("topiclist", mtl);
 		model.addAttribute("commentedtopiclist", mctp);
 		model.addAttribute("likedtopiclist", mll);
 		model.addAttribute("userinfo", tu);
-		
 
-	String returnURL = "";
+		String returnURL = "";
 		returnURL = "/mypage";
 
 		return defaultpath + returnURL;
@@ -349,7 +335,7 @@ public class ForumController {
 	@RequestMapping(value = "/search", method = RequestMethod.GET)
 	public String search(Model model, HttpServletRequest request) throws SQLException {
 		logger.info("Welcome search.");
-		top( model , request);
+		top(model, request);
 		String keyword = request.getParameter("keyword");
 		String vLocal = LocaleContextHolder.getLocale().getLanguage();
 
@@ -371,7 +357,7 @@ public class ForumController {
 	@RequestMapping(value = "/topic", method = RequestMethod.GET)
 	public String topic(Model model, HttpServletRequest request) throws SQLException {
 		logger.info("Welcome topic.");
-		top( model , request);
+		top(model, request);
 		String id = request.getParameter("id");
 		String vLocal = LocaleContextHolder.getLocale().getLanguage();
 		HttpSession session = request.getSession();
@@ -387,9 +373,9 @@ public class ForumController {
 
 		List<t_forum_topic_file> tftf = forumservices.gettopicfilelist(id);
 		int isuserlike = forumservices.isuserlikethistopic(id, (String) session.getAttribute("s_GEmail"));
-		model.addAttribute("filelist",tftf);
-		model.addAttribute("isallowedit",isallowedit);
-		model.addAttribute("isuserlike",isuserlike);
+		model.addAttribute("filelist", tftf);
+		model.addAttribute("isallowedit", isallowedit);
+		model.addAttribute("isuserlike", isuserlike);
 		model.addAttribute("topicinfo", tft);
 
 		model.addAttribute("lang", vLocal);
@@ -399,21 +385,13 @@ public class ForumController {
 
 		return defaultpath + returnURL;
 	}
-	
-	
-	
-	
-	
-	
+
 	@RequestMapping(value = "/topiccomment", method = RequestMethod.GET)
 	public String topiccomment(Model model, HttpServletRequest request) throws SQLException {
 		logger.info("Welcome topiccomment.");
-		top( model , request);
+		top(model, request);
 		String id = request.getParameter("id");
 		String vLocal = LocaleContextHolder.getLocale().getLanguage();
-
-	
-	
 
 		List<topic_comment_list> tcl = null;
 		tcl = forumservices.getforumtopiccommentlist(id);
@@ -423,12 +401,13 @@ public class ForumController {
 		List<topic_comment_user_like> tcul = null;
 
 		tcul = forumservices.userliketopiccommentlist(id, (String) session.getAttribute("s_GEmail"));
-		//int isallowedit = forumservices.isautorizedtoedittopic(id, (String) session.getAttribute("s_GEmail"));
-		
+		// int isallowedit = forumservices.isautorizedtoedittopic(id, (String)
+		// session.getAttribute("s_GEmail"));
+
 		List<topic_comment_likes> tclike = null;
 		tclike = forumservices.getcommentlikecount(id);
 
-		//model.addAttribute("isallowedit", isallowedit);
+		// model.addAttribute("isallowedit", isallowedit);
 		model.addAttribute("isuserlike", isuserlike);
 		model.addAttribute("topiccommentlikeslist", tclike);
 		model.addAttribute("tcullist", tcul);
@@ -440,12 +419,11 @@ public class ForumController {
 
 		return defaultpath + returnURL;
 	}
-	
 
 	@RequestMapping(value = "/createtopic", method = RequestMethod.GET)
 	public String createtopic(Model model, HttpServletRequest request) throws SQLException {
 		logger.info("Welcome createtopic.");
-		top( model , request);
+		top(model, request);
 		String categoryid = request.getParameter("cat");
 		String vLocal = LocaleContextHolder.getLocale().getLanguage();
 
@@ -486,7 +464,7 @@ public class ForumController {
 	@RequestMapping(value = "/edittopic", method = RequestMethod.GET)
 	public String edittopic(Model model, HttpServletRequest request) throws SQLException {
 		logger.info("Welcome edittopic.");
-		top( model , request);
+		top(model, request);
 		String id = request.getParameter("id");
 
 		String vLocal = LocaleContextHolder.getLocale().getLanguage();
@@ -500,8 +478,8 @@ public class ForumController {
 
 			model.addAttribute("tft", tft);
 			List<t_forum_topic_file> tftf = forumservices.gettopicfilelist(id);
-			
-			model.addAttribute("filelist",tftf);
+
+			model.addAttribute("filelist", tftf);
 			model.addAttribute("lang", vLocal);
 
 			returnURL = defaultpath + "/edittopic";
@@ -512,34 +490,33 @@ public class ForumController {
 
 		return returnURL;
 	}
-	
-	
-	 public static String convertImageToBase64(String imageUrl) throws IOException {
-	        URL url = new URL(imageUrl);
-	        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-	        connection.setRequestMethod("GET");
 
-	        try (InputStream inputStream = connection.getInputStream()) {
-	            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-	            byte[] buffer = new byte[1024];
-	            int bytesRead;
+	public static String convertImageToBase64(String imageUrl) throws IOException {
+		URL url = new URL(imageUrl);
+		HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+		connection.setRequestMethod("GET");
 
-	            while ((bytesRead = inputStream.read(buffer)) != -1) {
-	                outputStream.write(buffer, 0, bytesRead);
-	            }
+		try (InputStream inputStream = connection.getInputStream()) {
+			ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+			byte[] buffer = new byte[1024];
+			int bytesRead;
 
-	            byte[] imageBytes = outputStream.toByteArray();
-	            return "data:image/jpeg;base64, "+Base64.getEncoder().encodeToString(imageBytes);
-	        } finally {
-	            connection.disconnect();
-	        }
-	    }
+			while ((bytesRead = inputStream.read(buffer)) != -1) {
+				outputStream.write(buffer, 0, bytesRead);
+			}
+
+			byte[] imageBytes = outputStream.toByteArray();
+			return "data:image/jpeg;base64, " + Base64.getEncoder().encodeToString(imageBytes);
+		} finally {
+			connection.disconnect();
+		}
+	}
 
 	@RequestMapping(value = "/loginByGoogle", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
 	@ResponseBody
 	public ModelAndView loginConfirm(HttpServletRequest request, Model model) {
 		HttpSession session = request.getSession();
-		
+
 		logger.info("welcome login by google" + serverinfo);
 		ModelAndView mav = new ModelAndView("jsonView");
 		String responsestr = "";
@@ -551,20 +528,19 @@ public class ForumController {
 		String imageurl = UserGoogleLoginCredential.getString("picture");
 		String googleid = UserGoogleLoginCredential.getString("sub");
 		String outputimageurl = "";
-		
+
 		try {
-			
+
 			outputimageurl = convertImageToBase64(imageurl);
-		}catch (IOException e) {
+		} catch (IOException e) {
 			outputimageurl = imageurl;
-        }
+		}
 
 		boolean isnewuser = forumservices.isnewuser(email);
 
 		if (!isnewuser) {
-			
-			t_user  tu = forumservices.getuserinfo(email);
-			
+
+			t_user tu = forumservices.getuserinfo(email);
 
 			session.setAttribute("s_GEmail", tu.getEmail());
 			session.setAttribute("s_GName", tu.getName());
@@ -649,9 +625,11 @@ public class ForumController {
 		logger.info(topic);
 		logger.info(content);
 		if (APIProtectionHandler.islogin(request)) {
-			forumservices.insertnewtopic(cat, topic, desc, content,thumbnail, (String) session.getAttribute("s_GEmail"));
-			
-			int id  = forumservices.gettopicidby(cat,topic,desc,content,thumbnail,(String) session.getAttribute("s_GEmail"));
+			forumservices.insertnewtopic(cat, topic, desc, content, thumbnail,
+					(String) session.getAttribute("s_GEmail"));
+
+			int id = forumservices.gettopicidby(cat, topic, desc, content, thumbnail,
+					(String) session.getAttribute("s_GEmail"));
 			JSONObject jobj = new JSONObject();
 			jobj.put("redirect", "/category?id=" + cat);
 			jobj.put("id", id);
@@ -684,7 +662,7 @@ public class ForumController {
 		logger.info(topic);
 		logger.info(content);
 		if (APIProtectionHandler.islogin(request)) {
-			forumservices.updatetopic(topic, desc, content, id,thumbnail, (String) session.getAttribute("s_GEmail"));
+			forumservices.updatetopic(topic, desc, content, id, thumbnail, (String) session.getAttribute("s_GEmail"));
 			JSONObject jobj = new JSONObject();
 			jobj.put("redirect", "/topic?id=" + id);
 			responsestr = jobj.toString();
@@ -697,8 +675,7 @@ public class ForumController {
 		mav.addObject("result", APIProtectionHandler.ApiProtection(request, responsestr));
 		return mav;
 	}
-	
-	
+
 	@PostMapping(value = { "/api/deletetopic" }, consumes = { "application/json" }, produces = { "application/json" })
 	public ModelAndView api_deletetopic(@RequestBody String body, HttpServletRequest request) throws SQLException {
 		ModelAndView mav = new ModelAndView("jsonView");
@@ -710,17 +687,15 @@ public class ForumController {
 		String id = jsonbodyobj.getString("id");
 		String cid = jsonbodyobj.getString("cid");
 		int isallowedit = forumservices.isautorizedtoedittopic(id, (String) session.getAttribute("s_GEmail"));
-		
-		
+
 		if (APIProtectionHandler.islogin(request)) {
-			if(isallowedit ==1)
-			{
+			if (isallowedit == 1) {
 				forumservices.deletetopic(id, (String) session.getAttribute("s_GEmail"));
 				JSONObject jobj = new JSONObject();
 				jobj.put("redirect", "/category?id=" + cid);
 				responsestr = jobj.toString();
 			}
-			
+
 		} else {
 			JSONObject jobj = new JSONObject();
 			jobj.put("redirect", "/error");
@@ -730,9 +705,7 @@ public class ForumController {
 		mav.addObject("result", APIProtectionHandler.ApiProtection(request, responsestr));
 		return mav;
 	}
-	
-	
-	
+
 	@PostMapping(value = { "/api/deletefile" }, consumes = { "application/json" }, produces = { "application/json" })
 	public ModelAndView api_deletefile(@RequestBody String body, HttpServletRequest request) throws SQLException {
 		ModelAndView mav = new ModelAndView("jsonView");
@@ -743,17 +716,15 @@ public class ForumController {
 
 		String id = jsonbodyobj.getString("id");
 		int isallowedit = forumservices.isautorizedtoedittopic(id, (String) session.getAttribute("s_GEmail"));
-		
-		
+
 		if (APIProtectionHandler.islogin(request)) {
-			if(isallowedit ==1)
-			{
+			if (isallowedit == 1) {
 				forumservices.deletefile(id, (String) session.getAttribute("s_GEmail"));
 				JSONObject jobj = new JSONObject();
 				jobj.put("answer", "ok");
 				responsestr = jobj.toString();
 			}
-			
+
 		} else {
 			JSONObject jobj = new JSONObject();
 			jobj.put("answer", "fail");
@@ -763,10 +734,6 @@ public class ForumController {
 		mav.addObject("result", APIProtectionHandler.ApiProtection(request, responsestr));
 		return mav;
 	}
-	
-
-	
-	
 
 	@PostMapping(value = { "/api/userliketopic" }, consumes = { "application/json" }, produces = { "application/json" })
 	public ModelAndView api_userliketopic(@RequestBody String body, HttpServletRequest request) throws SQLException {
@@ -784,21 +751,16 @@ public class ForumController {
 			if (yesno.indexOf("Y") >= 0) {
 
 				int islike = forumservices.isuserlikethistopic(tid, (String) session.getAttribute("s_GEmail"));
-				int islikerecordexist =forumservices.islikerecordexist(tid, (String) session.getAttribute("s_GEmail"));
+				int islikerecordexist = forumservices.islikerecordexist(tid, (String) session.getAttribute("s_GEmail"));
 				if (islike == 0) {
-					
-					if(islikerecordexist == 0) {
-						
+
+					if (islikerecordexist == 0) {
+
 						forumservices.userliketopic(tid, (String) session.getAttribute("s_GEmail"));
-					}
-					else
-					{
+					} else {
 						forumservices.userlikeliketopic(tid, (String) session.getAttribute("s_GEmail"));
 					}
-					
-					
-				
-					
+
 				}
 
 			} else {
@@ -867,29 +829,27 @@ public class ForumController {
 
 		ModelAndView mav = new ModelAndView("jsonView");
 		String responsestr = "";
-		
-	
-			List<scroll_topic_info> sti = forumservices.getscrolltopicinfo();
-			List<scroll_topic_info> display = null;
-			for (scroll_topic_info topicInfo : sti) {
-				topicInfo.title = "<a href=\"topic?id=" + topicInfo.id + "\" class=\"link\">" + topicInfo.title + " ("
-						+ topicInfo.name + " " + topicInfo.create_date
-						+ ") </a><span class=\"separator\"><span class=\"separator-bar\">/</span><span class=\"separator-bar\">/</span></span>";
 
-			}
+		List<scroll_topic_info> sti = forumservices.getscrolltopicinfo();
+		List<scroll_topic_info> display = null;
+		for (scroll_topic_info topicInfo : sti) {
+			topicInfo.title = "<a href=\"topic?id=" + topicInfo.id + "\" class=\"link\">" + topicInfo.title + " ("
+					+ topicInfo.name + " " + topicInfo.create_date
+					+ ") </a><span class=\"separator\"><span class=\"separator-bar\">/</span><span class=\"separator-bar\">/</span></span>";
 
-			try {
-				ObjectMapper objectMapper = new ObjectMapper();
-				responsestr = objectMapper.writeValueAsString(sti);
+		}
 
-				// Print the JSON
-				System.out.println(responsestr);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+		try {
+			ObjectMapper objectMapper = new ObjectMapper();
+			responsestr = objectMapper.writeValueAsString(sti);
 
-		
-		mav.addObject("result",  responsestr);
+			// Print the JSON
+			System.out.println(responsestr);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		mav.addObject("result", responsestr);
 		return mav;
 	}
 
@@ -943,17 +903,15 @@ public class ForumController {
 		if (session != null)
 			session.invalidate();
 		// request.getRequestDispatcher("/main.jsp").forward(request,response);
-		logger.info("redirect" +redirect);
-		if(redirect !=null)
-		{
-			return "redirect:" + defaultpath + "login?redirect="+redirect;
-		}
-		else
-		{
+		logger.info("redirect" + redirect);
+		if (redirect != null) {
+			return "redirect:" + defaultpath + "login?redirect=" + redirect;
+		} else {
 			return "redirect:" + defaultpath + "login";
 		}
-		
+
 	}
+
 	private static final String TOMCAT_HOME_PROPERTY = "catalina.home";
 	private static final String TOMCAT_HOME_PATH = System.getProperty(TOMCAT_HOME_PROPERTY);
 	private static final String PIZZA_IMAGES = "FORUM_TOPIC_FILE";
@@ -968,250 +926,303 @@ public class ForumController {
 			PIZZA_IMAGES_DIR.mkdirs();
 		}
 	}
-	 private static final String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
-	    public static String generateRandomString(int length) {
-	        Random random = new Random();
-	        StringBuilder sb = new StringBuilder(length);
+	private static final String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
-	        for (int i = 0; i < length; i++) {
-	            int randomIndex = random.nextInt(CHARACTERS.length());
-	            char randomChar = CHARACTERS.charAt(randomIndex);
-	            sb.append(randomChar);
-	        }
+	public static String generateRandomString(int length) {
+		Random random = new Random();
+		StringBuilder sb = new StringBuilder(length);
 
-	        return sb.toString();
-	    }
-	
-	@RequestMapping(value = "/uploadFile", method = RequestMethod.POST)
-	private String uploadmultiplefile(@RequestParam("file") List<MultipartFile> allfile,@RequestParam("id") String topic_id,
-			HttpServletRequest request) {
-		
-		createPizzaImagesDirIfNeeded();
-		
-		if (APIProtectionHandler.islogin(request)) {
-		try {
-			HttpSession session = request.getSession();
-			for (MultipartFile file  : allfile) {
-				
-				String filename = topic_id+"_"+generateRandomString(10)+"_"+file.getOriginalFilename();
-			File files = new File(
-					PIZZA_IMAGES_DIR_ABSOLUTE_PATH +  filename);
-			BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(files));
-			stream.write(file.getBytes());
-			stream.close();
-			
-			forumservices.recordtopicfiledetail( topic_id, file.getOriginalFilename(), filename ,(String) session.getAttribute("s_GEmail") );
-
-			}
-			return "redirect:" + defaultpath + "topic?id="+topic_id;
-		} catch (Exception e) {
-			return "redirect:" + defaultpath + "error?msg=failuploadfile";
+		for (int i = 0; i < length; i++) {
+			int randomIndex = random.nextInt(CHARACTERS.length());
+			char randomChar = CHARACTERS.charAt(randomIndex);
+			sb.append(randomChar);
 		}
-		}else
-		{
+
+		return sb.toString();
+	}
+
+	@RequestMapping(value = "/uploadFile", method = RequestMethod.POST)
+	private String uploadmultiplefile(@RequestParam("file") List<MultipartFile> allfile,
+			@RequestParam("id") String topic_id, HttpServletRequest request) {
+
+		createPizzaImagesDirIfNeeded();
+
+		if (APIProtectionHandler.islogin(request)) {
+			try {
+				HttpSession session = request.getSession();
+				for (MultipartFile file : allfile) {
+
+					String filename = topic_id + "_" + generateRandomString(10) + "_" + file.getOriginalFilename();
+					File files = new File(PIZZA_IMAGES_DIR_ABSOLUTE_PATH + filename);
+					BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(files));
+					stream.write(file.getBytes());
+					stream.close();
+
+					forumservices.recordtopicfiledetail(topic_id, file.getOriginalFilename(), filename,
+							(String) session.getAttribute("s_GEmail"));
+
+				}
+				return "redirect:" + defaultpath + "topic?id=" + topic_id;
+			} catch (Exception e) {
+				return "redirect:" + defaultpath + "error?msg=failuploadfile";
+			}
+		} else {
 			return "redirect:" + defaultpath + "index";
 		}
 	}
 
-	
-	
 	@RequestMapping(value = "/file/{filename}.{extension}")
 	@ResponseBody
 	public ResponseEntity<byte[]> getImage(@PathVariable(value = "filename") String filename,
-			@PathVariable(value = "extension") String ext ) throws IOException {
+			@PathVariable(value = "extension") String ext) throws IOException {
 		createPizzaImagesDirIfNeeded();
 
 		File serverFile = new File(PIZZA_IMAGES_DIR_ABSOLUTE_PATH + filename + "." + ext);
-		 byte[] fileContent = Files.readAllBytes(serverFile.toPath());
+		byte[] fileContent = Files.readAllBytes(serverFile.toPath());
 
-	       
-		 HttpHeaders headers = new HttpHeaders();
-	        headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
-	        headers.setContentDispositionFormData("attachment", filename + "." + ext);
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+		headers.setContentDispositionFormData("attachment", filename + "." + ext);
 
-	        return new ResponseEntity<>(fileContent, headers, HttpStatus.OK);
-	   
+		return new ResponseEntity<>(fileContent, headers, HttpStatus.OK);
 
 	}
-	
-	
-	
-	
-	
-	
-	///////////////////////////////////////////MT5 Code Here/////////////////////////////////////////////////////////////
-	///////////////////////////////////////////MT5 Code Here/////////////////////////////////////////////////////////////
-	///////////////////////////////////////////MT5 Code Here/////////////////////////////////////////////////////////////
-	///////////////////////////////////////////MT5 Code Here/////////////////////////////////////////////////////////////
-	///////////////////////////////////////////MT5 Code Here/////////////////////////////////////////////////////////////
-	///////////////////////////////////////////MT5 Code Here/////////////////////////////////////////////////////////////
-	///////////////////////////////////////////MT5 Code Here/////////////////////////////////////////////////////////////
-	///////////////////////////////////////////MT5 Code Here/////////////////////////////////////////////////////////////
-	///////////////////////////////////////////MT5 Code Here/////////////////////////////////////////////////////////////
-	///////////////////////////////////////////MT5 Code Here/////////////////////////////////////////////////////////////
-	
-	
+
+	/////////////////////////////////////////// MT5 Code
+	/////////////////////////////////////////// Here/////////////////////////////////////////////////////////////
+	/////////////////////////////////////////// MT5 Code
+	/////////////////////////////////////////// Here/////////////////////////////////////////////////////////////
+	/////////////////////////////////////////// MT5 Code
+	/////////////////////////////////////////// Here/////////////////////////////////////////////////////////////
+	/////////////////////////////////////////// MT5 Code
+	/////////////////////////////////////////// Here/////////////////////////////////////////////////////////////
+	/////////////////////////////////////////// MT5 Code
+	/////////////////////////////////////////// Here/////////////////////////////////////////////////////////////
+	/////////////////////////////////////////// MT5 Code
+	/////////////////////////////////////////// Here/////////////////////////////////////////////////////////////
+	/////////////////////////////////////////// MT5 Code
+	/////////////////////////////////////////// Here/////////////////////////////////////////////////////////////
+	/////////////////////////////////////////// MT5 Code
+	/////////////////////////////////////////// Here/////////////////////////////////////////////////////////////
+	/////////////////////////////////////////// MT5 Code
+	/////////////////////////////////////////// Here/////////////////////////////////////////////////////////////
+	/////////////////////////////////////////// MT5 Code
+	/////////////////////////////////////////// Here/////////////////////////////////////////////////////////////
+
 	@RequestMapping(value = "/viewMt5Account", method = RequestMethod.GET)
 	public String viewMt5Account(Model model, HttpServletRequest request) {
-		
-		
-		top(model,request);
-		
-		 String responsestr = "";
-		HttpUtils httpUtils = new HttpUtils(this.serverinfo);
-	    HttpSession session = request.getSession();
-	    if (httpUtils.sendAuth(this.serverinfo)) {
-	      String path = "/api/user/get?login=" + "3301";
-	      try {
-	        responsestr = httpUtils.sendGet(this.serverinfo, path);
-	        
-	        JSONObject accountinfo = new JSONObject(responsestr);
-	        
-
-	        
-	      } catch (Exception e) {
-	        e.printStackTrace();
-	      } 
-	    } 
-	    
-		
 		String returnURL = "";
+		String id = request.getParameter("id");
+		top(model, request);
+		if (forumservices.isallowviewaccount(id)) {
+		String name = forumservices.getmt5accountname(id);
+
+		String responsestr = "";
+		HttpUtils httpUtils = new HttpUtils(this.serverinfo);
+		HttpSession session = request.getSession();
+		if (httpUtils.sendAuth(this.serverinfo)) {
+			String path = "/api/user/get?login=" + "3301";
+			try {
+				responsestr = httpUtils.sendGet(this.serverinfo, path);
+
+				JSONObject accountinfo = new JSONObject(responsestr);
+
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+model.addAttribute("name", name);
+model.addAttribute("id", id);
+		
 		returnURL = "/viewmt5account";
+		
+		} else {
+			returnURL = "/unautorized";
+		}
 
 		return defaultpath + returnURL;
 	}
-	
-	
-	  @RequestMapping(value = {"/getAccountInfo"}, method = {RequestMethod.GET}, produces = {"application/json;charset=UTF-8"})
-	  @ResponseBody
-	  public ModelAndView getAccountInfo(HttpServletRequest request, Model model) {
-	    logger.info("Get getAccountInfo ........" + this.serverinfo);
-	    String id = request.getParameter("id");
-	    ModelAndView mav = new ModelAndView("jsonView");
-	    String responsestr = "";
-	    HttpUtils httpUtils = new HttpUtils(this.serverinfo);
-	    HttpSession session = request.getSession();
-	    if (httpUtils.sendAuth(this.serverinfo)) {
-	      String path = "/api/user/get?login=" + id;
-	      try {
-	        responsestr = httpUtils.sendGet(this.serverinfo, path);
-	        responsestr.indexOf("0 Done");
-	      } catch (Exception e) {
-	        e.printStackTrace();
-	      } 
-	    } 
-	    mav.addObject("result", APIProtectionHandler.ApiProtection(request, responsestr));
-	    return mav;
-	  }
-	  
-	  
-	  
-	  @RequestMapping(value = {"/getAccountDetail"}, method = {RequestMethod.GET}, produces = {"application/json;charset=UTF-8"})
-	  @ResponseBody
-	  public ModelAndView getAccountDetail(HttpServletRequest request, Model model) {
-	    logger.info("Get getAccountDetail ........" + this.serverinfo);
-	    String id = request.getParameter("id");
-	    ModelAndView mav = new ModelAndView("jsonView");
-	    String responsestr = "";
-	    HttpUtils httpUtils = new HttpUtils(this.serverinfo);
-	    HttpSession session = request.getSession();
-	    if (httpUtils.sendAuth(this.serverinfo)) {
-	      String path = "/api/user/account/get?login=" + id;
-	      try {
-	        responsestr = httpUtils.sendGet(this.serverinfo, path);
-	        responsestr.indexOf("0 Done");
-	      } catch (Exception e) {
-	        e.printStackTrace();
-	      } 
-	    } 
-	    mav.addObject("result", APIProtectionHandler.ApiProtection(request, responsestr));
-	    return mav;
-	  }
-	
-	
-	
-	  @RequestMapping(value = {"/getAccountPositions"}, method = {RequestMethod.GET}, produces = {"application/json;charset=UTF-8"})
-	  @ResponseBody
-	  public ModelAndView getAccountPosition(HttpServletRequest request, Model model) {
-	    logger.info("Get getAccountPosition ........" + this.serverinfo);
-	    String id = request.getParameter("id");
-	    ModelAndView mav = new ModelAndView("jsonView");
-	    String responsestr = "";
-	    HttpUtils httpUtils = new HttpUtils(this.serverinfo);
-	    HttpSession session = request.getSession();
-	    if (httpUtils.sendAuth(this.serverinfo)) {
-	      String path = "/api/position/get_page?login=" + id+"&offset=0&total=100";
-	      try {
-	        responsestr = httpUtils.sendGet(this.serverinfo, path);
-	        responsestr.indexOf("0 Done");
-	      } catch (Exception e) {
-	        e.printStackTrace();
-	      } 
-	    } 
-	    mav.addObject("result", APIProtectionHandler.ApiProtection(request, responsestr));
-	    return mav;
-	  }
-	
-	
-	  @RequestMapping(value = {"/getHistory"}, method = {RequestMethod.GET}, produces = {"application/json;charset=UTF-8"})
-	  @ResponseBody
-	  public ModelAndView get100History(HttpServletRequest request, Model model) {
-	    logger.info("Get get100History ........" + this.serverinfo);
-	    String id = request.getParameter("id");
-	    String page = request.getParameter("page");
-	    ModelAndView mav = new ModelAndView("jsonView");
-	    String responsestr = "";
-	    HttpUtils httpUtils = new HttpUtils(this.serverinfo);
-	    HttpSession session = request.getSession();
-	    if (httpUtils.sendAuth(this.serverinfo)) {
-	    	  long currentTimeMillis = System.currentTimeMillis();
 
-	          // Convert milliseconds to seconds
-	          long currentSeconds = currentTimeMillis / 1000;
-	      String path = "/api/history/get_total?login="+ id+"&from=0&to="+ Long.toString(currentSeconds);
-	      try {
-	        responsestr = httpUtils.sendGet(this.serverinfo, path);
-	        
-	        JSONObject totalobj = new JSONObject(responsestr);
-	        String totalrow = totalobj.getJSONObject("answer").getString("total");
-	        try {
-	        	int row = Integer.parseInt(totalrow);
-	        	  path = "/api/history/get_page?login="+id+"&from=0&to="+ Long.toString(currentSeconds) +"&offset="+(row-(50*Integer.parseInt(page)))+"&total=50";
-	        	  try {
-	      	        responsestr = httpUtils.sendGet(this.serverinfo, path);
-	      	      responsestr.indexOf("0 Done");
-	    	      } catch (Exception e) {
-	    	        e.printStackTrace();
-	    	      } 
-	        }
-	        
-	        catch (NumberFormatException e) {
+	@RequestMapping(value = { "/getAccountInfo" }, method = { RequestMethod.GET }, produces = {
+			"application/json;charset=UTF-8" })
+	@ResponseBody
+	public ModelAndView getAccountInfo(HttpServletRequest request, Model model) {
+		logger.info("Get getAccountInfo ........" + this.serverinfo);
+		String id = request.getParameter("id");
 
-	        }
-	        responsestr.indexOf("0 Done");
-	      } catch (Exception e) {
-	        e.printStackTrace();
-	      } 
-	    } 
-	    mav.addObject("result", APIProtectionHandler.ApiProtection(request, responsestr));
-	    return mav;
-	  }
+		ModelAndView mav = new ModelAndView("jsonView");
+
+		String responsestr = "";
+
+		if (forumservices.isallowviewaccount(id)) {
+
+			HttpUtils httpUtils = new HttpUtils(this.serverinfo);
+			HttpSession session = request.getSession();
+			if (httpUtils.sendAuth(this.serverinfo)) {
+				String path = "/api/user/get?login=" + id;
+				try {
+					responsestr = httpUtils.sendGet(this.serverinfo, path);
+					responsestr.indexOf("0 Done");
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		} else {
+			responsestr = "unautorized";
+		}
+		mav.addObject("result", APIProtectionHandler.ApiProtection(request, responsestr));
+		return mav;
+	}
+
+	@RequestMapping(value = { "/getAccountDetail" }, method = { RequestMethod.GET }, produces = {
+			"application/json;charset=UTF-8" })
+	@ResponseBody
+	public ModelAndView getAccountDetail(HttpServletRequest request, Model model) {
+		logger.info("Get getAccountDetail ........" + this.serverinfo);
+		String id = request.getParameter("id");
+		ModelAndView mav = new ModelAndView("jsonView");
+		String responsestr = "";
+		if (forumservices.isallowviewaccount(id)) {
+			HttpUtils httpUtils = new HttpUtils(this.serverinfo);
+			HttpSession session = request.getSession();
+			if (httpUtils.sendAuth(this.serverinfo)) {
+				String path = "/api/user/account/get?login=" + id;
+				try {
+					responsestr = httpUtils.sendGet(this.serverinfo, path);
+					responsestr.indexOf("0 Done");
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+
+		} else {
+			responsestr = "unautorized";
+		}
+		mav.addObject("result", APIProtectionHandler.ApiProtection(request, responsestr));
+		return mav;
+	}
+
+	@RequestMapping(value = { "/getAccountPositions" }, method = { RequestMethod.GET }, produces = {
+			"application/json;charset=UTF-8" })
+	@ResponseBody
+	public ModelAndView getAccountPosition(HttpServletRequest request, Model model) {
+		logger.info("Get getAccountPosition ........" + this.serverinfo);
+		String id = request.getParameter("id");
+		ModelAndView mav = new ModelAndView("jsonView");
+		String responsestr = "";
+
+		if (forumservices.isallowviewaccount(id)) {
+			HttpUtils httpUtils = new HttpUtils(this.serverinfo);
+			HttpSession session = request.getSession();
+			if (httpUtils.sendAuth(this.serverinfo)) {
+				String path = "/api/position/get_page?login=" + id + "&offset=0&total=100";
+				try {
+					responsestr = httpUtils.sendGet(this.serverinfo, path);
+					responsestr.indexOf("0 Done");
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+
+		} else {
+			responsestr = "unautorized";
+		}
+		mav.addObject("result", APIProtectionHandler.ApiProtection(request, responsestr));
+		return mav;
+	}
+
+	@RequestMapping(value = { "/getHistory" }, method = { RequestMethod.GET }, produces = {
+			"application/json;charset=UTF-8" })
+	@ResponseBody
+	public ModelAndView get100History(HttpServletRequest request, Model model) {
+		logger.info("Get get100History ........" + this.serverinfo);
+		String id = request.getParameter("id");
+		String page = request.getParameter("page");
+
+		ModelAndView mav = new ModelAndView("jsonView");
+		String responsestr = "";
+		if (forumservices.isallowviewaccount(id)) {
+			HttpUtils httpUtils = new HttpUtils(this.serverinfo);
+			HttpSession session = request.getSession();
+			if (httpUtils.sendAuth(this.serverinfo)) {
+				long currentTimeMillis = System.currentTimeMillis();
+
+				// Convert milliseconds to seconds
+				long currentSeconds = currentTimeMillis / 1000;
+				String path = "/api/deal/get_total?login=" + id + "&from=0&to=" + Long.toString(currentSeconds);
+				try {
+					responsestr = httpUtils.sendGet(this.serverinfo, path);
+
+					JSONObject totalobj = new JSONObject(responsestr);
+					String totalrow = totalobj.getJSONObject("answer").getString("total");
+					try {
+						int row = Integer.parseInt(totalrow);
+						path = "/api/deal/get_page?login=" + id + "&from=0&to=" + Long.toString(currentSeconds)
+								+ "&offset=" + (row - (50 * Integer.parseInt(page))) + "&total=50";
+						try {
+							responsestr = httpUtils.sendGet(this.serverinfo, path);
+							responsestr.indexOf("0 Done");
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					}
+
+					catch (NumberFormatException e) {
+
+					}
+					responsestr.indexOf("0 Done");
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+
+		} else {
+			responsestr = "unautorized";
+		}
+		mav.addObject("result", APIProtectionHandler.ApiProtection(request, responsestr));
+		return mav;
+	}
 	
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-    
+	@RequestMapping(value = { "/getHistorytotalPage" }, method = { RequestMethod.GET }, produces = {
+	"application/json;charset=UTF-8" })
+@ResponseBody
+public ModelAndView getHistorytotalPage(HttpServletRequest request, Model model) {
+logger.info("Get getHistorytotalPage ........" + this.serverinfo);
+String id = request.getParameter("id");
+ModelAndView mav = new ModelAndView("jsonView");
+String responsestr = "";
+int totalpage = 0;
+if (forumservices.isallowviewaccount(id)) {
+	HttpUtils httpUtils = new HttpUtils(this.serverinfo);
+	HttpSession session = request.getSession();
+	if (httpUtils.sendAuth(this.serverinfo)) {
+		long currentTimeMillis = System.currentTimeMillis();
+
+		// Convert milliseconds to seconds
+		long currentSeconds = currentTimeMillis / 1000;
+		String path = "/api/deal/get_total?login=" + id + "&from=0&to=" + Long.toString(currentSeconds);
+		try {
+			responsestr = httpUtils.sendGet(this.serverinfo, path);
+
+			JSONObject totalobj = new JSONObject(responsestr);
+			String totalrow = totalobj.getJSONObject("answer").getString("total");
+			totalpage	 = Integer.parseInt(totalrow)/50;
+			
+			responsestr.indexOf("0 Done");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+} else {
+	responsestr = "unautorized";
+}
+mav.addObject("result", APIProtectionHandler.ApiProtection(request, String.valueOf(totalpage)));
+return mav;
+}
 
 }
