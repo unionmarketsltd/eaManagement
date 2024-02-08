@@ -571,6 +571,7 @@
 					data : '',
 					success : function(data) {
 						totalpagenumber = data.result;
+						totalpagenumber++;
 						generatePagingNumbers(totalpagenumber, 1);
 					},
 					error : function(xhr, status) {
