@@ -43,17 +43,7 @@
       <li class="mobile-menu-item">
         <a href="${pageContext.request.contextPath}/forum/index" class="mobile-menu-item-link">Home</a>
       </li>
-      <!-- /MOBILE MENU ITEM -->
 
-      <!-- MOBILE MENU ITEM -->
-      
-      <!-- /MOBILE MENU ITEM -->
-
-      <!-- MOBILE MENU ITEM -->
-      <li class="mobile-menu-item">
-        <a href="${pageContext.request.contextPath}/forum/main" class="mobile-menu-item-link">Forum</a>
-      </li>
-      <!-- /MOBILE MENU ITEM -->
 
 
 
@@ -86,6 +76,24 @@
  </li>
 </ul>
 			</c:forEach>
+			<li class="mobile-menu-item">
+        <p class="mobile-menu-item-link pd-dropdown-handler">Trade Account </p> <!-- SUBMENU -->
+          <svg class="arrow-icon medium">
+          <use xlink:href="#svg-arrow-medium"></use>
+        </svg>
+				  <ul class="mobile-dropdown pd-dropdown" style="display: none;">
+				   <li class="mobile-dropdown-item">
+												
+															<a
+																href="${pageContext.request.contextPath}/forum/MT5AccountList"
+																style="color: #363636" class="mobile-dropdown-item-link pd-dropdown-handler">FOREX MT5 ACCOUNTS</a>
+													
+															<a
+																href="${pageContext.request.contextPath}/forum/MT5AccountList"
+																style="color: #363636" class="mobile-dropdown-item-link pd-dropdown-handler">해외선물 증권계좌 </a>
+								
+ </li>
+</ul>
   
    <li class="mobile-menu-item">
         <a href="${pageContext.request.contextPath}/forum/contact" class="mobile-menu-item-link">Contact</a>
@@ -360,10 +368,6 @@
 				href="${pageContext.request.contextPath}/forum/index"
 				class="main-menu-item-link">Home</a></li>
 
-			<li class="main-menu-item"><a
-				href="${pageContext.request.contextPath}/forum/main"
-				class="main-menu-item-link">Forum</a></li>
-
 			<!-- /MAIN MENU ITEM -->
 			<c:forEach items="${ top_forumlist }" var="top_listinfo"
 				varStatus="status">
@@ -534,13 +538,13 @@
                 <div class="link-section">
                   <!-- SECTION TITLE WRAP -->
                   <div class="section-title-wrap blue">
-                    <h2 class="section-title small">Public Viewable Accounts</h2>
+                    <h2 class="section-title small"><a href="${pageContext.request.contextPath}/forum/MT5AccountList" style="color: #363636">Forex MT5 Accounts</a></h2>
                     <div class="section-title-separator"></div>
                   </div>
                   <!-- /SECTION TITLE WRAP -->
 
                   <!-- LINK LIST -->
-                  <ul class="link-list">
+                  <%-- <ul class="link-list">
                     <!-- LINK LIST ITEM -->
                    
                     
@@ -554,11 +558,42 @@
                     
                     
                    
-                  </ul>
+                  </ul> --%>
                   <!-- /LINK LIST -->
+                  <ul class="link-list medium">
+					<!-- LINK LIST ITEM -->
+					<li class="link-list-item"><a href="${pageContext.request.contextPath}/forum/MT5AccountList" style="color: #363636">Forex MT5 Account List</a>
+					</li>
+					<!-- /LINK LIST ITEM -->
 
-                 
-             
+				 </ul>
+				</div>
+				
+											
+												<div class="link-section">
+													<!-- SECTION TITLE WRAP -->
+
+													<div class="section-title-wrap blue">
+														<h2 class="section-title small">
+															<a href="${pageContext.request.contextPath}/forum/AccountList" style="color: #363636">해외선물 증권계좌</a>
+														</h2>
+														<div class="section-title-separator"></div>
+													</div>
+													<!-- /SECTION TITLE WRAP -->
+
+													<!-- LINK LIST -->
+													<ul class="link-list medium">
+														<!-- LINK LIST ITEM -->
+														<li class="link-list-item"><a href="${pageContext.request.contextPath}/forum/AccountList">해외선물 증권계좌 계좌리스트</a>
+														</li>
+														<!-- /LINK LIST ITEM -->
+
+													</ul>
+													<!-- /LINK LIST -->
+												</div>
+				
+			  </div>
+			  
             </li>
             <!-- /SUBMENU ITEM -->
           </ul>

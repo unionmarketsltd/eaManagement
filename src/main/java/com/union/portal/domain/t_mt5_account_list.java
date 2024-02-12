@@ -10,4 +10,8 @@ public class t_mt5_account_list {
 	public String name;
 	public String dbsts;
 	public String create_date;
+	public String content;
+	public String description;
+	public String startdate;
+	public double profitrate;
 }

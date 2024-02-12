@@ -17,296 +17,242 @@
 <body>
 	<%@include file="inc/top.jsp"%>
  
-	<!-- BANNER WRAP -->
-
-  <!-- BANNER SLIDER -->
-  <div id="banner-slider-2" class="banner-slider v2">
-    <!-- SLIDER ITEMS -->
-    <div class="slider-items">
-      <!-- SLIDER ITEM -->
-      <div class="slider-item slider-item-1">
-        <div class="slider-item-wrap">
-          <!-- POST PREVIEW -->
-          <div class="post-preview huge centered gaming-news">
-            <!-- TAG ORNAMENT -->
-            <a href="news-v1.html" class="tag-ornament">Gaming news</a>
-            <!-- /TAG ORNAMENT -->
-      
-            <!-- POST PREVIEW TITLE -->
-            <a href="post-v1.html" class="post-preview-title">The "Clash of Eternity" new game was just released</a>
-            <!-- POST AUTHOR INFO -->
-            <div class="post-author-info-wrap">
-              <!-- USER AVATAR -->
-              <a href="search-results.html">
-                <figure class="user-avatar tiny liquid">
-                  <img src="img/users/01.jpg" alt="user-01">
-                </figure>
-              </a>
-              <!-- /USER AVATAR -->
-              <p class="post-author-info small light">By <a href="search-results.html" class="post-author">Dexter</a><span class="separator">|</span>December 15th, 2018<span class="separator">|</span><a href="post-v1.html#op-comments" class="post-comment-count">174 Comments</a></p>
-            </div>
-            <!-- /POST AUTHOR INFO -->
-            <div class="break"></div>
-            <!-- BUTTON -->
-            <a href="post-v1.html" class="button blue">
-              Go to the article
-              <!-- BUTTON ORNAMENT -->
-              <div class="button-ornament">
-                <!-- ARROW ICON -->
-                <svg class="arrow-icon medium">
-                  <use xlink:href="#svg-arrow-medium"></use>
-                </svg>
-                <!-- /ARROW ICON -->
-
-                <!-- CROSS ICON -->
-                <svg class="cross-icon small">
-                  <use xlink:href="#svg-cross-small"></use>
-                </svg>
-                <!-- /CROSS ICON -->
-              </div>
-              <!-- /BUTTON ORNAMENT -->
-            </a>
-            <!-- /BUTTON -->
-          </div>
-          <!-- /POST PREVIEW -->
-        </div>
-      </div>
-      <!-- /SLIDER ITEM -->
-
-      <!-- SLIDER ITEM -->
-      <div class="slider-item slider-item-2">
-        <div class="slider-item-wrap">
-          <!-- POST PREVIEW -->
-          <div class="post-preview huge centered game-review">
-            <!-- TAG ORNAMENT -->
-            <a href="news-v2.html" class="tag-ornament">Game Reviews</a>
-            <!-- /TAG ORNAMENT -->
-      
-            <!-- POST PREVIEW TITLE -->
-            <a href="post-v2.html" class="post-preview-title">We reviewed the new Magimons game</a>
-            <!-- POST AUTHOR INFO -->
-            <div class="post-author-info-wrap">
-              <!-- USER AVATAR -->
-              <a href="search-results.html">
-                <figure class="user-avatar tiny liquid">
-                  <img src="img/users/04.jpg" alt="user-04">
-                </figure>
-              </a>
-              <!-- /USER AVATAR -->
-              <p class="post-author-info small light">By <a href="search-results.html" class="post-author">Vellatrix</a><span class="separator">|</span>December 15th, 2018<span class="separator">|</span><a href="post-v2.html#op-comments" class="post-comment-count">97 Comments</a></p>
-            </div>
-            <!-- /POST AUTHOR INFO -->
-            <div class="break"></div>
-            <!-- BUTTON -->
-            <a href="post-v2.html" class="button red">
-              Go to the article
-              <!-- BUTTON ORNAMENT -->
-              <div class="button-ornament">
-                <!-- ARROW ICON -->
-                <svg class="arrow-icon medium">
-                  <use xlink:href="#svg-arrow-medium"></use>
-                </svg>
-                <!-- /ARROW ICON -->
-
-                <!-- CROSS ICON -->
-                <svg class="cross-icon small">
-                  <use xlink:href="#svg-cross-small"></use>
-                </svg>
-                <!-- /CROSS ICON -->
-              </div>
-              <!-- /BUTTON ORNAMENT -->
-            </a>
-            <!-- /BUTTON -->
-          </div>
-          <!-- /POST PREVIEW -->
-        </div>
-      </div>
-      <!-- /SLIDER ITEM -->
-
-      <!-- SLIDER ITEM -->
-      <div class="slider-item slider-item-3">
-        <div class="slider-item-wrap">
-          <!-- POST PREVIEW -->
-          <div class="post-preview huge centered gaming-news">
-            <!-- TAG ORNAMENT -->
-            <a href="news-v1.html" class="tag-ornament">Gaming News</a>
-            <!-- /TAG ORNAMENT -->
-      
-            <!-- POST PREVIEW TITLE -->
-            <a href="post-v1.html" class="post-preview-title">New expansion pack coming to "Rise of Depredators"</a>
-            <!-- POST AUTHOR INFO -->
-            <div class="post-author-info-wrap">
-              <!-- USER AVATAR -->
-              <a href="search-results.html">
-                <figure class="user-avatar tiny liquid">
-                  <img src="img/users/01.jpg" alt="user-01">
-                </figure>
-              </a>
-              <!-- /USER AVATAR -->
-              <p class="post-author-info small light">By <a href="search-results.html" class="post-author">Dexter</a><span class="separator">|</span>December 15th, 2018<span class="separator">|</span><a href="post-v1.html#op-comments" class="post-comment-count">174 Comments</a></p>
-            </div>
-            <!-- /POST AUTHOR INFO -->
-            <div class="break"></div>
-            <!-- BUTTON -->
-            <a href="post-v1.html" class="button blue">
-              Go to the article
-              <!-- BUTTON ORNAMENT -->
-              <div class="button-ornament">
-                <!-- ARROW ICON -->
-                <svg class="arrow-icon medium">
-                  <use xlink:href="#svg-arrow-medium"></use>
-                </svg>
-                <!-- /ARROW ICON -->
-
-                <!-- CROSS ICON -->
-                <svg class="cross-icon small">
-                  <use xlink:href="#svg-cross-small"></use>
-                </svg>
-                <!-- /CROSS ICON -->
-              </div>
-              <!-- /BUTTON ORNAMENT -->
-            </a>
-            <!-- /BUTTON -->
-          </div>
-          <!-- /POST PREVIEW -->
-        </div>
-      </div>
-      <!-- /SLIDER ITEM -->
-
-      <!-- SLIDER ITEM -->
-      <div class="slider-item slider-item-4">
-        <div class="slider-item-wrap">
-          <!-- POST PREVIEW -->
-          <div class="post-preview huge centered e-sport">
-            <!-- TAG ORNAMENT -->
-            <a href="esports-news.html" class="tag-ornament">Esports</a>
-            <!-- /TAG ORNAMENT -->
-      
-            <!-- POST PREVIEW TITLE -->
-            <a href="esports-post.html" class="post-preview-title">Last night the Wolves beat the Rhinos 12-10</a>
-            <!-- POST AUTHOR INFO -->
-            <div class="post-author-info-wrap">
-              <!-- USER AVATAR -->
-              <a href="search-results.html">
-                <figure class="user-avatar tiny liquid">
-                  <img src="img/users/04.jpg" alt="user-04">
-                </figure>
-              </a>
-              <!-- /USER AVATAR -->
-              <p class="post-author-info small light">By <a href="search-results.html" class="post-author">Vellatrix</a><span class="separator">|</span>December 15th, 2018<span class="separator">|</span><a href="esports-post.html#op-comments" class="post-comment-count">97 Comments</a></p>
-            </div>
-            <!-- /POST AUTHOR INFO -->
-            <div class="break"></div>
-            <!-- BUTTON -->
-            <a href="esports-post.html" class="button violet">
-              Go to the article
-              <!-- BUTTON ORNAMENT -->
-              <div class="button-ornament">
-                <!-- ARROW ICON -->
-                <svg class="arrow-icon medium">
-                  <use xlink:href="#svg-arrow-medium"></use>
-                </svg>
-                <!-- /ARROW ICON -->
-
-                <!-- CROSS ICON -->
-                <svg class="cross-icon small">
-                  <use xlink:href="#svg-cross-small"></use>
-                </svg>
-                <!-- /CROSS ICON -->
-              </div>
-              <!-- /BUTTON ORNAMENT -->
-            </a>
-            <!-- /BUTTON -->
-          </div>
-          <!-- /POST PREVIEW -->
-        </div>
-      </div>
-      <!-- /SLIDER ITEM -->
-    </div>
-    <!-- /SLIDER ITEMS -->
-
-    <!-- BANNER SLIDER PREVIEW WRAP -->
-    <div class="banner-slider-preview-wrap">
-      <!-- BANNER SLIDER CONTROLS -->
-      <div id="sliderb2-controls" class="banner-slider-controls">
-        <div class="control-previous">
-          <!-- ARROW ICON -->
-          <svg class="arrow-icon medium">
-            <use xlink:href="#svg-arrow-medium"></use>
-          </svg>
-          <!-- /ARROW ICON -->
-        </div>
-        <div class="control-next">
-          <!-- ARROW ICON -->
-          <svg class="arrow-icon medium">
-            <use xlink:href="#svg-arrow-medium"></use>
-          </svg>
-          <!-- /ARROW ICON -->
-        </div>
-      </div>
-      <!-- /BANNER SLIDER CONTROLS -->
-
-      <!-- BANNER SLIDER PREVIEW -->
-      <div id="banner-slider-2-thumbs" class="banner-slider-preview">
-        <!-- BANNER SLIDER PREVIEW ROSTER -->
-        <div class="banner-slider-preview-roster">
-          <!-- POST PREVIEW -->
-          <div class="post-preview tiny negative no-img gaming-news">
-            <!-- POST PREVIEW TITLE -->
-            <p class="post-preview-title">The "Clash of Eternity" new game was just released</p>
-            <!-- POST AUTHOR INFO -->
-            <div class="post-author-info-wrap">
-              <p class="post-author-info small light">By <span class="post-author">Dexter</span><span class="separator">|</span>Dec 15th, 2018</p>
-            </div>
-            <!-- /POST AUTHOR INFO -->
-          </div>
-          <!-- /POST PREVIEW -->
-
-          <!-- POST PREVIEW -->
-          <div class="post-preview tiny negative no-img game-review">
-            <!-- POST PREVIEW TITLE -->
-            <p class="post-preview-title">We reviewed the new Magimons game</p>
-            <!-- POST AUTHOR INFO -->
-            <div class="post-author-info-wrap">
-              <p class="post-author-info small light">By <span class="post-author">Vellatrix</span><span class="separator">|</span>Dec 15th, 2018</p>
-            </div>
-            <!-- /POST AUTHOR INFO -->
-          </div>
-          <!-- /POST PREVIEW -->
-
-          <!-- POST PREVIEW -->
-          <div class="post-preview tiny negative no-img gaming-news">
-            <!-- POST PREVIEW TITLE -->
-            <p class="post-preview-title">New expansion pack coming to "Rise of Depredators"</p>
-            <!-- POST AUTHOR INFO -->
-            <div class="post-author-info-wrap">
-              <p class="post-author-info small light">By <span class="post-author">Dexter</span><span class="separator">|</span>Dec 15th, 2018</p>
-            </div>
-            <!-- /POST AUTHOR INFO -->
-          </div>
-          <!-- /POST PREVIEW -->
-
-          <!-- POST PREVIEW -->
-          <div class="post-preview tiny negative no-img e-sport">
-            <!-- POST PREVIEW TITLE -->
-            <p class="post-preview-title">Last night the Wolves beat the Rhinos 12-10</p>
-            <!-- POST AUTHOR INFO -->
-            <div class="post-author-info-wrap">
-              <p class="post-author-info small light">By <span class="post-author">Vellatrix</span><span class="separator">|</span>Dec 15th, 2018</p>
-            </div>
-            <!-- /POST AUTHOR INFO -->
-          </div>
-          <!-- /POST PREVIEW -->
-        </div>
-        <!-- /BANNER SLIDER PREVIEW ROSTER -->
-      </div>
-      <!-- /BANNER SLIDER ROSTER -->
-    </div>
-    <!-- /BANNER SLIDER PREVIEW WRAP -->
-  </div>
-  <!-- /BANNER SLIDER -->
-
+	<div class="banner-wrap forum-banner">
+		<!-- BANNER -->
+		<div class="banner grid-limit">
+			<h2 class="banner-title">Welcome!</h2>
+		</div>
+		<!-- /BANNER -->
+	</div>
 <%@include file="inc/newsscroll.jsp"%>
+	
+	
+<div class="layout-content-full grid-limit">
+    
+    <div class="section-title-wrap blue no-space">
+                <h2 class="section-title medium">MT5 Account List</h2>
+                <div class="section-title-separator"></div>
+              </div>
+
+		<div class="table forum-topics">
+			<!-- TABLE ROW HEADER -->
+			<div class="table-row-header">
+				<!-- TABLE ROW HEADER ITEM -->
+				<div class="table-row-header-item left">
+					<p class="table-row-header-title">Name</p>
+				</div>
+				
+				
+				<div class="table-row-header-item left ">
+					<p class="table-row-header-title">설명</p>
+				</div>
+				<!-- /TABLE ROW HEADER ITEM -->
+
+				<!-- TABLE ROW HEADER ITEM -->
+				<div class="table-row-header-item left">
+					<p class="table-row-header-title">수익률</p>
+				</div>
+				<!-- /TABLE ROW HEADER ITEM -->
+				<div class="table-row-header-item left">
+					<p class="table-row-header-title">거래 시작일</p>
+				</div>
+				<!-- /TABLE ROW HEADER ITEM -->
+				<div class="table-row-header-item left">
+					<p class="table-row-header-title">보기</p>
+				</div>
+
+
+				
+			</div>
+			<!-- /TABLE ROW HEADER -->
+
+			<!-- TABLE ROWS -->
+			<div class="table-rows">
+				<!-- TABLE ROW -->
+
+
+				<c:forEach items="${ acclist }" var="acclist"
+					varStatus="status1">
+
+
+					<div class="table-row large">
+						<div class="table-row-item left">
+							<p class="table-text bold"><a href="${pageContext.request.contextPath}/forum/viewMt5Account?id=${acclist.login}">${acclist.name}</a></p>
+						</div>
+						<div class="table-row-item left">
+							<p class="table-text bold"><a href="${pageContext.request.contextPath}/forum/viewMt5Account?id=${acclist.login}">${acclist.description}</a></p>
+						</div>
+						<div class="table-row-item">
+							<p class="table-text bold"><a href="${pageContext.request.contextPath}/forum/viewMt5Account?id=${acclist.login}">${acclist.profitrate}</a></p>
+						</div>
+						<div class="table-row-item">
+							<p class="table-text bold light"><a href="${pageContext.request.contextPath}/forum/viewMt5Account?id=${acclist.login}">${acclist.startdate}</a></p>
+						</div>
+						<!-- /TABLE ROW ITEM -->
+						<div class="table-row-item right">
+							<p class="table-text bold center">
+							<div class="forum-post-tags">
+							<a href="${pageContext.request.contextPath}/forum/viewMt5Account?id=${acclist.login}" class="forum-tag-button cyan">실계좌보기</a>
+							<a href="${pageContext.request.contextPath}/forum/StrategyMt5Account?id=${acclist.login}" class="forum-tag-button red">상품설명서</a></div></p>
+						</div>
+			
+					</div>
+					<!-- /TABLE ROW -->
+
+
+
+				</c:forEach>
+
+
+
+			</div>
+
+		</div>
+		
+		
+	
+		<br><br>
+		
+    	<div class="section-title-wrap blue no-space">
+                <h2 class="section-title medium">Forum</h2>
+                <div class="section-title-separator"></div>
+              </div>
+		
+
+		<!-- TABLE -->
+		<div class="table forum-categories">
+			<!-- TABLE ROW HEADER -->
+			<div class="table-row-header">
+				<!-- TABLE ROW HEADER ITEM -->
+				<div class="table-row-header-item left">
+					<p class="table-row-header-title">Forum</p>
+				</div>
+				<!-- /TABLE ROW HEADER ITEM -->
+
+				<!-- TABLE ROW HEADER ITEM -->
+				<div class="table-row-header-item padded-large">
+					<p class="table-row-header-title">Topics</p>
+				</div>
+				<!-- /TABLE ROW HEADER ITEM -->
+
+				<!-- TABLE ROW HEADER ITEM -->
+			
+				<!-- /TABLE ROW HEADER ITEM -->
+
+				<!-- TABLE ROW HEADER ITEM -->
+				<div class="table-row-header-item left">
+					<p class="table-row-header-title">Category</p>
+				</div>
+				<!-- /TABLE ROW HEADER ITEM -->
+			</div>
+			<!-- /TABLE ROW HEADER -->
+
+			<!-- TABLE ROWS -->
+			<div class="table-rows no-color">
+				<!-- TABLE ROW -->
+
+				<c:forEach items="${ forumlist }" var="listinfo" varStatus="status">
+
+
+					<div class="table-row large">
+						<!-- TABLE ROW ITEM -->
+						<div class="table-row-item">
+							<!-- FORUM CATEGORY WRAP -->
+							<div class="forum-category-wrap">
+								<!-- FORUM CATEGORY IMG -->
+								<div> <img
+									class="forum-category-img"
+									src="${pageContext.request.contextPath}/resources/forum/img/forum/${listinfo.logo }"
+									alt="category-02">
+								</div>
+								<!-- /FORUM CATEGORY IMG -->
+
+								<!-- FORUM CATEGORY TITLE -->
+								<div class="forum-category-title">${listinfo.name }</div>
+								<!-- /FORUM CATEGORY TITLE -->
+
+								<!-- FORUM CATEGORY DESCRIPTION -->
+								<p class="forum-category-description">${listinfo.description }</p>
+								<!-- /FORUM CATEGORY DESCRIPTION -->
+							</div>
+							<!-- /FORUM CATEGORY WRAP -->
+						</div>
+						<!-- /TABLE ROW ITEM -->
+
+						<!-- TABLE ROW ITEM -->
+						<div class="table-row-item padded-large">
+							<p class="table-text bold light">
+
+								<c:forEach items="${ listforumtopiccount }"
+									var="listtopiccountinfo" varStatus="status2">
+
+									<c:choose>
+										<c:when test="${listinfo.id == listtopiccountinfo.id}">
+											${listtopiccountinfo.topic}
+										</c:when>
+									</c:choose>
+								</c:forEach>
+
+
+							</p>
+						</div>
+						<!-- /TABLE ROW ITEM -->
+
+						<!-- TABLE ROW ITEM -->
+						<!--  <div class="table-row-item padded-large">
+							<p class="table-text bold light">	<c:forEach items="${ listforumtopiccount }"
+									var="listtopiccountinfo2" varStatus="status2">
+
+									<c:choose>
+										<c:when test="${listinfo.id == listtopiccountinfo2.id}">
+											${listtopiccountinfo2.cat}
+										</c:when>
+									</c:choose>
+								</c:forEach></p>
+						</div>-->
+						<!-- /TABLE ROW ITEM -->
+
+						<!-- TABLE ROW ITEM -->
+						<div class="table-row-item">
+							<!-- FORUM POST LINKS -->
+							<div class="forum-post-links">
+
+
+								<c:forEach items="${ forumcatlist }" var="listcatinfo"
+									varStatus="status1">
+
+									<c:choose>
+										<c:when test="${listcatinfo.forum_id == listinfo.id}">
+											<div class="forum-post-link-wrap">
+
+												<a href="${pageContext.request.contextPath}/forum/category?id=${listcatinfo.id }" class="forum-post-link">${listcatinfo.name}
+													- ${listcatinfo.description}</a>
+
+												<p class="forum-post-timestamp"></p>
+
+											</div>
+										</c:when>
+									</c:choose>
+								</c:forEach>
+							</div>
+							<!-- /FORUM POST LINKS -->
+						</div>
+						<!-- /TABLE ROW ITEM -->
+					</div>
+					<!-- /TABLE ROW -->
+
+
+
+
+				</c:forEach>
+
+
+				<!-- /TABLE ROW -->
+			</div>
+			<!-- /TABLE ROWS -->
+		</div>
+		<!-- /TABLE -->
+	</div>
 
   <!-- LAYOUT CONTENT 1 -->
   <!-- /LAYOUT CONTENT 1 -->

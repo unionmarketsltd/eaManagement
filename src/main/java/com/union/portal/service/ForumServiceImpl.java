@@ -343,6 +343,5 @@ public class ForumServiceImpl implements ForumService {
 				;
 	}
 	
-
 	
 }

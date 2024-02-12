@@ -174,10 +174,25 @@ public class ForumController {
 
 	@RequestMapping(value = "/index", method = RequestMethod.GET)
 	public String index(Model model, HttpServletRequest request) {
-
-		top(model, request);
-
+		String vLocal = LocaleContextHolder.getLocale().getLanguage();
+		model.addAttribute("lang", vLocal);
 		String returnURL = "";
+		top(model, request);
+		List<t_forum> listforum = null;
+		List<t_forum_category> listforumcat = null;
+		List<t_forum_topiccount> listforumtopiccount = null;
+		List<t_mt5_account_list> acclist = null;
+
+		acclist = forumservices.getmt5accountlist();
+		listforum = forumservices.getforumlist();
+		listforumcat = forumservices.getforumcategorylist();
+		listforumtopiccount = forumservices.getforumtopiccountlist();
+		
+		model.addAttribute("acclist", acclist);
+		model.addAttribute("forumlist", listforum);
+		model.addAttribute("forumcatlist", listforumcat);
+		model.addAttribute("listforumtopiccount", listforumtopiccount);
+		
 		returnURL = "/index";
 
 		return defaultpath + returnURL;
@@ -1296,4 +1311,59 @@ mav.addObject("result", APIProtectionHandler.ApiProtection(request, responsestr)
 return mav;
 }
 
+	
+
+	@RequestMapping(value = "/MT5AccountList", method = RequestMethod.GET)
+	public String MT5AccountList(Model model, HttpServletRequest request) throws SQLException {
+		logger.info("Welcome MT5AccountList.");
+		HttpSession session = request.getSession();
+		top(model, request);
+
+		List<t_mt5_account_list> acclist = null;
+
+		acclist = forumservices.getmt5accountlist();
+		String vLocal = LocaleContextHolder.getLocale().getLanguage();
+		
+		String returnURL = "";
+		returnURL = "/MT5AccountList";
+
+		model.addAttribute("acclist", acclist);
+		return defaultpath + returnURL;
+	}
+	
+	@RequestMapping(value = "/StrategyMt5Account", method = RequestMethod.GET)
+	public String StrategyMt5Account(Model model, HttpServletRequest request) {
+		String returnURL = "";
+		String id = request.getParameter("id");
+		top(model, request);
+		if (forumservices.isallowviewaccount(id)) {
+			t_mt5_account_list account = forumservices.getmt5accountname(id);
+
+		String responsestr = "";
+		HttpUtils httpUtils = new HttpUtils(this.serverinfo);
+		HttpSession session = request.getSession();
+		if (httpUtils.sendAuth(this.serverinfo)) {
+			String path = "/api/user/get?login=" + "3301";
+			try {
+				responsestr = httpUtils.sendGet(this.serverinfo, path);
+
+				JSONObject accountinfo = new JSONObject(responsestr);
+
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+
+model.addAttribute("name", account.name);
+model.addAttribute("content", account.content);
+model.addAttribute("id", id);
+model.addAttribute("duration", account.api_call_interval_second);
+		returnURL = "/StrategyMt5Account";
+		
+		} else {
+			returnURL = "/unautorized";
+		}
+
+		return defaultpath + returnURL;
+	}
 }
