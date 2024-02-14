@@ -38,7 +38,7 @@
 			<!-- TABLE ROW HEADER -->
 			<div class="table-row-header">
 				<!-- TABLE ROW HEADER ITEM -->
-				<div class="table-row-header-item left">
+				<div class="table-row-header-item">
 					<p class="table-row-header-title">Name</p>
 				</div>
 				
@@ -53,12 +53,12 @@
 					<p class="table-row-header-title">수익률</p>
 				</div>
 				<!-- /TABLE ROW HEADER ITEM -->
-				<div class="table-row-header-item left">
+				<div class="table-row-header-item">
 					<p class="table-row-header-title">거래 시작일</p>
 				</div>
 				<!-- /TABLE ROW HEADER ITEM -->
 				<div class="table-row-header-item left">
-					<p class="table-row-header-title">보기</p>
+					<p class="table-row-header-title"></p>
 				</div>
 
 
@@ -77,16 +77,16 @@
 
 					<div class="table-row large">
 						<div class="table-row-item left">
-							<p class="table-text bold"><a href="${pageContext.request.contextPath}/forum/viewMt5Account?id=${acclist.login}">${acclist.name}</a></p>
+							<p class="table-text bold">${acclist.name}</p>
 						</div>
 						<div class="table-row-item left">
-							<p class="table-text bold"><a href="${pageContext.request.contextPath}/forum/viewMt5Account?id=${acclist.login}">${acclist.description}</a></p>
+							<p class="table-text bold">${acclist.description}</p>
 						</div>
 						<div class="table-row-item">
-							<p class="table-text bold"><a href="${pageContext.request.contextPath}/forum/viewMt5Account?id=${acclist.login}">${acclist.profitrate}</a></p>
+							<p class="table-text bold">${acclist.profitrate}%</p>
 						</div>
 						<div class="table-row-item">
-							<p class="table-text bold light"><a href="${pageContext.request.contextPath}/forum/viewMt5Account?id=${acclist.login}">${acclist.startdate}</a></p>
+							<p class="table-text bold light">${acclist.startdate}</p>
 						</div>
 						<!-- /TABLE ROW ITEM -->
 						<div class="table-row-item right">
@@ -108,8 +108,86 @@
 			</div>
 
 		</div>
-		
-		
+		<br><br>
+		<div class="section-title-wrap blue no-space">
+                <h2 class="section-title medium">해외선물 증권계좌</h2>
+                <div class="section-title-separator"></div>
+              </div>
+
+		<div class="table forum-topics">
+			<!-- TABLE ROW HEADER -->
+			<div class="table-row-header">
+				<!-- TABLE ROW HEADER ITEM -->
+				<div class="table-row-header-item">
+					<p class="table-row-header-title">시스템명</p>
+				</div>
+				
+				
+				<div class="table-row-header-item left ">
+					<p class="table-row-header-title">설명</p>
+				</div>
+				<!-- /TABLE ROW HEADER ITEM -->
+
+				<!-- TABLE ROW HEADER ITEM -->
+				<div class="table-row-header-item left">
+					<p class="table-row-header-title">수익률</p>
+				</div>
+				<!-- /TABLE ROW HEADER ITEM -->
+				<div class="table-row-header-item">
+					<p class="table-row-header-title">거래 시작일</p>
+				</div>
+				<!-- /TABLE ROW HEADER ITEM -->
+				<div class="table-row-header-item">
+					<p class="table-row-header-title"></p>
+				</div>
+
+
+				
+			</div>
+			<!-- /TABLE ROW HEADER -->
+
+			<!-- TABLE ROWS -->
+			<div class="table-rows">
+				<!-- TABLE ROW -->
+
+
+				<c:forEach items="${ kracclist }" var="kracclist"
+					varStatus="status1">
+
+
+					<div class="table-row large">
+						<div class="table-row-item left">
+							<p class="table-text bold">${kracclist.name}</p>
+						</div>
+						<div class="table-row-item left">
+							<p class="table-text bold">${kracclist.description}</p>
+						</div>
+						<div class="table-row-item">
+							<p class="table-text bold">${kracclist.profitrate}%</p>
+						</div>
+						<div class="table-row-item">
+							<p class="table-text bold light">${kracclist.startdate}</p>
+						</div>
+						<!-- /TABLE ROW ITEM -->
+						<div class="table-row-item right">
+							<p class="table-text bold center">
+							<div class="forum-post-tags">
+							<a href="${pageContext.request.contextPath}/forum/viewKRAccount?accountid=${kracclist.accountid}" class="forum-tag-button cyan">실계좌보기</a>
+							<a href="${pageContext.request.contextPath}/forum/StrategyKRAccount?accountid=${kracclist.accountid}" class="forum-tag-button red">상품설명서</a></div></p>
+						</div>
+			
+					</div>
+					<!-- /TABLE ROW -->
+
+
+
+				</c:forEach>
+
+
+
+			</div>
+
+		</div>
 	
 		<br><br>
 		

@@ -14,7 +14,10 @@ import com.union.portal.domain.t_forum_category;
 import com.union.portal.domain.t_forum_topic;
 import com.union.portal.domain.t_forum_topic_file;
 import com.union.portal.domain.t_forum_topiccount;
+import com.union.portal.domain.t_kr_account_list;
 import com.union.portal.domain.t_mt5_account_list;
+import com.union.portal.domain.t_kr_account_list;
+import com.union.portal.domain.t_kr_account_history;
 import com.union.portal.domain.t_top_latest_news;
 import com.union.portal.domain.t_user;
 import com.union.portal.domain.topic_comment_likes;
@@ -342,6 +345,30 @@ public class ForumServiceImpl implements ForumService {
 		return mapper.getmt5accountname(login)
 				;
 	}
+
+	@Override
+	public List<t_kr_account_list> getKRaccountlist() {
+		// TODO Auto-generated method stub
+		return mapper.getKRaccountlist();
+	} 
 	
-	
+
+	@Override
+	public t_kr_account_list getKRaccountname(String accountid) {
+		// TODO Auto-generated method stub
+		return mapper.getKRaccountname(accountid);
+	}
+
+	@Override
+	public boolean isallowviewkraccount(String accountid) {
+		// TODO Auto-generated method stub
+		if(mapper.isallowviewkraccount(accountid) >0)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
 }

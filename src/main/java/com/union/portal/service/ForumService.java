@@ -14,6 +14,8 @@ import com.union.portal.domain.t_forum_topic;
 import com.union.portal.domain.t_forum_topic_file;
 import com.union.portal.domain.t_forum_topiccount;
 import com.union.portal.domain.t_mt5_account_list;
+import com.union.portal.domain.t_kr_account_list;
+import com.union.portal.domain.t_kr_account_history;
 import com.union.portal.domain.t_top_latest_news;
 import com.union.portal.domain.t_user;
 import com.union.portal.domain.topic_comment_likes;
@@ -121,6 +123,9 @@ public interface ForumService {
 	public boolean isallowviewaccount(String login);
 	public List<t_mt5_account_list> getmt5accountlist();
 	public t_mt5_account_list getmt5accountname(String login);
+	public List<t_kr_account_list> getKRaccountlist();
+	public t_kr_account_list getKRaccountname(String accountid);
+	public boolean isallowviewkraccount(String accountid);
 	
 
 }

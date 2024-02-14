@@ -67,6 +67,8 @@ import com.union.portal.domain.t_forum_topic;
 import com.union.portal.domain.t_forum_topic_file;
 import com.union.portal.domain.t_forum_topiccount;
 import com.union.portal.domain.t_mt5_account_list;
+import com.union.portal.domain.t_kr_account_list;
+import com.union.portal.domain.t_kr_account_history;
 import com.union.portal.domain.t_top_latest_news;
 import com.union.portal.domain.topic_comment_list;
 import com.union.portal.domain.topic_comment_user_like;
@@ -182,13 +184,16 @@ public class ForumController {
 		List<t_forum_category> listforumcat = null;
 		List<t_forum_topiccount> listforumtopiccount = null;
 		List<t_mt5_account_list> acclist = null;
+		List<t_kr_account_list> kracclist = null;
 
+		kracclist = forumservices.getKRaccountlist();
 		acclist = forumservices.getmt5accountlist();
 		listforum = forumservices.getforumlist();
 		listforumcat = forumservices.getforumcategorylist();
 		listforumtopiccount = forumservices.getforumtopiccountlist();
-		
+
 		model.addAttribute("acclist", acclist);
+		model.addAttribute("kracclist", kracclist);
 		model.addAttribute("forumlist", listforum);
 		model.addAttribute("forumcatlist", listforumcat);
 		model.addAttribute("listforumtopiccount", listforumtopiccount);
@@ -1354,16 +1359,82 @@ return mav;
 			}
 		}
 
-model.addAttribute("name", account.name);
-model.addAttribute("content", account.content);
-model.addAttribute("id", id);
-model.addAttribute("duration", account.api_call_interval_second);
+		model.addAttribute("name", account.name);
+		model.addAttribute("content", account.content);
+		model.addAttribute("id", id);
+		model.addAttribute("duration", account.api_call_interval_second);
 		returnURL = "/StrategyMt5Account";
 		
 		} else {
 			returnURL = "/unautorized";
 		}
 
+		return defaultpath + returnURL;
+	}
+	
+
+	@RequestMapping(value = "/KRAccountList", method = RequestMethod.GET)
+	public String KRAccountList(Model model, HttpServletRequest request) throws SQLException {
+		logger.info("Welcome MT5AccountList.");
+		HttpSession session = request.getSession();
+		top(model, request);
+
+		List<t_kr_account_list> acclist = null;
+
+		acclist = forumservices.getKRaccountlist();
+		String vLocal = LocaleContextHolder.getLocale().getLanguage();
+		
+		String returnURL = "";
+		returnURL = "/KRAccountList";
+
+		model.addAttribute("acclist", acclist);
+		return defaultpath + returnURL;
+	}
+	
+
+	@RequestMapping(value = "/StrategyKRAccount", method = RequestMethod.GET)
+	public String StrategyKRAccount(Model model, HttpServletRequest request) {
+		String returnURL = "";
+		String accountid = request.getParameter("accountid");
+		top(model, request);
+		if (forumservices.isallowviewkraccount(accountid)) {
+			t_kr_account_list account = forumservices.getKRaccountname(accountid);
+
+		model.addAttribute("name", account.name);
+		model.addAttribute("content", account.content);
+		model.addAttribute("description", account.description);
+		model.addAttribute("startdate", account.startdate);
+		model.addAttribute("profitrate", account.profitrate);
+		model.addAttribute("location", account.location);
+		model.addAttribute("leverage", account.leverage);
+		model.addAttribute("grade", account.grade);
+		model.addAttribute("lastupdate", account.lastupdate);
+		model.addAttribute("strategytype", account.strategytype);
+		model.addAttribute("duration", account.api_call_interval_second);
+		returnURL = "/StrategyKRAccount";
+		
+		} else {
+			returnURL = "/unautorized";
+		}
+
+		return defaultpath + returnURL;
+	}
+	
+	@RequestMapping(value = "/viewKRAccount", method = RequestMethod.GET)
+	public String viewKRAccount(Model model, HttpServletRequest request) {
+		String returnURL = "";
+		String accountid = request.getParameter("accountid");
+		top(model, request);
+		if (forumservices.isallowviewkraccount(accountid)) {
+			t_kr_account_list account = forumservices.getKRaccountname(accountid);
+			
+			model.addAttribute("account", account);	
+			
+			returnURL = "/viewKRaccount";
+			
+		} else {
+			returnURL = "/unautorized";
+		}
 		return defaultpath + returnURL;
 	}
 }

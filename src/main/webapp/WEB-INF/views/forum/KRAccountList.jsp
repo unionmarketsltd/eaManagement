@@ -19,7 +19,7 @@
 	<div class="banner-wrap forum-banner">
 		<!-- BANNER -->
 		<div class="banner grid-limit">
-			<h2 class="banner-title">MT5 Accounts List</h2>
+			<h2 class="banner-title">해외선물 증권계좌</h2>
 			<p class="banner-sections">
 				<a style="color: white"
 					href="${pageContext.request.contextPath}/home/index"
@@ -32,14 +32,13 @@
 				<a style="color: white"
 					href="#"
 					class="banner-section">Trade Account</a>
-					
-				<svg class="arrow-icon">
+					<svg class="arrow-icon">
           <use xlink:href="#svg-arrow"></use>
         </svg>
 				<!-- /ARROW ICON -->
 				<a style="color: white"
 					href="#"
-					class="banner-section">FOREX MT5 ACCOUNTS</a>
+					class="banner-section">해외선물 증권계좌</a>
 			</p>
 		</div>
 		<!-- /BANNER -->
@@ -52,7 +51,7 @@
 	<div class="layout-content-full grid-limit">
     
     <div class="section-title-wrap blue no-space">
-                <h2 class="section-title medium">MT5 Account List</h2>
+                <h2 class="section-title medium">해외선물 증권계좌</h2>
                 <div class="section-title-separator"></div>
               </div>
 
@@ -61,7 +60,7 @@
 			<div class="table-row-header">
 				<!-- TABLE ROW HEADER ITEM -->
 				<div class="table-row-header-item">
-					<p class="table-row-header-title">이름</p>
+					<p class="table-row-header-title">시스템명</p>
 				</div>
 				
 				
@@ -79,7 +78,7 @@
 					<p class="table-row-header-title">거래 시작일</p>
 				</div>
 				<!-- /TABLE ROW HEADER ITEM -->
-				<div class="table-row-header-item left">
+				<div class="table-row-header-item">
 					<p class="table-row-header-title"></p>
 				</div>
 
@@ -99,23 +98,23 @@
 
 					<div class="table-row large">
 						<div class="table-row-item left">
-							<p class="table-text bold"><a href="${pageContext.request.contextPath}/forum/viewMt5Account?id=${acclist.login}">${acclist.name}</a></p>
+							<p class="table-text bold">${acclist.name}</p>
 						</div>
 						<div class="table-row-item left">
-							<p class="table-text bold"><a href="${pageContext.request.contextPath}/forum/viewMt5Account?id=${acclist.login}">${acclist.description}</a></p>
+							<p class="table-text bold">${acclist.description}</p>
 						</div>
 						<div class="table-row-item">
-							<p class="table-text bold"><a href="${pageContext.request.contextPath}/forum/viewMt5Account?id=${acclist.login}">${acclist.profitrate}%</a></p>
+							<p class="table-text bold">${acclist.profitrate}%</p>
 						</div>
 						<div class="table-row-item">
-							<p class="table-text bold light"><a href="${pageContext.request.contextPath}/forum/viewMt5Account?id=${acclist.login}">${acclist.startdate}</a></p>
+							<p class="table-text bold light">${acclist.startdate}</p>
 						</div>
 						<!-- /TABLE ROW ITEM -->
 						<div class="table-row-item right">
 							<p class="table-text bold center">
 							<div class="forum-post-tags">
-							<a href="${pageContext.request.contextPath}/forum/viewMt5Account?id=${acclist.login}" class="forum-tag-button cyan">실계좌보기</a>
-							<a href="${pageContext.request.contextPath}/forum/StrategyMt5Account?id=${acclist.login}" class="forum-tag-button red">상품설명서</a></div></p>
+							<a href="${pageContext.request.contextPath}/forum/viewKRAccount?accountid=${acclist.accountid}" class="forum-tag-button cyan">실계좌보기</a>
+							<a href="${pageContext.request.contextPath}/forum/StrategyKRAccount?accountid=${acclist.accountid}" class="forum-tag-button red">상품설명서</a></div></p>
 						</div>
 			
 					</div>

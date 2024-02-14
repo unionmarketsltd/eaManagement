@@ -17,6 +17,8 @@ import com.union.portal.domain.t_forum_topic;
 import com.union.portal.domain.t_forum_topic_file;
 import com.union.portal.domain.t_forum_topiccount;
 import com.union.portal.domain.t_mt5_account_list;
+import com.union.portal.domain.t_kr_account_list;
+import com.union.portal.domain.t_kr_account_history;
 import com.union.portal.domain.t_top_latest_news;
 import com.union.portal.domain.t_user;
 import com.union.portal.domain.topic_comment_likes;
@@ -491,6 +493,15 @@ public List<t_forum_topiccount> getforumtopiccountlist();
 	@Select("SELECT * FROM forum.t_mt5_account_list where login = #{login} and dbsts = 'A';")
 	public t_mt5_account_list getmt5accountname(@Param("login")String login);
 	
+
+	@Select("SELECT a.*, SUM(b.amount) AS amount FROM t_kr_account_list a, t_kr_account_fund b WHERE a.dbsts='A' AND b.dbsts='A' and a.accountid=b.accountid;")
+	public List<t_kr_account_list> getKRaccountlist();
 	
+
+	@Select("SELECT * FROM forum.t_kr_account_list where accountid = #{accountid} and dbsts = 'A';")
+	public t_kr_account_list getKRaccountname(@Param("accountid")String accountid);
+
+	@Select("SELECT count(*) FROM forum.t_kr_account_list where accountid=#{accountid} and dbsts = 'A';")
+	public int isallowviewkraccount(@Param("accountid")String accountid);
 	
 }

@@ -89,7 +89,7 @@
 																style="color: #363636" class="mobile-dropdown-item-link pd-dropdown-handler">FOREX MT5 ACCOUNTS</a>
 													
 															<a
-																href="${pageContext.request.contextPath}/forum/MT5AccountList"
+																href="${pageContext.request.contextPath}/forum/KRAccountList"
 																style="color: #363636" class="mobile-dropdown-item-link pd-dropdown-handler">해외선물 증권계좌 </a>
 								
  </li>
@@ -575,7 +575,7 @@
 
 													<div class="section-title-wrap blue">
 														<h2 class="section-title small">
-															<a href="${pageContext.request.contextPath}/forum/AccountList" style="color: #363636">해외선물 증권계좌</a>
+															<a href="${pageContext.request.contextPath}/forum/KRAccountList" style="color: #363636">해외선물 증권계좌</a>
 														</h2>
 														<div class="section-title-separator"></div>
 													</div>
@@ -584,7 +584,7 @@
 													<!-- LINK LIST -->
 													<ul class="link-list medium">
 														<!-- LINK LIST ITEM -->
-														<li class="link-list-item"><a href="${pageContext.request.contextPath}/forum/AccountList">해외선물 증권계좌 계좌리스트</a>
+														<li class="link-list-item"><a href="${pageContext.request.contextPath}/forum/KRAccountList">해외선물 증권계좌 계좌리스트</a>
 														</li>
 														<!-- /LINK LIST ITEM -->
 
