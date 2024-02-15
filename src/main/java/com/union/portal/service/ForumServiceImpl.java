@@ -26,6 +26,7 @@ import com.union.portal.domain.topic_comment_user_like;
 import com.union.portal.domain.topic_search_result;
 import com.union.portal.domain.topic_subcomment_list;
 import com.union.portal.mapper.ForumMapper;
+import com.union.portal.domain.calculator;
 
 
 import lombok.AllArgsConstructor;
@@ -370,5 +371,12 @@ public class ForumServiceImpl implements ForumService {
 		{
 			return false;
 		}
+	}
+
+	@Override
+	public calculator getKRaccountCalculator(String accountid) {
+		// TODO Auto-generated method stub
+		return mapper.getKRaccountCalculator(accountid)
+				;
 	}
 }

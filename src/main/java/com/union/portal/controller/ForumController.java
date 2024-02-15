@@ -78,6 +78,7 @@ import com.union.portal.domain.t_user;
 import com.union.portal.domain.topic_comment_likes;
 import com.union.portal.service.ForumService;
 import lombok.AllArgsConstructor;
+import com.union.portal.domain.calculator;
 
 /**
  * Handles requests for the application home page.
@@ -1427,8 +1428,10 @@ return mav;
 		top(model, request);
 		if (forumservices.isallowviewkraccount(accountid)) {
 			t_kr_account_list account = forumservices.getKRaccountname(accountid);
-			
+			calculator cal = forumservices.getKRaccountCalculator(accountid);
+
 			model.addAttribute("account", account);	
+			model.addAttribute("cal", cal);	
 			
 			returnURL = "/viewKRaccount";
 			

@@ -26,6 +26,7 @@ import com.union.portal.domain.topic_comment_list;
 import com.union.portal.domain.topic_comment_user_like;
 import com.union.portal.domain.topic_search_result;
 import com.union.portal.domain.topic_subcomment_list;
+import com.union.portal.domain.calculator;
 
 public interface ForumMapper {
 
@@ -503,5 +504,29 @@ public List<t_forum_topiccount> getforumtopiccountlist();
 
 	@Select("SELECT count(*) FROM forum.t_kr_account_list where accountid=#{accountid} and dbsts = 'A';")
 	public int isallowviewkraccount(@Param("accountid")String accountid);
+	
+
+	@Select("SELECT \r\n"
+			+ "	SUM(a.profit) AS profit,\r\n"
+			+ "	SUM(a.profit)*(SELECT deal_bas_r FROM t_exchange_rate WHERE cur_unit='USD')/(SELECT SUM(b.amount) FROM t_kr_account_fund b WHERE b.dbsts='A' AND accountid=#{accountid}) * 100 AS profitrate,\r\n"
+			+ "	count(DISTINCT(a.tradedate) ) AS tradedatecnt,\r\n"
+			+ "	240/count(DISTINCT(a.tradedate) ) * SUM(a.profit)*(SELECT deal_bas_r FROM t_exchange_rate WHERE cur_unit='USD')/(SELECT SUM(b.amount) FROM t_kr_account_fund b WHERE b.dbsts='A' and b.accountid=#{accountid}) * 100 AS yearexpectprofitrate,\r\n"
+			+ "	(select ifnull(SUM(d.profit),0) FROM t_kr_account_history d WHERE d.accountid=#{accountid} and d.tradedate BETWEEN DATE_ADD(NOW(),INTERVAL -1 DAY ) AND NOW())*(SELECT deal_bas_r FROM t_exchange_rate WHERE cur_unit='USD')/(SELECT SUM(b.amount) FROM t_kr_account_fund b WHERE b.dbsts='A' AND accountid=#{accountid}) * 100 AS todayprofitrate,\r\n"
+			+ "	(select ifnull(SUM(d.profit),0) FROM t_kr_account_history d WHERE d.accountid=#{accountid} and d.tradedate BETWEEN DATE_ADD(NOW(),INTERVAL -1 WEEK ) AND NOW())*(SELECT deal_bas_r FROM t_exchange_rate WHERE cur_unit='USD')/(SELECT SUM(b.amount) FROM t_kr_account_fund b WHERE b.dbsts='A' AND accountid=#{accountid}) * 100 AS lastweekprofitrate,\r\n"
+			+ "	(select ifnull(SUM(d.profit),0) FROM t_kr_account_history d WHERE d.accountid=#{accountid} and d.tradedate BETWEEN DATE_ADD(NOW(),INTERVAL -1 MONTH ) AND NOW())*(SELECT deal_bas_r FROM t_exchange_rate WHERE cur_unit='USD')/(SELECT SUM(b.amount) FROM t_kr_account_fund b WHERE b.dbsts='A' AND accountid=#{accountid}) * 100 AS lastmonthprofitrate,\r\n"
+			+ "	(select ifnull(SUM(d.profit),0) FROM t_kr_account_history d WHERE d.accountid=#{accountid} and d.tradedate BETWEEN DATE_ADD(NOW(),INTERVAL -3 MONTH ) AND NOW())*(SELECT deal_bas_r FROM t_exchange_rate WHERE cur_unit='USD')/(SELECT SUM(b.amount) FROM t_kr_account_fund b WHERE b.dbsts='A' AND accountid=#{accountid}) * 100 AS last3monthprofitrate,\r\n"
+			+ "	(select ifnull(SUM(d.profit),0) FROM t_kr_account_history d WHERE d.accountid=#{accountid} and d.tradedate BETWEEN DATE_ADD(NOW(),INTERVAL -1 YEAR ) AND NOW())*(SELECT deal_bas_r FROM t_exchange_rate WHERE cur_unit='USD')/(SELECT SUM(b.amount) FROM t_kr_account_fund b WHERE b.dbsts='A' AND accountid=#{accountid}) * 100 AS lastyesrprofitrate,\r\n"
+			+ "	(select ifnull(SUM(d.profit),0) FROM t_kr_account_history d WHERE d.accountid=#{accountid} and d.tradedate BETWEEN YEAR(NOW())+'-01-01' AND NOW())*(SELECT deal_bas_r FROM t_exchange_rate WHERE cur_unit='USD')/(SELECT SUM(b.amount) FROM t_kr_account_fund b WHERE b.dbsts='A' AND accountid=#{accountid}) * 100 AS firstdayprofitrate,\r\n"
+			+ "	(select ifnull(SUM(d.profit),0) FROM t_kr_account_history d WHERE d.accountid=#{accountid} and d.tradedate BETWEEN DATE_ADD(NOW(),INTERVAL -1 DAY ) AND NOW())*(SELECT deal_bas_r FROM t_exchange_rate WHERE cur_unit='USD') AS todayprofit,\r\n"
+			+ "	(select ifnull(SUM(d.profit),0) FROM t_kr_account_history d WHERE d.accountid=#{accountid} and d.tradedate BETWEEN DATE_ADD(NOW(),INTERVAL -1 week ) AND NOW())*(SELECT deal_bas_r FROM t_exchange_rate WHERE cur_unit='USD') AS lastweekprofit,\r\n"
+			+ "	(select ifnull(SUM(d.profit),0) FROM t_kr_account_history d WHERE d.accountid=#{accountid} and d.tradedate BETWEEN DATE_ADD(NOW(),INTERVAL -1 month ) AND NOW())*(SELECT deal_bas_r FROM t_exchange_rate WHERE cur_unit='USD') AS lastmonthprofit,\r\n"
+			+ "	(select ifnull(SUM(d.profit),0) FROM t_kr_account_history d WHERE d.accountid=#{accountid} and d.tradedate BETWEEN YEAR(NOW())+'-01-01' AND NOW())*(SELECT deal_bas_r FROM t_exchange_rate WHERE cur_unit='USD') AS lastyearprofit,\r\n"
+			+ "	sum(a.profit)*(SELECT deal_bas_r FROM t_exchange_rate WHERE cur_unit='USD') AS profitwon\r\n"
+			+ "FROM\r\n"
+			+ "	t_kr_account_history a\r\n"
+			+ "WHERE\r\n"
+			+ "	a.dbsts='A' and\r\n"
+			+ "	a.accountid=#{accountid};")
+	public calculator getKRaccountCalculator(@Param("accountid")String accountid);
 	
 }

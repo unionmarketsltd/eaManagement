@@ -23,6 +23,7 @@ import com.union.portal.domain.topic_comment_list;
 import com.union.portal.domain.topic_comment_user_like;
 import com.union.portal.domain.topic_search_result;
 import com.union.portal.domain.topic_subcomment_list;
+import com.union.portal.domain.calculator;
 
 public interface ForumService {
 
@@ -126,6 +127,7 @@ public interface ForumService {
 	public List<t_kr_account_list> getKRaccountlist();
 	public t_kr_account_list getKRaccountname(String accountid);
 	public boolean isallowviewkraccount(String accountid);
-	
+
+	public calculator getKRaccountCalculator(String accountid);
 
 }

@@ -255,14 +255,14 @@
           </tr>
           <tr class="row7">
             <td class="column0 style7 s">수정기준가(누적 수익률)</td>
-            <td class="column1 style15 s">1588usd (4.65%)</td>
+            <td class="column1 style15 s">${cal.profit} usd (<fmt:formatNumber value="${cal.profitrate}" pattern="0.00"/>%)</td>
             <td class="column2 style2 null"></td>
             <td class="column3 style3 s">누적수익률</td>
             <td class="column4 style2 null"></td>
-            <td class="column5 style18 n">4.63%</td>
+            <td class="column5 style18 n"><fmt:formatNumber value="${cal.profitrate}" pattern="0.00"/>%</td>
             <td class="column6 style2 null"></td>
             <td class="column7 style3 s">거래일수</td>
-            <td class="column8 style17 n">30</td>
+            <td class="column8 style17 n">${cal.tradedatecnt}</td>
           </tr>
           <tr class="row8">
             <td class="column0 style2 null"></td>
@@ -270,7 +270,7 @@
             <td class="column2 style2 null"></td>
             <td class="column3 style3 s">연환산수익률</td>
             <td class="column4 style2 null"></td>
-            <td class="column5 style20 n">-4.63%</td>
+            <td class="column5 style20 n"><fmt:formatNumber value="${cal.yearexpectprofitrate}" pattern="0.00"/>%</td>
             <td class="column6 style2 null"></td>
             <td class="column7 style3 s">일간승률</td>
             <td class="column8 style19 n">60%</td>
@@ -287,7 +287,7 @@
           </tr>
           <tr class="row10">
             <td class="column0 style4 s">최근일</td>
-            <td class="column1 style16 n">10%</td>
+            <td class="column1 style16 n"><fmt:formatNumber value="${cal.todayprofitrate}" pattern="0.00"/>%</td>
             <td class="column2 style2 null"></td>
             <td class="column3 style5 s">최대연속손실일수</td>
             <td class="column4 style2 null"></td>
@@ -298,7 +298,7 @@
           </tr>
           <tr class="row11">
             <td class="column0 style4 s">최근 1주일</td>
-            <td class="column1 style16 n">10%</td>
+            <td class="column1 style16 n"><fmt:formatNumber value="${cal.lastweekprofitrate}" pattern="0.00"/>%</td>
             <td class="column2 style2 null"></td>
             <td class="column3 style2 null"></td>
             <td class="column4 style2 null"></td>
@@ -309,7 +309,7 @@
           </tr>
           <tr class="row12">
             <td class="column0 style4 s">최근 1개월</td>
-            <td class="column1 style16 n">10%</td>
+            <td class="column1 style16 n"><fmt:formatNumber value="${cal.lastmonthprofitrate}" pattern="0.00"/>%</td>
             <td class="column2 style2 null"></td>
             <td class="column3 style6 null"></td>
             <td class="column4 style2 null"></td>
@@ -320,7 +320,7 @@
           </tr>
           <tr class="row13">
             <td class="column0 style4 s">최근 3개월</td>
-            <td class="column1 style16 n">10%</td>
+            <td class="column1 style16 n"><fmt:formatNumber value="${cal.last3monthprofitrate}" pattern="0.00"/>%</td>
             <td class="column2 style2 null"></td>
             <td class="column3 style21 s style22" colspan="3">위험대비수익</td>
             <td class="column6 style2 null"></td>
@@ -328,7 +328,7 @@
           </tr>
           <tr class="row14">
             <td class="column0 style4 s">최근 12개월</td>
-            <td class="column1 style16 n">10%</td>
+            <td class="column1 style16 n"><fmt:formatNumber value="${cal.lastyesrprofitrate}" pattern="0.00"/>%</td>
             <td class="column2 style2 null"></td>
             <td class="column3 style8 s style8" rowspan="2">MDD</td>
             <td class="column4 style3 s">최대손실률(MDD)</td>
@@ -339,7 +339,7 @@
           </tr>
           <tr class="row15">
             <td class="column0 style4 s">연초 이후</td>
-            <td class="column1 style16 n">10%</td>
+            <td class="column1 style16 n"><fmt:formatNumber value="${cal.firstdayprofitrate}" pattern="0.00"/>%</td>
             <td class="column2 style2 null"></td>
             <td class="column4 style3 s">최근손실률</td>
             <td class="column5 style16 n">60%</td>
@@ -369,7 +369,7 @@
           </tr>
           <tr class="row18">
             <td class="column0 style4 s">최근일</td>
-            <td class="column1 style17 s">100원</td>
+            <td class="column1 style17 s"><fmt:formatNumber value="${cal.todayprofit}" pattern="#,###"/>원</td>
             <td class="column2 style2 null"></td>
             <td class="column3 style8 null style8" rowspan="2"></td>
             <td class="column4 style3 s">연환산변동성</td>
@@ -380,7 +380,7 @@
           </tr>
           <tr class="row19">
             <td class="column0 style4 s">이번주</td>
-            <td class="column1 style17 s">100원</td>
+            <td class="column1 style17 s"><fmt:formatNumber value="${cal.lastweekprofit}" pattern="#,###"/>원</td>
             <td class="column2 style2 null"></td>
             <td class="column4 style4 s">연환산 Sharpe Ratio</td>
             <td class="column5 style16 n">60%</td>
@@ -390,7 +390,7 @@
           </tr>
           <tr class="row20">
             <td class="column0 style4 s">이번달</td>
-            <td class="column1 style17 s">100원</td>
+            <td class="column1 style17 s"><fmt:formatNumber value="${cal.lastmonthprofit}" pattern="#,###"/>원</td>
             <td class="column2 style2 null"></td>
             <td class="column3 style2 null"></td>
             <td class="column4 style2 null"></td>
@@ -401,7 +401,7 @@
           </tr>
           <tr class="row21">
             <td class="column0 style4 s">이번년</td>
-            <td class="column1 style17 s">100원</td>
+            <td class="column1 style17 s"><fmt:formatNumber value="${cal.lastyearprofit}" pattern="#,###"/>원</td>
             <td class="column2 style2 null"></td>
             <td class="column3 style2 null"></td>
             <td class="column4 style2 null"></td>
@@ -412,7 +412,7 @@
           </tr>
           <tr class="row22">
             <td class="column0 style4 s">설정 이후</td>
-            <td class="column1 style17 s">100원</td>
+            <td class="column1 style17 s"><fmt:formatNumber value="${cal.profitwon}" pattern="#,###"/>원</td>
             <td class="column2 style2 null"></td>
             <td class="column3 style2 null"></td>
             <td class="column4 style2 null"></td>
