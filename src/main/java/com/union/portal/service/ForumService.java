@@ -120,7 +120,7 @@ public interface ForumService {
 	public int gettopicidby( String category_id,String title,String description,String content,String thumbnail, String create_by);
 	
 	public List<t_forum_topic_file> gettopicfilelist(String tid);
-	public List<t_kr_account_forum_list> getaccountforumlist();
+
 	
 	public void deletefile(String id ,String createby);
 	public boolean isallowviewaccount(String login);

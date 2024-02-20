@@ -354,12 +354,7 @@ public class ForumServiceImpl implements ForumService {
 		return mapper.getKRaccountlist();
 	} 
 	
-	@Override
-	public List<t_kr_account_forum_list> getaccountforumlist() {
-		// TODO Auto-generated method stub
-		return mapper.getaccountforumlist();
-	} 
-	
+
 
 	@Override
 	public t_kr_account_list getKRaccountname(String accountid) {
@@ -386,4 +381,6 @@ public class ForumServiceImpl implements ForumService {
 		return mapper.getKRaccountCalculator(accountid)
 				;
 	}
+
+	
 }

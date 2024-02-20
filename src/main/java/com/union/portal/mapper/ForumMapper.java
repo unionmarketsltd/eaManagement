@@ -533,39 +533,6 @@ public List<t_forum_topiccount> getforumtopiccountlist();
 	
 	
 	
-	@Select("SELECT * FROM forum.t_kr_account_list where dbsts='A' ")
-	public List<t_kr_account_forum_list> getaccountforumlist();
-	
-	
-	@Select("INSERT INTO `forum`.`t_kr_account_history`\r\n"
-			+ "(`accountid`,\r\n"
-			+ "`dbsts`,\r\n"
-			+ "`tradedate`,\r\n"
-			+ "`symbol`,\r\n"
-			+ "`type`,\r\n"
-			+ "`lots`,\r\n"
-			+ "`closeprice`,\r\n"
-			+ "`openprice`,\r\n"
-			+ "`currency`,\r\n"
-			+ "`profit`,\r\n"
-			+ "`closedate`,\r\n"
-			+ "`opendate`,\r\n"
-			+ "`credate`)\r\n"
-			+ "VALUES\r\n"
-			+ "(#{accid},\r\n"
-			+ "A,\r\n"
-			+ ",\r\n"
-			+ ",\r\n"
-			+ ",\r\n"
-			+ ",\r\n"
-			+ ",\r\n"
-			+ ",\r\n"
-			+ ",\r\n"
-			+ ",\r\n"
-			+ ",\r\n"
-			+ ",\r\n"
-			+ ");")
-	public void insertxlsdata(@Param("accid")String accid,@Param("email")String email);
-	
+
 	
 }

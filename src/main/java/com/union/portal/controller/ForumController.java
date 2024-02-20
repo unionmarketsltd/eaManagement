@@ -1345,44 +1345,7 @@ return mav;
 	
 	
 	
-	@RequestMapping(value = "/uploadXLS", method = RequestMethod.GET)
-	public String uploadxls(Model model, HttpServletRequest request) throws SQLException {
-		logger.info("Welcome uploadxls.");
-		HttpSession session = request.getSession();
-		top(model, request);		
-		String vLocal = LocaleContextHolder.getLocale().getLanguage();
-		
-		List<t_kr_account_forum_list> acclist = null;
-
-		acclist = forumservices.getaccountforumlist();
-		model.addAttribute("nowform", acclist);
-		
-		
-		String returnURL = "";
-		returnURL = "/uploadxls";
-
-		// model.addAttribute("acclist", acclist);
-		return defaultpath + returnURL;
-	}
 	
-	
-	@PostMapping(value = { "/api/UploadController" }, consumes = { "application/json" }, produces = {
-		"application/json" })
-	public ModelAndView api_uploadController(@RequestBody String body, HttpServletRequest request) throws SQLException {
-	ModelAndView mav = new ModelAndView("jsonView");
-	JSONObject jsonbodyobj = new JSONObject(body);
-	logger.info("Welcome UploadController: ");
-	String responsestr = "";
-	HttpSession session = request.getSession();
-	
-	
-	
-
-	
-	mav.addObject("result", APIProtectionHandler.ApiProtection(request, responsestr));
-	return mav;
-	}
-		
 	
 	@RequestMapping(value = "/StrategyMt5Account", method = RequestMethod.GET)
 	public String StrategyMt5Account(Model model, HttpServletRequest request) {
