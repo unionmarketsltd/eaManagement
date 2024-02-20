@@ -19,4 +19,5 @@ public class t_forum_category
 	public int post_number;
 	public int comment_number;
 	public java.sql.Date last_update;
+	public String forum_name;
 }

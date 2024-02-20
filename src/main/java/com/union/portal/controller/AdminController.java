@@ -115,37 +115,283 @@ public class AdminController {
 	SessionLocaleResolver localeResolver;
 
 	@Autowired
-	AdminService adminservice;
+	AdminService adminservices;
 
-	@PostMapping(value = { "/api/adminservice" }, consumes = { "application/json" }, produces = {
-			"application/json" })
-	public ModelAndView api_adminservice(@RequestBody String body, HttpServletRequest request) throws SQLException {
+	@RequestMapping(value = "/index", method = RequestMethod.GET)
+	public String index(Model model, HttpServletRequest request) {
+		String vLocal = LocaleContextHolder.getLocale().getLanguage();
+		model.addAttribute("lang", vLocal);
+		String returnURL = "";
+		List<t_user> clientlist = adminservices.getclientlist();
+
+		model.addAttribute("clientlist", clientlist);
+		returnURL = "/index";
+
+		return defaultpath + returnURL;
+	}
+
+	@RequestMapping(value = { "/api/toggleban" }, method = { RequestMethod.GET }, produces = {
+			"application/json;charset=UTF-8" })
+	@ResponseBody
+	public ModelAndView getscrolltopicinfo(HttpServletRequest request, Model model) {
+
 		ModelAndView mav = new ModelAndView("jsonView");
-		JSONObject jsonbodyobj = new JSONObject(body);
-		logger.info("Welcome adminservice: ");
-		String responsestr = "";
-		HttpSession session = request.getSession();
+		String id = request.getParameter("id");
+		String ban = request.getParameter("ban");
 
-		mav.addObject("result", APIProtectionHandler.ApiProtection(request, responsestr));
+		logger.info(id);
+		logger.info(ban);
+
+		adminservices.updateclientlist(ban, id);
+
+		String responsestr = "";
+
+		mav.addObject("result", responsestr);
 		return mav;
 	}
 
-	@RequestMapping(value = "/uploadXLS", method = RequestMethod.GET)
-	public String uploadxls(Model model, HttpServletRequest request) throws SQLException {
-		logger.info("Welcome uploadxls.");
-		HttpSession session = request.getSession();
+	@RequestMapping(value = "/logout", method = RequestMethod.GET)
+	public String logout(HttpServletRequest request, Model model) {
+		logger.info("Welcome logout.");
+		String redirect = request.getParameter("redirect");
+		String vLocal = LocaleContextHolder.getLocale().getLanguage();
+		model.addAttribute("lang", vLocal);
+		HttpSession session = request.getSession(false);
+		if (session != null)
+			session.invalidate();
+		// request.getRequestDispatcher("/main.jsp").forward(request,response);
+		logger.info("redirect" + redirect);
+		if (redirect != null) {
+			return "redirect:" + defaultpath + "login?redirect=" + redirect;
+		} else {
+			return "redirect:" + defaultpath + "login";
+		}
+
+	}
+
+	@RequestMapping(value = "/", method = RequestMethod.GET)
+	public String slash(Model model) {
+		logger.info("Welcome home! slash.");
 
 		String vLocal = LocaleContextHolder.getLocale().getLanguage();
-
-		List<t_kr_account_forum_list> acclist = null;
-
-		acclist = adminservice.getaccountforumlist();
-		model.addAttribute("nowform", acclist);
-
+		model.addAttribute("lang", vLocal);
 		String returnURL = "";
-		returnURL = "/uploadxls";
 
-		// model.addAttribute("acclist", acclist);
+		returnURL = "/login";
+
 		return defaultpath + returnURL;
 	}
+
+	@RequestMapping(value = "/login", method = RequestMethod.GET)
+	public String login(Model model, HttpServletRequest request) throws SQLException {
+		logger.info("Welcome home! Login.");
+		String vLocal = LocaleContextHolder.getLocale().getLanguage();
+		model.addAttribute("lang", vLocal);
+		String returnURL = "";
+		returnURL = "/login";
+
+		return defaultpath + returnURL;
+	}
+
+	@RequestMapping(value = "/loginByGoogle", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	public ModelAndView loginConfirm(HttpServletRequest request, Model model) {
+		HttpSession session = request.getSession();
+
+		logger.info("welcome login by google" + serverinfo);
+		ModelAndView mav = new ModelAndView("jsonView");
+		String responsestr = "";
+		String token = request.getParameter("token");
+		JSONObject UserGoogleLoginCredential = new JSONObject(decodeJwtResponse(token));
+
+		String email = UserGoogleLoginCredential.getString("email");
+
+		int isadmin = adminservices.getisadmin(email);
+
+		if (isadmin == 1) {
+			session.setAttribute("s_GEmail", email);
+			session.setAttribute("s_IsAdmin", "1");
+			responsestr = defaultpath + "index";
+			logger.info((String) session.getAttribute("s_GName"));
+		} else {
+			responsestr = defaultpath + "login";
+		}
+
+		logger.info(responsestr);
+		mav.addObject("result", responsestr);
+		return mav;
+	}
+
+	public static String decodeJwtResponse(String token) {
+		String base64Url = token.split("\\.")[1];
+		String base64 = base64Url.replace("-", "+").replace("_", "/");
+		String jsonPayload = new String(Base64.getDecoder().decode(base64));
+		jsonPayload = Pattern.compile("\\p{C}").matcher(jsonPayload).replaceAll("");
+		System.out.println(jsonPayload);
+		return jsonPayload;
+	}
+
+	public static String convertImageToBase64(String imageUrl) throws IOException {
+		URL url = new URL(imageUrl);
+		HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+		connection.setRequestMethod("GET");
+
+		try (InputStream inputStream = connection.getInputStream()) {
+			ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+			byte[] buffer = new byte[1024];
+			int bytesRead;
+
+			while ((bytesRead = inputStream.read(buffer)) != -1) {
+				outputStream.write(buffer, 0, bytesRead);
+			}
+
+			byte[] imageBytes = outputStream.toByteArray();
+			return "data:image/jpeg;base64, " + Base64.getEncoder().encodeToString(imageBytes);
+		} finally {
+			connection.disconnect();
+		}
+	}
+
+	@RequestMapping(value = "/forumsetting", method = RequestMethod.GET)
+	public String forumsetting(Model model, HttpServletRequest request) {
+		String vLocal = LocaleContextHolder.getLocale().getLanguage();
+		model.addAttribute("lang", vLocal);
+		String returnURL = "";
+		List<t_forum> forumlist = adminservices.getforumlist();
+
+		model.addAttribute("forumlist", forumlist);
+		returnURL = "/forumsetting";
+
+		return defaultpath + returnURL;
+	}
+
+	@RequestMapping(value = "/forumedit", method = RequestMethod.GET)
+	public String forumedit(Model model, HttpServletRequest request) {
+		String vLocal = LocaleContextHolder.getLocale().getLanguage();
+		model.addAttribute("lang", vLocal);
+		String id = request.getParameter("id");
+
+		String returnURL = "";
+		t_forum forumdetailbyid = adminservices.getforumdetailbyid(id);
+
+		model.addAttribute("forumdetailbyid", forumdetailbyid);
+		returnURL = "/forumedit";
+
+		return defaultpath + returnURL;
+	}
+
+	@RequestMapping(value = { "/api/editforumdetail" }, method = { RequestMethod.GET }, produces = {
+			"application/json;charset=UTF-8" })
+	@ResponseBody
+	public ModelAndView apieditforumdetail(HttpServletRequest request, Model model) {
+
+		ModelAndView mav = new ModelAndView("jsonView");
+		String title = request.getParameter("title");
+		String desc = request.getParameter("desc");
+		String logo = request.getParameter("logo");
+		String id = request.getParameter("id");
+		adminservices.updateupdateforumdetail(title, desc, logo, id);
+
+		String responsestr = "";
+
+		mav.addObject("result", responsestr);
+		return mav;
+	}
+
+	@RequestMapping(value = { "/api/deleteforum" }, method = { RequestMethod.GET }, produces = {
+			"application/json;charset=UTF-8" })
+	@ResponseBody
+	public ModelAndView apideleteforum(HttpServletRequest request, Model model) {
+
+		ModelAndView mav = new ModelAndView("jsonView");
+
+		String id = request.getParameter("id");
+		adminservices.updatedeleteforum(id);
+
+		String responsestr = "";
+
+		mav.addObject("result", responsestr);
+		return mav;
+	}
+
+	@RequestMapping(value = "/categorysetting", method = RequestMethod.GET)
+	public String categorysetting(Model model, HttpServletRequest request) {
+		String vLocal = LocaleContextHolder.getLocale().getLanguage();
+		model.addAttribute("lang", vLocal);
+		String returnURL = "";
+		List<t_forum_category> categorylist = adminservices.getcategorylist();
+
+		model.addAttribute("categorylist", categorylist);
+		returnURL = "/categorysetting";
+
+		return defaultpath + returnURL;
+	}
+
+	@RequestMapping(value = "/categoryedit", method = RequestMethod.GET)
+	public String categoryedit(Model model, HttpServletRequest request) {
+		String vLocal = LocaleContextHolder.getLocale().getLanguage();
+		model.addAttribute("lang", vLocal);
+		String id = request.getParameter("id");
+
+		t_forum_category categorydetails = adminservices.getcategorydetails(id);
+
+		model.addAttribute("categorydetails", categorydetails);
+
+		String returnURL = "";
+
+		returnURL = "/categoryedit";
+
+		return defaultpath + returnURL;
+	}
+
+	@RequestMapping(value = { "/api/editcategorydetail" }, method = { RequestMethod.GET }, produces = {
+			"application/json;charset=UTF-8" })
+	@ResponseBody
+	public ModelAndView editcategorydetail(HttpServletRequest request, Model model) {
+
+		ModelAndView mav = new ModelAndView("jsonView");
+		String title = request.getParameter("title");
+		String desc = request.getParameter("desc");
+		String id = request.getParameter("id");
+		adminservices.updateeditcategorydetails(title, desc, id);
+
+		String responsestr = "";
+
+		mav.addObject("result", responsestr);
+		return mav;
+	}
+
+	@RequestMapping(value = { "/api/deletecategory" }, method = { RequestMethod.GET }, produces = {
+			"application/json;charset=UTF-8" })
+	@ResponseBody
+	public ModelAndView deletecategory(HttpServletRequest request, Model model) {
+
+		ModelAndView mav = new ModelAndView("jsonView");
+
+		String id = request.getParameter("id");
+		 adminservices.updatedeletecategory(id); 
+
+
+		String responsestr = "";
+
+		mav.addObject("result", responsestr);
+		return mav;
+	}
+	
+	
+	
+	@RequestMapping(value = "/topicsetting", method = RequestMethod.GET)
+	public String topicsetting(Model model, HttpServletRequest request) {
+		String vLocal = LocaleContextHolder.getLocale().getLanguage();
+		model.addAttribute("lang", vLocal);
+		String returnURL = "";
+		List<t_forum_topic> topiclist = adminservices.gettopiclist(); 
+
+		 model.addAttribute("topiclist", topiclist);
+		returnURL = "/topicsetting";
+
+		return defaultpath + returnURL;
+	}
+
+
 }

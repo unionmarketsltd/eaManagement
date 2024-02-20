@@ -17,4 +17,5 @@ public class t_user
 	public java.sql.Date create_date;
 	public String last_login_date;
 	public byte isadmin;
+	public byte isban;
 }

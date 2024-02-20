@@ -49,4 +49,91 @@ public class AdminServiceImpl implements AdminService {
 		// TODO Auto-generated method stub
 		return mapper.getaccountforumlist();
 	} 
+	
+	 @Override 
+	 public List<t_user> getclientlist(){
+	 
+	 return mapper.getclientlist();
+	 
+	}
+	 
+	 @Override 
+	 public void updateclientlist(String isadmin,String id){
+	 
+	  mapper.updateclientlist(isadmin,id);
+	 
+	}
+	 
+	 @Override 
+	 public int getisadmin(String email){
+	 
+	 return mapper.getisadmin(email);
+	 
+	}
+	 
+	 @Override 
+	 public List<t_forum> getforumlist(){
+	 
+	 return mapper.getforumlist();
+	 
+	}
+	 
+	 @Override 
+	 public t_forum getforumdetailbyid(String id){
+	 
+	 return mapper.getforumdetailbyid(id);
+	 
+	}
+	 
+	 @Override 
+	 public void updateupdateforumdetail(String name,String description,String logo,String id){
+	 
+	  mapper.updateupdateforumdetail(name,description,logo,id);
+	 
+	}
+	 
+	 
+	 @Override 
+	 public void updatedeleteforum(String id){
+	 
+	  mapper.updatedeleteforum(id);
+	 
+	}
+	 
+	 
+	 @Override 
+	 public List<t_forum_category> getcategorylist(){
+	 
+	 return mapper.getcategorylist();
+	 
+	}
+	 
+	 
+	 @Override 
+	 public t_forum_category getcategorydetails(String id){
+	 
+	 return mapper.getcategorydetails(id);
+	 
+	}
+	 
+	 @Override 
+	 public void updateeditcategorydetails(String name,String description,String id){
+	 
+	  mapper.updateeditcategorydetails(name,description,id);
+	 
+	}
+	 
+	 @Override 
+	 public void updatedeletecategory(String id){
+	 
+	  mapper.updatedeletecategory(id);
+	 
+	}
+	 
+	 @Override 
+	 public List<t_forum_topic> gettopiclist(){
+	 
+	 return mapper.gettopiclist();
+	 
+	}
 }

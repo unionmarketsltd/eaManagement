@@ -29,5 +29,31 @@ import com.union.portal.domain.calculator;
 
 public interface AdminService {
 	public List<t_kr_account_forum_list> getaccountforumlist();
+	 public List<t_user> getclientlist(); 
+	 
+	 public void updateclientlist(String isadmin,String id); 
+	 
+
+	 public int getisadmin(String email); 
+	 
+
+	 public List<t_forum> getforumlist(); 
+	 
+	 public t_forum getforumdetailbyid(String id); 
+	 
+	 public void updateupdateforumdetail(String name,String description,String logo,String id); 
+	 
+	 public void updatedeleteforum(String id); 
+	 
+	 public List<t_forum_category> getcategorylist(); 
+	 public t_forum_category getcategorydetails(String id); 
+	 
+
+	 public void updateeditcategorydetails(String name,String description,String id); 
+	 
+	 public void updatedeletecategory(String id); 
+	 public List<t_forum_topic> gettopiclist(); 
+	 
+
 
 }
