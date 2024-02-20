@@ -15,6 +15,7 @@ import com.union.portal.domain.t_forum_topic_file;
 import com.union.portal.domain.t_forum_topiccount;
 import com.union.portal.domain.t_mt5_account_list;
 import com.union.portal.domain.t_kr_account_list;
+import com.union.portal.domain.t_kr_account_forum_list;
 import com.union.portal.domain.t_kr_account_history;
 import com.union.portal.domain.t_top_latest_news;
 import com.union.portal.domain.t_user;
@@ -23,6 +24,7 @@ import com.union.portal.domain.topic_comment_list;
 import com.union.portal.domain.topic_comment_user_like;
 import com.union.portal.domain.topic_search_result;
 import com.union.portal.domain.topic_subcomment_list;
+// import com.union.portal.mapper.t_kr_account_forum_list;
 import com.union.portal.domain.calculator;
 
 public interface ForumService {
@@ -118,7 +120,7 @@ public interface ForumService {
 	public int gettopicidby( String category_id,String title,String description,String content,String thumbnail, String create_by);
 	
 	public List<t_forum_topic_file> gettopicfilelist(String tid);
-	
+	public List<t_kr_account_forum_list> getaccountforumlist();
 	
 	public void deletefile(String id ,String createby);
 	public boolean isallowviewaccount(String login);

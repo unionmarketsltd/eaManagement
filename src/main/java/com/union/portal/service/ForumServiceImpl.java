@@ -18,6 +18,7 @@ import com.union.portal.domain.t_kr_account_list;
 import com.union.portal.domain.t_mt5_account_list;
 import com.union.portal.domain.t_kr_account_list;
 import com.union.portal.domain.t_kr_account_history;
+import com.union.portal.domain.t_kr_account_forum_list;
 import com.union.portal.domain.t_top_latest_news;
 import com.union.portal.domain.t_user;
 import com.union.portal.domain.topic_comment_likes;
@@ -351,6 +352,12 @@ public class ForumServiceImpl implements ForumService {
 	public List<t_kr_account_list> getKRaccountlist() {
 		// TODO Auto-generated method stub
 		return mapper.getKRaccountlist();
+	} 
+	
+	@Override
+	public List<t_kr_account_forum_list> getaccountforumlist() {
+		// TODO Auto-generated method stub
+		return mapper.getaccountforumlist();
 	} 
 	
 

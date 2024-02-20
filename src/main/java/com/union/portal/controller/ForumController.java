@@ -12,6 +12,8 @@ import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+// file import apache.poi
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -54,6 +56,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
+// file upload apache.poi
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.union.portal.common.APIProtectionHandler;
@@ -69,6 +74,7 @@ import com.union.portal.domain.t_forum_topiccount;
 import com.union.portal.domain.t_mt5_account_list;
 import com.union.portal.domain.t_kr_account_list;
 import com.union.portal.domain.t_kr_account_history;
+import com.union.portal.domain.t_kr_account_forum_list;
 import com.union.portal.domain.t_top_latest_news;
 import com.union.portal.domain.topic_comment_list;
 import com.union.portal.domain.topic_comment_user_like;
@@ -1336,6 +1342,47 @@ return mav;
 		model.addAttribute("acclist", acclist);
 		return defaultpath + returnURL;
 	}
+	
+	
+	
+	@RequestMapping(value = "/uploadXLS", method = RequestMethod.GET)
+	public String uploadxls(Model model, HttpServletRequest request) throws SQLException {
+		logger.info("Welcome uploadxls.");
+		HttpSession session = request.getSession();
+		top(model, request);		
+		String vLocal = LocaleContextHolder.getLocale().getLanguage();
+		
+		List<t_kr_account_forum_list> acclist = null;
+
+		acclist = forumservices.getaccountforumlist();
+		model.addAttribute("nowform", acclist);
+		
+		
+		String returnURL = "";
+		returnURL = "/uploadxls";
+
+		// model.addAttribute("acclist", acclist);
+		return defaultpath + returnURL;
+	}
+	
+	
+	@PostMapping(value = { "/api/UploadController" }, consumes = { "application/json" }, produces = {
+		"application/json" })
+	public ModelAndView api_uploadController(@RequestBody String body, HttpServletRequest request) throws SQLException {
+	ModelAndView mav = new ModelAndView("jsonView");
+	JSONObject jsonbodyobj = new JSONObject(body);
+	logger.info("Welcome UploadController: ");
+	String responsestr = "";
+	HttpSession session = request.getSession();
+	
+	
+	
+
+	
+	mav.addObject("result", APIProtectionHandler.ApiProtection(request, responsestr));
+	return mav;
+	}
+		
 	
 	@RequestMapping(value = "/StrategyMt5Account", method = RequestMethod.GET)
 	public String StrategyMt5Account(Model model, HttpServletRequest request) {
