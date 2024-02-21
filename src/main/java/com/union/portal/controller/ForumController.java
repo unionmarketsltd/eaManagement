@@ -1340,13 +1340,18 @@ if (forumservices.isallowviewaccount(id)) {
 						
 					    JSONObject element = jarray.getJSONObject(i);
 
-	 
- 
-					   Double profit  =Double.parseDouble(element.getString("Profit"))+Double.parseDouble(element.getString("Storage"))+Double.parseDouble(element.getString("Commission")) ;
-					   logger.info(String.valueOf(profit));
-					   outputprofit = outputprofit+profit;
+					   int type =  Integer.parseInt(element.getString("Action"));
 					   
-					   outputarray.put(outputprofit);
+					   if( type <2)
+					   {
+						   Double profit  =Double.parseDouble(element.getString("Profit"))+Double.parseDouble(element.getString("Storage"))+Double.parseDouble(element.getString("Commission")) ;
+						   logger.info(String.valueOf(profit));
+						   outputprofit = outputprofit+profit;
+						   
+						   outputarray.put(outputprofit);
+					   }
+ 
+					  
  
 					    // Do something with the element
 					}
