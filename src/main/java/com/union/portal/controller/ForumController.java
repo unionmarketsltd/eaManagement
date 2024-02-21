@@ -18,7 +18,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -503,6 +503,21 @@ public class ForumController {
 		System.out.println(jsonPayload);
 		return jsonPayload;
 	}
+	
+	
+	
+	public static String decodeJwtResponse1(String token) {
+	    String base64Url = token.split("\\.")[1];
+	    String base64 = base64Url.replace("-", "+").replace("_", "/");
+	    byte[] decodedBytes = Base64.getDecoder().decode(base64);
+	    String jsonPayload = new String(decodedBytes, StandardCharsets.UTF_8);
+	    
+	    // Remove control characters while retaining Korean characters
+	    jsonPayload = jsonPayload.replaceAll("[\\p{Cntrl}&&[^\\r\\n\\t]]|[\\p{C}]", "");
+
+	    System.out.println(jsonPayload);
+	    return jsonPayload;
+	}
 
 	@RequestMapping(value = "/edittopic", method = RequestMethod.GET)
 	public String edittopic(Model model, HttpServletRequest request) throws SQLException {
@@ -564,7 +579,8 @@ public class ForumController {
 		ModelAndView mav = new ModelAndView("jsonView");
 		String responsestr = "";
 		String token = request.getParameter("token");
-		JSONObject UserGoogleLoginCredential = new JSONObject(decodeJwtResponse(token));
+		JSONObject UserGoogleLoginCredential = new JSONObject(decodeJwtResponse1(token));
+		
 
 		String email = UserGoogleLoginCredential.getString("email");
 		String fullname = UserGoogleLoginCredential.getString("name");
@@ -573,10 +589,7 @@ public class ForumController {
 		String outputimageurl = "";
 		
 		
-		int checkisban = forumservices.getcheckisban(email); 
-		if (checkisban ==0)
-		{
-			
+		
 		
 
 		
@@ -591,7 +604,9 @@ public class ForumController {
 		boolean isnewuser = forumservices.isnewuser(email);
 
 		if (!isnewuser) {
-
+			int checkisban = forumservices.getcheckisban(email); 
+			if (checkisban ==0)
+			{
 			t_user tu = forumservices.getuserinfo(email);
 
 			session.setAttribute("s_GEmail", tu.getEmail());
@@ -601,7 +616,15 @@ public class ForumController {
 			session.setAttribute("s_isLogin", String.valueOf("1"));
 			responsestr = defaultpath + "index";
 			logger.info((String) session.getAttribute("s_GName"));
+			}
+			else
+			{
+				responsestr = defaultpath + "ban";
+			}
 		} else {
+			
+			
+				
 			session.setAttribute("s_GEmail", String.valueOf(email));
 			session.setAttribute("s_GName", String.valueOf(fullname));
 			session.setAttribute("s_GImgUrl", String.valueOf(outputimageurl));
@@ -609,14 +632,12 @@ public class ForumController {
 			session.setAttribute("s_isLogin", String.valueOf("0"));
 			logger.info((String) session.getAttribute("s_GName"));
 			responsestr = defaultpath + "checktnc";
+			
 		}
 
 		logger.info(responsestr);
-		}
-		else
-		{
-			responsestr = defaultpath + "ban";
-		}
+		
+		
 		mav.addObject("result", responsestr);
 		return mav;
 	}
