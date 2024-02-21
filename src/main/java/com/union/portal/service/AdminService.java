@@ -10,6 +10,7 @@ import com.union.portal.domain.forum_and_cat_name;
 import com.union.portal.domain.scroll_topic_info;
 import com.union.portal.domain.t_forum;
 import com.union.portal.domain.t_forum_category;
+import com.union.portal.domain.t_forum_comment;
 import com.union.portal.domain.t_forum_topic;
 import com.union.portal.domain.t_forum_topic_file;
 import com.union.portal.domain.t_forum_topiccount;
@@ -53,6 +54,15 @@ public interface AdminService {
 	 
 	 public void updatedeletecategory(String id); 
 	 public List<t_forum_topic> gettopiclist(); 
+	 
+
+	 public void updatedeletetopic(String id); 
+	 
+	 public List<t_forum_comment> getsearchcomment(String keyword); 
+	 
+	 public void updatedeletecomment(String id); 
+	 
+	 public List<t_forum_topic> getsearchtopic(String keyword); 
 	 
 
 

@@ -220,6 +220,20 @@ public class ForumController {
 
 		return defaultpath + returnURL;
 	}
+	
+	
+	@RequestMapping(value = "/ban", method = RequestMethod.GET)
+	public String ban(Model model, HttpServletRequest request) {
+
+		top(model, request);
+
+		String returnURL = "";
+		returnURL = "/ban";
+
+		return defaultpath + returnURL;
+	}
+	
+	
 
 	@RequestMapping(value = "/main", method = RequestMethod.GET)
 	public String main(Model model, HttpServletRequest request) {
@@ -557,6 +571,15 @@ public class ForumController {
 		String imageurl = UserGoogleLoginCredential.getString("picture");
 		String googleid = UserGoogleLoginCredential.getString("sub");
 		String outputimageurl = "";
+		
+		
+		int checkisban = forumservices.getcheckisban(email); 
+		if (checkisban ==0)
+		{
+			
+		
+
+		
 
 		try {
 
@@ -589,6 +612,11 @@ public class ForumController {
 		}
 
 		logger.info(responsestr);
+		}
+		else
+		{
+			responsestr = defaultpath + "ban";
+		}
 		mav.addObject("result", responsestr);
 		return mav;
 	}

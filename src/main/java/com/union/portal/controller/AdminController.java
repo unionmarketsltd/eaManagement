@@ -68,6 +68,7 @@ import com.union.portal.domain.forum_and_cat_name;
 import com.union.portal.domain.scroll_topic_info;
 import com.union.portal.domain.t_forum;
 import com.union.portal.domain.t_forum_category;
+import com.union.portal.domain.t_forum_comment;
 import com.union.portal.domain.t_forum_topic;
 import com.union.portal.domain.t_forum_topic_file;
 import com.union.portal.domain.t_forum_topiccount;
@@ -369,29 +370,93 @@ public class AdminController {
 		ModelAndView mav = new ModelAndView("jsonView");
 
 		String id = request.getParameter("id");
-		 adminservices.updatedeletecategory(id); 
-
+		adminservices.updatedeletecategory(id);
 
 		String responsestr = "";
 
 		mav.addObject("result", responsestr);
 		return mav;
 	}
-	
-	
-	
+
 	@RequestMapping(value = "/topicsetting", method = RequestMethod.GET)
 	public String topicsetting(Model model, HttpServletRequest request) {
 		String vLocal = LocaleContextHolder.getLocale().getLanguage();
 		model.addAttribute("lang", vLocal);
 		String returnURL = "";
-		List<t_forum_topic> topiclist = adminservices.gettopiclist(); 
+		
+		
+		
+		String keyword = request.getParameter("keyword");
+		if (keyword != null && keyword != "") {
+			List<t_forum_topic> searchtopic = adminservices.getsearchtopic(keyword); 
 
-		 model.addAttribute("topiclist", topiclist);
+			 model.addAttribute("topiclist", searchtopic);
+			model.addAttribute("tabletype", "Search result");
+			logger.info("test");
+		} else {
+			List<t_forum_topic> topiclist = adminservices.gettopiclist();
+
+			model.addAttribute("topiclist", topiclist);
+			model.addAttribute("tabletype", "All");
+		}
+		
+		model.addAttribute("keyword", keyword);
 		returnURL = "/topicsetting";
 
 		return defaultpath + returnURL;
 	}
 
+	@RequestMapping(value = { "/api/deletetopic" }, method = { RequestMethod.GET }, produces = {
+			"application/json;charset=UTF-8" })
+	@ResponseBody
+	public ModelAndView deletetopic(HttpServletRequest request, Model model) {
+		ModelAndView mav = new ModelAndView("jsonView");
+
+		String id = request.getParameter("id");
+
+		adminservices.updatedeletetopic(id);
+
+		String responsestr = "";
+
+		mav.addObject("result", responsestr);
+		return mav;
+	}
+
+	@RequestMapping(value = "/commentsetting", method = RequestMethod.GET)
+	public String commentsetting(Model model, HttpServletRequest request) {
+		String vLocal = LocaleContextHolder.getLocale().getLanguage();
+		model.addAttribute("lang", vLocal);
+		String returnURL = "";
+		String keyword = request.getParameter("keyword");
+		if (keyword != null && keyword != "") {
+			List<t_forum_comment> searchcomment = adminservices.getsearchcomment(keyword);
+
+			model.addAttribute("searchcomment", searchcomment);
+			model.addAttribute("showtable", "");
+			logger.info("test");
+		} else {
+			model.addAttribute("showtable", "none");
+			logger.info("test");
+		}
+		model.addAttribute("keyword", keyword);
+		returnURL = "/commentsetting";
+
+		return defaultpath + returnURL;
+	}
+
+	@RequestMapping(value = { "/api/deletecomment" }, method = { RequestMethod.GET }, produces = {
+			"application/json;charset=UTF-8" })
+	@ResponseBody
+	public ModelAndView deletecomment(HttpServletRequest request, Model model) {
+		ModelAndView mav = new ModelAndView("jsonView");
+
+		String id = request.getParameter("id");
+		adminservices.updatedeletecomment(id);
+
+		String responsestr = "";
+
+		mav.addObject("result", responsestr);
+		return mav;
+	}
 
 }

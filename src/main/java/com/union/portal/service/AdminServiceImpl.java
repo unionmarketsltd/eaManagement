@@ -11,6 +11,7 @@ import com.union.portal.domain.forum_and_cat_name;
 import com.union.portal.domain.scroll_topic_info;
 import com.union.portal.domain.t_forum;
 import com.union.portal.domain.t_forum_category;
+import com.union.portal.domain.t_forum_comment;
 import com.union.portal.domain.t_forum_topic;
 import com.union.portal.domain.t_forum_topic_file;
 import com.union.portal.domain.t_forum_topiccount;
@@ -134,6 +135,35 @@ public class AdminServiceImpl implements AdminService {
 	 public List<t_forum_topic> gettopiclist(){
 	 
 	 return mapper.gettopiclist();
+	 
+	}
+	 
+	 
+	 @Override 
+	 public void updatedeletetopic(String id){
+	 
+	  mapper.updatedeletetopic(id);
+	 
+	}
+	 
+	 @Override 
+	 public List<t_forum_comment> getsearchcomment(String keyword){
+	 
+	 return mapper.getsearchcomment(keyword);
+	 
+	}
+	 
+	 @Override 
+	 public void updatedeletecomment(String id){
+	 
+	  mapper.updatedeletecomment(id);
+	 
+	}
+	 
+	 @Override 
+	 public List<t_forum_topic> getsearchtopic(String keyword){
+	 
+	 return mapper.getsearchtopic(keyword);
 	 
 	}
 }

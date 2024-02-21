@@ -13,6 +13,7 @@ import com.union.portal.domain.forum_and_cat_name;
 import com.union.portal.domain.scroll_topic_info;
 import com.union.portal.domain.t_forum;
 import com.union.portal.domain.t_forum_category;
+import com.union.portal.domain.t_forum_comment;
 import com.union.portal.domain.t_forum_topic;
 import com.union.portal.domain.t_forum_topic_file;
 import com.union.portal.domain.t_forum_topiccount;
@@ -78,6 +79,18 @@ public interface AdminMapper {
 	 
 	 @Select("SELECT id,title,description, (select name from t_forum_category where id= category_id) as category_name, create_by,create_date  FROM forum.t_forum_topic where dbsts='A';")
 	 public List<t_forum_topic> gettopiclist(); 
+	 
+	 @Update("UPDATE `forum`.`t_forum_topic` SET `dbsts` = 'D' WHERE `id` = #{id};")
+	 public void updatedeletetopic(@Param("id") String id); 
+	 @Select("SELECT * from t_forum_comment where LOWER(`comment`) like LOWER(CONCAT('%', #{keyword}, '%')) and dbsts = 'A';")
+	 public List<t_forum_comment> getsearchcomment(@Param("keyword") String keyword); 
+	 
+
+	 @Update("UPDATE `forum`.`t_forum_comment` SET `dbsts` = 'D' WHERE `id` = #{id};")
+	 public void updatedeletecomment(@Param("id") String id); 
+	 
+	 @Select("SELECT id,title,description,  (select name from t_forum_category where id= category_id) as category_name, create_by,create_date from t_forum_topic where LOWER(`title`) like LOWER(CONCAT('%', #{keyword}, '%')) and dbsts = 'A';")
+	 public List<t_forum_topic> getsearchtopic(@Param("keyword") String keyword); 
 	 
 
 }

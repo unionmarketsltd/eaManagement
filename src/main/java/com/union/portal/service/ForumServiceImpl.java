@@ -381,6 +381,11 @@ public class ForumServiceImpl implements ForumService {
 		return mapper.getKRaccountCalculator(accountid)
 				;
 	}
-
+	 @Override 
+	 public int getcheckisban(String email){
+	 
+	 return mapper.getcheckisban(email);
+	 
+	}
 	
 }

@@ -10,7 +10,7 @@
 <%@include file="inc/session.jsp"%>
 <head>
 <%@include file="inc/header.jsp"%>
-<title>INVESFORUM | Home</title>
+<title>INVESFORUM | Admin</title>
 
 
 

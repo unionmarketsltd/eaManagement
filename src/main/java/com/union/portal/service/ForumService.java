@@ -131,5 +131,7 @@ public interface ForumService {
 	public boolean isallowviewkraccount(String accountid);
 
 	public calculator getKRaccountCalculator(String accountid);
+	 public int getcheckisban(String email); 
+	 
 
 }

@@ -533,6 +533,9 @@ public List<t_forum_topiccount> getforumtopiccountlist();
 	
 	
 	
+	@Select("select isban from t_user where email = #{email}")
+	 public int getcheckisban(@Param("email") String email); 
+	 
 
 	
 }

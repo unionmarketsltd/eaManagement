@@ -34,11 +34,40 @@
             <div class="layout-body">
               <!-- ACCOUNT SETTINGS FORM -->
         
+              <div class="form-item blue">
+							<label for="as_username" class="rl-label">Search topic</label>
+							<input type="text" id="search" name="as_username"
+								placeholder="Enter your search keyword here..."
+								value="${keyword}">
+
+						</div>
+						<br> <br>
+						<button class="button blue" style="float: right"
+							onclick="search()">
+							Search
+							<!-- BUTTON ORNAMENT -->
+							<span class="button-ornament"> <!-- ARROW ICON --> <svg
+									class="arrow-icon medium">
+                        <use xlink:href="#svg-arrow-medium"></use>
+                      </svg> <!-- /ARROW ICON --> <!-- CROSS ICON --> <svg
+									class="cross-icon small">
+                        <use xlink:href="#svg-cross-small"></use>
+                      </svg> <!-- /CROSS ICON -->
+							</span>
+							<!-- /BUTTON ORNAMENT -->
+						</button>
+
+
+
+<br>
+<br>
+<br>
+
               
               
               
               <div class="section-title-wrap blue no-space">
-                <h2 class="section-title medium">All topic</h2>
+                <h2 class="section-title medium">${tabletype} topic</h2>
                 <div class="section-title-separator"></div>
               </div>
               
@@ -115,7 +144,7 @@
 						<div class="table-row-item left">
 							
 						
-							<a href="${pageContext.request.contextPath}/admin/topicedit?id=${listinfo.id}" class="button small blue">Edit</a>
+							<button type="button" class="button small blue" onclick="deletetopic(${listinfo.id})">Delete</button>
 							
 						
 						</div>
@@ -128,39 +157,43 @@
 </c:forEach>
 
 		</div>
+		
+		<script>
+		function search() {
+			let keyword = document.getElementById("search").value;
+
+			window.location.href = "${pageContext.request.contextPath}/admin/topicsetting?keyword="
+					+ keyword;
+
+		}
+		
+		</script>
               
 <script>
-function toggleban(id,ban)
-	{
-		if(ban==1)
-			{
-			ban = 0;
-			}
-		else
-		{
-			ban=1;
+
+function deletetopic(id)
+{
+	
+	$.ajax({
+		url : '${pageContext.request.contextPath}/admin/api/deletetopic?id='+id,
+		type : 'get',
+		datatype : "application/json",
+		contentType : "application/json",
+		async : true,
+		data : '',
+		success : function(data) {
+			console.log(data);
+			window.location.href = "${pageContext.request.contextPath}/admin/topicsetting";
+
+		},
+
+		error : function(xhr, status) {
+			alert("ERROR : " + xhr + " : " + status);
+
+			return;
 		}
-		$.ajax({
-			url : '${pageContext.request.contextPath}/admin/api/toggleban?id='+id+'&ban='+ban,
-			type : 'get',
-			datatype : "application/json",
-			contentType : "application/json",
-			async : true,
-			data : '',
-			success : function(data) {
-				console.log(data);
-				location.reload();
-			},
-
-			error : function(xhr, status) {
-				alert("ERROR : " + xhr + " : " + status);
-
-				return;
-			}
-		});
-			
-		
-	}
+	});
+}
 	</script>
 
             </div>
