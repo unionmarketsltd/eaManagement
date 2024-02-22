@@ -30,15 +30,15 @@ import com.union.portal.domain.calculator;
 
 public interface AdminService {
 	public List<t_kr_account_forum_list> getaccountforumlist();
-	 public List<t_user> getclientlist(); 
-	 
+	public List<t_user> getclientlist(String row, String page);
+	public int getclientlisttotalPage(int row);
 	 public void updateclientlist(String isadmin,String id); 
 	 
 
 	 public int getisadmin(String email); 
 	 
 
-	 public List<t_forum> getforumlist(); 
+	 public List<t_forum> getforumlist(String row, String page); 
 	 
 	 public t_forum getforumdetailbyid(String id); 
 	 
@@ -46,14 +46,14 @@ public interface AdminService {
 	 
 	 public void updatedeleteforum(String id); 
 	 
-	 public List<t_forum_category> getcategorylist(); 
+	 public List<t_forum_category> getcategorylist(String row, String page); 
 	 public t_forum_category getcategorydetails(String id); 
 	 
 
 	 public void updateeditcategorydetails(String name,String description,String id); 
 	 
 	 public void updatedeletecategory(String id); 
-	 public List<t_forum_topic> gettopiclist(); 
+	 public List<t_forum_topic> gettopiclist(String row, String page);
 	 
 
 	 public void updatedeletetopic(String id); 
@@ -62,8 +62,16 @@ public interface AdminService {
 	 
 	 public void updatedeletecomment(String id); 
 	 
-	 public List<t_forum_topic> getsearchtopic(String keyword); 
+	
 	 
-
+	 public int getcategorylisttotalPage(int row);
+	 public List<t_forum_topic> getsearchtopic(String row, String page, String keyword); 
+	 
+	 public int getttopiclisttotalPage( int row);
+		public int getsearchtopictotalPage( int row,String keyword);
+		public int getforumlisttotalPage( int row);
+		
+		 public void updatetoggleadmin(String isadmin,String id); 
+		 
 
 }

@@ -24,6 +24,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.SQLException;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 import java.util.Random;
@@ -63,6 +64,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.union.portal.common.APIProtectionHandler;
 import com.union.portal.common.HttpUtils;
+import com.union.portal.common.Pagination;
 import com.union.portal.domain.FundClient_loginhistory;
 import com.union.portal.domain.forum_and_cat_name;
 import com.union.portal.domain.scroll_topic_info;
@@ -123,9 +125,22 @@ public class AdminController {
 		String vLocal = LocaleContextHolder.getLocale().getLanguage();
 		model.addAttribute("lang", vLocal);
 		String returnURL = "";
-		List<t_user> clientlist = adminservices.getclientlist();
+		int pagenumber = 1;
+		int rowperpage = 30;
+		String page = request.getParameter("page");
+		if (page != null && page != "") {
+			pagenumber = Integer.parseInt(page);
+			if (pagenumber < 1) {
+				pagenumber = 1;
+			}
 
+		}
+
+		List<t_user> clientlist = adminservices.getclientlist(String.valueOf(rowperpage), String.valueOf(pagenumber));
 		model.addAttribute("clientlist", clientlist);
+		int totalpage = adminservices.getclientlisttotalPage(rowperpage);
+		model.addAttribute("pagination", Pagination.createPaginationModule(request, pagenumber, totalpage));
+
 		returnURL = "/index";
 
 		return defaultpath + returnURL;
@@ -139,15 +154,42 @@ public class AdminController {
 		ModelAndView mav = new ModelAndView("jsonView");
 		String id = request.getParameter("id");
 		String ban = request.getParameter("ban");
+		String responsestr = "";
+		logger.info(id);
+		logger.info(ban);
+		if(APIProtectionHandler.isloginAdmin(request))
+		{
+			
+		
+		adminservices.updateclientlist(ban, id);
+
+		
+		}
+		mav.addObject("result", APIProtectionHandler.ApiProtectionAdmin(request,responsestr));
+		return mav;
+	}
+
+	@RequestMapping(value = { "/api/toggleadmin" }, method = { RequestMethod.GET }, produces = {
+			"application/json;charset=UTF-8" })
+	@ResponseBody
+	public ModelAndView apitoggleadmin(HttpServletRequest request, Model model) {
+
+		ModelAndView mav = new ModelAndView("jsonView");
+		String id = request.getParameter("id");
+		String ban = request.getParameter("ban");
 
 		logger.info(id);
 		logger.info(ban);
 
-		adminservices.updateclientlist(ban, id);
+		
 
 		String responsestr = "";
-
-		mav.addObject("result", responsestr);
+		if(APIProtectionHandler.isloginAdmin(request))
+		{
+		adminservices.updatetoggleadmin(ban, id);
+			
+		}
+		mav.addObject("result", APIProtectionHandler.ApiProtectionAdmin(request,responsestr));
 		return mav;
 	}
 
@@ -258,9 +300,23 @@ public class AdminController {
 		String vLocal = LocaleContextHolder.getLocale().getLanguage();
 		model.addAttribute("lang", vLocal);
 		String returnURL = "";
-		List<t_forum> forumlist = adminservices.getforumlist();
 
+		int pagenumber = 1;
+		int rowperpage = 30;
+		String page = request.getParameter("page");
+		if (page != null && page != "") {
+			pagenumber = Integer.parseInt(page);
+			if (pagenumber < 1) {
+				pagenumber = 1;
+			}
+
+		}
+
+		List<t_forum> forumlist = adminservices.getforumlist(String.valueOf(rowperpage), String.valueOf(pagenumber));
 		model.addAttribute("forumlist", forumlist);
+		int totalpage = adminservices.getforumlisttotalPage(rowperpage);
+		model.addAttribute("pagination", Pagination.createPaginationModule(request, pagenumber, totalpage));
+
 		returnURL = "/forumsetting";
 
 		return defaultpath + returnURL;
@@ -287,15 +343,21 @@ public class AdminController {
 	public ModelAndView apieditforumdetail(HttpServletRequest request, Model model) {
 
 		ModelAndView mav = new ModelAndView("jsonView");
+		
+		if(APIProtectionHandler.isloginAdmin(request))
+		{
+		
 		String title = request.getParameter("title");
 		String desc = request.getParameter("desc");
 		String logo = request.getParameter("logo");
 		String id = request.getParameter("id");
 		adminservices.updateupdateforumdetail(title, desc, logo, id);
-
+		}
 		String responsestr = "";
 
-		mav.addObject("result", responsestr);
+		mav.addObject("result", APIProtectionHandler.ApiProtectionAdmin(request,responsestr));
+		
+		
 		return mav;
 	}
 
@@ -305,13 +367,15 @@ public class AdminController {
 	public ModelAndView apideleteforum(HttpServletRequest request, Model model) {
 
 		ModelAndView mav = new ModelAndView("jsonView");
-
+		if(APIProtectionHandler.isloginAdmin(request))
+		{
+		
 		String id = request.getParameter("id");
 		adminservices.updatedeleteforum(id);
-
+		}
 		String responsestr = "";
 
-		mav.addObject("result", responsestr);
+		mav.addObject("result", APIProtectionHandler.ApiProtectionAdmin(request,responsestr));
 		return mav;
 	}
 
@@ -320,9 +384,24 @@ public class AdminController {
 		String vLocal = LocaleContextHolder.getLocale().getLanguage();
 		model.addAttribute("lang", vLocal);
 		String returnURL = "";
-		List<t_forum_category> categorylist = adminservices.getcategorylist();
 
+		int pagenumber = 1;
+		int rowperpage = 30;
+		String page = request.getParameter("page");
+		if (page != null && page != "") {
+			pagenumber = Integer.parseInt(page);
+			if (pagenumber < 1) {
+				pagenumber = 1;
+			}
+
+		}
+
+		List<t_forum_category> categorylist = adminservices.getcategorylist(String.valueOf(rowperpage),
+				String.valueOf(pagenumber));
 		model.addAttribute("categorylist", categorylist);
+		int totalpage = adminservices.getcategorylisttotalPage(rowperpage);
+		model.addAttribute("pagination", Pagination.createPaginationModule(request, pagenumber, totalpage));
+
 		returnURL = "/categorysetting";
 
 		return defaultpath + returnURL;
@@ -351,14 +430,17 @@ public class AdminController {
 	public ModelAndView editcategorydetail(HttpServletRequest request, Model model) {
 
 		ModelAndView mav = new ModelAndView("jsonView");
+		if(APIProtectionHandler.isloginAdmin(request))
+		{
+		
 		String title = request.getParameter("title");
 		String desc = request.getParameter("desc");
 		String id = request.getParameter("id");
 		adminservices.updateeditcategorydetails(title, desc, id);
-
+		}
 		String responsestr = "";
 
-		mav.addObject("result", responsestr);
+		mav.addObject("result", APIProtectionHandler.ApiProtectionAdmin(request,responsestr));
 		return mav;
 	}
 
@@ -368,13 +450,15 @@ public class AdminController {
 	public ModelAndView deletecategory(HttpServletRequest request, Model model) {
 
 		ModelAndView mav = new ModelAndView("jsonView");
-
+		if(APIProtectionHandler.isloginAdmin(request))
+		{
+		
 		String id = request.getParameter("id");
 		adminservices.updatedeletecategory(id);
-
+		}
 		String responsestr = "";
 
-		mav.addObject("result", responsestr);
+		mav.addObject("result", APIProtectionHandler.ApiProtectionAdmin(request,responsestr));
 		return mav;
 	}
 
@@ -383,23 +467,37 @@ public class AdminController {
 		String vLocal = LocaleContextHolder.getLocale().getLanguage();
 		model.addAttribute("lang", vLocal);
 		String returnURL = "";
-		
-		
-		
+
+		int pagenumber = 1;
+		int rowperpage = 30;
+		String page = request.getParameter("page");
+		if (page != null && page != "") {
+			pagenumber = Integer.parseInt(page);
+			if (pagenumber < 1) {
+				pagenumber = 1;
+			}
+
+		}
+
 		String keyword = request.getParameter("keyword");
 		if (keyword != null && keyword != "") {
-			List<t_forum_topic> searchtopic = adminservices.getsearchtopic(keyword); 
-
-			 model.addAttribute("topiclist", searchtopic);
+			List<t_forum_topic> searchtopic = adminservices.getsearchtopic(String.valueOf(rowperpage),
+					String.valueOf(pagenumber), keyword);
+			model.addAttribute("topiclist", searchtopic);
+			int totalpage = adminservices.getsearchtopictotalPage(rowperpage, keyword);
+			model.addAttribute("pagination", Pagination.createPaginationModule(request, pagenumber, totalpage));
 			model.addAttribute("tabletype", "Search result");
-			logger.info("test");
-		} else {
-			List<t_forum_topic> topiclist = adminservices.gettopiclist();
 
+		} else {
+			List<t_forum_topic> topiclist = adminservices.gettopiclist(String.valueOf(rowperpage),
+					String.valueOf(pagenumber));
 			model.addAttribute("topiclist", topiclist);
+			int totalpage = adminservices.getttopiclisttotalPage(rowperpage);
+			model.addAttribute("pagination", Pagination.createPaginationModule(request, pagenumber, totalpage));
 			model.addAttribute("tabletype", "All");
+
 		}
-		
+
 		model.addAttribute("keyword", keyword);
 		returnURL = "/topicsetting";
 
@@ -411,14 +509,16 @@ public class AdminController {
 	@ResponseBody
 	public ModelAndView deletetopic(HttpServletRequest request, Model model) {
 		ModelAndView mav = new ModelAndView("jsonView");
-
+		if(APIProtectionHandler.isloginAdmin(request))
+		{
+		
 		String id = request.getParameter("id");
 
 		adminservices.updatedeletetopic(id);
-
+		}
 		String responsestr = "";
 
-		mav.addObject("result", responsestr);
+		mav.addObject("result", APIProtectionHandler.ApiProtectionAdmin(request,responsestr));
 		return mav;
 	}
 
@@ -449,13 +549,15 @@ public class AdminController {
 	@ResponseBody
 	public ModelAndView deletecomment(HttpServletRequest request, Model model) {
 		ModelAndView mav = new ModelAndView("jsonView");
-
+		if(APIProtectionHandler.isloginAdmin(request))
+		{
+		
 		String id = request.getParameter("id");
 		adminservices.updatedeletecomment(id);
-
+		}
 		String responsestr = "";
-
-		mav.addObject("result", responsestr);
+		
+		mav.addObject("result", APIProtectionHandler.ApiProtectionAdmin(request,responsestr));
 		return mav;
 	}
 

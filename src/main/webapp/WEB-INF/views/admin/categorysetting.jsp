@@ -128,6 +128,10 @@
 </c:forEach>
 
 		</div>
+		
+			<div class="page-navigation blue spaced right">
+								<c:forEach items="${ pagination }" var="pagebutton">${pagebutton}</c:forEach>
+							</div>
               
 <script>
 function toggleban(id,ban)

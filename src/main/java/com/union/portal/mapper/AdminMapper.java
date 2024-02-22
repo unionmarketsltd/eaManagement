@@ -43,8 +43,15 @@ public interface AdminMapper {
 			+ ",\r\n" + ",\r\n" + ",\r\n" + ",\r\n" + ");")
 	public void insertxlsdata(@Param("accid") String accid, @Param("email") String email);
 
-	@Select("SELECT * FROM forum.t_user;")
-	public List<t_user> getclientlist();
+	@Select("SELECT * FROM forum.t_user where dbsts = 'A' order by create_date desc limit #{row} offset #{page};")
+	public List<t_user> getclientlist(@Param("row") int row, @Param("page") int page);
+	
+	
+	@Select("SELECT CEIL(count(*) / #{row}) FROM forum.t_user WHERE dbsts='A'")
+	public int getclientlisttotalPage(@Param("row") int row);
+	
+	
+	
 
 	@Update("UPDATE `forum`.`t_user` SET `isban` = #{isadmin} WHERE `id` = #{id};")
 	public void updateclientlist(@Param("isadmin") String isadmin, @Param("id") String id);
@@ -52,8 +59,12 @@ public interface AdminMapper {
 	@Select("SELECT isadmin from forum.t_user where email = #{email}")
 	public int getisadmin(@Param("email") String email);
 
-	@Select("SELECT * FROM `forum`.`t_forum` where dbsts ='A';")
-	public List<t_forum> getforumlist();
+	@Select("SELECT * FROM `forum`.`t_forum` where dbsts ='A' order by create_date desc limit #{row} offset #{page};")
+	public List<t_forum> getforumlist(@Param("row") int row, @Param("page") int page);
+	
+	 @Select("SELECT CEIL(count(*) / #{row}) FROM forum.t_forum WHERE dbsts='A'")
+		public int getforumlisttotalPage(@Param("row") int row);
+	
 	@Select("SELECT * FROM `forum`.`t_forum` where id=#{id} and dbsts ='A';")
 	 public t_forum getforumdetailbyid(@Param("id") String id); 
 	 
@@ -64,9 +75,10 @@ public interface AdminMapper {
 	 public void updatedeleteforum(@Param("id") String id); 
 	 
 	
-	@Select("SELECT *,(select name from t_forum where id = forum_id) as forum_name FROM forum.t_forum_category where dbsts = 'A';")
-	 public List<t_forum_category> getcategorylist(); 
-	 
+	@Select("SELECT *,(select name from t_forum where id = forum_id) as forum_name FROM forum.t_forum_category where dbsts = 'A' order by create_date desc limit #{row} offset #{page};")
+	 public List<t_forum_category> getcategorylist(@Param("row") int row, @Param("page") int page); 
+	 @Select("SELECT CEIL(count(*) / #{row}) FROM forum.t_forum_category WHERE dbsts='A'")
+		public int getcategorylisttotalPage(@Param("row") int row);
 
 	 @Select("SELECT *,(select name from t_forum where id = forum_id) as forum_name FROM forum.t_forum_category where id = #{id} and dbsts = 'A';")
 	 public t_forum_category getcategorydetails(@Param("id") String id); 
@@ -77,8 +89,12 @@ public interface AdminMapper {
 	 @Update("UPDATE `forum`.`t_forum_category` SET `dbsts` = 'D' WHERE `id` = #{id} ;")
 	 public void updatedeletecategory(@Param("id") String id); 
 	 
-	 @Select("SELECT id,title,description, (select name from t_forum_category where id= category_id) as category_name, create_by,create_date  FROM forum.t_forum_topic where dbsts='A';")
-	 public List<t_forum_topic> gettopiclist(); 
+	 @Select("SELECT id,title,description, (select name from t_forum_category where id= category_id) as category_name, create_by,create_date  FROM forum.t_forum_topic where dbsts='A' order by create_date desc limit #{row} offset #{page};")
+	 public List<t_forum_topic> gettopiclist(@Param("row") int row, @Param("page") int page); 
+	 
+	 @Select("SELECT CEIL(count(*) / #{row}) FROM forum.t_forum_topic WHERE dbsts='A'")
+		public int getttopiclisttotalPage(@Param("row") int row);
+	 
 	 
 	 @Update("UPDATE `forum`.`t_forum_topic` SET `dbsts` = 'D' WHERE `id` = #{id};")
 	 public void updatedeletetopic(@Param("id") String id); 
@@ -89,8 +105,14 @@ public interface AdminMapper {
 	 @Update("UPDATE `forum`.`t_forum_comment` SET `dbsts` = 'D' WHERE `id` = #{id};")
 	 public void updatedeletecomment(@Param("id") String id); 
 	 
-	 @Select("SELECT id,title,description,  (select name from t_forum_category where id= category_id) as category_name, create_by,create_date from t_forum_topic where LOWER(`title`) like LOWER(CONCAT('%', #{keyword}, '%')) and dbsts = 'A';")
-	 public List<t_forum_topic> getsearchtopic(@Param("keyword") String keyword); 
+	 @Select("SELECT id,title,description,  (select name from t_forum_category where id= category_id) as category_name, create_by,create_date from t_forum_topic where LOWER(`title`) like LOWER(CONCAT('%', #{keyword}, '%')) and dbsts = 'A' order by create_date desc limit #{row} offset #{page};")
+	 public List<t_forum_topic> getsearchtopic(@Param("row") int row, @Param("page") int page,@Param("keyword") String keyword); 
+	 @Select("SELECT CEIL(count(*) / #{row}) FROM forum.t_forum_topic WHERE LOWER(`title`) like LOWER(CONCAT('%', #{keyword}, '%')) and dbsts='A'")
+		public int getsearchtopictotalPage(@Param("row") int row ,@Param("keyword") String keyword);
+
+	 
+	 @Update("UPDATE `forum`.`t_user` SET `isadmin` = #{isadmin} WHERE `id` = #{id};")
+	 public void updatetoggleadmin(@Param("isadmin") String isadmin,@Param("id") String id); 
 	 
 
 }

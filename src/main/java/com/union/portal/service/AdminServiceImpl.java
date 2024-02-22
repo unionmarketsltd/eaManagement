@@ -32,7 +32,6 @@ import com.union.portal.mapper.ForumMapper;
 import com.union.portal.mapper.UploadMapper;
 import com.union.portal.domain.calculator;
 
-
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -40,130 +39,250 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @AllArgsConstructor
 public class AdminServiceImpl implements AdminService {
-	
-	private AdminMapper mapper;
-	
 
-	
+	private AdminMapper mapper;
+
 	@Override
 	public List<t_kr_account_forum_list> getaccountforumlist() {
 		// TODO Auto-generated method stub
 		return mapper.getaccountforumlist();
-	} 
+	}
+
+	@Override
+	public List<t_user> getclientlist(String row, String page) {
+		int number = 0;
+		try {
+			if((Integer.parseInt(page)) ==0 || (Integer.parseInt(page)) <0)
+					{
+				 number = 0;
+					}
+			else
+			{
+				 number = Integer.parseInt(row) * (Integer.parseInt(page) - 1);
+			}
+			
+			
+			page = String.valueOf(number);
+		} catch (NumberFormatException e) {
+			System.out.println("Invalid input: " + row + " is not a valid integer");
+		}
+
+		return mapper.getclientlist(Integer.parseInt(row), Integer.parseInt(page));
+
+	}
+
+	@Override
+	public int getclientlisttotalPage(int row) {
+
+		return mapper.getclientlisttotalPage(row);
+
+	}
+
+	@Override
+	public void updateclientlist(String isadmin, String id) {
+
+		mapper.updateclientlist(isadmin, id);
+
+	}
+
+	@Override
+	public int getisadmin(String email) {
+
+		return mapper.getisadmin(email);
+
+	}
+
+	
+
+	@Override
+	public t_forum getforumdetailbyid(String id) {
+
+		return mapper.getforumdetailbyid(id);
+
+	}
+
+	@Override
+	public void updateupdateforumdetail(String name, String description, String logo, String id) {
+
+		mapper.updateupdateforumdetail(name, description, logo, id);
+
+	}
+
+	@Override
+	public void updatedeleteforum(String id) {
+
+		mapper.updatedeleteforum(id);
+
+	}
+
+	
+
+	@Override
+	public t_forum_category getcategorydetails(String id) {
+
+		return mapper.getcategorydetails(id);
+
+	}
+
+	@Override
+	public void updateeditcategorydetails(String name, String description, String id) {
+
+		mapper.updateeditcategorydetails(name, description, id);
+
+	}
+
+	@Override
+	public void updatedeletecategory(String id) {
+
+		mapper.updatedeletecategory(id);
+
+	}
+
+	
+	@Override
+	public List<t_forum_topic> gettopiclist(String row, String page) {
+		int number = 0;
+		try {
+			if((Integer.parseInt(page)) ==0 || (Integer.parseInt(page)) <0)
+					{
+				 number = 0;
+					}
+			else
+			{
+				 number = Integer.parseInt(row) * (Integer.parseInt(page) - 1);
+			}
+			
+			
+			page = String.valueOf(number);
+		} catch (NumberFormatException e) {
+			System.out.println("Invalid input: " + row + " is not a valid integer");
+		}
+
+		return mapper.gettopiclist(Integer.parseInt(row), Integer.parseInt(page));
+
+	}
+	
+	
+	
+	
+
+	@Override
+	public void updatedeletetopic(String id) {
+
+		mapper.updatedeletetopic(id);
+
+	}
+
+	@Override
+	public List<t_forum_comment> getsearchcomment(String keyword) {
+
+		return mapper.getsearchcomment(keyword);
+
+	}
+
+	@Override
+	public void updatedeletecomment(String id) {
+
+		mapper.updatedeletecomment(id);
+
+	}
+
+	
+
+	@Override
+	public int getttopiclisttotalPage(int row) {
+		// TODO Auto-generated method stub
+		return mapper.getttopiclisttotalPage(row);
+	}
+
+	@Override
+	public int getsearchtopictotalPage(int row, String keyword) {
+		// TODO Auto-generated method stub
+		return mapper.getsearchtopictotalPage(row , keyword);
+	}
+
+	@Override
+	public List<t_forum_topic> getsearchtopic(String row, String page, String keyword) {
+		int number = 0;
+		try {
+			if((Integer.parseInt(page)) ==0 || (Integer.parseInt(page)) <0)
+					{
+				 number = 0;
+					}
+			else
+			{
+				 number = Integer.parseInt(row) * (Integer.parseInt(page) - 1);
+			}
+			
+			
+			page = String.valueOf(number);
+		} catch (NumberFormatException e) {
+			System.out.println("Invalid input: " + row + " is not a valid integer");
+		}
+
+		return mapper.getsearchtopic(Integer.parseInt(row), Integer.parseInt(page), keyword);
+	}
+
+	@Override
+	public List<t_forum_category> getcategorylist(String row, String page) {
+		int number = 0;
+		try {
+			if((Integer.parseInt(page)) ==0 || (Integer.parseInt(page)) <0)
+					{
+				 number = 0;
+					}
+			else
+			{
+				 number = Integer.parseInt(row) * (Integer.parseInt(page) - 1);
+			}
+			
+			
+			page = String.valueOf(number);
+		} catch (NumberFormatException e) {
+			System.out.println("Invalid input: " + row + " is not a valid integer");
+		}
+
+		 return mapper.getcategorylist(Integer.parseInt(row), Integer.parseInt(page));
+	}
+
+	@Override
+	public int getcategorylisttotalPage(int row) {
+		// TODO Auto-generated method stub
+		return mapper.getcategorylisttotalPage(row);
+	}
+
+	@Override
+	public List<t_forum> getforumlist(String row, String page) {
+		int number = 0;
+		try {
+			if((Integer.parseInt(page)) ==0 || (Integer.parseInt(page)) <0)
+					{
+				 number = 0;
+					}
+			else
+			{
+				 number = Integer.parseInt(row) * (Integer.parseInt(page) - 1);
+			}
+			
+			
+			page = String.valueOf(number);
+		} catch (NumberFormatException e) {
+			System.out.println("Invalid input: " + row + " is not a valid integer");
+		}
+
+		 return mapper.getforumlist(Integer.parseInt(row), Integer.parseInt(page));
+	}
+
+	@Override
+	public int getforumlisttotalPage(int row) {
+		// TODO Auto-generated method stub
+		return mapper.getforumlisttotalPage(row);
+	}
 	
 	 @Override 
-	 public List<t_user> getclientlist(){
+	 public void updatetoggleadmin(String isadmin,String id){
 	 
-	 return mapper.getclientlist();
-	 
-	}
-	 
-	 @Override 
-	 public void updateclientlist(String isadmin,String id){
-	 
-	  mapper.updateclientlist(isadmin,id);
-	 
-	}
-	 
-	 @Override 
-	 public int getisadmin(String email){
-	 
-	 return mapper.getisadmin(email);
-	 
-	}
-	 
-	 @Override 
-	 public List<t_forum> getforumlist(){
-	 
-	 return mapper.getforumlist();
-	 
-	}
-	 
-	 @Override 
-	 public t_forum getforumdetailbyid(String id){
-	 
-	 return mapper.getforumdetailbyid(id);
-	 
-	}
-	 
-	 @Override 
-	 public void updateupdateforumdetail(String name,String description,String logo,String id){
-	 
-	  mapper.updateupdateforumdetail(name,description,logo,id);
-	 
-	}
-	 
-	 
-	 @Override 
-	 public void updatedeleteforum(String id){
-	 
-	  mapper.updatedeleteforum(id);
-	 
-	}
-	 
-	 
-	 @Override 
-	 public List<t_forum_category> getcategorylist(){
-	 
-	 return mapper.getcategorylist();
-	 
-	}
-	 
-	 
-	 @Override 
-	 public t_forum_category getcategorydetails(String id){
-	 
-	 return mapper.getcategorydetails(id);
-	 
-	}
-	 
-	 @Override 
-	 public void updateeditcategorydetails(String name,String description,String id){
-	 
-	  mapper.updateeditcategorydetails(name,description,id);
-	 
-	}
-	 
-	 @Override 
-	 public void updatedeletecategory(String id){
-	 
-	  mapper.updatedeletecategory(id);
-	 
-	}
-	 
-	 @Override 
-	 public List<t_forum_topic> gettopiclist(){
-	 
-	 return mapper.gettopiclist();
-	 
-	}
-	 
-	 
-	 @Override 
-	 public void updatedeletetopic(String id){
-	 
-	  mapper.updatedeletetopic(id);
-	 
-	}
-	 
-	 @Override 
-	 public List<t_forum_comment> getsearchcomment(String keyword){
-	 
-	 return mapper.getsearchcomment(keyword);
-	 
-	}
-	 
-	 @Override 
-	 public void updatedeletecomment(String id){
-	 
-	  mapper.updatedeletecomment(id);
-	 
-	}
-	 
-	 @Override 
-	 public List<t_forum_topic> getsearchtopic(String keyword){
-	 
-	 return mapper.getsearchtopic(keyword);
+	  mapper.updatetoggleadmin(isadmin,id);
 	 
 	}
 }
