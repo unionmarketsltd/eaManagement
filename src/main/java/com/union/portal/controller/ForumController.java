@@ -13,7 +13,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 // file import apache.poi
-import java.io.FileInputStream; 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -121,7 +121,6 @@ public class ForumController {
 		List<t_forum_category> top_listforumcat = null;
 		List<t_top_latest_news> ttln = null;
 		List<t_mt5_account_list> tmal = null;
-		
 
 		ttln = forumservices.gettopmenulatesttopic();
 
@@ -136,18 +135,16 @@ public class ForumController {
 		}
 
 		model.addAttribute("top_listlatesttopic", ttln);
-	
-		
+
 		top_listforum = forumservices.getforumlist();
 		top_listforumcat = forumservices.getforumcategorylist();
 		t_user tu = forumservices.getuserinfo((String) session.getAttribute("s_GEmail"));
 		model.addAttribute("top_forumlist", top_listforum);
 		model.addAttribute("top_forumcatlist", top_listforumcat);
-		
-		
+
 		tmal = forumservices.getmt5accountlist();
 		model.addAttribute("top_tmal", tmal);
-		
+
 		if (tu != null) {
 			model.addAttribute("top_name", tu.getName());
 			model.addAttribute("top_photo", tu.getGoogle_image_url());
@@ -204,7 +201,7 @@ public class ForumController {
 		model.addAttribute("forumlist", listforum);
 		model.addAttribute("forumcatlist", listforumcat);
 		model.addAttribute("listforumtopiccount", listforumtopiccount);
-		
+
 		returnURL = "/index";
 
 		return defaultpath + returnURL;
@@ -220,8 +217,7 @@ public class ForumController {
 
 		return defaultpath + returnURL;
 	}
-	
-	
+
 	@RequestMapping(value = "/ban", method = RequestMethod.GET)
 	public String ban(Model model, HttpServletRequest request) {
 
@@ -232,8 +228,6 @@ public class ForumController {
 
 		return defaultpath + returnURL;
 	}
-	
-	
 
 	@RequestMapping(value = "/main", method = RequestMethod.GET)
 	public String main(Model model, HttpServletRequest request) {
@@ -503,20 +497,18 @@ public class ForumController {
 		System.out.println(jsonPayload);
 		return jsonPayload;
 	}
-	
-	
-	
-	public static String decodeJwtResponse1(String token) {
-	    String base64Url = token.split("\\.")[1];
-	    String base64 = base64Url.replace("-", "+").replace("_", "/");
-	    byte[] decodedBytes = Base64.getDecoder().decode(base64);
-	    String jsonPayload = new String(decodedBytes, StandardCharsets.UTF_8);
-	    
-	    // Remove control characters while retaining Korean characters
-	    jsonPayload = jsonPayload.replaceAll("[\\p{Cntrl}&&[^\\r\\n\\t]]|[\\p{C}]", "");
 
-	    System.out.println(jsonPayload);
-	    return jsonPayload;
+	public static String decodeJwtResponse1(String token) {
+		String base64Url = token.split("\\.")[1];
+		String base64 = base64Url.replace("-", "+").replace("_", "/");
+		byte[] decodedBytes = Base64.getDecoder().decode(base64);
+		String jsonPayload = new String(decodedBytes, StandardCharsets.UTF_8);
+
+		// Remove control characters while retaining Korean characters
+		jsonPayload = jsonPayload.replaceAll("[\\p{Cntrl}&&[^\\r\\n\\t]]|[\\p{C}]", "");
+
+		System.out.println(jsonPayload);
+		return jsonPayload;
 	}
 
 	@RequestMapping(value = "/edittopic", method = RequestMethod.GET)
@@ -580,19 +572,12 @@ public class ForumController {
 		String responsestr = "";
 		String token = request.getParameter("token");
 		JSONObject UserGoogleLoginCredential = new JSONObject(decodeJwtResponse1(token));
-		
 
 		String email = UserGoogleLoginCredential.getString("email");
 		String fullname = UserGoogleLoginCredential.getString("name");
 		String imageurl = UserGoogleLoginCredential.getString("picture");
 		String googleid = UserGoogleLoginCredential.getString("sub");
 		String outputimageurl = "";
-		
-		
-		
-		
-
-		
 
 		try {
 
@@ -604,27 +589,22 @@ public class ForumController {
 		boolean isnewuser = forumservices.isnewuser(email);
 
 		if (!isnewuser) {
-			int checkisban = forumservices.getcheckisban(email); 
-			if (checkisban ==0)
-			{
-			t_user tu = forumservices.getuserinfo(email);
+			int checkisban = forumservices.getcheckisban(email);
+			if (checkisban == 0) {
+				t_user tu = forumservices.getuserinfo(email);
 
-			session.setAttribute("s_GEmail", tu.getEmail());
-			session.setAttribute("s_GName", tu.getName());
-			session.setAttribute("s_GImgUrl", tu.getGoogle_image_url());
-			session.setAttribute("s_GID", tu.getGoogle_id());
-			session.setAttribute("s_isLogin", String.valueOf("1"));
-			responsestr = defaultpath + "index";
-			logger.info((String) session.getAttribute("s_GName"));
-			}
-			else
-			{
+				session.setAttribute("s_GEmail", tu.getEmail());
+				session.setAttribute("s_GName", tu.getName());
+				session.setAttribute("s_GImgUrl", tu.getGoogle_image_url());
+				session.setAttribute("s_GID", tu.getGoogle_id());
+				session.setAttribute("s_isLogin", String.valueOf("1"));
+				responsestr = defaultpath + "index";
+				logger.info((String) session.getAttribute("s_GName"));
+			} else {
 				responsestr = defaultpath + "ban";
 			}
 		} else {
-			
-			
-				
+
 			session.setAttribute("s_GEmail", String.valueOf(email));
 			session.setAttribute("s_GName", String.valueOf(fullname));
 			session.setAttribute("s_GImgUrl", String.valueOf(outputimageurl));
@@ -632,12 +612,11 @@ public class ForumController {
 			session.setAttribute("s_isLogin", String.valueOf("0"));
 			logger.info((String) session.getAttribute("s_GName"));
 			responsestr = defaultpath + "checktnc";
-			
+
 		}
 
 		logger.info(responsestr);
-		
-		
+
 		mav.addObject("result", responsestr);
 		return mav;
 	}
@@ -1096,26 +1075,26 @@ public class ForumController {
 		if (forumservices.isallowviewaccount(id)) {
 			t_mt5_account_list account = forumservices.getmt5accountname(id);
 
-		String responsestr = "";
-		HttpUtils httpUtils = new HttpUtils(this.serverinfo);
-		HttpSession session = request.getSession();
-		if (httpUtils.sendAuth(this.serverinfo)) {
-			String path = "/api/user/get?login=" + "3301";
-			try {
-				responsestr = httpUtils.sendGet(this.serverinfo, path);
+			String responsestr = "";
+			HttpUtils httpUtils = new HttpUtils(this.serverinfo);
+			HttpSession session = request.getSession();
+			if (httpUtils.sendAuth(this.serverinfo)) {
+				String path = "/api/user/get?login=" + "3301";
+				try {
+					responsestr = httpUtils.sendGet(this.serverinfo, path);
 
-				JSONObject accountinfo = new JSONObject(responsestr);
+					JSONObject accountinfo = new JSONObject(responsestr);
 
-			} catch (Exception e) {
-				e.printStackTrace();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
-		}
-		
-model.addAttribute("name", account.name);
-model.addAttribute("id", id);
-model.addAttribute("duration", account.api_call_interval_second);
-		returnURL = "/viewmt5account";
-		
+
+			model.addAttribute("name", account.name);
+			model.addAttribute("id", id);
+			model.addAttribute("duration", account.api_call_interval_second);
+			returnURL = "/viewmt5account";
+
 		} else {
 			returnURL = "/unautorized";
 		}
@@ -1265,119 +1244,149 @@ model.addAttribute("duration", account.api_call_interval_second);
 	
 	
 	
-	@RequestMapping(value = { "/getHistorytotalPage" }, method = { RequestMethod.GET }, produces = {
+	
+	@RequestMapping(value = { "/getKRAccountHistory" }, method = { RequestMethod.GET }, produces = {
 	"application/json;charset=UTF-8" })
 @ResponseBody
-public ModelAndView getHistorytotalPage(HttpServletRequest request, Model model) {
-logger.info("Get getHistorytotalPage ........" + this.serverinfo);
+public ModelAndView getKRAccountHistory(HttpServletRequest request, Model model) {
+logger.info("Get getKRAccountHistory ........" + this.serverinfo);
 String id = request.getParameter("id");
-ModelAndView mav = new ModelAndView("jsonView");
-String responsestr = "";
-int totalpage = 0;
-if (forumservices.isallowviewaccount(id)) {
-	HttpUtils httpUtils = new HttpUtils(this.serverinfo);
-	HttpSession session = request.getSession();
-	if (httpUtils.sendAuth(this.serverinfo)) {
-		long currentTimeMillis = System.currentTimeMillis();
-
-		// Convert milliseconds to seconds
-		long currentSeconds = currentTimeMillis / 1000;
-		String path = "/api/deal/get_total?login=" + id + "&from=0&to=" + Long.toString(currentSeconds);
-		try {
-			responsestr = httpUtils.sendGet(this.serverinfo, path);
-
-			JSONObject totalobj = new JSONObject(responsestr);
-			String totalrow = totalobj.getJSONObject("answer").getString("total");
-			totalpage	 = Integer.parseInt(totalrow)/50;
-			
-			responsestr.indexOf("0 Done");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-} else {
-	responsestr = "unautorized";
-}
-mav.addObject("result", APIProtectionHandler.ApiProtection(request, String.valueOf(totalpage)));
-return mav;
-}
-	
-	
-	
-	
-	
-	@RequestMapping(value = { "/getprofitchartdata" }, method = { RequestMethod.GET }, produces = {
-	"application/json;charset=UTF-8" })
-@ResponseBody
-public ModelAndView getprofitchartdata(HttpServletRequest request, Model model) {
-logger.info("Get getprofitchartdata ........" + this.serverinfo);
-String id = request.getParameter("id");
+String page = request.getParameter("page");
 
 ModelAndView mav = new ModelAndView("jsonView");
 String responsestr = "";
-if (forumservices.isallowviewaccount(id)) {
-	HttpUtils httpUtils = new HttpUtils(this.serverinfo);
-	HttpSession session = request.getSession();
-	if (httpUtils.sendAuth(this.serverinfo)) {
-		long currentTimeMillis = System.currentTimeMillis();
 
-			try {
-				long currentSeconds = currentTimeMillis / 1000;
-			String	path = "/api/deal/get_batch?login=" + id + "&from=0&to=" + Long.toString(currentSeconds); ;
-				try {
-					responsestr = httpUtils.sendGet(this.serverinfo, path);
-					
-					
-					JSONObject returnobj = new JSONObject(responsestr);
-					
-					
-					JSONArray jarray = returnobj.getJSONArray("answer");
-					
-					JSONArray outputarray = new JSONArray();
-					 Double outputprofit= (double) 0;
-					for (int i = 0; i < jarray.length(); i++) {
-						
-					    JSONObject element = jarray.getJSONObject(i);
+int offset = (Integer.parseInt(page)-1) *30;
+responsestr= forumservices.getkraccounthistory(id,"30",String.valueOf(offset)); 
 
-					   int type =  Integer.parseInt(element.getString("Action"));
-					   
-					   if( type <2)
-					   {
-						   Double profit  =Double.parseDouble(element.getString("Profit"))+Double.parseDouble(element.getString("Storage"))+Double.parseDouble(element.getString("Commission")) ;
-						   logger.info(String.valueOf(profit));
-						   outputprofit = outputprofit+profit;
-						   
-						   outputarray.put(outputprofit);
-					   }
- 
-					  
- 
-					    // Do something with the element
-					}
-					
-					
-					responsestr = outputarray.toString();
 
-					
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			
-			responsestr.indexOf("0 Done");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-} else {
-	responsestr = "unautorized";
-}
 mav.addObject("result", APIProtectionHandler.ApiProtection(request, responsestr));
 return mav;
 }
-
 	
+	
+
+	@RequestMapping(value = { "/getHistorytotalPage" }, method = { RequestMethod.GET }, produces = {
+			"application/json;charset=UTF-8" })
+	@ResponseBody
+	public ModelAndView getHistorytotalPage(HttpServletRequest request, Model model) {
+		logger.info("Get getHistorytotalPage ........" + this.serverinfo);
+		String id = request.getParameter("id");
+		ModelAndView mav = new ModelAndView("jsonView");
+		String responsestr = "";
+		int totalpage = 0;
+		if (forumservices.isallowviewaccount(id)) {
+			HttpUtils httpUtils = new HttpUtils(this.serverinfo);
+			HttpSession session = request.getSession();
+			if (httpUtils.sendAuth(this.serverinfo)) {
+				long currentTimeMillis = System.currentTimeMillis();
+
+				// Convert milliseconds to seconds
+				long currentSeconds = currentTimeMillis / 1000;
+				String path = "/api/deal/get_total?login=" + id + "&from=0&to=" + Long.toString(currentSeconds);
+				try {
+					responsestr = httpUtils.sendGet(this.serverinfo, path);
+
+					JSONObject totalobj = new JSONObject(responsestr);
+					String totalrow = totalobj.getJSONObject("answer").getString("total");
+					totalpage = Integer.parseInt(totalrow) / 50;
+
+					responsestr.indexOf("0 Done");
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+
+		} else {
+			responsestr = "unautorized";
+		}
+		mav.addObject("result", APIProtectionHandler.ApiProtection(request, String.valueOf(totalpage)));
+		return mav;
+	}
+
+	@RequestMapping(value = { "/getKRAccountHistorytotalPage" }, method = { RequestMethod.GET }, produces = {
+			"application/json;charset=UTF-8" })
+	@ResponseBody
+	public ModelAndView getKRAccountHistorytotalPage(HttpServletRequest request, Model model) {
+		logger.info("Get getHistorytotalPage ........" + this.serverinfo);
+		String id = request.getParameter("id");
+		ModelAndView mav = new ModelAndView("jsonView");
+		String responsestr = "";
+		int totalpage = 0;
+		
+
+			totalpage = forumservices.getkraccounthistorytotalpage(id);
+
+		
+		mav.addObject("result", APIProtectionHandler.ApiProtection(request, String.valueOf(totalpage)));
+		return mav;
+	}
+
+	@RequestMapping(value = { "/getprofitchartdata" }, method = { RequestMethod.GET }, produces = {
+			"application/json;charset=UTF-8" })
+	@ResponseBody
+	public ModelAndView getprofitchartdata(HttpServletRequest request, Model model) {
+		logger.info("Get getprofitchartdata ........" + this.serverinfo);
+		String id = request.getParameter("id");
+
+		ModelAndView mav = new ModelAndView("jsonView");
+		String responsestr = "";
+		if (forumservices.isallowviewaccount(id)) {
+			HttpUtils httpUtils = new HttpUtils(this.serverinfo);
+			HttpSession session = request.getSession();
+			if (httpUtils.sendAuth(this.serverinfo)) {
+				long currentTimeMillis = System.currentTimeMillis();
+
+				try {
+					long currentSeconds = currentTimeMillis / 1000;
+					String path = "/api/deal/get_batch?login=" + id + "&from=0&to=" + Long.toString(currentSeconds);
+					;
+					try {
+						responsestr = httpUtils.sendGet(this.serverinfo, path);
+
+						JSONObject returnobj = new JSONObject(responsestr);
+
+						JSONArray jarray = returnobj.getJSONArray("answer");
+
+						JSONArray outputarray = new JSONArray();
+						Double outputprofit = (double) 0;
+						for (int i = 0; i < jarray.length(); i++) {
+
+							JSONObject element = jarray.getJSONObject(i);
+
+							int type = Integer.parseInt(element.getString("Action"));
+
+							if (type < 2) {
+								Double profit = Double.parseDouble(element.getString("Profit"))
+										+ Double.parseDouble(element.getString("Storage"))
+										+ Double.parseDouble(element.getString("Commission"));
+								logger.info(String.valueOf(profit));
+								outputprofit = outputprofit + profit;
+
+								outputarray.put(outputprofit);
+							}
+
+							// Do something with the element
+						}
+
+						responsestr = outputarray.toString();
+
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+
+					responsestr.indexOf("0 Done");
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+
+		} else {
+			responsestr = "unautorized";
+		}
+		mav.addObject("result", APIProtectionHandler.ApiProtection(request, responsestr));
+		return mav;
+	}
 
 	@RequestMapping(value = "/MT5AccountList", method = RequestMethod.GET)
 	public String MT5AccountList(Model model, HttpServletRequest request) throws SQLException {
@@ -1389,18 +1398,14 @@ return mav;
 
 		acclist = forumservices.getmt5accountlist();
 		String vLocal = LocaleContextHolder.getLocale().getLanguage();
-		
+
 		String returnURL = "";
 		returnURL = "/MT5AccountList";
 
 		model.addAttribute("acclist", acclist);
 		return defaultpath + returnURL;
 	}
-	
-	
-	
-	
-	
+
 	@RequestMapping(value = "/StrategyMt5Account", method = RequestMethod.GET)
 	public String StrategyMt5Account(Model model, HttpServletRequest request) {
 		String returnURL = "";
@@ -1409,34 +1414,33 @@ return mav;
 		if (forumservices.isallowviewaccount(id)) {
 			t_mt5_account_list account = forumservices.getmt5accountname(id);
 
-		String responsestr = "";
-		HttpUtils httpUtils = new HttpUtils(this.serverinfo);
-		HttpSession session = request.getSession();
-		if (httpUtils.sendAuth(this.serverinfo)) {
-			String path = "/api/user/get?login=" + "3301";
-			try {
-				responsestr = httpUtils.sendGet(this.serverinfo, path);
+			String responsestr = "";
+			HttpUtils httpUtils = new HttpUtils(this.serverinfo);
+			HttpSession session = request.getSession();
+			if (httpUtils.sendAuth(this.serverinfo)) {
+				String path = "/api/user/get?login=" + "3301";
+				try {
+					responsestr = httpUtils.sendGet(this.serverinfo, path);
 
-				JSONObject accountinfo = new JSONObject(responsestr);
+					JSONObject accountinfo = new JSONObject(responsestr);
 
-			} catch (Exception e) {
-				e.printStackTrace();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
-		}
 
-		model.addAttribute("name", account.name);
-		model.addAttribute("content", account.content);
-		model.addAttribute("id", id);
-		model.addAttribute("duration", account.api_call_interval_second);
-		returnURL = "/StrategyMt5Account";
-		
+			model.addAttribute("name", account.name);
+			model.addAttribute("content", account.content);
+			model.addAttribute("id", id);
+			model.addAttribute("duration", account.api_call_interval_second);
+			returnURL = "/StrategyMt5Account";
+
 		} else {
 			returnURL = "/unautorized";
 		}
 
 		return defaultpath + returnURL;
 	}
-	
 
 	@RequestMapping(value = "/KRAccountList", method = RequestMethod.GET)
 	public String KRAccountList(Model model, HttpServletRequest request) throws SQLException {
@@ -1448,14 +1452,13 @@ return mav;
 
 		acclist = forumservices.getKRaccountlist();
 		String vLocal = LocaleContextHolder.getLocale().getLanguage();
-		
+
 		String returnURL = "";
 		returnURL = "/KRAccountList";
 
 		model.addAttribute("acclist", acclist);
 		return defaultpath + returnURL;
 	}
-	
 
 	@RequestMapping(value = "/StrategyKRAccount", method = RequestMethod.GET)
 	public String StrategyKRAccount(Model model, HttpServletRequest request) {
@@ -1465,26 +1468,26 @@ return mav;
 		if (forumservices.isallowviewkraccount(accountid)) {
 			t_kr_account_list account = forumservices.getKRaccountname(accountid);
 
-		model.addAttribute("name", account.name);
-		model.addAttribute("content", account.content);
-		model.addAttribute("description", account.description);
-		model.addAttribute("startdate", account.startdate);
-		model.addAttribute("profitrate", account.profitrate);
-		model.addAttribute("location", account.location);
-		model.addAttribute("leverage", account.leverage);
-		model.addAttribute("grade", account.grade);
-		model.addAttribute("lastupdate", account.lastupdate);
-		model.addAttribute("strategytype", account.strategytype);
-		model.addAttribute("duration", account.api_call_interval_second);
-		returnURL = "/StrategyKRAccount";
-		
+			model.addAttribute("name", account.name);
+			model.addAttribute("content", account.content);
+			model.addAttribute("description", account.description);
+			model.addAttribute("startdate", account.startdate);
+			model.addAttribute("profitrate", account.profitrate);
+			model.addAttribute("location", account.location);
+			model.addAttribute("leverage", account.leverage);
+			model.addAttribute("grade", account.grade);
+			model.addAttribute("lastupdate", account.lastupdate);
+			model.addAttribute("strategytype", account.strategytype);
+			model.addAttribute("duration", account.api_call_interval_second);
+			returnURL = "/StrategyKRAccount";
+
 		} else {
 			returnURL = "/unautorized";
 		}
 
 		return defaultpath + returnURL;
 	}
-	
+
 	@RequestMapping(value = "/viewKRAccount", method = RequestMethod.GET)
 	public String viewKRAccount(Model model, HttpServletRequest request) {
 		String returnURL = "";
@@ -1494,11 +1497,15 @@ return mav;
 			t_kr_account_list account = forumservices.getKRaccountname(accountid);
 			calculator cal = forumservices.getKRaccountCalculator(accountid);
 
-			model.addAttribute("account", account);	
-			model.addAttribute("cal", cal);	
-			
+			model.addAttribute("account", account);
+			model.addAttribute("cal", cal);
+
+			List<t_kr_account_history> kraccountprofitchartdata = forumservices.getkraccountprofitchartdata(accountid);
+
+			model.addAttribute("kraccountprofitchartdata", kraccountprofitchartdata);
+
 			returnURL = "/viewKRaccount";
-			
+
 		} else {
 			returnURL = "/unautorized";
 		}

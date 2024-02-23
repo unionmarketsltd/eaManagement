@@ -387,5 +387,26 @@ public class ForumServiceImpl implements ForumService {
 	 return mapper.getcheckisban(email);
 	 
 	}
-	
+	 
+	 
+	 
+	 @Override 
+	 public List<t_kr_account_history> getkraccountprofitchartdata(String id){
+	 
+	 return mapper.getkraccountprofitchartdata(id);
+	 
+	}
+	 @Override 
+	 public int getkraccounthistorytotalpage(String id){
+	 
+	 return mapper.getkraccounthistorytotalpage(id);
+	 
+	}
+	 
+	 @Override 
+	 public String getkraccounthistory(String id,String row,String page){
+	 
+	 return mapper.getkraccounthistory(id,Integer.parseInt(row),Integer.parseInt(page));
+	 
+	}
 }

@@ -536,6 +536,19 @@ public List<t_forum_topiccount> getforumtopiccountlist();
 	@Select("select isban from t_user where email = #{email}")
 	 public int getcheckisban(@Param("email") String email); 
 	 
+	@Select("SELECT closedate ,SUM(profit) OVER (ORDER BY closedate asc) as cumulative_profit FROM forum.t_kr_account_history where dbsts = 'A' and accountid = #{id} order by closedate asc;")
+	 public List<t_kr_account_history> getkraccountprofitchartdata(@Param("id") String id); 
+	 
 
-	
+	 @Select("SELECT CEIL(count(*) /30) as totalpage from forum.t_kr_account_history WHERE accountid = #{id}  and dbsts='A'")
+	 public int getkraccounthistorytotalpage(@Param("id") String id); 
+	 
+	 @Select(" SELECT JSON_ARRAYAGG(sub_query.json_column) AS json_result FROM (\r\n"
+	 		+ "    SELECT JSON_OBJECT('historyid', historyid, 'accountid', accountid, 'tradedate',tradedate, 'symbol',symbol, 'type',`type`, 'lots',lots, 'closeprice',closeprice, 'openprice',openprice, 'currency',currency, 'profit',profit, 'closedate',closedate, 'opendate',opendate) AS json_column\r\n"
+	 		+ "  FROM forum.t_kr_account_history where dbsts = 'A'and accountid = #{id} order by closedate desc limit #{row} offset #{page}\r\n"
+	 		+ ") AS sub_query; ")
+	 public String getkraccounthistory(@Param("id") String id,@Param("row") int row,@Param("page") int page); 
+	 
+
+
 }

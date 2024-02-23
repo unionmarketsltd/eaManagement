@@ -455,102 +455,12 @@
 				<canvas id="myChart1" width="800" height="400"></canvas>
 			
 		</div>
-
-		<div class="widget-item">
-			<!-- SECTION TITLE WRAP -->
-			<div class="section-title-wrap violet small-space">
-				<h2 class="section-title medium">Open Positions</h2>
-				<div class="section-title-separator"></div>
-			</div>
-			<!-- /SECTION TITLE WRAP -->
-
-			<!-- TABLE -->
-			<div class="table standings ">
-				<!-- TABLE ROW HEADER -->
-				<div class="table-row-header">
-					<!-- TABLE ROW HEADER ITEM -->
-					<div class="table-row-header-item position">
-						<p class="table-row-header-title">Position</p>
-					</div>
-					<!-- /TABLE ROW HEADER ITEM -->
-
-					<!-- TABLE ROW HEADER ITEM -->
-
-
-					<!-- TABLE ROW HEADER ITEM -->
-					<div class="table-row-header-item padded">
-						<p class="table-row-header-title">type</p>
-					</div>
-					<div class="table-row-header-item padded">
-						<p class="table-row-header-title">Open Price</p>
-					</div>
-					<!-- /TABLE ROW HEADER ITEM -->
-
-					<!-- TABLE ROW HEADER ITEM -->
-					<div class="table-row-header-item padded">
-						<p class="table-row-header-title">Current Price</p>
-					</div>
-					<!-- /TABLE ROW HEADER ITEM -->
-
-					<!-- TABLE ROW HEADER ITEM -->
-					<div class="table-row-header-item padded">
-						<p class="table-row-header-title">SL Price</p>
-					</div>
-					<!-- /TABLE ROW HEADER ITEM -->
-
-					<!-- TABLE ROW HEADER ITEM -->
-					<div class="table-row-header-item padded">
-						<p class="table-row-header-title">TP Price</p>
-					</div>
-					<!-- /TABLE ROW HEADER ITEM -->
-
-					<!-- TABLE ROW HEADER ITEM -->
-					<div class="table-row-header-item">
-						<p class="table-row-header-title">Lot</p>
-					</div>
-					<!-- /TABLE ROW HEADER ITEM -->
-
-					<!-- TABLE ROW HEADER ITEM -->
-					<div class="table-row-header-item">
-						<p class="table-row-header-title">Profit (USD)</p>
-					</div>
-					<div class="table-row-header-item">
-						<p class="table-row-header-title">Swap (USD)</p>
-					</div>
-					<!-- /TABLE ROW HEADER ITEM -->
-				</div>
-				<!-- /TABLE ROW HEADER -->
-
-				<!-- TABLE ROWS -->
-				<div class="table-rows" id="opendiv">
-					<!-- TABLE ROW -->
-					<!-- /TABLE ROW -->
-
-					<!-- TABLE ROW -->
-					<!-- /TABLE ROW -->
-
-					<!-- TABLE ROW -->
-					<!-- /TABLE ROW -->
-
-					<!-- TABLE ROW -->
-					<!-- /TABLE ROW -->
-
-					<!-- TABLE ROW -->
-					<!-- /TABLE ROW -->
-				</div>
-				<!-- /TABLE ROWS -->
-			</div>
-			<!-- /TABLE -->
-
-			<!-- TABLE -->
-			<!-- /TABLE -->
-		</div>
 		
 
 		<div class="widget-item">
 			<!-- SECTION TITLE WRAP -->
 			<div class="section-title-wrap violet small-space">
-				<h2 class="section-title medium">History</h2>
+				<h2 class="section-title medium">Trading History</h2>
 				<div class="section-title-separator"></div>
 			</div>
 			<!-- /SECTION TITLE WRAP -->
@@ -561,7 +471,7 @@
 				<div class="table-row-header">
 					<!-- TABLE ROW HEADER ITEM -->
 					<div class="table-row-header-item position">
-						<p class="table-row-header-title">Position</p>
+						<p class="table-row-header-title">#</p>
 					</div>
 					<!-- /TABLE ROW HEADER ITEM -->
 
@@ -570,7 +480,13 @@
 
 					<!-- TABLE ROW HEADER ITEM -->
 					<div class="table-row-header-item padded">
-						<p class="table-row-header-title">Time</p>
+						<p class="table-row-header-title">Trade Date</p>
+					</div>
+					<!-- /TABLE ROW HEADER ITEM -->
+
+					<!-- TABLE ROW HEADER ITEM -->
+					<div class="table-row-header-item padded">
+						<p class="table-row-header-title">Symbol</p>
 					</div>
 					<!-- /TABLE ROW HEADER ITEM -->
 
@@ -580,29 +496,32 @@
 					</div>
 					<!-- /TABLE ROW HEADER ITEM -->
 
-					<!-- TABLE ROW HEADER ITEM -->
-					<div class="table-row-header-item padded">
-						<p class="table-row-header-title">Volume</p>
-					</div>
-					<!-- /TABLE ROW HEADER ITEM -->
-
 					<div class="table-row-header-item">
-						<p class="table-row-header-title">Profit (USD)</p>
+						<p class="table-row-header-title">Lots</p>
 					</div>
 					<div class="table-row-header-item">
-						<p class="table-row-header-title">Swap (USD)</p>
+						<p class="table-row-header-title">Close Price</p>
 					</div>
 
 
 					<!-- TABLE ROW HEADER ITEM -->
 					<div class="table-row-header-item padded">
-						<p class="table-row-header-title">SL Price</p>
+						<p class="table-row-header-title">Open Price</p>
 					</div>
 					<!-- /TABLE ROW HEADER ITEM -->
 
 					<!-- TABLE ROW HEADER ITEM -->
 					<div class="table-row-header-item">
-						<p class="table-row-header-title">TP Price</p>
+						<p class="table-row-header-title">Profit</p>
+					</div>
+					<div class="table-row-header-item">
+						<p class="table-row-header-title">currency</p>
+					</div>
+					<div class="table-row-header-item">
+						<p class="table-row-header-title">open date</p>
+					</div>
+					<div class="table-row-header-item">
+						<p class="table-row-header-title">close date</p>
 					</div>
 					<!-- /TABLE ROW HEADER ITEM -->
 
@@ -651,7 +570,181 @@
 	</div>
 
 	<script>
+	let sdata= '[<c:forEach items="${ kraccountprofitchartdata }" var="chartinfo" >${chartinfo.cumulative_profit},</c:forEach>';
+	 let data = JSON.parse(sdata.slice(0,-1)+"]");
+	
+    function insertchart()
+    {
+ 	   
+    	
+  
+     var chartData = {
+         labels:Array.from({ length: data.length }, (_, i) => i + 1),
+         datasets: [{
+             label: 'Profit In USD',
+             backgroundColor: '#f30a5c',
+             borderColor: '#f30a5c',
+             borderWidth: 4,
+             data: data,
+         }]
+     };
+
+     
+  
+
+     // Get the canvas element
+     var ctx = document.getElementById('myChart1').getContext('2d');
+
+     // Create the chart
+     var myChart = new Chart(ctx, {
+         type: 'line',
+         data: chartData,
+         options: {bezierCurve : true,
+         	elements: {
+                 point:{
+                     radius: 1
+                 }
+             },
+             scales: {
+                 yAxes: [{
+                     ticks: {
+                         beginAtZero: false
+                     }
+                 }],
+                 xAxes: [{
+                     display: false, // hide x-axis
+                     gridLines: {
+                         display: false // hide grid lines for x-axis
+                     }
+                 }]
+             }
+         }
+     });
+    }insertchart();
     
+	const parameterid = new URLSearchParams(window.location.search).get('accountid');
+    
+    function getHistorytotalPage() {
+    	
+		$
+				.ajax({
+					url : '${pageContext.request.contextPath}/forum/getKRAccountHistorytotalPage?id='+parameterid,
+					type : 'get',
+					async : false,
+					data : '',
+					success : function(data) {
+						totalpagenumber = data.result;
+						console.log(totalpagenumber);
+						totalpagenumber++;
+						generatePagingNumbers(totalpagenumber, 1);
+					},
+					error : function(xhr, status) {
+						alert("ERROR : " + xhr + " : " + status);
+						return;
+					}
+				});
+	}getHistorytotalPage();
+
+	
+	
+	function buyOrSell(input) {
+	    if (input.indexOf("0")>=0) {
+	        return "buy";
+	    } else if (input.indexOf("1")>=0) {
+	        return "sell";
+	    } else {
+	        return "-";
+	    }
+	}
+	
+	function getHistory(page) {
+		$
+				.ajax({
+					url : '${pageContext.request.contextPath}/forum/getKRAccountHistory?id='+parameterid+'&page='+page,
+					type : 'get',
+					async : false,
+					data : '',
+					success : function(data) {
+						
+							//console.log(JSON.parse(data.result));
+							inserthistoryTable (data.result ,page);
+							generatePagingNumbers(totalpagenumber, page);
+					},
+					error : function(xhr, status) {
+						alert("ERROR : " + xhr + " : " + status);
+						return;
+					}
+				});
+	}getHistory(1);
+	
+	
+	// Function to generate paging numbers
+	function generatePagingNumbers(totalPages, currentPage) {
+	  var pagingContainer = document.getElementById('pagingContainer');
+	  if (!pagingContainer) return;
+	  
+	  var paginationHTML = '';
+	  for (var i = 1; i <= totalPages; i++) {
+	    if (i === currentPage) {
+	      paginationHTML += '<a href="#" class=" page-navigation-item active">' + i + '</a>';
+	    } else {
+	      paginationHTML += '<button type="button" class="page-navigation-item" onclick="getHistory('+i+')">' + i + '</button>';
+	    }
+	  }
+
+
+	  pagingContainer.innerHTML = paginationHTML;
+	}
+
+	function inserthistoryTable (jsonString ,page)
+	{
+		
+		const jobject = JSON.parse(jsonString);
+		
+		console.log(jobject);
+		
+
+		
+		var tableRowsContainer = document.getElementById("historydiv");
+		tableRowsContainer.innerHTML = "";
+
+		// Loop through each object in the JSON data and create a table row for each
+		jobject.forEach(function(itemobj ,index) {
+		  // Create a new table row element
+		  
+		  let item = JSON.parse(itemobj);
+		  
+		   let currentIndex = (index + 1)+(30*(page-1));
+		  
+		  var row1c = '<div class="table-row">'
+		+'  <div class="table-row-item position">'
+
+		+'  <p class="table-text">'+currentIndex+'</p>'
+
+		+'   <div class="team-info-wrap">'
+
+	         
+		+'   </div>'
+	       
+		+'   </div>' 
+		+'<div class="table-row-item"><p class="table-text bold">'+item.tradedate+'</p></div>'
+		+'<div class="table-row-item"><p class="table-text bold">'+item.symbol+'</p></div>'
+		+'<div class="table-row-item"><p class="table-text bold">'+item.type+'</p></div>'
+		+'<div class="table-row-item"><p class="table-text bold">'+item.lots+'</p></div>'
+		+'<div class="table-row-item"><p class="table-text bold">'+item.closeprice+'</p></div>'
+		+'<div class="table-row-item"><p class="table-text bold">'+item.openprice+'</p></div>'
+		+'<div class="table-row-item"><p class="table-text bold">'+item.profit+'</p></div>'
+		+'<div class="table-row-item"><p class="table-text bold">'+item.currency+'</p></div>'
+		+'<div class="table-row-item"><p class="table-text bold">'+item.opendate+'</p></div>'
+		+'<div class="table-row-item"><p class="table-text bold">'+item.closedate+'</p></div>';
+	    
+	     
+		
+		   tableRowsContainer.innerHTML +=row1c;
+		 
+	    
+	});
+	}
 </script>
 	<!-- LAYOUT CONTENT 1 -->
 	<!-- /LAYOUT CONTENT 1 -->

@@ -18,4 +18,5 @@ public class t_kr_account_history {
 	public String closedate;
 	public String opendate;
 	public String create_date;
+	public double cumulative_profit;
 }

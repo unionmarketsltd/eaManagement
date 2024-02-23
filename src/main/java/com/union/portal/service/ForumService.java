@@ -132,6 +132,14 @@ public interface ForumService {
 
 	public calculator getKRaccountCalculator(String accountid);
 	 public int getcheckisban(String email); 
+	 public List<t_kr_account_history> getkraccountprofitchartdata(String id); 
+	 
+	 public int getkraccounthistorytotalpage(String id); 
+	 
+
+	 public String getkraccounthistory(String id,String row,String page); 
+	 
+
 	 
 
 }
