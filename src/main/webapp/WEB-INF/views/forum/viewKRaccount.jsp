@@ -601,13 +601,15 @@ grid-row-gap: 0px;
 	    labels: [<c:forEach items="${profitbysymbol}" var="pieinfo" >"${pieinfo.symbol}",</c:forEach>],
 	    datasets: [
 	        {
+	        	 label: 'Profit In USD',
 	            data: [<c:forEach items="${profitbysymbol}" var="pieinfo1" >${pieinfo1.total_profit},</c:forEach>]
 	           
 	        }]
 	};
 
 	var pieChart = new Chart(oilCanvas, {
-	  type: 'pie',
+		
+	  type: 'bar',
 	  data: oilData
 	});
 	
