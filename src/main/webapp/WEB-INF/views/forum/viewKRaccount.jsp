@@ -601,17 +601,44 @@ grid-row-gap: 0px;
 	    labels: [<c:forEach items="${profitbysymbol}" var="pieinfo" >"${pieinfo.symbol}",</c:forEach>],
 	    datasets: [
 	        {
-	        	 label: 'Profit In USD',
-	            data: [<c:forEach items="${profitbysymbol}" var="pieinfo1" >${pieinfo1.total_profit},</c:forEach>]
-	           
+	        	label: [<c:forEach items="${profitbysymbol}" var="pieinfo" >"${pieinfo.symbol}",</c:forEach>],
+	            data: [<c:forEach items="${profitbysymbol}" var="pieinfo1" >${pieinfo1.total_profit},</c:forEach>],
+	        backgroundColor: [], // Leave it empty for now
 	        }]
+	      
 	};
+	
+	oilData.datasets[0].backgroundColor = oilData.labels.map(() => getRandomColor());
+
 
 	var pieChart = new Chart(oilCanvas, {
 		
 	  type: 'bar',
-	  data: oilData
+	  data: oilData,
+	  options: {
+	        plugins: {
+	            legend: {
+	                display: false // Hide legend
+	            }
+	        },
+	        scales: {
+	            x: {
+	                display: true // Show x-axis
+	            },
+	            y: {
+	                display: true // Show y-axis
+	            }
+	        }
+	    }
 	});
+	
+	
+	function getRandomColor() {
+	    var r = Math.floor(Math.random() * 256); // Random value between 0 and 255 for red
+	    var g = Math.floor(Math.random() * 256); // Random value between 0 and 255 for green
+	    var b = Math.floor(Math.random() * 256); // Random value between 0 and 255 for blue
+	    return 'rgba(' + r + ', ' + g + ', ' + b + ', 0.7)'; // Return color in rgba format with alpha
+	}
 	
 	</script>
 
