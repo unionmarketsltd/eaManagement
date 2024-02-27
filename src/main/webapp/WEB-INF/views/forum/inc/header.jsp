@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/forum/css/style.min.css">
    <script src="https://code.jquery.com/jquery-3.4.1.min.js" ></script>
    
-
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
   <!-- favicon -->
   <link rel="icon" href="img/favicon.ico">

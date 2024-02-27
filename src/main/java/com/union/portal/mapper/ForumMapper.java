@@ -10,6 +10,7 @@ import org.apache.ibatis.annotations.Update;
 import com.union.portal.domain.FundClient_client;
 import com.union.portal.domain.FundClient_loginhistory;
 import com.union.portal.domain.forum_and_cat_name;
+import com.union.portal.domain.piechart;
 import com.union.portal.domain.scroll_topic_info;
 import com.union.portal.domain.t_forum;
 import com.union.portal.domain.t_forum_category;
@@ -549,6 +550,16 @@ public List<t_forum_topiccount> getforumtopiccountlist();
 	 		+ ") AS sub_query; ")
 	 public String getkraccounthistory(@Param("id") String id,@Param("row") int row,@Param("page") int page); 
 	 
+ 
+	 
+	 @Select("SELECT symbol,SUM(profit) AS total_profit FROM (SELECT symbol,profit FROM forum.t_kr_account_history WHERE dbsts = 'A' AND accountid = #{accountid} ORDER BY closedate DESC) AS sub_query GROUP BY symbol;")
+	 public List<piechart> getprofitbysymbol(@Param("accountid") String accountid); 
+	 
 
+
+	 @Select("SELECT JSON_ARRAYAGG(cumulative_profit) AS json_result FROM ( SELECT SUM(profit) OVER (ORDER BY closedate ASC) AS cumulative_profit FROM forum.t_kr_account_history WHERE dbsts = 'A' AND accountid = #{id} ORDER BY closedate ASC ) AS sub_query;")
+	 public String getkrprofitchartdata(@Param("id") String id); 
+	 
+ 
 
 }

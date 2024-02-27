@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.union.portal.domain.FundClient_client;
 import com.union.portal.domain.FundClient_loginhistory;
 import com.union.portal.domain.forum_and_cat_name;
+import com.union.portal.domain.piechart;
 import com.union.portal.domain.scroll_topic_info;
 import com.union.portal.domain.t_forum;
 import com.union.portal.domain.t_forum_category;
@@ -407,6 +408,20 @@ public class ForumServiceImpl implements ForumService {
 	 public String getkraccounthistory(String id,String row,String page){
 	 
 	 return mapper.getkraccounthistory(id,Integer.parseInt(row),Integer.parseInt(page));
+	 
+	}
+	 @Override 
+	 public  List<piechart> getprofitbysymbol(String accountid){
+	 
+	 return mapper.getprofitbysymbol(accountid);
+	 
+	}
+	 
+	 
+	 @Override 
+	 public String getkrprofitchartdata(String id){
+	 
+	 return mapper.getkrprofitchartdata(id);
 	 
 	}
 }

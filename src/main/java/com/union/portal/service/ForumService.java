@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Param;
 import com.union.portal.domain.FundClient_client;
 import com.union.portal.domain.FundClient_loginhistory;
 import com.union.portal.domain.forum_and_cat_name;
+import com.union.portal.domain.piechart;
 import com.union.portal.domain.scroll_topic_info;
 import com.union.portal.domain.t_forum;
 import com.union.portal.domain.t_forum_category;
@@ -138,6 +139,12 @@ public interface ForumService {
 	 
 
 	 public String getkraccounthistory(String id,String row,String page); 
+	 
+
+	 
+	 public  List<piechart> getprofitbysymbol(String accountid); 
+	 
+	 public String getkrprofitchartdata(String id); 
 	 
 
 	 

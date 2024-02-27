@@ -65,6 +65,7 @@ import com.union.portal.common.APIProtectionHandler;
 import com.union.portal.common.HttpUtils;
 import com.union.portal.domain.FundClient_loginhistory;
 import com.union.portal.domain.forum_and_cat_name;
+import com.union.portal.domain.piechart;
 import com.union.portal.domain.scroll_topic_info;
 import com.union.portal.domain.t_forum;
 import com.union.portal.domain.t_forum_category;
@@ -1387,6 +1388,28 @@ return mav;
 		mav.addObject("result", APIProtectionHandler.ApiProtection(request, responsestr));
 		return mav;
 	}
+	
+	
+	@RequestMapping(value = { "/getKRprofitchartdata" }, method = { RequestMethod.GET }, produces = {
+	"application/json;charset=UTF-8" })
+@ResponseBody
+public ModelAndView getKRprofitchartdata(HttpServletRequest request, Model model) {
+logger.info("Get getKRprofitchartdata ........" + this.serverinfo);
+String id = request.getParameter("id");
+
+ModelAndView mav = new ModelAndView("jsonView");
+String responsestr = "";
+
+	String krprofitchartdata = forumservices.getkrprofitchartdata(id); 
+
+	responsestr = krprofitchartdata;
+
+
+mav.addObject("result", APIProtectionHandler.ApiProtection(request, responsestr));
+return mav;
+}
+
+	
 
 	@RequestMapping(value = "/MT5AccountList", method = RequestMethod.GET)
 	public String MT5AccountList(Model model, HttpServletRequest request) throws SQLException {
@@ -1494,8 +1517,13 @@ return mav;
 		String accountid = request.getParameter("accountid");
 		top(model, request);
 		if (forumservices.isallowviewkraccount(accountid)) {
+			
 			t_kr_account_list account = forumservices.getKRaccountname(accountid);
 			calculator cal = forumservices.getKRaccountCalculator(accountid);
+			
+			 List<piechart> profitbysymbol = forumservices.getprofitbysymbol(accountid); 
+
+			 model.addAttribute("profitbysymbol", profitbysymbol);
 
 			model.addAttribute("account", account);
 			model.addAttribute("cal", cal);

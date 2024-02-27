@@ -16,7 +16,7 @@
 <%@include file="inc/session.jsp"%>
 <%@include file="inc/header.jsp"%>
 <title>INVESFORUM | Home</title>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 <script>
         // Wait for the DOM content to be fully loaded
         document.addEventListener("DOMContentLoaded", function() {
@@ -100,6 +100,15 @@
       table.sheet0 tr.row4 { height:17.5pt }
       table.sheet0 tr.row9 { height:17.5pt }
       table.sheet0 tr.row17 { height:17.5pt }
+      
+      
+      .twoxone {
+display: grid;
+grid-template-columns: repeat(2, 1fr);
+grid-template-rows: 1fr;
+grid-column-gap: 0px;
+grid-row-gap: 0px;
+}
     </style>
 </head>
 <body style="display: none">
@@ -448,11 +457,24 @@
 		<div class="widget-item">
 			<!-- SECTION TITLE WRAP -->
 			<div class="section-title-wrap violet small-space">
-				<h2 class="section-title medium">Profit Chart</h2>
+				<h2 class="section-title medium">Profit Chart and pie</h2>
 				<div class="section-title-separator"></div>
 			</div>
 			
-				<canvas id="myChart1" width="800" height="400"></canvas>
+			<div class="twoxone">
+			<div>
+			<canvas id="myChart1"></canvas>
+			</div>
+			<div style="max-height: 300px;
+    float: right;
+    text-align: -webkit-center;">
+			<canvas id="symbolChart" ></canvas>
+				</div>
+				
+				
+			
+			</div>
+				
 			
 		</div>
 		
@@ -566,8 +588,30 @@
 
 
 
+	
 
 	</div>
+	
+	<script>
+	var oilCanvas = document.getElementById("symbolChart");
+
+	
+
+	var oilData = {
+	    labels: [<c:forEach items="${profitbysymbol}" var="pieinfo" >"${pieinfo.symbol}",</c:forEach>],
+	    datasets: [
+	        {
+	            data: [<c:forEach items="${profitbysymbol}" var="pieinfo1" >${pieinfo1.total_profit},</c:forEach>]
+	           
+	        }]
+	};
+
+	var pieChart = new Chart(oilCanvas, {
+	  type: 'pie',
+	  data: oilData
+	});
+	
+	</script>
 
 	<script>
 	let sdata= '[<c:forEach items="${ kraccountprofitchartdata }" var="chartinfo" >${chartinfo.cumulative_profit},</c:forEach>';
