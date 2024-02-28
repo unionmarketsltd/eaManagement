@@ -561,4 +561,56 @@ public class AdminController {
 		return mav;
 	}
 
+	
+	
+	@RequestMapping(value = "/DealsUpload", method = RequestMethod.GET)
+	public String DealsUpload(Model model, HttpServletRequest request) {
+		String vLocal = LocaleContextHolder.getLocale().getLanguage();
+		model.addAttribute("lang", vLocal);
+		String returnURL = "";
+
+		List<t_kr_account_forum_list> acclist = null;
+		acclist = adminservices.getaccountforumlist();
+		model.addAttribute("nowform", acclist);
+
+		returnURL = "/DealsUpload";
+
+		return defaultpath + returnURL;
+	}
+	
+	
+	@PostMapping(value = { "/api/posthistorydata" }, consumes = { "application/json" }, produces = {
+			"application/json" })
+		public ModelAndView api_createnewtopic(@RequestBody String body, HttpServletRequest request) throws SQLException {
+		ModelAndView mav = new ModelAndView("jsonView");
+		JSONArray JSONARRAY = new JSONArray(body);
+		String responsestr="";
+		String id = request.getParameter("id");
+		// logger.info(JSONARRAY.getJSONObject(0).getString("transactionDate"));
+		
+		for( int i=0; i<JSONARRAY.length(); i++)
+		{
+			String tradedate = JSONARRAY.getJSONObject(i).getString("transactionDate");
+			String symbol = JSONARRAY.getJSONObject(i).getString("item");
+			String type = JSONARRAY.getJSONObject(i).getString("type");
+			double lots = JSONARRAY.getJSONObject(i).getDouble("volume");
+		
+			double closeprice = JSONARRAY.getJSONObject(i).getDouble("price");
+			double openprice = JSONARRAY.getJSONObject(i).getDouble("entryPrice");
+			String currency = JSONARRAY.getJSONObject(i).getString("currency");
+			double profit = JSONARRAY.getJSONObject(i).getDouble("futureProfitLoss");
+			String closedate = JSONARRAY.getJSONObject(i).getString("dealDateTime");
+			String opendate = JSONARRAY.getJSONObject(i).getString("entryDateTime");
+			
+			// save into database
+			adminservices.insertxlsdatafile(id, tradedate, symbol, type, lots, closeprice, openprice, currency, profit, closedate,  opendate);
+			
+		}
+		
+		
+		mav.addObject("result",  responsestr);
+		return mav;
+		}
+	
+	
 }

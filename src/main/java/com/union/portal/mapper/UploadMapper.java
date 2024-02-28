@@ -37,36 +37,18 @@ public interface UploadMapper {
 	@Select("SELECT * FROM forum.t_kr_account_list where dbsts='A' ")
 	public List<t_kr_account_forum_list> getaccountforumlist();
 	
-	
-	@Select("INSERT INTO `forum`.`t_kr_account_history`\r\n"
-			+ "(`accountid`,\r\n"
-			+ "`dbsts`,\r\n"
-			+ "`tradedate`,\r\n"
-			+ "`symbol`,\r\n"
-			+ "`type`,\r\n"
-			+ "`lots`,\r\n"
-			+ "`closeprice`,\r\n"
-			+ "`openprice`,\r\n"
-			+ "`currency`,\r\n"
-			+ "`profit`,\r\n"
-			+ "`closedate`,\r\n"
-			+ "`opendate`,\r\n"
-			+ "`credate`)\r\n"
-			+ "VALUES\r\n"
-			+ "(#{accid},\r\n"
-			+ "A,\r\n"
-			+ ",\r\n"
-			+ ",\r\n"
-			+ ",\r\n"
-			+ ",\r\n"
-			+ ",\r\n"
-			+ ",\r\n"
-			+ ",\r\n"
-			+ ",\r\n"
-			+ ",\r\n"
-			+ ",\r\n"
-			+ ");")
-	public void insertxlsdata(@Param("accid")String accid,@Param("email")String email);
-	
+	@Select("INSERT IGNORE INTO `forum`.`t_kr_account_history` (`accountid`, `dbsts`, `tradedate`, `symbol`, `type`, `lots`, `closeprice`, `openprice`, `currency`, `profit`, `closedate`, `opendate`, `credate`)\r\n"
+			+ "VALUES ('4', 'A', #{tradedate}, #{symbol}, #{type}, #{lots}, #{closeprice}, #{openprice}, #{currency}, #{profit}, #{closedate}, #{opendate}, now());")
+	public void insertxlsdata(
+			@Param("tradedate")String tradedate,
+			@Param("symbol")String symbol,
+			@Param("type")String type,
+			@Param("lots")double lots,
+			@Param("closeprice")double closeprice,
+			@Param("openprice")double openprice,
+			@Param("currency")String currency,
+			@Param("profit")double profit,
+			@Param("closedate")String closedate,
+			@Param("opendate")String opendate);
 	
 }

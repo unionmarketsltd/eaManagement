@@ -41,7 +41,8 @@
 			href="${pageContext.request.contextPath}/admin/commentsetting"
 			class="dropdown-list-item-link">Comment Setting</a></li>
 
-		<li class="dropdown-list-item" id="menu_"><a href="#"
+		<li class="dropdown-list-item" id="menu_"><a 
+			href="${pageContext.request.contextPath}/admin/DealsUpload"
 			class="dropdown-list-item-link">Deals Upload</a></li>
 			
 			

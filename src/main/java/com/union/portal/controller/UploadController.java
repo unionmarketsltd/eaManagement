@@ -22,16 +22,23 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.format.DateTimeFormatter;
 import java.util.Base64;
 import java.util.List;
 import java.util.Random;
 import java.util.regex.Pattern;
+// excel upload
+import java.util.Iterator;
+import java.io.*;
+import java.sql.*;
 
 import javax.mail.Quota.Resource;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.servlet.http.Part;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -56,8 +63,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 // file upload apache.poi
 import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -116,17 +126,124 @@ public class UploadController {
 	@Autowired
 	UploadService uploadservice;
 
-	@PostMapping(value = { "/api/uploadservice" }, consumes = { "application/json" }, produces = {
+	@PostMapping(value = { "/api/posthistorydata" }, consumes = { "application/json" }, produces = {
 			"application/json" })
-	public ModelAndView api_uploadservice(@RequestBody String body, HttpServletRequest request) throws SQLException {
+	public ModelAndView api_createnewtopic(@RequestBody String body, HttpServletRequest request) throws SQLException {
 		ModelAndView mav = new ModelAndView("jsonView");
-		JSONObject jsonbodyobj = new JSONObject(body);
-		logger.info("Welcome uploadservice: ");
-		String responsestr = "";
-		HttpSession session = request.getSession();
+		JSONArray JSONARRAY = new JSONArray(body);
+		String responsestr="";
+		// logger.info(JSONARRAY.getJSONObject(0).getString("transactionDate"));
+		
+		for( int i=0; i<JSONARRAY.length(); i++)
+		{
+			
+			
+			String tradedate = JSONARRAY.getJSONObject(i).getString("transactionDate");
+			String symbol = JSONARRAY.getJSONObject(i).getString("item");
+			String type = JSONARRAY.getJSONObject(i).getString("type");
+			double lots = JSONARRAY.getJSONObject(i).getDouble("volume");
 
-		mav.addObject("result", APIProtectionHandler.ApiProtection(request, responsestr));
+			double closeprice = JSONARRAY.getJSONObject(i).getDouble("price");
+			double openprice = JSONARRAY.getJSONObject(i).getDouble("entryPrice");
+			String currency = JSONARRAY.getJSONObject(i).getString("currency");
+			double profit = JSONARRAY.getJSONObject(i).getDouble("futureProfitLoss");
+			String closedate = JSONARRAY.getJSONObject(i).getString("dealDateTime");
+			String opendate = JSONARRAY.getJSONObject(i).getString("entryDateTime");
+
+			
+			
+			uploadservice.insertxlsdata(tradedate, symbol, type, lots, closeprice, openprice, currency, profit, closedate,  opendate);
+			
+			// logger.info(UploadService.insertxlsdata(  tradedate,  symbol,  type,  lots,  closeprice,  openprice,  currency,  profit,  closedate,  opendate));
+			
+			
+			
+		}
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		mav.addObject("result",  responsestr);
 		return mav;
+	}
+
+	@RequestMapping(value = "/uploadExcel", method = RequestMethod.POST)
+	public String uploadExcelFile(@RequestParam("file") MultipartFile file) {
+		try {
+			InputStream inputStream = file.getInputStream();
+			Workbook workbook = WorkbookFactory.create(inputStream);
+			Sheet sheet = workbook.getSheetAt(0);
+			Iterator<Row> rowIterator = sheet.iterator();
+
+			logger.info("WADAFAKK!!!!!");
+			// Assuming your database table has three columns: ID, Name, and Age
+			/*
+			 * String sql = "INSERT INTO your_table_name (ID, Name, Age) VALUES (?, ?, ?)";
+			 * Connection connection = DriverManager.getConnection("your_database_url",
+			 * "username", "password"); PreparedStatement statement =
+			 * connection.prepareStatement(sql);
+			 * 
+			 * while (rowIterator.hasNext()) { Row row = rowIterator.next(); int id = (int)
+			 * row.getCell(0).getNumericCellValue(); String name =
+			 * row.getCell(1).getStringCellValue(); int age = (int)
+			 * row.getCell(2).getNumericCellValue();
+			 * 
+			 * statement.setInt(1, id); statement.setString(2, name); statement.setInt(3,
+			 * age); statement.executeUpdate(); }
+			 * 
+			 * statement.close(); connection.close(); workbook.close(); inputStream.close();
+			 */
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		String returnURL = "";
+		returnURL = "/uploadxls";
+
+		// model.addAttribute("acclist", acclist);
+		return defaultpath + returnURL;
+	}
+
+	@PostMapping("/upload")
+	public String uploadFile(@RequestParam("file") MultipartFile file) {
+		if (file.isEmpty()) {
+			// Handle empty file
+			return defaultpath + "/uploadXLS";
+		}
+
+		logger.info("welcome wadafak!");
+
+		try (InputStream inputStream = file.getInputStream()) {
+			Workbook workbook = WorkbookFactory.create(inputStream);
+			Sheet sheet = workbook.getSheetAt(0); // Assuming the first sheet
+
+			String sql = "INSERT INTO your_table_name (column1, column2, column3) VALUES (?, ?, ?)";
+
+			logger.info(sql);
+			/*
+			 * for (Row row : sheet) { if (row.getRowNum() == 0) { continue; // Skip header
+			 * row }
+			 * 
+			 * jdbcTemplate.update(sql, row.getCell(0).getStringCellValue(),
+			 * row.getCell(1).getStringCellValue(), row.getCell(2).getStringCellValue()); }
+			 */
+
+			workbook.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+			// Handle file processing or database error
+			return defaultpath + "/uploadXLS";
+		}
+
+		return defaultpath + "/uploadXLS";
 	}
 
 	@RequestMapping(value = "/uploadXLS", method = RequestMethod.GET)
@@ -137,7 +254,6 @@ public class UploadController {
 		String vLocal = LocaleContextHolder.getLocale().getLanguage();
 
 		List<t_kr_account_forum_list> acclist = null;
-
 		acclist = uploadservice.getaccountforumlist();
 		model.addAttribute("nowform", acclist);
 

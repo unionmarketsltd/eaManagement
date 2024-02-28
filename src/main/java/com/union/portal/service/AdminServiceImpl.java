@@ -47,6 +47,14 @@ public class AdminServiceImpl implements AdminService {
 		// TODO Auto-generated method stub
 		return mapper.getaccountforumlist();
 	}
+	
+	@Override
+	public void insertxlsdatafile(String id, String tradedate, String symbol, String type, double lots, double closeprice, double openprice, String currency, double profit, String closedate, String opendate)
+	{
+		
+		mapper.insertxlsdatafile(id, tradedate,  symbol,  type,  lots,  closeprice,  openprice,  currency,  profit,  closedate,  opendate);
+		// id,
+	}
 
 	@Override
 	public List<t_user> getclientlist(String row, String page) {

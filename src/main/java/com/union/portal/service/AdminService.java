@@ -30,6 +30,8 @@ import com.union.portal.domain.calculator;
 
 public interface AdminService {
 	public List<t_kr_account_forum_list> getaccountforumlist();
+	public void insertxlsdatafile(String id, String tradedate, String symbol, String type, double lots, double closeprice, double openprice, String currency, double profit, String closedate, String opendate);
+	
 	public List<t_user> getclientlist(String row, String page);
 	public int getclientlisttotalPage(int row);
 	 public void updateclientlist(String isadmin,String id); 

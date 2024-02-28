@@ -35,7 +35,22 @@ public interface AdminMapper {
 
 	@Select("SELECT * FROM forum.t_kr_account_list where dbsts='A' ")
 	public List<t_kr_account_forum_list> getaccountforumlist();
-
+	
+	@Select("INSERT IGNORE INTO `forum`.`t_kr_account_history` (`accountid`, `dbsts`, `tradedate`, `symbol`, `type`, `lots`, `closeprice`, `openprice`, `currency`, `profit`, `closedate`, `opendate`, `credate`)\r\n"
+			+ "VALUES (#{forumaccid}, 'A', #{tradedate}, #{symbol}, #{type}, #{lots}, #{closeprice}, #{openprice}, #{currency}, #{profit}, #{closedate}, #{opendate}, now());")
+	public void insertxlsdatafile(@Param("forumaccid")String forumaccid,
+			@Param("tradedate")String tradedate,
+			@Param("symbol")String symbol,
+			@Param("type")String type,
+			@Param("lots")double lots,
+			@Param("closeprice")double closeprice,
+			@Param("openprice")double openprice,
+			@Param("currency")String currency,
+			@Param("profit")double profit,
+			@Param("closedate")String closedate,
+			@Param("opendate")String opendate); // #{forumaccid}, // @Param("forumaccid")int forumaccid,
+	
+	
 	@Select("INSERT INTO `forum`.`t_kr_account_history`\r\n" + "(`accountid`,\r\n" + "`dbsts`,\r\n" + "`tradedate`,\r\n"
 			+ "`symbol`,\r\n" + "`type`,\r\n" + "`lots`,\r\n" + "`closeprice`,\r\n" + "`openprice`,\r\n"
 			+ "`currency`,\r\n" + "`profit`,\r\n" + "`closedate`,\r\n" + "`opendate`,\r\n" + "`credate`)\r\n"
