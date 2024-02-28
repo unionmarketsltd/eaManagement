@@ -145,8 +145,7 @@ public interface ForumService {
 	 public  List<piechart> getprofitbysymbol(String accountid); 
 	 
 	 public String getkrprofitchartdata(String id); 
-	 
 
-	 
-
+	 public List<calculator> getDailyProfitList(String accountid);
+	 public List<calculator> getMonthlyProfitList(String accountid);
 }

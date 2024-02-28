@@ -1513,6 +1513,7 @@ return mav;
 
 	@RequestMapping(value = "/viewKRAccount", method = RequestMethod.GET)
 	public String viewKRAccount(Model model, HttpServletRequest request) {
+		logger.info("viewKRAccount ......................");
 		String returnURL = "";
 		String accountid = request.getParameter("accountid");
 		top(model, request);
@@ -1522,11 +1523,176 @@ return mav;
 			calculator cal = forumservices.getKRaccountCalculator(accountid);
 			
 			 List<piechart> profitbysymbol = forumservices.getprofitbysymbol(accountid); 
+			 List<calculator> daily = forumservices.getDailyProfitList(accountid); 
+			 List<calculator> monthly = forumservices.getMonthlyProfitList(accountid);
+			 
+			 int plusDayCnt = 1;
+			 int minusDayCnt = 1;
+			 int maxPlusDayCnt = 0;
+			 int maxMinusDayCnt = 0;
+			 
+			 int nowPlus = 1;
+			 int nowMinus = 1;
+			 
+			 double dailyProfitRate = 0.0;
+			 double beforeDailyProfit = 0.0;
+			 double maxDailyProfit = 0.0;
+			 double minDailyProfit = 0.0;
+			 String maxDailyProfitDay = "";
+			 String minDailyProfitDay = "";
+			 double maxDailyProfitRate = 0.0;
+			 double minDailyProfitRate = 0.0;
+			 double daysProfitRate = 0.0;
+			 double daysAverageProfit = 0.0;
+			 
 
-			 model.addAttribute("profitbysymbol", profitbysymbol);
+			 int plusMonthCnt = 1;
+			 int minusMonthCnt = 1;
+			 int maxPlusMonthCnt = 0;
+			 int maxMinusMonthCnt = 0;
+			 
+			 int nowMonthPlus = 1;
+			 int nowMonthMinus = 1;
+			 double monthlyProfitRate = 0.0;
+			 double beforeMonthlyProfit = 0.0;
+			 double maxMonthlyProfit = 0.0;
+			 double minMonthlyProfit = 0.0;
+			 String maxMonthlyProfitDay = "";
+			 String minMonthlyProfitDay = "";
+			 double maxMonthlyProfitRate = 0.0;
+			 double minMonthlyProfitRate = 0.0;
+			 double monthsProfitRate = 0.0;
+			 double monthsAverageProfit = 0.0;
+			 
+//////Daily
+			 for (calculator lst : daily) {
+				 if(lst.getDailyprofit()>0) {
+					 plusDayCnt++;
+				 }else {
+					 minusDayCnt++;
+				 }
 
+				 if(lst.getDailyprofit()>0 && beforeDailyProfit>0) {
+					 nowPlus++;
+					 if(nowPlus>maxPlusDayCnt) {
+						 maxPlusDayCnt = nowPlus;
+					 }
+				 }else {
+					 nowPlus=0;
+				 }
+				 if(lst.getDailyprofit()<0 && beforeDailyProfit<0){
+					 nowMinus++;
+					 if(nowMinus>maxMinusDayCnt) {
+						 maxMinusDayCnt = nowMinus;
+					 }
+				 }else {
+					 nowMinus=0;
+				 }
+
+				 if(lst.getDailyprofit()>maxDailyProfit) {
+					 maxDailyProfit = lst.getDailyprofit();
+					 maxDailyProfitDay = lst.getDay();
+				 }
+				 if(lst.getDailyprofit()<minDailyProfit) {
+					 minDailyProfit = lst.getDailyprofit();
+					 minDailyProfitDay = lst.getDay();
+				 }
+				 beforeDailyProfit = lst.getDailyprofit();
+					logger.info("cal.maxDailyProfit."+maxDailyProfit);
+					logger.info("cal.minDailyProfit."+minDailyProfit);
+					logger.info("cal.maxPlusDayCnt."+maxPlusDayCnt);
+					logger.info("cal.maxMinusDayCnt."+maxMinusDayCnt);
+					logger.info("cal.lst.getDailyprofit()."+lst.getDailyprofit());
+			 }
+			 dailyProfitRate = ((double)plusDayCnt/(double)cal.tradedatecnt) * 100;
+			 
+
+				logger.info("cal.tradedatecnt."+cal.tradedatecnt);
+				logger.info("dailyProfitRate."+dailyProfitRate);
+				logger.info("fundamount."+cal.fundamount);
+
+				maxDailyProfitRate = maxDailyProfit*cal.usdrate/(double)cal.fundamount * 100;
+				minDailyProfitRate = minDailyProfit*cal.usdrate/(double)cal.fundamount * 100;
+				
+				daysProfitRate = cal.profitrate / cal.tradedatecnt;
+				daysAverageProfit = cal.profit / cal.tradedatecnt;
+///// Monthly
+				int monthCnt = 0;
+				 for (calculator mlst : monthly) {
+					 monthCnt++;
+					 if(mlst.getMonthlyprofit()>0) {
+						 plusMonthCnt++;
+					 }else {
+						 minusMonthCnt++;
+					 }
+
+					 if(mlst.getMonthlyprofit()>0 && beforeMonthlyProfit>0) {
+						 nowMonthPlus++;
+						 if(nowMonthPlus>maxPlusMonthCnt) {
+							 maxPlusMonthCnt = nowMonthPlus;
+						 }
+					 }else {
+						 nowMonthPlus=0;
+					 }
+					 if(mlst.getMonthlyprofit()<0 && beforeMonthlyProfit<0){
+						 nowMonthMinus++;
+						 if(nowMonthMinus>maxMinusMonthCnt) {
+							 maxMinusMonthCnt = nowMonthMinus;
+						 }
+					 }else {
+						 nowMonthMinus=0;
+					 }
+
+					 if(mlst.getMonthlyprofit()>maxMonthlyProfit) {
+						 maxMonthlyProfit = mlst.getMonthlyprofit();
+						 maxMonthlyProfitDay = mlst.getMonth();
+					 }
+					 if(mlst.getMonthlyprofit()<minMonthlyProfit) {
+						 minMonthlyProfit = mlst.getMonthlyprofit();
+						 minMonthlyProfitDay = mlst.getMonth();
+					 }
+					 beforeMonthlyProfit = mlst.getMonthlyprofit();
+					 
+				 }
+				 monthlyProfitRate = ((double)plusMonthCnt/(double)monthCnt) * 100;
+
+					maxMonthlyProfitRate = maxMonthlyProfit*cal.usdrate/(double)cal.fundamount * 100;
+					minMonthlyProfitRate = minMonthlyProfit*cal.usdrate/(double)cal.fundamount * 100;
+					
+					monthsProfitRate = cal.profitrate / monthCnt;
+					monthsAverageProfit = cal.profit / monthCnt;	
+			//Daily			
+			model.addAttribute("profitbysymbol", profitbysymbol);
 			model.addAttribute("account", account);
 			model.addAttribute("cal", cal);
+			model.addAttribute("plusDayCnt", plusDayCnt);
+			model.addAttribute("minusDayCnt", minusDayCnt);
+			model.addAttribute("maxPlusDayCnt", maxPlusDayCnt+1);
+			model.addAttribute("maxMinusDayCnt", maxMinusDayCnt+1);
+			model.addAttribute("dailyProfitRate", dailyProfitRate);
+			model.addAttribute("maxDailyProfit", maxDailyProfit);
+			model.addAttribute("minDailyProfit", minDailyProfit);
+			model.addAttribute("maxDailyProfitDay", maxDailyProfitDay);
+			model.addAttribute("minDailyProfitDay", minDailyProfitDay);
+			model.addAttribute("maxDailyProfitRate", maxDailyProfitRate);
+			model.addAttribute("minDailyProfitRate", minDailyProfitRate);
+			model.addAttribute("daysProfitRate", daysProfitRate);
+			model.addAttribute("daysAverageProfit", daysAverageProfit);
+			//Monthly
+			model.addAttribute("monthCnt", monthCnt);
+			model.addAttribute("plusMonthCnt", plusMonthCnt);
+			model.addAttribute("minusMonthCnt", minusMonthCnt);
+			model.addAttribute("maxPlusMonthCnt", maxPlusMonthCnt+1);
+			model.addAttribute("maxMinusMonthCnt", maxMinusMonthCnt+1);
+			model.addAttribute("monthlyProfitRate", monthlyProfitRate);
+			model.addAttribute("maxMonthlyProfit", maxMonthlyProfit);
+			model.addAttribute("minMonthlyProfit", minMonthlyProfit);
+			model.addAttribute("maxMonthlyProfitDay", maxMonthlyProfitDay);
+			model.addAttribute("minMonthlyProfitDay", minMonthlyProfitDay);
+			model.addAttribute("maxMonthlyProfitRate", maxMonthlyProfitRate);
+			model.addAttribute("minMonthlyProfitRate", minMonthlyProfitRate);
+			model.addAttribute("monthsProfitRate", monthsProfitRate);
+			model.addAttribute("monthsAverageProfit", monthsAverageProfit);
 
 			List<t_kr_account_history> kraccountprofitchartdata = forumservices.getkraccountprofitchartdata(accountid);
 

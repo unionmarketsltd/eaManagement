@@ -202,8 +202,8 @@ grid-row-gap: 0px;
             <td class="column4 style13 s">${account.grade}</td>
             <td class="column5 style1 null"></td>
             <td class="column6 style1 null"></td>
-            <td class="column7 style1 null"></td>
-            <td class="column8 style1 null"></td>
+            <td class="column7 style4 s">투자금액</td>
+            <td class="column8 style13 s"><fmt:formatNumber value="${cal.fundamount}" pattern="#,###"/>원</td>
           </tr>
           <tr class="row2">
             <td class="column0 style4 s">투자지역 </td>
@@ -213,8 +213,8 @@ grid-row-gap: 0px;
             <td class="column4 style13 s">${account.leverage}</td>
             <td class="column5 style1 null"></td>
             <td class="column6 style1 null"></td>
-            <td class="column7 style1 null"></td>
-            <td class="column8 style1 null"></td>
+            <td class="column7 style4 s">환율</td>
+            <td class="column8 style13 s"><fmt:formatNumber value="${cal.usdrate}" pattern="#,###.##"/>원</td>
           </tr>
           <tr class="row3">
             <td class="column0 style1 null"></td>
@@ -279,20 +279,20 @@ grid-row-gap: 0px;
             <td class="column2 style2 null"></td>
             <td class="column3 style3 s">연환산수익률</td>
             <td class="column4 style2 null"></td>
-            <td class="column5 style20 n"><fmt:formatNumber value="${cal.yearexpectprofitrate}" pattern="0.00"/>%</td>
+            <td class="column5 style18 n"><fmt:formatNumber value="${cal.yearexpectprofitrate}" pattern="0.00"/>%</td>
             <td class="column6 style2 null"></td>
             <td class="column7 style3 s">일간승률</td>
-            <td class="column8 style19 n">60%</td>
+            <td class="column8 style19 n"><fmt:formatNumber value="${dailyProfitRate}" pattern="0.00"/>%</td>
           </tr>
           <tr class="row9">
             <td class="column0 style11 s style12" colspan="2">수익률 현황</td>
             <td class="column2 style2 null"></td>
             <td class="column3 style3 s">최대연속수익일수</td>
             <td class="column4 style2 null"></td>
-            <td class="column5 style17 s">5일</td>
+            <td class="column5 style17 s">${maxPlusDayCnt}일</td>
             <td class="column6 style2 null"></td>
-            <td class="column7 style3 s">최대수익률</td>
-            <td class="column8 style17 s">15% (2021-01-01)</td>
+            <td class="column7 style3 s">일간최대수익률</td>
+            <td class="column8 style17 s"><fmt:formatNumber value="${maxDailyProfitRate}" pattern="0.00"/>% (${maxDailyProfitDay}일)</td>
           </tr>
           <tr class="row10">
             <td class="column0 style4 s">최근일</td>
@@ -300,10 +300,10 @@ grid-row-gap: 0px;
             <td class="column2 style2 null"></td>
             <td class="column3 style5 s">최대연속손실일수</td>
             <td class="column4 style2 null"></td>
-            <td class="column5 style17 s">3일</td>
+            <td class="column5 style17 s">${maxMinusDayCnt}일</td>
             <td class="column6 style2 null"></td>
-            <td class="column7 style3 s">최저수익률</td>
-            <td class="column8 style17 s">15% (2021-01-01)</td>
+            <td class="column7 style3 s">일간최저수익률</td>
+            <td class="column8 style20 n"><fmt:formatNumber value="${minDailyProfitRate}" pattern="0.00"/>% (${minDailyProfitDay}일)</td>
           </tr>
           <tr class="row11">
             <td class="column0 style4 s">최근 1주일</td>
@@ -314,7 +314,7 @@ grid-row-gap: 0px;
             <td class="column5 style2 null"></td>
             <td class="column6 style2 null"></td>
             <td class="column7 style3 s">일평균수익률</td>
-            <td class="column8 style19 n">15%</td>
+            <td class="column8 style19 n"><fmt:formatNumber value="${daysProfitRate}" pattern="0.000"/>%</td>
           </tr>
           <tr class="row12">
             <td class="column0 style4 s">최근 1개월</td>
@@ -324,8 +324,8 @@ grid-row-gap: 0px;
             <td class="column4 style2 null"></td>
             <td class="column5 style2 null"></td>
             <td class="column6 style2 null"></td>
-            <td class="column7 style3 s">일표준편차</td>
-            <td class="column8 style19 n">13%</td>
+            <td class="column7 style3 s">일평균수익금</td>
+            <td class="column8 style19 n"><fmt:formatNumber value="${daysAverageProfit * cal.usdrate}" pattern="#,###"/>원</td>
           </tr>
           <tr class="row13">
             <td class="column0 style4 s">최근 3개월</td>
@@ -344,7 +344,7 @@ grid-row-gap: 0px;
             <td class="column5 style16 n">60%</td>
             <td class="column6 style2 null"></td>
             <td class="column7 style3 s">개월수</td>
-            <td class="column8 style17 n">30</td>
+            <td class="column8 style17 n">${monthCnt}</td>
           </tr>
           <tr class="row15">
             <td class="column0 style4 s">연초 이후</td>
@@ -354,7 +354,7 @@ grid-row-gap: 0px;
             <td class="column5 style16 n">60%</td>
             <td class="column6 style2 null"></td>
             <td class="column7 style3 s">월간승률</td>
-            <td class="column8 style19 n">60%</td>
+            <td class="column8 style19 n"><fmt:formatNumber value="${monthlyProfitRate}" pattern="0.00"/>%</td>
           </tr>
           <tr class="row16">
             <td class="column0 style2 null"></td>
@@ -365,7 +365,7 @@ grid-row-gap: 0px;
             <td class="column5 style16 n">60%</td>
             <td class="column6 style2 null"></td>
             <td class="column7 style3 s">월간최대수익률</td>
-            <td class="column8 style17 s">15%(2021-01-01)</td>
+            <td class="column8 style17 s"><fmt:formatNumber value="${maxMonthlyProfitRate}" pattern="0.00"/>% (${maxMonthlyProfitDay}월)</td>
           </tr>
           <tr class="row17">
             <td class="column0 style11 s style12" colspan="2">수익금 현황(원)</td>
@@ -374,7 +374,7 @@ grid-row-gap: 0px;
             <td class="column5 style16 n">60%</td>
             <td class="column6 style2 null"></td>
             <td class="column7 style3 s">월간최저수익률</td>
-            <td class="column8 style17 s">15%(2021-01-01)</td>
+            <td class="column8 style17 s"><fmt:formatNumber value="${minMonthlyProfitRate}" pattern="0.00"/>% (${minMonthlyProfitDay}월)</td>
           </tr>
           <tr class="row18">
             <td class="column0 style4 s">최근일</td>
@@ -385,7 +385,7 @@ grid-row-gap: 0px;
             <td class="column5 style16 n">60%</td>
             <td class="column6 style2 null"></td>
             <td class="column7 style3 s">월평균수익률</td>
-            <td class="column8 style19 n">15%</td>
+            <td class="column8 style19 n"><fmt:formatNumber value="${monthsProfitRate}" pattern="0.000"/>%</td>
           </tr>
           <tr class="row19">
             <td class="column0 style4 s">이번주</td>
@@ -394,8 +394,8 @@ grid-row-gap: 0px;
             <td class="column4 style4 s">연환산 Sharpe Ratio</td>
             <td class="column5 style16 n">60%</td>
             <td class="column6 style2 null"></td>
-            <td class="column7 style3 s">월표준편차</td>
-            <td class="column8 style19 n">13%</td>
+            <td class="column7 style3 s">월평균수익금</td>
+            <td class="column8 style19 n"><fmt:formatNumber value="${monthsAverageProfit * cal.usdrate}" pattern="#,###"/>원</td>
           </tr>
           <tr class="row20">
             <td class="column0 style4 s">이번달</td>

@@ -510,6 +510,8 @@ public List<t_forum_topiccount> getforumtopiccountlist();
 	
 
 	@Select("SELECT \r\n"
+			+ " (SELECT deal_bas_r FROM t_exchange_rate WHERE cur_unit='USD') as usdrate, \r\n"
+			+ "	(SELECT SUM(g.amount) FROM t_kr_account_fund g WHERE g.dbsts='A' AND g.accountid=#{accountid}) as fundamount, \r\n"
 			+ "	SUM(a.profit) AS profit,\r\n"
 			+ "	SUM(a.profit)*(SELECT deal_bas_r FROM t_exchange_rate WHERE cur_unit='USD')/(SELECT SUM(b.amount) FROM t_kr_account_fund b WHERE b.dbsts='A' AND accountid=#{accountid}) * 100 AS profitrate,\r\n"
 			+ "	count(DISTINCT(a.tradedate) ) AS tradedatecnt,\r\n"
@@ -552,7 +554,7 @@ public List<t_forum_topiccount> getforumtopiccountlist();
 	 
  
 	 
-	 @Select("SELECT symbol,SUM(profit) AS total_profit FROM (SELECT symbol,profit FROM forum.t_kr_account_history WHERE dbsts = 'A' AND accountid = #{accountid} ORDER BY closedate DESC) AS sub_query GROUP BY symbol;")
+	 @Select("SELECT substr(symbol,1,2) AS symbol,SUM(profit) AS total_profit FROM (SELECT symbol,profit FROM forum.t_kr_account_history WHERE dbsts = 'A' AND accountid = #{accountid} ORDER BY closedate DESC) AS sub_query GROUP BY substr(symbol,1,2);")
 	 public List<piechart> getprofitbysymbol(@Param("accountid") String accountid); 
 	 
 
@@ -560,6 +562,14 @@ public List<t_forum_topiccount> getforumtopiccountlist();
 	 @Select("SELECT JSON_ARRAYAGG(cumulative_profit) AS json_result FROM ( SELECT SUM(profit) OVER (ORDER BY closedate ASC) AS cumulative_profit FROM forum.t_kr_account_history WHERE dbsts = 'A' AND accountid = #{id} ORDER BY closedate ASC ) AS sub_query;")
 	 public String getkrprofitchartdata(@Param("id") String id); 
 	 
- 
+
+	 @Select("SELECT SUBSTR(closedate,1,10) AS day, SUM(profit) AS dailyprofit FROM t_kr_account_history WHERE accountid=#{accountid} and dbsts='A' \r\n"
+	 		+ "GROUP BY day")
+	 public List<calculator> getDailyProfitList(@Param("accountid")String accountid); 
+	 
+
+	 @Select("SELECT SUBSTR(closedate,1,7) AS month, SUM(profit) AS monthlyprofit FROM t_kr_account_history WHERE accountid=#{accountid} and dbsts='A' \r\n"
+	 		+ "GROUP BY SUBSTR(closedate,1,7)")
+	 public List<calculator> getMonthlyProfitList(@Param("accountid")String accountid); 
 
 }

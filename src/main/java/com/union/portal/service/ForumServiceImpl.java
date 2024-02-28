@@ -424,4 +424,20 @@ public class ForumServiceImpl implements ForumService {
 	 return mapper.getkrprofitchartdata(id);
 	 
 	}
+	 
+
+	 @Override 
+	 public List<calculator> getDailyProfitList(String accountid){
+	 
+	 return mapper.getDailyProfitList(accountid);
+	 
+	}
+	 
+
+	 @Override 
+	 public List<calculator> getMonthlyProfitList(String accountid){
+	 
+	 return mapper.getMonthlyProfitList(accountid);
+	 
+	}
 }

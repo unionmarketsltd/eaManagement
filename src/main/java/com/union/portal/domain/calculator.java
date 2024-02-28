@@ -9,7 +9,9 @@ import lombok.Data;
 public class calculator
 {
 	public double profit;
+	public int fundamount;
 	public double profitrate;
+	public double usdrate;
 	public int tradedatecnt;
 	public double yearexpectprofitrate;
 	public double todayprofitrate;
@@ -23,4 +25,8 @@ public class calculator
 	public double lastyearprofit;
 	public double firstdayprofitrate;
 	public double profitwon;
+	public String day;
+	public String month;
+	public double dailyprofit;
+	public double monthlyprofit;
 }
