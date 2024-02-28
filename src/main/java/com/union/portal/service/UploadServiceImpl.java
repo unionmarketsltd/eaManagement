@@ -53,7 +53,7 @@ public class UploadServiceImpl implements UploadService {
 	@Override
 	public void insertxlsdata(String tradedate, String symbol, String type, double lots, double closeprice, double openprice, String currency, double profit, String closedate, String opendate)
 	{
-		
+		// String id
 		mapper.insertxlsdata( tradedate,  symbol,  type,  lots,  closeprice,  openprice,  currency,  profit,  closedate,  opendate);
 	}
 	

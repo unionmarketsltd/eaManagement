@@ -48,7 +48,7 @@ public interface AdminMapper {
 			@Param("currency")String currency,
 			@Param("profit")double profit,
 			@Param("closedate")String closedate,
-			@Param("opendate")String opendate); // #{forumaccid}, // @Param("forumaccid")int forumaccid,
+			@Param("opendate")String opendate); // #{forumaccid}, // @Param("forumaccid")String forumaccid,
 	
 	
 	@Select("INSERT INTO `forum`.`t_kr_account_history`\r\n" + "(`accountid`,\r\n" + "`dbsts`,\r\n" + "`tradedate`,\r\n"

@@ -51,4 +51,6 @@ public interface UploadMapper {
 			@Param("closedate")String closedate,
 			@Param("opendate")String opendate);
 	
+	// #{accid},  // @Param("accid")String accid,
+	
 }

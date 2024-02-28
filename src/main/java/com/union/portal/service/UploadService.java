@@ -29,7 +29,7 @@ import com.union.portal.domain.calculator;
 
 public interface UploadService {
 	public List<t_kr_account_forum_list> getaccountforumlist();
-	
+	// String id, 
 	public void insertxlsdata( String tradedate, String symbol, String type, double lots, double closeprice, double openprice, String currency, double profit, String closedate, String opendate);
 
 }

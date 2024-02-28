@@ -136,7 +136,7 @@
 		        
 		        
 		        console.log(newintojsonData);
-		        console.log("------------------------");
+		        // console.log("------------------------");
 		        // console.log(KTEresult);
 				
 		        /* */

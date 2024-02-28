@@ -586,6 +586,7 @@ public class AdminController {
 		JSONArray JSONARRAY = new JSONArray(body);
 		String responsestr="";
 		String id = request.getParameter("id");
+		logger.info(id);
 		// logger.info(JSONARRAY.getJSONObject(0).getString("transactionDate"));
 		
 		for( int i=0; i<JSONARRAY.length(); i++)

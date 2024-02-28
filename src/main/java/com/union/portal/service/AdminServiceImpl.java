@@ -50,6 +50,7 @@ public class AdminServiceImpl implements AdminService {
 	
 	@Override
 	public void insertxlsdatafile(String id, String tradedate, String symbol, String type, double lots, double closeprice, double openprice, String currency, double profit, String closedate, String opendate)
+	// String id, 
 	{
 		
 		mapper.insertxlsdatafile(id, tradedate,  symbol,  type,  lots,  closeprice,  openprice,  currency,  profit,  closedate,  opendate);
