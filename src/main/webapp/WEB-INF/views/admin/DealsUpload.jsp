@@ -15,6 +15,41 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.4/xlsx.full.min.js"></script>
  <script src="https://code.jquery.com/jquery-3.4.1.min.js" ></script>
 
+<style>
+		* {
+		  margin: 0;
+		  padding: 0;
+		}
+		
+		.loader {
+		  display: none;
+		  top: 50%;
+		  left: 50%;
+		  position: absolute;
+		  transform: translate(-50%, -50%);
+		}
+		
+		.loading {
+		  border: 2px solid #ccc;
+		  width: 60px;
+		  height: 60px;
+		  border-radius: 50%;
+		  border-top-color: #1ecd97;
+		  border-left-color: #1ecd97;
+		  animation: spin 1s infinite ease-in;
+		}
+		
+		@keyframes spin {
+		  0% {
+		    transform: rotate(0deg);
+		  }
+		
+		  100% {
+		    transform: rotate(360deg);
+		  }
+		}
+</style>
+
 </head>
 <body>
 	<%@include file="inc/top.jsp"%>
@@ -72,7 +107,8 @@
 			          <!-- /FORM ITEM -->
 			        </div>
 			        <!-- /FORM ROW -->
-			
+					
+					
 			        <!-- SUBMIT BUTTON WRAP -->
 			        <div class="submit-button-wrap">
 			          <!-- BUTTON -->
@@ -94,15 +130,25 @@
 			            </span>
 			            <!-- /BUTTON ORNAMENT -->
 			          </button>
+			          
+					<br><br><span id="pleasewait" style="color:red; font-weight:bold" hidden>* Please wait! File upload may take some time</span>
 			          <!-- /BUTTON -->
 			        </div>
 			        <!-- /SUBMIT BUTTON WRAP -->
 			</form>
 			
+						<div class="loader">
+						  
+						</div>
+			
 			
 			
 <script>
 		function uploadFile(event) {
+			
+			document.getElementsByClassName("loader")[0].style.display = "block";
+			document.getElementById("pleasewait").hidden = false;
+			
 			event.preventDefault();
 			var theID = document.getElementById("groupCliemtID").value;
 			console.log(theID);
@@ -146,18 +192,23 @@
 		            contentType: "application/json",
 		            data: newintojsonData,
 		            success: function(data) {
-		            	alert("Successfully inserted!!");
-		            	// const jobj = JSON.parse(data.result);
-						
-						
-						
+		            	if(!data.error){
+			            	alert('Successfully Inserted!');
+			            	window.location.reload(true);
+		            		
+		            	}else {
+		            		
+		            		alert('INSERT FAILED! Pleae try again');
+			            	window.location.reload(true);
+		            	}
+		            	
 		            }
 		        });
 		        
 		        
 		    };
 		    reader.readAsArrayBuffer(file);
-		    
+		    	
 		}
 </script>
 

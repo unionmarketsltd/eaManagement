@@ -589,7 +589,8 @@ public class AdminController {
 		logger.info(id);
 		// logger.info(JSONARRAY.getJSONObject(0).getString("transactionDate"));
 		
-		for( int i=0; i<JSONARRAY.length(); i++)
+		// 10 JSONARRAY.length()	
+		for( int i=0; i< JSONARRAY.length()	; i++)
 		{
 			String tradedate = JSONARRAY.getJSONObject(i).getString("transactionDate");
 			String symbol = JSONARRAY.getJSONObject(i).getString("item");
