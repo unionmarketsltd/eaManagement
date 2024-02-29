@@ -183,7 +183,7 @@ public class UploadController {
 			Sheet sheet = workbook.getSheetAt(0);
 			Iterator<Row> rowIterator = sheet.iterator();
 
-			logger.info("WADAFAKK!!!!!");
+			
 			// Assuming your database table has three columns: ID, Name, and Age
 			/*
 			 * String sql = "INSERT INTO your_table_name (ID, Name, Age) VALUES (?, ?, ?)";
@@ -219,7 +219,7 @@ public class UploadController {
 			return defaultpath + "/uploadXLS";
 		}
 
-		logger.info("welcome wadafak!");
+		
 
 		try (InputStream inputStream = file.getInputStream()) {
 			Workbook workbook = WorkbookFactory.create(inputStream);

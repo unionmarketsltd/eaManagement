@@ -146,7 +146,7 @@
 		            contentType: "application/json",
 		            data: newintojsonData,
 		            success: function(data) {
-						
+		            	alert("Success!!");
 		            	// const jobj = JSON.parse(data.result);
 						
 						
