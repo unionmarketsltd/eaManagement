@@ -108,15 +108,14 @@
 		<!-- WIDGET SELECTABLES -->
 
 		<div class="widget-selectables">
-			<!-- WIDGET OPTIONS WRAP -->
-			<div class="widget-options-wrap" style="position: relative;">
+		
+		<div class="widget-options-wrap" style="position: relative;">
 				<!-- CURRENT OPTION -->
 				<div id="lang-dropdown-trigger" class="current-option">
 					<!-- CURRENT OPTION VALUE -->
 					<div id="lang-dropdown-option-value" class="current-option-value">
-						<img class="widget-option-img"
-							src="/portal/resources/forum/img/flags/flag-us.png" alt="flag-us">
-						<p class="widget-option-text">English</p>
+						
+						<p class="widget-option-text" id="selectedlangguagename"></p>
 					</div>
 					<!-- /CURRENT OPTION VALUE -->
 
@@ -129,14 +128,33 @@
 				<!-- /CURRENT OPTION -->
 
 				<!-- WIDGET OPTIONS -->
-				<div id="lang-dropdown" class="widget-options small"
-					style="position: absolute; z-index: 9999; top: -18px; left: -10px; visibility: hidden; opacity: 0; transition: all 0.4s ease-in-out 0s;">
+				<div id="lang-dropdown" class="widget-options small" style="position: absolute; z-index: 9999; top: -18px; left: -10px; visibility: hidden; opacity: 0; transition: all 0.4s ease-in-out 0s;">
 					<!-- WIDGET OPTION -->
+					
+					
 					<div class="widget-option">
-						<img class="widget-option-img"
-							src="/portal/resources/forum/img/flags/flag-us.png" alt="flag-us">
-						<p class="widget-option-text">English</p>
+					
+						<p class="widget-option-text" onclick="reloadselectoriginal()">Korean</p>
 					</div>
+					
+					
+					<div class="widget-option">
+					
+						<p class="widget-option-text" onclick="userselectLang('en')">English</p>
+					</div>
+					
+						
+					
+						<div class="widget-option">
+					
+						<p class="widget-option-text" onclick="userselectLang('cn')">Chinese</p>
+					</div>
+					
+						<div class="widget-option">
+					
+						<p class="widget-option-text" onclick="userselectLang('jp')">Japanese</p>
+					</div>
+					
 					<!-- /WIDGET OPTION -->
 
 					<!-- WIDGET OPTION -->
@@ -162,20 +180,29 @@
 				</div>
 				<!-- /WIDGET OPTIONS -->
 			</div>
+		 <div class="custom-translate" id="google_translate_element" style="display:none" ></div>
 			<!-- /WIDGET OPTIONS WRAP -->
-
-			<!-- WIDGET OPTIONS WRAP -->
-			<!-- /WIDGET OPTIONS WRAP -->
+			
+				<div class="widget-options-wrap" style="margin-left:19px">
+	
+						<div class="current-option-value">
+						
+							<p class="widget-option-text">Country: <span id="country"></span></p>
+						</div>
+						
+				</div>
 		</div>
-		<div class="widget-selectables">
-			<!-- WIDGET OPTIONS WRAP -->
-			<div class="widget-options-wrap">
-				<!-- CURRENT OPTION -->
+		
+		
+		
+	
+		
+			
 
 
-			</div>
 
-		</div>
+				
+			
 		<!-- /WIDGET SELECTABLES -->
 
 		<!-- WIDGET SELECTABLES -->

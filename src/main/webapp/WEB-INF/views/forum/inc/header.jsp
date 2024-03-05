@@ -10,5 +10,24 @@
    
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
+
+
   <!-- favicon -->
   <link rel="icon" href="img/favicon.ico">
+  
+  <style>
+  
+  #google_translate_element{
+  
+  margin-top:13px;
+  
+  }
+  
+  
+.VIpgJd-ZVi9od-ORHb-OEVmcd{
+   display: none;
+}
+
+body {
+    top: 0px !important; 
+    }</style>

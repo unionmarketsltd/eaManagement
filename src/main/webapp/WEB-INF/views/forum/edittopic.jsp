@@ -8,7 +8,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@include file="inc/session.jsp"%>
 <!DOCTYPE html>
-<html lang="en">
+<html >
 <head>
 <%@include file="inc/header.jsp"%>
 <title>INVESFORUM | Edit Topic</title>
