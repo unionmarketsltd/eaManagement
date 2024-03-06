@@ -118,6 +118,7 @@ function setUserRememberLang(){
 	//alert("cookie is set to "+getSupportedLanguages(selectedlang) + usercountry);
 	
 	document.getElementById('selectedlangguagename').innerHTML =getSupportedLanguages(selectedlang);
+	document.getElementById('selectedlangguagenameimg').src ="${pageContext.request.contextPath}/resources/forum/img/languageflag/"+getlangimg(selectedlang);
 	 var supportedLanguages = selectedlang; // Get supported languages for the country
 	 if(supportedLanguages.indexOf('kr')<0)
 		 {
@@ -126,6 +127,27 @@ function setUserRememberLang(){
 	
 }
 
+function getlangimg(selectedlang){
+	
+	
+
+	 
+		
+		 switch (selectedlang) {
+	        case 'kr': // Korea 한국어
+	            return 'ko.png';
+	        case 'jp': // Japan 일본어
+	            return 'jp.png'; 
+	        case 'cn': // China 중국어
+	            return 'cn.png';
+	      /*  case 'my': // China
+	            return 'Malay'; 말레이어*/ 
+	        default:
+	            return 'en.png'; // Default language 영어
+	    }
+		
+		
+}
 
 function reloadselectoriginal(){
 	setCookie('userlang','kr');
@@ -162,6 +184,7 @@ function getUserCountry() {
             var supportedLanguages = getSupportedLanguages(countryCode); // Get supported languages for the country
             document.getElementById('country').innerHTML = data.country_name;
             document.getElementById('selectedlangguagename').innerHTML =getSupportedLanguages(countryCode);
+            document.getElementById('selectedlangguagenameimg').src ="${pageContext.request.contextPath}/resources/forum/img/languageflag/"+getlangimg(selectedlang);
            // alert("setting cookie");
             setCookie('userlang',countryCode);
             setCookie('usercountry',data.country_name);
@@ -180,18 +203,43 @@ function getUserCountry() {
 
 // Function to get supported languages based on country
 function getSupportedLanguages(countryCode) {
+	
+	  var browserLanguage = navigator.language || navigator.userLanguage;
+	if(browserLanguage.indexOf("ko")>=0)
+		{
+		
+		 switch (countryCode) {
+	        case 'kr': // Korea 한국어
+	            return '한국어';
+	        case 'jp': // Japan 일본어
+	            return '일본어'; 
+	        case 'cn': // China 중국어
+	            return '중국어';
+	      /*  case 'my': // China
+	            return 'Malay'; 말레이어*/ 
+	        default:
+	            return '영어'; // Default language 영어
+	    }
+		
+		}
+	else
+		{
+		
+		
     switch (countryCode) {
-        case 'kr': // Korea
+        case 'kr': // Korea 한국어
             return 'Korean';
-        case 'jp': // Japan
-            return 'Japanese';
-        case 'cn': // China
+        case 'jp': // Japan 일본어
+            return 'Japanese'; 
+        case 'cn': // China 중국어
             return 'Chinese';
       /*  case 'my': // China
-            return 'Malay';*/
+            return 'Malay'; 말레이어*/ 
         default:
-            return 'English'; // Default language
+            return 'English'; // Default language 영어
     }
+    
+		}
 }
 
 

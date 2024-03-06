@@ -7,7 +7,7 @@
 	uri="http://www.springframework.org/security/tags"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@include file="inc/session.jsp"%>
-<html >
+<html lang="en-kr">
 <head>
 <%@include file="inc/header.jsp"%>
 <title>INVESFORUM | Categories</title>

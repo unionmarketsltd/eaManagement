@@ -11,7 +11,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
-<html >
+<html lang="en-kr">
 <head>
 <%@include file="inc/session.jsp"%>
 <%@include file="inc/header.jsp"%>

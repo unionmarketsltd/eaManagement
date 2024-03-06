@@ -113,10 +113,12 @@
 				<!-- CURRENT OPTION -->
 				<div id="lang-dropdown-trigger" class="current-option">
 					<!-- CURRENT OPTION VALUE -->
+					
 					<div id="lang-dropdown-option-value" class="current-option-value">
-						
-						<p class="widget-option-text" id="selectedlangguagename"></p>
-					</div>
+              <img id="selectedlangguagenameimg" class="widget-option-img" src="${pageContext.request.contextPath}/resources/forum/img/languageflag/" alt="flag-us" style="width:17px">
+              <p class="widget-option-text" id="selectedlangguagename"></p>
+            </div>
+					
 					<!-- /CURRENT OPTION VALUE -->
 
 					<!-- ARROW ICON -->
@@ -131,27 +133,31 @@
 				<div id="lang-dropdown" class="widget-options small" style="position: absolute; z-index: 9999; top: -18px; left: -10px; visibility: hidden; opacity: 0; transition: all 0.4s ease-in-out 0s;">
 					<!-- WIDGET OPTION -->
 					
+				
 					
 					<div class="widget-option">
-					
-						<p class="widget-option-text" onclick="reloadselectoriginal()">Korean</p>
-					</div>
+              <img class="widget-option-img" src="${pageContext.request.contextPath}/resources/forum/img/languageflag/ko.png" alt="flag-us" style="width:17px">
+              <p class="widget-option-text" onclick="reloadselectoriginal()">Korean</p>
+            </div>
+            
+            
+				
 					
 					
 					<div class="widget-option">
-					
+					<img class="widget-option-img" src="${pageContext.request.contextPath}/resources/forum/img/languageflag/en.png" alt="flag-us" style="width:17px">
 						<p class="widget-option-text" onclick="userselectLang('en')">English</p>
 					</div>
 					
 						
 					
 						<div class="widget-option">
-					
+					<img class="widget-option-img" src="${pageContext.request.contextPath}/resources/forum/img/languageflag/cn.png" alt="flag-us" style="width:17px">
 						<p class="widget-option-text" onclick="userselectLang('cn')">Chinese</p>
 					</div>
 					
 						<div class="widget-option">
-					
+					<img class="widget-option-img" src="${pageContext.request.contextPath}/resources/forum/img/languageflag/jp.png" alt="flag-us" style="width:17px">
 						<p class="widget-option-text" onclick="userselectLang('jp')">Japanese</p>
 					</div>
 					
