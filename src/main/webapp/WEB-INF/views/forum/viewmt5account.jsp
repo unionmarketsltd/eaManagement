@@ -543,7 +543,7 @@
 	function getprofitchartdata() {
 		$
 				.ajax({
-					url : '${pageContext.request.contextPath}/forum/getprofitchartdata?id='+parameterid,
+					url : '${pageContext.request.contextPath}/forum/getprofitchartdatanewasd?id='+parameterid,
 					type : 'get',
 					async : false,
 					data : '',
@@ -800,7 +800,7 @@ function myTask() {
     getAccountPositions();
     GetAccountInfo();
 }
-setInterval(myTask, ${duration}000); // 4000 milliseconds = 4 seconds
+// setInterval(myTask, ${duration}000); // 4000 milliseconds = 4 seconds
 
 
 function inserthistoryTable (jsonString ,page)

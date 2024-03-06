@@ -20,6 +20,7 @@ import com.union.portal.domain.t_forum_topiccount;
 import com.union.portal.domain.t_kr_account_forum_list;
 import com.union.portal.domain.t_mt5_account_list;
 import com.union.portal.domain.t_kr_account_list;
+import com.union.portal.domain.t_mt5_account_history_list;
 import com.union.portal.domain.t_kr_account_history;
 import com.union.portal.domain.t_kr_account_forum_list;
 import com.union.portal.domain.t_top_latest_news;
@@ -542,6 +543,26 @@ public List<t_forum_topiccount> getforumtopiccountlist();
 	@Select("SELECT closedate ,SUM(profit) OVER (ORDER BY closedate asc) as cumulative_profit FROM forum.t_kr_account_history where dbsts = 'A' and accountid = #{id} order by closedate asc;")
 	 public List<t_kr_account_history> getkraccountprofitchartdata(@Param("id") String id); 
 	 
+	 
+	 // fetch db mt5 api-ed
+	 @Select("SELECT a.id, a.Profit+a.ProfitRaw+ a.Commission + (SELECT sum(b.Profit+b.ProfitRaw+ b.Commission) FROM forum.t_mt5_account_history b WHERE b.`Login` = #{id} and b.id < a.id)  as totalProfit FROM forum.t_mt5_account_history a WHERE a.`Login` = #{id} ;")
+	 // @Select("SELECT (Profit+ProfitRaw+Commission) as totalProfit FROM forum.t_mt5_account_history WHERE `Login` = #{id};")
+		public List<t_mt5_account_history_list> getKRaccountHistorylist(@Param("id") String id);
+		
+		/*
+		 * Service
+		 public List<t_kr_account_history_list> getKRaccountHistorylist(int id);
+		 
+		 
+		 * Impl
+		 @Override
+			public void getKRaccountHistorylist(int id)
+			{
+				mapper.getKRaccountHistorylist( id);
+			}
+		 
+		 * */
+	 
 
 	 @Select("SELECT CEIL(count(*) /30) as totalpage from forum.t_kr_account_history WHERE accountid = #{id}  and dbsts='A'")
 	 public int getkraccounthistorytotalpage(@Param("id") String id); 
@@ -557,7 +578,7 @@ public List<t_forum_topiccount> getforumtopiccountlist();
 	 @Select("SELECT substr(symbol,1,2) AS symbol,SUM(profit) AS total_profit FROM (SELECT symbol,profit FROM forum.t_kr_account_history WHERE dbsts = 'A' AND accountid = #{accountid} ORDER BY closedate DESC) AS sub_query GROUP BY substr(symbol,1,2);")
 	 public List<piechart> getprofitbysymbol(@Param("accountid") String accountid); 
 	 
-
+	 
 
 	 @Select("SELECT JSON_ARRAYAGG(cumulative_profit) AS json_result FROM ( SELECT SUM(profit) OVER (ORDER BY closedate ASC) AS cumulative_profit FROM forum.t_kr_account_history WHERE dbsts = 'A' AND accountid = #{id} ORDER BY closedate ASC ) AS sub_query;")
 	 public String getkrprofitchartdata(@Param("id") String id); 

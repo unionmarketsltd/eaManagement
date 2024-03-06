@@ -17,6 +17,7 @@ import com.union.portal.domain.t_forum_topic_file;
 import com.union.portal.domain.t_forum_topiccount;
 import com.union.portal.domain.t_kr_account_list;
 import com.union.portal.domain.t_mt5_account_list;
+import com.union.portal.domain.t_mt5_accountlist;
 import com.union.portal.domain.t_kr_account_list;
 import com.union.portal.domain.t_kr_account_history;
 import com.union.portal.domain.t_kr_account_forum_list;
@@ -56,7 +57,27 @@ public class AdminServiceImpl implements AdminService {
 		mapper.insertxlsdatafile(id, tradedate,  symbol,  type,  lots,  closeprice,  openprice,  currency,  profit,  closedate,  opendate);
 		// id,
 	}
+	
+	@Override
+	public List<t_mt5_accountlist> getmt5accountlist() {
 
+		return mapper.getmt5accountlist();
+
+	}
+	
+	@Override
+	public void insertMT5data(String testss)
+	// String id, 
+	{
+		mapper.insertMT5data(testss);
+		// id,
+	}
+	
+	@Override   
+	public void insertMT5dataFetch(int Action, String Symbol, String PositionID, String ExternalID, String Digits,String Commission, String MarketBid, String Time, String RateMargin, String Reason,String VolumeClosed, String VolumeExt, String Entry, String PriceTP, String TickSize, String Gateway, String Profit, String PricePosition, String VolumeClosedExt, String Order, String PriceGateway, String Comment, String ExpertID, String ContractSize, String Fee, String Login, String Flags, String Deal, String ProfitRaw, String TickValue, String DigitsCurrency, String Storage, String PriceSL, String RateProfit, String MarketAsk, String Price,  String Volume, String ModifyFlags, String TimeMsc, String MarketLast, String Value, String Dealer)
+	{// Check this one please
+		mapper.insertMT5dataFetch(Action, Symbol, PositionID, ExternalID, Digits, Commission, MarketBid, Time, RateMargin, Reason, VolumeClosed, VolumeExt, Entry, PriceTP, TickSize, Gateway, Profit, PricePosition, VolumeClosedExt, Order, PriceGateway, Comment, ExpertID, ContractSize, Fee, Login, Flags, Deal, ProfitRaw, TickValue, DigitsCurrency, Storage, PriceSL, RateProfit, MarketAsk, Price, Volume, ModifyFlags, TimeMsc, MarketLast, Value, Dealer);
+	}
 	@Override
 	public List<t_user> getclientlist(String row, String page) {
 		int number = 0;

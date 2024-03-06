@@ -12,6 +12,8 @@ import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+
+
 // file import apache.poi
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -24,6 +26,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.SQLException;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 import java.util.Random;
@@ -81,6 +84,7 @@ import com.union.portal.domain.topic_comment_list;
 import com.union.portal.domain.topic_comment_user_like;
 import com.union.portal.domain.topic_search_result;
 import com.union.portal.domain.topic_subcomment_list;
+import com.union.portal.domain.t_mt5_account_history_list;
 import com.union.portal.domain.t_user;
 import com.union.portal.domain.topic_comment_likes;
 import com.union.portal.service.ForumService;
@@ -1073,6 +1077,7 @@ public class ForumController {
 		String returnURL = "";
 		String id = request.getParameter("id");
 		top(model, request);
+		
 		if (forumservices.isallowviewaccount(id)) {
 			t_mt5_account_list account = forumservices.getmt5accountname(id);
 
@@ -1329,7 +1334,9 @@ return mav;
 	public ModelAndView getprofitchartdata(HttpServletRequest request, Model model) {
 		logger.info("Get getprofitchartdata ........" + this.serverinfo);
 		String id = request.getParameter("id");
-
+		
+		
+		
 		ModelAndView mav = new ModelAndView("jsonView");
 		String responsestr = "";
 		if (forumservices.isallowviewaccount(id)) {
@@ -1344,7 +1351,7 @@ return mav;
 					;
 					try {
 						responsestr = httpUtils.sendGet(this.serverinfo, path);
-
+						String wada = 	responsestr;
 						JSONObject returnobj = new JSONObject(responsestr);
 
 						JSONArray jarray = returnobj.getJSONArray("answer");
@@ -1361,7 +1368,7 @@ return mav;
 								Double profit = Double.parseDouble(element.getString("Profit"))
 										+ Double.parseDouble(element.getString("Storage"))
 										+ Double.parseDouble(element.getString("Commission"));
-								logger.info(String.valueOf(profit));
+								// logger.info(String.valueOf(profit));
 								outputprofit = outputprofit + profit;
 
 								outputarray.put(outputprofit);
@@ -1370,8 +1377,8 @@ return mav;
 							// Do something with the element
 						}
 
-						responsestr = outputarray.toString();
-
+						responsestr = outputarray.toString();// outputarray jarray
+						logger.info("CHECK CHECK - "+responsestr);
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
@@ -1388,6 +1395,90 @@ return mav;
 		mav.addObject("result", APIProtectionHandler.ApiProtection(request, responsestr));
 		return mav;
 	}
+	
+	
+	// ============================== mt5 API to database ==========================
+	
+	@RequestMapping(value = { "/getprofitchartdatanewasd" }, method = { RequestMethod.GET }, produces = {
+	"application/json;charset=UTF-8" })
+	@ResponseBody
+	public ModelAndView getprofitchartdatanewasd(HttpServletRequest request, Model model) {
+	logger.info("Get getprofitchartdatanewasd  ........" + this.serverinfo);
+	String id = request.getParameter("id");
+	// String id="237688";
+	
+	
+	ModelAndView mav = new ModelAndView("jsonView");
+	String responsestr = "";
+	
+	
+	List<t_mt5_account_history_list> fetchData = null;
+	 fetchData = forumservices.getKRaccountHistorylist(id);
+	 String newfetchData = fetchData.toString().replace("=", "").replace("totalProfit", "").replace(")", "").replace("(", "").replace("t_mt5_account_history_list", "").replace("null", "0.0"); // .replace("t_mt5_account_history_list", "").replace("", "").replace('=', ':').replace("(", "{").replace(")", "}")
+
+	 
+	/**/if (forumservices.isallowviewaccount(id)) {
+		
+		
+		HttpUtils httpUtils = new HttpUtils(this.serverinfo);
+		HttpSession session = request.getSession();
+		/*
+		if (httpUtils.sendAuth(this.serverinfo)) {
+			long currentTimeMillis = System.currentTimeMillis();
+	
+			try {
+				long currentSeconds = currentTimeMillis / 1000;
+				String path = "/api/deal/get_batch?login=" + id + "&from=0&to=" + Long.toString(currentSeconds);
+				;
+				try {
+					responsestr = httpUtils.sendGet(this.serverinfo, path);
+	
+					JSONObject returnobj = new JSONObject(responsestr);
+	
+					JSONArray jarray = returnobj.getJSONArray("answer");
+	
+					JSONArray outputarray = new JSONArray();
+					Double outputprofit = (double) 0;
+					for (int i = 0; i < jarray.length(); i++) {
+	
+						JSONObject element = jarray.getJSONObject(i);
+	
+						int type = Integer.parseInt(element.getString("Action"));
+	
+						if (type < 2) {
+							Double profit = Double.parseDouble(element.getString("Profit"))
+									+ Double.parseDouble(element.getString("Storage"))
+									+ Double.parseDouble(element.getString("Commission"));
+							logger.info(String.valueOf(profit));
+							outputprofit = outputprofit + profit;
+	
+							outputarray.put(outputprofit);
+						}
+	
+						// Do something with the element
+					}
+	
+					// responsestr = outputarray.toString();
+	
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}*/
+		responsestr = newfetchData.toString();
+		responsestr.indexOf("0 Done");
+	
+	} else {
+		responsestr = "unautorized";
+	}
+	mav.addObject("result", APIProtectionHandler.ApiProtection(request, responsestr));
+	return mav;
+	}
+	
+	// ===========================================================================
 	
 	
 	@RequestMapping(value = { "/getKRprofitchartdata" }, method = { RequestMethod.GET }, produces = {
@@ -1416,7 +1507,8 @@ return mav;
 		logger.info("Welcome MT5AccountList.");
 		HttpSession session = request.getSession();
 		top(model, request);
-
+		 
+		
 		List<t_mt5_account_list> acclist = null;
 
 		acclist = forumservices.getmt5accountlist();

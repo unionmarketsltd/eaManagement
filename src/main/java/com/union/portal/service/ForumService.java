@@ -16,6 +16,7 @@ import com.union.portal.domain.t_forum_topic_file;
 import com.union.portal.domain.t_forum_topiccount;
 import com.union.portal.domain.t_mt5_account_list;
 import com.union.portal.domain.t_kr_account_list;
+import com.union.portal.domain.t_mt5_account_history_list;
 import com.union.portal.domain.t_kr_account_forum_list;
 import com.union.portal.domain.t_kr_account_history;
 import com.union.portal.domain.t_top_latest_news;
@@ -148,4 +149,10 @@ public interface ForumService {
 
 	 public List<calculator> getDailyProfitList(String accountid);
 	 public List<calculator> getMonthlyProfitList(String accountid);
+	 
+	 
+	 public List<t_mt5_account_history_list> getKRaccountHistorylist(String id);
+	 
+	 // ----------------------------------------------------------
+	 
 }

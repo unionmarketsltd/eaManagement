@@ -19,6 +19,7 @@ import com.union.portal.domain.t_forum_topic_file;
 import com.union.portal.domain.t_forum_topiccount;
 import com.union.portal.domain.t_kr_account_forum_list;
 import com.union.portal.domain.t_mt5_account_list;
+import com.union.portal.domain.t_mt5_accountlist;
 import com.union.portal.domain.t_kr_account_list;
 import com.union.portal.domain.t_kr_account_history;
 import com.union.portal.domain.t_kr_account_forum_list;
@@ -49,6 +50,34 @@ public interface AdminMapper {
 			@Param("profit")double profit,
 			@Param("closedate")String closedate,
 			@Param("opendate")String opendate); // #{forumaccid}, // @Param("forumaccid")String forumaccid,
+	
+	
+	@Select("INSERT INTO `forum`.`t_mt5_account_history` (`dbsts`)\r\n"
+			+ "VALUES (#{testss});")
+	public void insertMT5data(@Param("testss") String testss);
+	
+	
+	@Select("INSERT IGNORE INTO `forum`.`t_mt5_account_history`(`Action`, `Symbol`, `PositionID`, `ExternalID`, `Digits`, `Commission`, `MarketBid`, `Time`, `RateMargin`, `Reason`, `VolumeClosed`, `VolumeExt`, `Entry`, `PriceTP`, `TickSize`, `Gateway`, `Profit`, `PricePosition`, `VolumeClosedExt`, `Order`, `PriceGateway`, `Comment`, `ExpertID`, `ContractSize`, `Fee`, `Login`, `Flags`, `Deal`, `ProfitRaw`, `TickValue`, `DigitsCurrency`, `Storage`, `PriceSL`, `RateProfit`, `MarketAsk`, `Price`, `Volume`, `ModifyFlags`, `TimeMsc`, `MarketLast`, `Value`,`Dealer`)\r\n"
+			+ "VALUES (#{Action},#{Symbol},#{PositionID},#{ExternalID},#{Digits},#{Commission},#{MarketBid},#{Time},#{RateMargin},#{Reason},\r\n"
+			+ "#{VolumeClosed},#{VolumeExt},#{Entry},#{PriceTP},#{TickSize},#{Gateway},#{Profit},#{PricePosition},#{VolumeClosedExt},#{Order},\r\n"
+			+ "#{PriceGateway},#{Comment},#{ExpertID},#{ContractSize},#{Fee},#{Login},#{Flags},#{Deal},#{ProfitRaw},#{TickValue},\r\n"
+			+ "#{DigitsCurrency},#{Storage},#{PriceSL},#{RateProfit},#{MarketAsk},#{Price},#{Volume},#{ModifyFlags},#{TimeMsc},#{MarketLast},\r\n"
+			+ "#{Value},#{Dealer});")
+	public void insertMT5dataFetch(@Param("Action")int Action, @Param("Symbol")String Symbol, @Param("PositionID")String PositionID, @Param("ExternalID")String ExternalID, @Param("Digits")String Digits,
+			@Param("Commission")String Commission, @Param("MarketBid")String MarketBid, @Param("Time")String Time, @Param("RateMargin")String RateMargin, @Param("Reason")String Reason,
+			@Param("VolumeClosed")String VolumeClosed, @Param("VolumeExt")String VolumeExt, @Param("Entry")String Entry, @Param("PriceTP")String PriceTP, @Param("TickSize")String TickSize,
+			@Param("Gateway")String Gateway, @Param("Profit")String Profit, @Param("PricePosition")String PricePosition, @Param("VolumeClosedExt")String VolumeClosedExt, @Param("Order")String Order,
+			@Param("PriceGateway")String PriceGateway, @Param("Comment")String Comment, @Param("ExpertID")String ExpertID, @Param("ContractSize")String ContractSize, @Param("Fee")String Fee,
+			@Param("Login")String Login, @Param("Flags")String Flags, @Param("Deal")String Deal, @Param("ProfitRaw")String ProfitRaw, @Param("TickValue")String TickValue,
+			@Param("DigitsCurrency")String DigitsCurrency, @Param("Storage")String Storage, @Param("PriceSL")String PriceSL, @Param("RateProfit")String RateProfit, @Param("MarketAsk")String MarketAsk,
+			@Param("Price")String Price, @Param("Volume")String Volume, @Param("ModifyFlags")String ModifyFlags, @Param("TimeMsc")String TimeMsc, @Param("MarketLast")String MarketLast,
+			@Param("Value")String Value, @Param("Dealer")String Dealer);
+	
+	
+	
+	@Select("SELECT `login` FROM forum.t_mt5_account_list where  dbsts = 'A';")
+	public List<t_mt5_accountlist> getmt5accountlist();
+	
 	
 	
 	@Select("INSERT INTO `forum`.`t_kr_account_history`\r\n" + "(`accountid`,\r\n" + "`dbsts`,\r\n" + "`tradedate`,\r\n"
