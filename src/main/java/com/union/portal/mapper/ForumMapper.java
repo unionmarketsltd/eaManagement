@@ -20,6 +20,7 @@ import com.union.portal.domain.t_forum_topiccount;
 import com.union.portal.domain.t_kr_account_forum_list;
 import com.union.portal.domain.t_mt5_account_list;
 import com.union.portal.domain.t_kr_account_list;
+import com.union.portal.domain.t_kr_profit_rate;
 import com.union.portal.domain.t_mt5_account_history_list;
 import com.union.portal.domain.t_kr_account_history;
 import com.union.portal.domain.t_kr_account_forum_list;
@@ -540,7 +541,7 @@ public List<t_forum_topiccount> getforumtopiccountlist();
 	@Select("select isban from t_user where email = #{email}")
 	 public int getcheckisban(@Param("email") String email); 
 	 
-	@Select("SELECT closedate ,SUM(profit) OVER (ORDER BY closedate asc) as cumulative_profit FROM forum.t_kr_"
+	@Select("SELECT closedate ,SUM(profit) OVER (ORDER BY closedate asc) as cumulative_profit FROM forum.t_kr_account_history"
 			+ " where dbsts = 'A' and accountid = #{id} order by closedate asc;")
 	 public List<t_kr_account_history> getkraccountprofitchartdata(@Param("id") String id); 
 	 
@@ -593,5 +594,31 @@ public List<t_forum_topiccount> getforumtopiccountlist();
 	 @Select("SELECT SUBSTR(closedate,1,7) AS month, SUM(profit) AS monthlyprofit FROM t_kr_account_history WHERE accountid=#{accountid} and dbsts='A' \r\n"
 	 		+ "GROUP BY SUBSTR(closedate,1,7)")
 	 public List<calculator> getMonthlyProfitList(@Param("accountid")String accountid); 
+
+	 
+	 
+	 @Select("SELECT "
+			 + "  a.accountid,"
+			 + "  ROUND("
+			   + "     SUM(a.profit) * ("
+			    + "        SELECT deal_bas_r "
+			    + "        FROM t_exchange_rate "
+			     + "       WHERE cur_unit='USD'"
+			     + "    ) / ("
+			      + "      SELECT SUM(b.amount) "
+			      + "      FROM t_kr_account_fund b "
+			      + "      WHERE b.dbsts='A' "
+			      + "      AND b.accountid = a.accountid"
+			      + "   ) * 100,"
+			   + " 2) AS profitrate "
+			+ "FROM "
+			+ "    t_kr_account_history a "
+			+ "WHERE "
+			+ "    a.dbsts='A' "
+			+ "    AND a.accountid IN (SELECT distinct accountid FROM t_kr_account_list)"
+			+ "GROUP BY"
+			+ "    a.accountid;")
+			 public List<t_kr_profit_rate> getkraccountprofitratelist(); 
+			 
 
 }

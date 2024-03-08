@@ -113,7 +113,17 @@
 							<p class="table-text bold">${acclist.description}</p>
 						</div>
 						<div class="table-row-item">
-							<p class="table-text bold">${acclist.profitrate}%</p>
+							<p class="table-text bold">
+							<c:forEach items="${ kraccountprofitratelist }" var="profitratelist">
+							
+							<c:if test="${profitratelist.accountid eq acclist.accountid}">
+       ${ profitratelist.profitrate}
+    </c:if>
+							
+							</c:forEach>
+							
+							
+						%</p>
 						</div>
 						<div class="table-row-item">
 							<p class="table-text bold light">${acclist.startdate}</p>

@@ -16,6 +16,7 @@ import com.union.portal.domain.t_forum_topic;
 import com.union.portal.domain.t_forum_topic_file;
 import com.union.portal.domain.t_forum_topiccount;
 import com.union.portal.domain.t_kr_account_list;
+import com.union.portal.domain.t_kr_profit_rate;
 import com.union.portal.domain.t_mt5_account_history_list;
 import com.union.portal.domain.t_mt5_account_list;
 import com.union.portal.domain.t_kr_account_list;
@@ -449,6 +450,13 @@ public class ForumServiceImpl implements ForumService {
 			return mapper.getKRaccountHistorylist(id);
 		}
 	 
+		
+		 @Override 
+		 public List<t_kr_profit_rate> getkraccountprofitratelist(){
+		 
+		 return mapper.getkraccountprofitratelist();
+		 
+		}
 	 
 	 // --------------------------------------------
 }

@@ -77,6 +77,7 @@ import com.union.portal.domain.t_forum_topic_file;
 import com.union.portal.domain.t_forum_topiccount;
 import com.union.portal.domain.t_mt5_account_list;
 import com.union.portal.domain.t_kr_account_list;
+import com.union.portal.domain.t_kr_profit_rate;
 import com.union.portal.domain.t_kr_account_history;
 import com.union.portal.domain.t_kr_account_forum_list;
 import com.union.portal.domain.t_top_latest_news;
@@ -200,6 +201,9 @@ public class ForumController {
 		listforum = forumservices.getforumlist();
 		listforumcat = forumservices.getforumcategorylist();
 		listforumtopiccount = forumservices.getforumtopiccountlist();
+		List<t_kr_profit_rate> kraccountprofitratelist = forumservices.getkraccountprofitratelist(); 
+
+		 model.addAttribute("kraccountprofitratelist", kraccountprofitratelist);
 
 		model.addAttribute("acclist", acclist);
 		model.addAttribute("kracclist", kracclist);
@@ -1566,6 +1570,10 @@ return mav;
 		List<t_kr_account_list> acclist = null;
 
 		acclist = forumservices.getKRaccountlist();
+		
+		List<t_kr_profit_rate> kraccountprofitratelist = forumservices.getkraccountprofitratelist(); 
+
+		 model.addAttribute("kraccountprofitratelist", kraccountprofitratelist);
 		String vLocal = LocaleContextHolder.getLocale().getLanguage();
 
 		String returnURL = "";

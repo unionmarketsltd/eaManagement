@@ -163,7 +163,17 @@
 							<p class="table-text bold">${kracclist.description}</p>
 						</div>
 						<div class="table-row-item">
-							<p class="table-text bold">${kracclist.profitrate}%</p>
+							<p class="table-text bold">
+							
+							<c:forEach items="${ kraccountprofitratelist }" var="profitratelist">
+							
+							<c:if test="${profitratelist.accountid eq kracclist.accountid}">
+       ${ profitratelist.profitrate}
+    </c:if>
+							
+							</c:forEach>
+							
+							%</p>
 						</div>
 						<div class="table-row-item">
 							<p class="table-text bold light">${kracclist.startdate}</p>
