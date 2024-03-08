@@ -83,7 +83,7 @@
 							<p class="table-text bold">${acclist.description}</p>
 						</div>
 						<div class="table-row-item">
-							<p class="table-text bold">${acclist.profitrate}%</p>
+							<p class="table-text bold">${acclist.userRateProfit}%</p>
 						</div>
 						<div class="table-row-item">
 							<p class="table-text bold light">${acclist.startdate}</p>

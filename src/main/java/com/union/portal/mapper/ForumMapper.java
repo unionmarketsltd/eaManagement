@@ -491,7 +491,8 @@ public List<t_forum_topiccount> getforumtopiccountlist();
 	
 	
 	
-	@Select("SELECT * FROM forum.t_mt5_account_list where  dbsts = 'A';")
+	// @Select("SELECT * FROM forum.t_mt5_account_list where  dbsts = 'A';")
+	@Select("SELECT a.*, ROUND(((SELECT SUM(C.Profit+C.Storage+C.Commission) FROM forum.t_mt5_account_history C WHERE C.Action < 2 AND C.login = a.login)/(SELECT SUM(D.Profit) FROM forum.t_mt5_account_history D WHERE D.Action = 2 AND D.login = a.login))*100, 2) AS userRateProfit FROM forum.t_mt5_account_list a WHERE a.dbsts = 'A';")
 	public List<t_mt5_account_list> getmt5accountlist();
 	
 	
@@ -547,7 +548,7 @@ public List<t_forum_topiccount> getforumtopiccountlist();
 	 
 	 
 	 // fetch db mt5 api-ed
-	 @Select("SELECT a.id, a.Profit+a.Storage+ a.Commission + (SELECT sum(b.Profit+b.Storage+ b.Commission) FROM forum.t_mt5_account_history b WHERE b.`Login` = #{id} and b.id < a.id)  as totalProfit FROM forum.t_mt5_account_history a WHERE a.`Login` = #{id} ;")
+	 @Select("SELECT a.id, a.Profit+a.Storage+ a.Commission + (SELECT sum(b.Profit+b.Storage+ b.Commission) FROM forum.t_mt5_account_history b WHERE b.`Login` = #{id} and b.id < a.id and Action<2)  as totalProfit FROM forum.t_mt5_account_history a WHERE a.`Login` = #{id}  and Action<2;")
 	 // @Select("SELECT (Profit+ProfitRaw+Commission) as totalProfit FROM forum.t_mt5_account_history WHERE `Login` = #{id};")
 		public List<t_mt5_account_history_list> getKRaccountHistorylist(@Param("id") String id);
 		

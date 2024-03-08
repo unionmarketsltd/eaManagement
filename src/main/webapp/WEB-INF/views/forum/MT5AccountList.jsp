@@ -118,7 +118,7 @@
 						<div class="table-row-item">
 							<p class="table-text bold">
 								<a
-									href="${pageContext.request.contextPath}/forum/viewMt5Account?id=${acclist.login}">${acclist.profitrate}%</a>
+									href="${pageContext.request.contextPath}/forum/viewMt5Account?id=${acclist.login}">${acclist.userRateProfit }%</a>
 							</p>
 						</div>
 						<div class="table-row-item">
