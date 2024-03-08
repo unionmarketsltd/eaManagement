@@ -211,7 +211,7 @@
 		function getprofitchartdata(id) {
 			$
 					.ajax({
-						url : '${pageContext.request.contextPath}/forum/getprofitchartdata?id='+id,
+						url : '${pageContext.request.contextPath}/forum/getprofitchartdatanewasd?id='+id,
 						type : 'get',
 						async : false,
 						data : '',

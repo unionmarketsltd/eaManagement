@@ -35,6 +35,7 @@ public interface AdminService {
 	public void insertxlsdatafile(String id, String tradedate, String symbol, String type, double lots, double closeprice, double openprice, String currency, double profit, String closedate, String opendate);
 	public void insertMT5data(String testss);
 	public void insertMT5dataFetch(int Action, String Symbol, String PositionID, String ExternalID, String Digits,String Commission, String MarketBid, String Time, String RateMargin, String Reason,String VolumeClosed, String VolumeExt, String Entry, String PriceTP, String TickSize, String Gateway, String Profit, String PricePosition, String VolumeClosedExt, String Order, String PriceGateway, String Comment, String ExpertID, String ContractSize, String Fee, String Login, String Flags, String Deal, String ProfitRaw, String TickValue, String DigitsCurrency, String Storage, String PriceSL, String RateProfit, String MarketAsk, String Price,  String Volume, String ModifyFlags, String TimeMsc, String MarketLast, String Value, String Dealer);
+	public void insertMT5dataFetchBatching(String AllValues);
 	public List<t_mt5_accountlist> getmt5accountlist();
 	
 	public List<t_user> getclientlist(String row, String page);

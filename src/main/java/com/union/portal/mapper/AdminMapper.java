@@ -73,7 +73,9 @@ public interface AdminMapper {
 			@Param("Price")String Price, @Param("Volume")String Volume, @Param("ModifyFlags")String ModifyFlags, @Param("TimeMsc")String TimeMsc, @Param("MarketLast")String MarketLast,
 			@Param("Value")String Value, @Param("Dealer")String Dealer);
 	
-	
+	@Select("INSERT IGNORE INTO `forum`.`t_mt5_account_history`(`Action`, `Symbol`, `PositionID`, `ExternalID`, `Digits`, `Commission`, `MarketBid`, `Time`, `RateMargin`, `Reason`, `VolumeClosed`, `VolumeExt`, `Entry`, `PriceTP`, `TickSize`, `Gateway`, `Profit`, `PricePosition`, `VolumeClosedExt`, `Order`, `PriceGateway`, `Comment`, `ExpertID`, `ContractSize`, `Fee`, `Login`, `Flags`, `Deal`, `ProfitRaw`, `TickValue`, `DigitsCurrency`, `Storage`, `PriceSL`, `RateProfit`, `MarketAsk`, `Price`, `Volume`, `ModifyFlags`, `TimeMsc`, `MarketLast`, `Value`,`Dealer`)\r\n"
+			+ "VALUES #{AllValues}")
+	public void insertMT5dataFetchBatching(@Param("AllValues")String AllValues);
 	
 	@Select("SELECT `login` FROM forum.t_mt5_account_list where  dbsts = 'A';")
 	public List<t_mt5_accountlist> getmt5accountlist();
