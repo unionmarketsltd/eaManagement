@@ -73,6 +73,11 @@ public class AdminServiceImpl implements AdminService {
 		// id,
 	}
 	
+	@Override
+	public void insertMT5dataFetchBatching(String AllValues) {
+		mapper.insertMT5dataFetchBatching(AllValues);
+	}
+	
 	@Override   
 	public void insertMT5dataFetch(int Action, String Symbol, String PositionID, String ExternalID, String Digits,String Commission, String MarketBid, String Time, String RateMargin, String Reason,String VolumeClosed, String VolumeExt, String Entry, String PriceTP, String TickSize, String Gateway, String Profit, String PricePosition, String VolumeClosedExt, String Order, String PriceGateway, String Comment, String ExpertID, String ContractSize, String Fee, String Login, String Flags, String Deal, String ProfitRaw, String TickValue, String DigitsCurrency, String Storage, String PriceSL, String RateProfit, String MarketAsk, String Price,  String Volume, String ModifyFlags, String TimeMsc, String MarketLast, String Value, String Dealer)
 	{// Check this one please

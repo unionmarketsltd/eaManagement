@@ -77,6 +77,7 @@ import com.union.portal.domain.t_forum_topiccount;
 import com.union.portal.domain.t_mt5_account_list;
 import com.union.portal.domain.t_mt5_accountlist;
 import com.union.portal.domain.t_kr_account_list;
+import com.union.portal.domain.t_mt5_account_history_list;
 import com.union.portal.domain.t_kr_account_history;
 import com.union.portal.domain.t_kr_account_forum_list;
 import com.union.portal.domain.t_top_latest_news;
@@ -792,10 +793,11 @@ public class AdminController {
 						String Dealer = theAnswer.getJSONObject(i).getString("Dealer");
 						// String wadada = theAnswer.getJSONObject(i).getString("Position");
 						
+						
 						if(Action < 2) {
 							// CHECKTHIS un-Comment below for database insertion
-							// adminservices.insertMT5dataFetch(Action, Symbol, PositionID, ExternalID, Digits, Commission, MarketBid, Time, RateMargin, Reason, VolumeClosed, VolumeExt, Entry, PriceTP, TickSize, Gateway, Profit, PricePosition, VolumeClosedExt, Order, PriceGateway, Comment, ExpertID, ContractSize, Fee, Login, Flags, Deal, ProfitRaw, TickValue, DigitsCurrency, Storage, PriceSL, RateProfit, MarketAsk, Price, Volume, ModifyFlags, TimeMsc, MarketLast, Value, Dealer);
-							
+							adminservices.insertMT5dataFetch(Action, Symbol, PositionID, ExternalID, Digits, Commission, MarketBid, Time, RateMargin, Reason, VolumeClosed, VolumeExt, Entry, PriceTP, TickSize, Gateway, Profit, PricePosition, VolumeClosedExt, Order, PriceGateway, Comment, ExpertID, ContractSize, Fee, Login, Flags, Deal, ProfitRaw, TickValue, DigitsCurrency, Storage, PriceSL, RateProfit, MarketAsk, Price, Volume, ModifyFlags, TimeMsc, MarketLast, Value, Dealer);
+						
 						}
 						// adminservices.insertMT5data(wadada);
 					}
@@ -853,27 +855,9 @@ public class AdminController {
 					JSONArray theAnswer = outputobject.getJSONArray("answer"); // getJSONObject
 					logger.info("NEW API RESULT - " + theAnswer); // .length()
 					int arrayLength = theAnswer.length();
+					// logger.info(arrayLength);
 					
-					while(j < 10) { // arrayLength
-							
-						int Action = theAnswer.getJSONObject(j).getInt("Action");
-						
-						if(batchingCounter%100==0) {
-							batchingConstructor = "("+Action+")";
-							batching = batching+ "," + batchingConstructor;
-							
-							batchingCounter = 0;
-						} else {
-							batchingConstructor = "("+Action+")";
-							batching = batching+ "," + batchingConstructor;
-						}
-						
-						batchingCounter++;
-						j++;
-					}
-					logger.info(batching);
-					
-					for(int i=0; i<theAnswer.length(); i++) {
+					for(int i=0; i<theAnswer.length(); i++) {// theAnswer.length()
 						int Action = theAnswer.getJSONObject(i).getInt("Action");
 						String Symbol = theAnswer.getJSONObject(i).getString("Symbol");
 						String PositionID = theAnswer.getJSONObject(i).getString("PositionID");
@@ -917,11 +901,28 @@ public class AdminController {
 						String Value = theAnswer.getJSONObject(i).getString("Value");
 						String Dealer = theAnswer.getJSONObject(i).getString("Dealer");
 						// String wadada = theAnswer.getJSONObject(i).getString("Position");
-						
-						if(Action < 2) {
+						// logger.info("check check plll");
+						/*
+						if(j<250) {
+							batching = "('"+Action+"','"+Symbol+"','"+PositionID+"','"+ExternalID+"','"+Digits+"','"+Commission+"','"+MarketBid+"','"+Time+"','"+RateMargin+"','"+Reason+"','"+VolumeClosed+"','"+VolumeExt+"','"+Entry+"','"+PriceTP+"','"+TickSize+"','"+Gateway+"','"+Profit+"','"+PricePosition+"','"+VolumeClosedExt+"','"+Order+"','"+PriceGateway+"','"+Comment+"','"+ExpertID+"','"+ContractSize+"','"+Fee+"','"+Login+"','"+Flags+"','"+Deal+"','"+ProfitRaw+"','"+TickValue+"','"+DigitsCurrency+"','"+Storage+"','"+PriceSL+"','"+RateProfit+"','"+MarketAsk+"','"+Price+"','"+Volume+"','"+ModifyFlags+"','"+TimeMsc+"','"+MarketLast+"','"+Value+"','"+Dealer+"')";
+							batchingConstructor = batchingConstructor + batching;
+							
+						} else {
+							batching = "('"+Action+"','"+Symbol+"','"+PositionID+"','"+ExternalID+"','"+Digits+"','"+Commission+"','"+MarketBid+"','"+Time+"','"+RateMargin+"','"+Reason+"','"+VolumeClosed+"','"+VolumeExt+"','"+Entry+"','"+PriceTP+"','"+TickSize+"','"+Gateway+"','"+Profit+"','"+PricePosition+"','"+VolumeClosedExt+"','"+Order+"','"+PriceGateway+"','"+Comment+"','"+ExpertID+"','"+ContractSize+"','"+Fee+"','"+Login+"','"+Flags+"','"+Deal+"','"+ProfitRaw+"','"+TickValue+"','"+DigitsCurrency+"','"+Storage+"','"+PriceSL+"','"+RateProfit+"','"+MarketAsk+"','"+Price+"','"+Volume+"','"+ModifyFlags+"','"+TimeMsc+"','"+MarketLast+"','"+Value+"','"+Dealer+"')";
+							batchingConstructor = batchingConstructor + batching;
+							String finalConstructor = batchingConstructor.replace(")(", "),(");
+							logger.info("CHECK INSERTION VALUES: "+finalConstructor);
+							
+							// adminservices.insertMT5dataFetchBatching(finalConstructor);
+							
+							j=0;
+							batchingConstructor = "";
+						}
+						j++;*/
+						// if(Action < 2) {
 							// adminservices.insertMT5dataFetch(Action, Symbol, PositionID, ExternalID, Digits, Commission, MarketBid, Time, RateMargin, Reason, VolumeClosed, VolumeExt, Entry, PriceTP, TickSize, Gateway, Profit, PricePosition, VolumeClosedExt, Order, PriceGateway, Comment, ExpertID, ContractSize, Fee, Login, Flags, Deal, ProfitRaw, TickValue, DigitsCurrency, Storage, PriceSL, RateProfit, MarketAsk, Price, Volume, ModifyFlags, TimeMsc, MarketLast, Value, Dealer);
 							
-						}
+						// }
 						// adminservices.insertMT5data(wadada);
 					}
 		        }
@@ -934,6 +935,148 @@ public class AdminController {
 		String returnURL = "";
 		returnURL = "/trahasd";
 		return String.valueOf(defaultpath) + returnURL ;// String.valueOf(defaultpath) + returnURL
+	}
+	
+	
+	
+	@RequestMapping(value = { "/sasa" }, method = { RequestMethod.GET }, produces = {
+	"application/json;charset=UTF-8" })
+	@ResponseBody
+	public ModelAndView sasa(HttpServletRequest request, Model model) {
+	logger.info("Get sasa  ........" + this.serverinfo);
+	String id = request.getParameter("id");
+	// String id="237688";
+	
+	
+	ModelAndView mav = new ModelAndView("jsonView");
+	String responsestr = "";
+	
+	List<t_mt5_accountlist> acclist = new ArrayList<>();
+	acclist = adminservices.getmt5accountlist();
+	String accountlist = acclist.toString().replace("[", "").replace("t_mt5_accountlist", "").replace("login", "").replace("=", "").replace("(", "").replace(")", "").replace(" ", "").replace("]", "");
+	logger.info("info this one: "+accountlist);
+	
+	
+	JSONArray list = new JSONArray();
+	HttpUtils httpUtils = new HttpUtils(serverinfo);
+	// String responsestr = null;
+	
+	if (httpUtils.sendAuth(serverinfo)) { 
+		long currentTimeMillis = System.currentTimeMillis();
+		long currentSeconds = currentTimeMillis / 1000;
+		
+		String group = httpUtils.getSwapGroupRegisteration(serverinfo); // + Long.toString(currentSeconds)
+		String ApiPath = "/api/deal/get_batch?login=" + accountlist + "&from=0&to="+ Long.toString(currentSeconds) ; // /api/position/get_page?login=82696384,82696246&offset=0&total=100"
+	// + group     /client/get_ids" /client/user/get_logins?client=" + 4012;  
+		// logger.info("Check Api Path - " + ApiPath);
+		 
+		int j = 0;
+		int batchingCounter = 1;
+		String batchingConstructor = "";
+		String batching = "";
+		String finalConstructor = "";
+
+		try { 
+			responsestr = httpUtils.sendGet(serverinfo, ApiPath);
+			if (responsestr.indexOf("0 Done") > 0) { 
+				// logger.info("API RESULT" + responsestr);
+				JSONObject outputobject = new JSONObject(responsestr);
+				JSONArray theAnswer = outputobject.getJSONArray("answer"); // getJSONObject
+				logger.info("NEW API RESULT - " + theAnswer); // .length()
+				int arrayLength = theAnswer.length();
+				// logger.info(arrayLength);
+				
+				for(int i=0; i<theAnswer.length(); i++) {// theAnswer.length()
+					int Action = theAnswer.getJSONObject(i).getInt("Action");
+					String Symbol = theAnswer.getJSONObject(i).getString("Symbol");
+					String PositionID = theAnswer.getJSONObject(i).getString("PositionID");
+					String ExternalID = theAnswer.getJSONObject(i).getString("ExternalID");
+					String Digits = theAnswer.getJSONObject(i).getString("Digits");						
+					String Commission = theAnswer.getJSONObject(i).getString("Commission");
+					String MarketBid = theAnswer.getJSONObject(i).getString("MarketBid");
+					String Time = theAnswer.getJSONObject(i).getString("Time");						
+					String RateMargin = theAnswer.getJSONObject(i).getString("RateMargin");
+					String Reason = theAnswer.getJSONObject(i).getString("Reason");
+					String VolumeClosed = theAnswer.getJSONObject(i).getString("VolumeClosed");
+					String VolumeExt = theAnswer.getJSONObject(i).getString("VolumeExt");
+					String Entry = theAnswer.getJSONObject(i).getString("Entry");
+					String PriceTP = theAnswer.getJSONObject(i).getString("PriceTP");
+					String TickSize = theAnswer.getJSONObject(i).getString("TickSize");
+					String Gateway = theAnswer.getJSONObject(i).getString("Gateway");
+					String Profit = theAnswer.getJSONObject(i).getString("Profit");
+					String PricePosition = theAnswer.getJSONObject(i).getString("PricePosition");
+					String VolumeClosedExt = theAnswer.getJSONObject(i).getString("VolumeClosedExt");
+					String Order = theAnswer.getJSONObject(i).getString("Order");
+					String PriceGateway = theAnswer.getJSONObject(i).getString("PriceGateway");
+					String Comment = theAnswer.getJSONObject(i).getString("Comment");
+					String ExpertID = theAnswer.getJSONObject(i).getString("ExpertID");
+					String ContractSize = theAnswer.getJSONObject(i).getString("ContractSize");
+					String Fee = theAnswer.getJSONObject(i).getString("Fee");
+					String Login = theAnswer.getJSONObject(i).getString("Login");
+					String Flags = theAnswer.getJSONObject(i).getString("Flags");
+					String Deal = theAnswer.getJSONObject(i).getString("Deal");		
+					String ProfitRaw = theAnswer.getJSONObject(i).getString("ProfitRaw");
+					String TickValue = theAnswer.getJSONObject(i).getString("TickValue");
+					String DigitsCurrency = theAnswer.getJSONObject(i).getString("DigitsCurrency");
+					String Storage = theAnswer.getJSONObject(i).getString("Storage");
+					String PriceSL = theAnswer.getJSONObject(i).getString("PriceSL");
+					String RateProfit = theAnswer.getJSONObject(i).getString("RateProfit");
+					String MarketAsk = theAnswer.getJSONObject(i).getString("MarketAsk");
+					String Price = theAnswer.getJSONObject(i).getString("Price");
+					String Volume = theAnswer.getJSONObject(i).getString("Volume");
+					String ModifyFlags = theAnswer.getJSONObject(i).getString("ModifyFlags");
+					String TimeMsc = theAnswer.getJSONObject(i).getString("TimeMsc");
+					String MarketLast = theAnswer.getJSONObject(i).getString("MarketLast");
+					String Value = theAnswer.getJSONObject(i).getString("Value");
+					String Dealer = theAnswer.getJSONObject(i).getString("Dealer");
+					// String wadada = theAnswer.getJSONObject(i).getString("Position");
+					
+					batching = "('"+Action+"','"+Symbol+"','"+PositionID+"','"+ExternalID+"','"+Digits+"','"+Commission+"','"+MarketBid+"','"+Time+"','"+RateMargin+"','"+Reason+"','"+VolumeClosed+"','"+VolumeExt+"','"+Entry+"','"+PriceTP+"','"+TickSize+"','"+Gateway+"','"+Profit+"','"+PricePosition+"','"+VolumeClosedExt+"','"+Order+"','"+PriceGateway+"','"+Comment+"','"+ExpertID+"','"+ContractSize+"','"+Fee+"','"+Login+"','"+Flags+"','"+Deal+"','"+ProfitRaw+"','"+TickValue+"','"+DigitsCurrency+"','"+Storage+"','"+PriceSL+"','"+RateProfit+"','"+MarketAsk+"','"+Price+"','"+Volume+"','"+ModifyFlags+"','"+TimeMsc+"','"+MarketLast+"','"+Value+"','"+Dealer+"')";
+					batchingConstructor = batchingConstructor + batching;
+					
+					// logger.info("CHECK INSERTION VALUES: "+finalConstructor);
+					// logger.info("check check plll");
+					/*
+					if(j<250) {
+						batching = "('"+Action+"','"+Symbol+"','"+PositionID+"','"+ExternalID+"','"+Digits+"','"+Commission+"','"+MarketBid+"','"+Time+"','"+RateMargin+"','"+Reason+"','"+VolumeClosed+"','"+VolumeExt+"','"+Entry+"','"+PriceTP+"','"+TickSize+"','"+Gateway+"','"+Profit+"','"+PricePosition+"','"+VolumeClosedExt+"','"+Order+"','"+PriceGateway+"','"+Comment+"','"+ExpertID+"','"+ContractSize+"','"+Fee+"','"+Login+"','"+Flags+"','"+Deal+"','"+ProfitRaw+"','"+TickValue+"','"+DigitsCurrency+"','"+Storage+"','"+PriceSL+"','"+RateProfit+"','"+MarketAsk+"','"+Price+"','"+Volume+"','"+ModifyFlags+"','"+TimeMsc+"','"+MarketLast+"','"+Value+"','"+Dealer+"')";
+						batchingConstructor = batchingConstructor + batching;
+						
+					} else {
+						batching = "('"+Action+"','"+Symbol+"','"+PositionID+"','"+ExternalID+"','"+Digits+"','"+Commission+"','"+MarketBid+"','"+Time+"','"+RateMargin+"','"+Reason+"','"+VolumeClosed+"','"+VolumeExt+"','"+Entry+"','"+PriceTP+"','"+TickSize+"','"+Gateway+"','"+Profit+"','"+PricePosition+"','"+VolumeClosedExt+"','"+Order+"','"+PriceGateway+"','"+Comment+"','"+ExpertID+"','"+ContractSize+"','"+Fee+"','"+Login+"','"+Flags+"','"+Deal+"','"+ProfitRaw+"','"+TickValue+"','"+DigitsCurrency+"','"+Storage+"','"+PriceSL+"','"+RateProfit+"','"+MarketAsk+"','"+Price+"','"+Volume+"','"+ModifyFlags+"','"+TimeMsc+"','"+MarketLast+"','"+Value+"','"+Dealer+"')";
+						batchingConstructor = batchingConstructor + batching;
+						String finalConstructor = batchingConstructor.replace(")(", "),(");
+						logger.info("CHECK INSERTION VALUES: "+finalConstructor);
+						
+						// adminservices.insertMT5dataFetchBatching(finalConstructor);
+						
+						j=0;
+						batchingConstructor = "";
+					}
+					j++;*/
+					// if(Action < 2) {
+						// adminservices.insertMT5dataFetch(Action, Symbol, PositionID, ExternalID, Digits, Commission, MarketBid, Time, RateMargin, Reason, VolumeClosed, VolumeExt, Entry, PriceTP, TickSize, Gateway, Profit, PricePosition, VolumeClosedExt, Order, PriceGateway, Comment, ExpertID, ContractSize, Fee, Login, Flags, Deal, ProfitRaw, TickValue, DigitsCurrency, Storage, PriceSL, RateProfit, MarketAsk, Price, Volume, ModifyFlags, TimeMsc, MarketLast, Value, Dealer);
+						
+					// }
+					// adminservices.insertMT5data(wadada); 
+				}
+				finalConstructor = batchingConstructor.replace(")(", "),(");
+	        
+				responsestr = theAnswer.toString();
+			}
+			
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}	
+	
+	
+	responsestr.indexOf("0 Done");
+	
+	
+	mav.addObject("result", APIProtectionHandler.ApiProtection(request, responsestr));
+	return mav;
 	}
 	
 	// ++++++++++++++======================+++++++++++++++

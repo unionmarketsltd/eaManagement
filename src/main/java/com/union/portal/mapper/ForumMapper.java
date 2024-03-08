@@ -540,12 +540,13 @@ public List<t_forum_topiccount> getforumtopiccountlist();
 	@Select("select isban from t_user where email = #{email}")
 	 public int getcheckisban(@Param("email") String email); 
 	 
-	@Select("SELECT closedate ,SUM(profit) OVER (ORDER BY closedate asc) as cumulative_profit FROM forum.t_kr_account_history where dbsts = 'A' and accountid = #{id} order by closedate asc;")
+	@Select("SELECT closedate ,SUM(profit) OVER (ORDER BY closedate asc) as cumulative_profit FROM forum.t_kr_"
+			+ " where dbsts = 'A' and accountid = #{id} order by closedate asc;")
 	 public List<t_kr_account_history> getkraccountprofitchartdata(@Param("id") String id); 
 	 
 	 
 	 // fetch db mt5 api-ed
-	 @Select("SELECT a.id, a.Profit+a.ProfitRaw+ a.Commission + (SELECT sum(b.Profit+b.ProfitRaw+ b.Commission) FROM forum.t_mt5_account_history b WHERE b.`Login` = #{id} and b.id < a.id)  as totalProfit FROM forum.t_mt5_account_history a WHERE a.`Login` = #{id} ;")
+	 @Select("SELECT a.id, a.Profit+a.Storage+ a.Commission + (SELECT sum(b.Profit+b.Storage+ b.Commission) FROM forum.t_mt5_account_history b WHERE b.`Login` = #{id} and b.id < a.id)  as totalProfit FROM forum.t_mt5_account_history a WHERE a.`Login` = #{id} ;")
 	 // @Select("SELECT (Profit+ProfitRaw+Commission) as totalProfit FROM forum.t_mt5_account_history WHERE `Login` = #{id};")
 		public List<t_mt5_account_history_list> getKRaccountHistorylist(@Param("id") String id);
 		
