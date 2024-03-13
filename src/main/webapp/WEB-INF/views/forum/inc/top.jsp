@@ -189,7 +189,7 @@
 		 <div class="custom-translate" id="google_translate_element" style="display:none" ></div>
 			<!-- /WIDGET OPTIONS WRAP -->
 			
-				<div class="widget-options-wrap" style="margin-left:19px">
+				<div class="widget-options-wrap" style="margin-left:19px;display:none">
 	
 						<div class="current-option-value">
 						
