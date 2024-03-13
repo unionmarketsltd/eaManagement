@@ -548,7 +548,7 @@ public List<t_forum_topiccount> getforumtopiccountlist();
 	 
 	 
 	 // fetch db mt5 api-ed
-	 @Select("SELECT a.id, a.Profit+a.Storage+ a.Commission + (SELECT sum(b.Profit+b.Storage+ b.Commission) FROM forum.t_mt5_account_history b WHERE b.`Login` = #{id} and b.id < a.id and Action<2)  as totalProfit FROM forum.t_mt5_account_history a WHERE a.`Login` = #{id}  and Action<2;")
+	 @Select("SELECT a.id, a.Profit+a.Storage+ a.Commission + (SELECT sum(b.Profit+b.Storage+ b.Commission) FROM forum.t_mt5_account_history b WHERE b.`Login` = #{id} and b.id < a.id and Action<2 order by `Deal` asc)  as totalProfit FROM forum.t_mt5_account_history a WHERE a.`Login` = #{id}  and Action<2  order by `Deal` asc;") // order by PositionID asc
 	 // @Select("SELECT (Profit+ProfitRaw+Commission) as totalProfit FROM forum.t_mt5_account_history WHERE `Login` = #{id};")
 		public List<t_mt5_account_history_list> getKRaccountHistorylist(@Param("id") String id);
 		

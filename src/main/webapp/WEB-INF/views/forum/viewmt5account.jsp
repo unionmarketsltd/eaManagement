@@ -543,7 +543,7 @@
 	function getprofitchartdata() {
 		$
 				.ajax({
-					url : '${pageContext.request.contextPath}/forum/getprofitchartdata?id='+parameterid,
+					url : '${pageContext.request.contextPath}/forum/getprofitchartdatanewasd?id='+parameterid,
 					type : 'get',
 					async : false,
 					data : '',

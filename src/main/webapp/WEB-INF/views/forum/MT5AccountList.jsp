@@ -209,7 +209,7 @@
 		
 		
 		function getprofitchartdata(id) {
-			$
+			$ //getprofitchartdatanewasd
 					.ajax({
 						url : '${pageContext.request.contextPath}/forum/getprofitchartdatanewasd?id='+id,
 						type : 'get',
