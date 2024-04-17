@@ -394,6 +394,7 @@ public class EAMgmtController {
 		model.addAttribute("lang", vLocal);
 		String returnURL = "";
 		returnURL = "/eaAccountList";
+		
 		String eaGroup = request.getParameter("group");
 		String eaSearch = request.getParameter("eaSearch");
 		logger.info("EAGROUP : "+eaGroup);
@@ -402,9 +403,6 @@ public class EAMgmtController {
 		List<t_eaSystem_eaname_list> eaNameList = adminservices.eaSystemEAnameList();
 		model.addAttribute("eaNameList", eaNameList);
 		
-		/* List<t_eaSystem_eaGroup_list> getEAGroupList = adminservices.eaSystemEAGroupList(eaGroup);
-		model.addAttribute("getEAGroupList", getEAGroupList);
-		*/
 		
 		if(eaSearch == "" || eaSearch ==null) {
 			List<t_eaSystem_eaGroup_list> getEAGroupList = adminservices.eaSystemEAGroupList(eaGroup);
@@ -418,23 +416,39 @@ public class EAMgmtController {
 			if(!ans) {
 				model.addAttribute("getEAGroupList", searchByName);
 			} else {
-				int nnumberr = Integer.parseInt(eaSearch);
-				List<t_eaSystem_eaSearchAccNo_list> searchAccNo = new ArrayList<>();
-				searchAccNo = adminservices.eaSysSearchAccNoList(nnumberr);
-				
-				boolean ans1 = searchAccNo.isEmpty();
-				if(!ans1) {
-					model.addAttribute("getEAGroupList", searchAccNo);
+				if(isInteger(eaSearch)) {
+					int nnumberr = Integer.parseInt(eaSearch); // here check
+					List<t_eaSystem_eaSearchAccNo_list> searchAccNo = new ArrayList<>();
+					searchAccNo = adminservices.eaSysSearchAccNoList(nnumberr);
+					
+					boolean ans1 = searchAccNo.isEmpty();
+					if(!ans1) {
+						model.addAttribute("getEAGroupList", searchAccNo);
+					} else {
+						return defaultpath + returnURL;
+					}
 				} else {
 					return defaultpath + returnURL;
 				}
 			}
 		}
-	    
-	    
-	    
+
 		return defaultpath + returnURL;
 	}
+	
+	
+	public static boolean isInteger(String str) { // function to check if value is int or not
+        
+		if (str == null) {
+            return false;
+        }
+        try {
+            Integer.parseInt(str);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
 	
 	
 	@RequestMapping(value = "/main", method = RequestMethod.GET)
