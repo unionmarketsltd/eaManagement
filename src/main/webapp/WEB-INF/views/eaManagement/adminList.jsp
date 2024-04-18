@@ -7,7 +7,7 @@
 	uri="http://www.springframework.org/security/tags"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <html lang="en">
-<!-- %@include file="inc/session.jsp"%<> -->
+<!-- --><%@include file="inc/session.jsp"%> 
 
 <head>
 <%@include file="inc/header.jsp"%>
@@ -95,20 +95,17 @@
 	                  		</div>
 	                  		<div class="col-2">
 	                  			<nav class="d-inline-block">
-		                      <ul class="pagination mb-0">
-		                        <li class="page-item disabled">
-		                          <a class="page-link" href="#" tabindex="-1"><i class="fas fa-chevron-left"></i></a>
-		                        </li>
-		                        <li class="page-item active"><a class="page-link" href="#">1 <span class="sr-only">(current)</span></a></li>
-		                        <li class="page-item">
-		                          <a class="page-link" href="#">2</a>
-		                        </li>
-		                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-		                        <li class="page-item">
-		                          <a class="page-link" href="#"><i class="fas fa-chevron-right"></i></a>
-		                        </li>
-		                      </ul>
-		                    </nav>
+			                      <ul class="pagination mb-0">
+			                        <li class="page-item disabled">
+			                          <a class="page-link" href="#" tabindex="-1"><i class="fas fa-chevron-left"></i></a>
+			                        </li>
+			                        ${totalAdmin}
+			                        
+			                        <li class="page-item">
+			                          <a class="page-link" href="#"><i class="fas fa-chevron-right"></i></a>
+			                        </li>
+			                      </ul>
+			                    </nav>
 	                  		</div>
 	                  	</div>
 	                  	<div class="text-left">

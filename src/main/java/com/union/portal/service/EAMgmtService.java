@@ -41,14 +41,15 @@ import com.union.portal.domain.calculator;
 public interface EAMgmtService {
 	
 	
-	public List<t_eaSystem_admin_list> eaSystemAdminList();
+	public List<t_eaSystem_admin_list> eaSystemAdminList(int pageno);
 	public List<t_eaSystem_adminlist_searchId> adminListSearchAccNo(int eaSearchAccNo);
 	public t_eaSystem_admin_list getAdminLogin(String eemail, String epwd);
 	public List<t_eaSystem_adminlist_searchName> adminListSearchName(String eaSearchName);
 	public List<t_eaSystem_admin_searchByName> eaSearchAdminByName(String keyword);
 	public List<t_eaSystem_admin_searchById> eaSearchAdminById(int userseq);
 	public List<t_eaSystem_eaname_list> eaSystemEAnameList();
-	public List<t_eaSystem_eaGroup_list> eaSystemEAGroupList(String keyword);
+	public List<t_eaSystem_eaGroup_list> eaSystemEAGroupList(String keyword, int eaOffset);
+	public int countEAGroupList(String waGroupName);
 	public List<t_eaSystem_eaSearchAccNo_list> eaSysSearchAccNoList(int accno); // int
 	public List<t_eaSystem_eaSearchName_list> eaSystemEASearchNameList(String keyword);
 	public void insertAdmin(String useq, String imail, String pword, String naem, String fon, String adreis);
@@ -59,6 +60,10 @@ public interface EAMgmtService {
 	public int checkLogin(String email, String userseq) ;
 	public t_eaSystem_admin_list getAdminInfoLogin(int userseq);
 	public t_eaSystem_eaSearchName_list getAccountInfo(int accnoseq);
+	public void updateAccFlag();
+	
+	// paging section
+	public int pageCountAdmin();
 	
 	// +++++++++++++ ============== +++++++++++++
 	

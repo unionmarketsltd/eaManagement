@@ -53,8 +53,8 @@ public interface EAMgmtMapper {
 	@Select("SELECT * FROM `system`.`admin` WHERE `email` = #{eemail} AND `password` = #{epwd};")
 	public t_eaSystem_admin_list getAdminLogin(@Param("eemail")String eemail, @Param("epwd")String epwd);
 	
-	@Select("SELECT * FROM `system`.`admin` WHERE `dbsts` = 'A' ORDER BY `adminseq` ASC;")
-	public List<t_eaSystem_admin_list> eaSystemAdminList();
+	@Select("SELECT * FROM `system`.`admin` WHERE `dbsts` = 'A' ORDER BY `adminseq` ASC LIMIT 20 OFFSET #{pageno};")
+	public List<t_eaSystem_admin_list> eaSystemAdminList(@Param("pageno")int pageno);
 	
 	@Select("SELECT * FROM `system`.`admin` WHERE `name`=#{searchName}  ORDER BY `adminseq` ASC;")
 	public List<t_eaSystem_admin_searchByName> eaSearchAdminByName(@Param("searchName")String searchName);
@@ -70,8 +70,12 @@ public interface EAMgmtMapper {
 			+ "        WHEN `enddate` > CURDATE() THEN DATEDIFF(`enddate`, CURDATE())\r\n"
 			+ "        ELSE 0\r\n"
 			+ "    END AS `remaining_days`, \r\n"
-			+ "`accounttype`, `creuser`, `flag`, `userseq` FROM `system`.`accounts` WHERE `eaname` = #{waGroupName} AND `dbsts` = 'A';")
-	public List<t_eaSystem_eaGroup_list> eaSystemEAGroupList(@Param("waGroupName")String waGroupName);
+			+ "`accounttype`, `creuser`, `flag`, `userseq` FROM `system`.`accounts` WHERE `eaname` = #{waGroupName} AND `dbsts` = 'A' LIMIT 50 OFFSET #{eaOffset};")
+	public List<t_eaSystem_eaGroup_list> eaSystemEAGroupList(@Param("waGroupName")String waGroupName, @Param("eaOffset") int eaOffset);
+	
+	@Select("SELECT COUNT(*) FROM `system`.`accounts` WHERE `eaname` = #{waGroupName} AND `dbsts` = 'A' ;")
+	public int countEAGroupList(@Param("waGroupName")String waGroupName);
+	
 	
 	@Select("SELECT `accountsseq`, `login`, `dbsts`, `eaname`, `version`, `broker`, `name`, `balance`, `equity`, `lastconnectdate`, `credate`, `startdate`, `enddate`,\r\n"
 			+ "	CASE \r\n"
@@ -110,12 +114,16 @@ public interface EAMgmtMapper {
 	public List<t_eaSystem_adminlist_searchId> adminListSearchAccNo(@Param("eaSearchAccNo")int eaSearchAccNo);
 	
 	
-	@Select("UPDATE `system`.`accounts` SET `dbsts` = 'I' WHERE `accountsseq` = #{useq};")
+	@Select("UPDATE `system`.`accounts` SET `dbsts` = 'D' WHERE `accountsseq` = #{useq};")
 	public void deleteListAccount(@Param("useq") int useq);
 	
 	
 	@Select("UPDATE `system`.`accounts` SET `startdate` = #{sdate}, `enddate` = #{edate} WHERE `accountsseq` = #{useq};")
 	public void updateAccStaEnd(@Param("useq") int useq, @Param("sdate") String sdate, @Param("edate") String edate);
+	
+	
+	@Select("UPDATE `system`.`accounts` SET `flag` = 'N' WHERE `enddate` < now() AND `flag` = 'Y';")
+	public void updateAccFlag();
 	
 	
 	
@@ -128,8 +136,10 @@ public interface EAMgmtMapper {
 	public t_eaSystem_eaSearchName_list getAccountInfo(@Param("accnoseq")int accnoseq);
 	
 	
-	// @Update("UPDATE `forum`.`t_forum_topic` SET views = views + 1 where id= #{tid}")
-	// public void updatetopicview(@Param("tid")String tid);
+	// paging Section
+	@Select("SELECT count(*) FROM `system`.`admin` WHERE `dbsts` = 'A';")
+	public int pageCountAdmin();
+	
 	
 	// ++++++++++++++++ ================ ++++++++++++++++
 	

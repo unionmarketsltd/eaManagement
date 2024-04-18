@@ -7,7 +7,7 @@
 	uri="http://www.springframework.org/security/tags"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <html lang="en">
-<!-- %@include file="inc/session.jsp"%<> -->
+<!-- --><%@include file="inc/session.jsp"%> 
 
 <head>
 <%@include file="inc/header.jsp"%>
@@ -74,7 +74,7 @@
 		                        	<c:forEach items="${getEAGroupList}" var="listinfo" varStatus="status">
 			                        	<tr id="${listinfo.accountsseq}"> <!-- id: -->
 				                          <td style="text-align:center;">
-				                          	<c:if test="${listinfo.flag == 'Y'}">
+				                          	<c:if test="${listinfo.remaining_days != 0}">
 				                          		<input type="checkbox"  class="row-checkbox" value="#" style="text-align: center;" checked>
 				                          	</c:if>
 				                          </td>
@@ -136,11 +136,7 @@
 			                        <li class="page-item disabled">
 			                          <a class="page-link" href="#" tabindex="-1"><i class="fas fa-chevron-left"></i></a>
 			                        </li>
-			                        <li class="page-item active"><a class="page-link" href="#">1 <span class="sr-only">(current)</span></a></li>
-			                        <li class="page-item">
-			                          <a class="page-link" href="#">2</a>
-			                        </li>
-			                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+			                        ${totalAdmin}
 			                        <li class="page-item">
 			                          <a class="page-link" href="#"><i class="fas fa-chevron-right"></i></a>
 			                        </li>

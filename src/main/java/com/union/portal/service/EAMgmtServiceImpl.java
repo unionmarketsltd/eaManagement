@@ -74,8 +74,8 @@ public class EAMgmtServiceImpl implements EAMgmtService {
 	
 	
 	@Override
-	public List<t_eaSystem_admin_list> eaSystemAdminList() {
-		return mapper.eaSystemAdminList();
+	public List<t_eaSystem_admin_list> eaSystemAdminList(int pageno) {
+		return mapper.eaSystemAdminList(pageno);
 	}
 	
 	
@@ -97,11 +97,19 @@ public class EAMgmtServiceImpl implements EAMgmtService {
 	
 	
 	@Override
-	public List<t_eaSystem_eaGroup_list> eaSystemEAGroupList(String keyword) {
+	public List<t_eaSystem_eaGroup_list> eaSystemEAGroupList(String keyword, int eaOffset) {
 
-		return mapper.eaSystemEAGroupList(keyword);
+		return mapper.eaSystemEAGroupList(keyword, eaOffset);
 
 	}
+	
+	
+	@Override
+	public int countEAGroupList(String waGroupName) {
+		return mapper.countEAGroupList(waGroupName);
+	}
+	
+	
 	
 	@Override
 	public List<t_eaSystem_eaSearchAccNo_list> eaSysSearchAccNoList(int accno) {
@@ -158,11 +166,22 @@ public class EAMgmtServiceImpl implements EAMgmtService {
 	}
 	
 	
+	@Override
+	public void updateAccFlag() {
+		mapper.updateAccFlag();
+	}
+	
+	
 	@Override 
 	public t_eaSystem_eaSearchName_list getAccountInfo(int accnoseq) {
 		return mapper.getAccountInfo(accnoseq);
 	}
 	
+	// paging section
+	@Override
+	public int pageCountAdmin() {
+		return mapper.pageCountAdmin();
+	}
 	
 	// +++++++++++++++ ================ ++++++++++++++++
 	

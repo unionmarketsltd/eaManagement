@@ -218,6 +218,11 @@ public class EAMgmtController {
 		String vLocal = LocaleContextHolder.getLocale().getLanguage();
 		model.addAttribute("lang", vLocal);
 		String returnURL = "";
+		
+		adminservices.updateAccFlag();
+		
+		
+		
 		returnURL = "/login2";
 
 		return defaultpath + returnURL;
@@ -281,19 +286,51 @@ public class EAMgmtController {
 		String vLocal = LocaleContextHolder.getLocale().getLanguage();
 		model.addAttribute("lang", vLocal);
 		String returnURL = "";
-		returnURL = "/adminList";
+		returnURL = "adminList";
 		String eaSearch = request.getParameter("search");
+		String pages = request.getParameter("pages");
+		int pageNo;
+		if(pages == "" || pages == null) {
+			pageNo = 0;
+		} else {
+			pageNo = Integer.parseInt(pages);
+			pageNo = (pageNo -1)*20;
+		}
+		logger.info("where is this:"+pages);
 		
+		// side nav ea list
 		List<t_eaSystem_eaname_list> eaNameList = adminservices.eaSystemEAnameList();
 		model.addAttribute("eaNameList", eaNameList);
 		
 		if(eaSearch == "" || eaSearch ==null) {
-			List<t_eaSystem_admin_list> eaAdminList = adminservices.eaSystemAdminList();
+			List<t_eaSystem_admin_list> eaAdminList = adminservices.eaSystemAdminList(pageNo);
 			model.addAttribute("eaAdminList", eaAdminList);			
 		} else {
 			List<t_eaSystem_adminlist_searchName> searhnameadmin = adminservices.adminListSearchName(eaSearch);
 			model.addAttribute("eaAdminList", searhnameadmin);	
 		}
+		
+		
+		// page numbering
+		int totalAdmin = adminservices.pageCountAdmin();
+		int forloopthis = totalAdmin / 20;
+		String testingThis="";
+		String isActive="";
+		for(int i=0; i<=forloopthis; i++) {
+			if(pageNo == i) {
+				isActive = "active";
+			} else {
+				isActive = "";
+			}
+			int tempNo = i+1; 
+			String tempString = "<li class='page-item"+isActive+"'><a class='page-link' href='"+returnURL+"?pages="+tempNo+"'>"+tempNo+"</a></li>";
+			testingThis = testingThis+tempString;
+			
+		}
+		
+		logger.info(testingThis);
+		model.addAttribute("totalAdmin", testingThis);
+		
 
 		return defaultpath + returnURL;
 	}
@@ -397,15 +434,22 @@ public class EAMgmtController {
 		
 		String eaGroup = request.getParameter("group");
 		String eaSearch = request.getParameter("eaSearch");
-		logger.info("EAGROUP : "+eaGroup);
-		logger.info("eaSearch : "+eaSearch);
+		String pages = request.getParameter("pages");
+		int pageNo;
+		if(pages == "" || pages == null) {
+			pageNo = 0;
+		} else {
+			pageNo = Integer.parseInt(pages);
+			pageNo = (pageNo -1)*50;
+		}
+		
 		// used for sidemenu
 		List<t_eaSystem_eaname_list> eaNameList = adminservices.eaSystemEAnameList();
 		model.addAttribute("eaNameList", eaNameList);
 		
 		
 		if(eaSearch == "" || eaSearch ==null) {
-			List<t_eaSystem_eaGroup_list> getEAGroupList = adminservices.eaSystemEAGroupList(eaGroup);
+			List<t_eaSystem_eaGroup_list> getEAGroupList = adminservices.eaSystemEAGroupList(eaGroup, pageNo);
 			model.addAttribute("getEAGroupList", getEAGroupList);			
 		} else {
 			List<t_eaSystem_eaSearchName_list> searchByName = new ArrayList<>();
@@ -432,6 +476,24 @@ public class EAMgmtController {
 				}
 			}
 		}
+		
+		// page numbering
+		int totalNumbering = adminservices.countEAGroupList(eaGroup);
+		int forloopthis = totalNumbering / 50;
+		String testingThis="";
+		String isActive="";
+		for(int i=0; i<=forloopthis; i++) {
+			if(pageNo == i) {
+				isActive = "active";
+			} else {
+				isActive = "";
+			}
+			int tempNo = i+1; 
+			String tempString = "<li class='page-item"+isActive+"'><a class='page-link' href='/portal/eaManagement"+returnURL+"?group="+eaGroup+"&pages="+tempNo+"'>"+tempNo+"</a></li>";
+			testingThis = testingThis+tempString;
+			
+		}
+		model.addAttribute("totalAdmin", testingThis);
 
 		return defaultpath + returnURL;
 	}
