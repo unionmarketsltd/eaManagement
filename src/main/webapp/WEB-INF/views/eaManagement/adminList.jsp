@@ -7,7 +7,7 @@
 	uri="http://www.springframework.org/security/tags"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <html lang="en">
-<!-- --><%@include file="inc/session.jsp"%> 
+<!-- %@include file="inc/session.jsp"%<>  -->
 
 <head>
 <%@include file="inc/header.jsp"%>
@@ -58,7 +58,7 @@
 	                          <th>PassWord</th>
 	                          <th>Email</th>
 	                          <th>Phone</th>
-	                          <th style='display: none;'>Edit</th>
+	                          <th style='display: none;'>Edit</th><!--   -->
 	                        </tr>
 	                        <c:choose>
 	                        	<c:when test="${not empty eaAdminList}">
@@ -70,8 +70,8 @@
 				                          <td>${listinfo.password}</td>
 				                          <td>${listinfo.email}</td>
 				                          <td>${listinfo.phone}</td>
-				                          <td style='display: none;'>
-						                      <button class="btn btn-sm btn-warning" data-toggle="modal" data-target="#exampleModal">Edit Information</button>
+				                          <td style='display: none;' ><!-- style="text-align:center"-->
+						                      <button id="${listinfo.adminseq}" onclick="oneUpdStartEnd(this)" class="btn btn-sm btn-warning" data-toggle="modal" data-target="#exampleModal">Edit Information</button>
 			                      		  </td>
 				                        </tr>
 			                        </c:forEach>
@@ -136,37 +136,38 @@
 			        </button>
 			      </div>
 			      <div class="modal-body">
-			        <form action="#" method="POST" enctype="multipart/form-data">
+			        <form action="#" method="POST" enctype="multipart/form-data"></form>
+			          <input type="text" id="eaoneAccno" style='display: none;' > <!-- style='display: none;' -->
 			          <div class="form-group">
-			            <label for="recipient-name" class="col-form-label">Email</label>
-			            <input type="text" class="form-control" name="e-email">
+			            <label for="e-email" class="col-form-label">Email</label>
+			            <input type="text" class="form-control" id="e-email" name="e-email">
 			          </div>
 			          <div class="form-group">
-			            <label for="recipient-name" class="col-form-label">Password</label>
-			            <input type="text" class="form-control" name="e-pwd">
+			            <label for="e-pwd" class="col-form-label">Password</label>
+			            <input type="text" class="form-control" id="e-pwd" name="e-pwd">
 			          </div>
 			          <div class="form-group">
-			            <label for="recipient-name" class="col-form-label" >Name</label>
-			            <input style="cursor: no-drop;" type="text" class="form-control" name="e-name" readonly="readonly" value="tesssttt">
+			            <label for="e-name" class="col-form-label" >Name</label>
+			            <input style="cursor: no-drop;" id="e-name" class="form-control" name="e-name" readonly="readonly">
 			          </div>
 			          <div class="form-group">
-			            <label for="recipient-name" class="col-form-label">Phone</label>
-			            <input type="text" class="form-control" name="e-phone">
+			            <label for="e-phone" class="col-form-label">Phone</label>
+			            <input type="text" class="form-control" id="e-phone" name="e-phone">
 			          </div>
 			          <div class="form-group">
-			            <label for="recipient-name" class="col-form-label">Address</label>
-			            <input type="text" class="form-control" name="e-address">
+			            <label for="e-address" class="col-form-label">Address</label>
+			            <input type="text" class="form-control" id="e-address" name="e-address">
 			          </div>
 			          
 			        
 			      </div>
 			      <div class="modal-footer">
 			        <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
-			        <button type="button" class="btn btn-primary">Edit</button>
-			        <button type="button" class="btn btn-danger">Delete Admin</button>
+			        <button type="button" onclick="editeaallowed()" class="btn btn-primary">Edit</button>
+			        <button type="button" onclick="handleClick()" class="btn btn-danger">Delete Admin</button>
 			      </div>
 			      
-			      </form> <!-- /FORM -->
+			      <!-- /FORM -->
 			    </div>
 			  </div>
 			</div>
@@ -230,6 +231,100 @@
 			var theSearch = document.getElementById("searchinput").value;
 			console.log(theSearch);
 			location.replace("${pageContext.request.contextPath}/eaManagement/adminList?search="+theSearch);
+		}
+		
+		
+		function oneUpdStartEnd(button){
+			var oneUpd = button.id;
+			console.log(oneUpd);
+			/**/
+			$.ajax({
+				url : '${pageContext.request.contextPath}/eaManagement/api/getAdminInfoOne?id='+oneUpd,
+				type : 'get',
+				data : '',
+				success : function(data) {
+					const testsss = JSON.parse(data.result);
+					console.log(testsss);
+					const siadminseq = testsss.adminseq;
+					const siemail = testsss.email;
+					const sipwd = testsss.password;
+					const siname = testsss.name;
+					const siphone = testsss.phone;
+					const siaddr = testsss.addr;
+					// const slogin = testsss.name;
+					$('#e-email').val(siemail);
+					$('#eaoneAccno').val(siadminseq);
+					$('#e-pwd').val(sipwd);
+					$('#e-name').val(siname);
+					$('#e-phone').val(siphone);
+					$('#e-address').val(siaddr);
+					// document.getElementById('eaAccNospan').innerHTML = slogin;
+				},
+
+				error : function(xhr, status) {
+					alert("ERROR : " + xhr + " : " + status);
+
+					return;
+				}
+			});
+			
+		}
+		
+		
+		
+		function editeaallowed() {
+			var checkaccNo = document.getElementById("eaoneAccno").value;
+			var updEmail = document.getElementById("e-email").value;
+			var updPwd = document.getElementById("e-pwd").value;
+			var updNme = document.getElementById("e-name").value;
+			var updPhn = document.getElementById("e-phone").value;
+			var updAddr = document.getElementById("e-address").value;
+			
+			
+			
+			$.ajax({
+				url : '${pageContext.request.contextPath}/eaManagement/api/updateAdminInfo?id='+checkaccNo+'&emails='+updEmail+'&pwds='+updPwd+'&phns='+updPhn+'&adds='+updAddr, 
+				type : 'POST',
+				contentType : "application/json",
+				data : '',
+				success : function(data) {
+					console.log(data);
+					alert("Updated!");
+	            	window.location.reload(true);
+				},
+
+				error : function(xhr, status) {
+					alert("ERROR : " + xhr + " : " + status);
+
+					return;
+				}
+			});
+		}
+		
+		
+		function handleclick(){
+			var checkaccNo = document.getElementById("eaoneAccno").value;
+			
+			
+			$.ajax({
+				url : '${pageContext.request.contextPath}/eaManagement/api/deleteAdminAcc?del='+checkaccNo,
+				type : 'get',
+				datatype : "application/json",
+				contentType : "application/json",
+				async : true,
+				data : '',
+				success : function(data) {
+					console.log(data);
+					alert("Deleted");
+	            	window.location.reload(true);
+				},
+
+				error : function(xhr, status) {
+					alert("ERROR : " + xhr + " : " + status);
+
+					return;
+				}
+			});
 		}
 	</script>
 	      

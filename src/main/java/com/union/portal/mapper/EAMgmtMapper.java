@@ -73,9 +73,6 @@ public interface EAMgmtMapper {
 			+ "`accounttype`, `creuser`, `flag`, `userseq` FROM `system`.`accounts` WHERE `eaname` = #{waGroupName} AND `dbsts` = 'A' LIMIT 50 OFFSET #{eaOffset};")
 	public List<t_eaSystem_eaGroup_list> eaSystemEAGroupList(@Param("waGroupName")String waGroupName, @Param("eaOffset") int eaOffset);
 	
-	@Select("SELECT COUNT(*) FROM `system`.`accounts` WHERE `eaname` = #{waGroupName} AND `dbsts` = 'A' ;")
-	public int countEAGroupList(@Param("waGroupName")String waGroupName);
-	
 	
 	@Select("SELECT `accountsseq`, `login`, `dbsts`, `eaname`, `version`, `broker`, `name`, `balance`, `equity`, `lastconnectdate`, `credate`, `startdate`, `enddate`,\r\n"
 			+ "	CASE \r\n"
@@ -136,9 +133,20 @@ public interface EAMgmtMapper {
 	public t_eaSystem_eaSearchName_list getAccountInfo(@Param("accnoseq")int accnoseq);
 	
 	
+	@Select("UPDATE `system`.`admin` SET `email` = #{emails}, `password` = #{pwds}, `phone` = #{phns}, `addr` = #{adds} WHERE `adminseq` =#{useq};")
+	public void updateAdminInfo(@Param("useq") int useq, @Param("emails") String emails, @Param("pwds") String pwds, @Param("phns ") String phns , @Param("adds") String adds);
+	
+	
+
+	
+	
+	
 	// paging Section
 	@Select("SELECT count(*) FROM `system`.`admin` WHERE `dbsts` = 'A';")
 	public int pageCountAdmin();
+	
+	@Select("SELECT COUNT(*) FROM `system`.`accounts` WHERE `eaname` = #{waGroupName} AND `dbsts` = 'A' ;")
+	public int countEAGroupList(@Param("waGroupName")String waGroupName);
 	
 	
 	// ++++++++++++++++ ================ ++++++++++++++++

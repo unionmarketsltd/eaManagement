@@ -61,6 +61,8 @@ public interface EAMgmtService {
 	public t_eaSystem_admin_list getAdminInfoLogin(int userseq);
 	public t_eaSystem_eaSearchName_list getAccountInfo(int accnoseq);
 	public void updateAccFlag();
+	public void updateAdminInfo(int useq, String emails, String pwds, String phns , String adds);
+
 	
 	// paging section
 	public int pageCountAdmin();

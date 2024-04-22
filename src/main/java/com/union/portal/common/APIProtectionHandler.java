@@ -6,7 +6,7 @@ import javax.servlet.http.HttpSession;
 public class APIProtectionHandler {
   public static String ApiProtection(HttpServletRequest request, String inputString) {
     HttpSession session = request.getSession(false);
-    if (session == null || session.getAttribute("s_GEmail") == null)
+    if (session == null || session.getAttribute("s_GEmail") == null )
     {
       return "Unauthorized"; 
     }
@@ -24,7 +24,7 @@ public class APIProtectionHandler {
   
   public static boolean islogin(HttpServletRequest request) {
 	    HttpSession session = request.getSession(false);
-	    if (session == null || session.getAttribute("s_GEmail") == null)
+	    if (session == null || session.getAttribute("s_GEmail") == null || session.getAttribute("s_Name") == null)
 	    {
 	      return false;
 	    }

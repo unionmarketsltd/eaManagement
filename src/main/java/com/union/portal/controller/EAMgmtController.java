@@ -255,7 +255,8 @@ public class EAMgmtController {
 		String email = request.getParameter("email");
 		String passwd = request.getParameter("passwd");
 		
-		int noUser = adminservices.checkLogin(email, passwd);
+		
+		int noUser = adminservices.checkLogin(email, passwd); 
 		
 		if(noUser != 0) {
 			responsestr = "Success";
@@ -264,7 +265,8 @@ public class EAMgmtController {
 			HttpSession session = request.getSession();
 			session.setAttribute("s_Name", String.valueOf(sesData.name));
 			session.setAttribute("s_Adminseq", String.valueOf(sesData.adminseq));
-			
+			session.setAttribute("s_isLogin", String.valueOf("1"));
+			logger.info("WUTTTTT"+(String) session.getAttribute("s_Name"));
 		} else {
 			responsestr="Not FOUND!";
 		}
@@ -335,23 +337,6 @@ public class EAMgmtController {
 		return defaultpath + returnURL;
 	}
 	
-	/*
-	 * @RequestMapping(value = "/deleteListAccount", method = RequestMethod.GET)
-	public String deleteListAccount(Model model, HttpServletRequest request) throws SQLException {
-		logger.info("Welcome home! adminList.");
-		String vLocal = LocaleContextHolder.getLocale().getLanguage();
-		model.addAttribute("lang", vLocal);
-		String returnURL = "";
-		returnURL = "/deleteListAccount";
-		String del = request.getParameter("del");
-		int nnumberr = Integer.parseInt(del);
-		
-		adminservices.deleteListAccount(nnumberr);
-		
-
-		return defaultpath + returnURL;
-	}* 
-	 */
 	
 	@RequestMapping(value = { "/api/deleteListAccount" }, method = { RequestMethod.GET }, produces = {
 		"application/json;charset=UTF-8" })
@@ -363,6 +348,27 @@ public class EAMgmtController {
 		int nnumberr = Integer.parseInt(del);
 		
 		adminservices.deleteListAccount(nnumberr);
+		
+		//if(APIProtectionHandler.isloginAdmin(request))
+		// {}
+		
+		String responsestr = "";
+		
+		mav.addObject("result", APIProtectionHandler.ApiProtectionAdmin(request,responsestr));
+		return mav;
+	}
+	
+	
+	@RequestMapping(value = { "/api/deleteAdminAcc" }, method = { RequestMethod.GET }, produces = {
+		"application/json;charset=UTF-8" })
+	@ResponseBody
+	public ModelAndView APIdeleteAdminAcc(HttpServletRequest request, Model model) {
+	
+		ModelAndView mav = new ModelAndView("jsonView");
+		String del = request.getParameter("del");
+		int nnumberr = Integer.parseInt(del);
+		
+		adminservices.deleteAdmin(nnumberr);
 		
 		//if(APIProtectionHandler.isloginAdmin(request))
 		// {}
@@ -475,7 +481,7 @@ public class EAMgmtController {
 					return defaultpath + returnURL;
 				}
 			}
-		}
+		 }
 		
 		// page numbering
 		int totalNumbering = adminservices.countEAGroupList(eaGroup);
@@ -625,6 +631,57 @@ public class EAMgmtController {
 	}
 	
 	
+	@RequestMapping(value = { "/api/getAdminInfoOne" }, method = { RequestMethod.GET }, produces = {
+	"application/json;charset=UTF-8" })
+	@ResponseBody
+	public ModelAndView getAdminInfoOne(HttpServletRequest request, Model model) {
+		logger.info("Get getAdminInfoOne  ........" + this.serverinfo);
+		String id = request.getParameter("id");
+		int theid = Integer.parseInt(id);
+		
+		ModelAndView mav = new ModelAndView("jsonView");
+		String responsestr = "";
+		String beforeds = "";
+		
+		t_eaSystem_admin_list accFetchRes = adminservices.getAdminInfoLogin(theid);
+		if (accFetchRes != null) {
+			beforeds = accFetchRes.toString().replace("t_eaSystem_admin_list", "");
+			String jsonStr = beforeds.substring(1, beforeds.length() - 1);
+
+	        // Convert JSON string to JsonNode
+			JSONObject trythis = new JSONObject(accFetchRes);
+			responsestr = trythis.toString();
+		} else {
+			responsestr = "No search result";
+		}
+		
+		
+		mav.addObject("result", responsestr);
+		return mav;
+	}
+	
+	
+	
+	@PostMapping(value = { "/api/updateAdminInfo" }, consumes = { "application/json" }, produces = {
+		"application/json" })
+	public ModelAndView api_updateAdminInfo(HttpServletRequest request) throws SQLException {
+		ModelAndView mav = new ModelAndView("jsonView");
+		// JSONArray JSONARRAY = new JSONArray(body);
+		String responsestr="";
+		
+		String id = request.getParameter("id");
+		int nnumberr = Integer.parseInt(id);
+		String emails = request.getParameter("emails");
+		String pwds = request.getParameter("pwds");
+		String phns = request.getParameter("phns");
+		String adds = request.getParameter("adds");
+		
+		adminservices.updateAdminInfo(nnumberr, emails, pwds, phns, adds);
+		
+		
+		mav.addObject("result",  responsestr);
+		return mav;
+	}
 	
 	
 	// ++++++++++++++======================+++++++++++++++

@@ -177,6 +177,14 @@ public class EAMgmtServiceImpl implements EAMgmtService {
 		return mapper.getAccountInfo(accnoseq);
 	}
 	
+	
+	@Override
+	public void updateAdminInfo(int useq, String emails, String pwds, String phns , String adds) {
+		mapper.updateAdminInfo(useq, emails, pwds, phns , adds);
+	}
+	
+	
+	
 	// paging section
 	@Override
 	public int pageCountAdmin() {
